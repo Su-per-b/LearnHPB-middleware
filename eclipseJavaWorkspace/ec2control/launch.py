@@ -49,7 +49,7 @@ def ssh():
     #print os.system('"C:\Program Files (x86)\putty\putty.exe" -load esim-wintermute-west')
 
 
-ami = 'ami-' + '8f114fca'
+ami = 'ami-' + '9b0a54de'
 key_name = 'esimWestCoast'
 security_groups = ['esim']
 instance_type='t1.micro'
