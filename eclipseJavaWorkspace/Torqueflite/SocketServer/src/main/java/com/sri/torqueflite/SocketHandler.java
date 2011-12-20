@@ -8,8 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketHandler;
+import java.text.DecimalFormat;
 
-public class EsimHandler extends WebSocketHandler {
+public class SocketHandler extends WebSocketHandler {
 
 	private final Set<MyWebSocket> webSockets = new CopyOnWriteArraySet<MyWebSocket>();
 
@@ -35,10 +36,25 @@ public class EsimHandler extends WebSocketHandler {
 		public void onMessage(String data) {
 			// Loop for each instance of ChatWebSocket to send message server to
 			// each client WebSockets.
+			
+			SocketServer.logger.info( "onMessage: " + data ); 
+					
+			Double gallons = Double.parseDouble(data);
+			Double footPounds = gallons * 97181188.7888;
+			
+			//String footPoundsStr = String.valueOf(footPounds);
+			
+			
+			DecimalFormat df = new DecimalFormat("###,###.##");
+			String shortString = (df.format(footPounds));
+
+			
+			//String footPoundsStr = Double.toString(((int)(footPounds * 1000))/1000.0);
+			
 			try {
 				for (MyWebSocket webSocket : webSockets) {
 					// send a message to the current client WebSocket.
-					webSocket.connection.sendMessage(data);
+					webSocket.connection.sendMessage(shortString);
 				}
 			} catch (IOException x) {
 				// Error was detected, close the ChatWebSocket client side

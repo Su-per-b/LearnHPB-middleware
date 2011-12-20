@@ -1,7 +1,7 @@
 
 <html>
 <head>
-<title>WebSocket Chat</title>
+<title>WebSocket Test</title>
 <script type="text/javascript">
 	if (!window.WebSocket)
 		alert("WebSocket not supported by this browser");
@@ -12,20 +12,38 @@
 	function $F() {
 		return document.getElementById(arguments[0]).value;
 	}
+	function connect() {
+		room.connect();
+	}
+	
+	var gallons = 1;
 
 	function getKeyCode(ev) {
 		if (window.event)
 			return window.event.keyCode;
 		return ev.keyCode;
 	}
+	var convert = {
+		gallonsToFootPound : function(gallons) {
+			var location = "ws://localhost:8080/"
+			this._gallons = gallons;
+			this._ws = new WebSocket(location);
+			this._ws.onopen = this._onopen;
+			this._ws.onmessage = this._onmessage;
+			this._ws.onclose = this._onclose;
+			this._ws.onerror = this._onerror;
+		}
+	}
 	
 	var room = {
-		join : function(name) {
-			this._username = name;
-			//var location = document.location.toString().replace('http://',
-			//		'ws://').replace('https://', 'wss://');
+		connect : function() {
+
 			
+			room.output('establishing connection...');
+			
+			//var location = "ws://wintermute.rajlab.com:8080/"
 			var location = "ws://localhost:8080/"
+			
 			this._ws = new WebSocket(location);
 			this._ws.onopen = this._onopen;
 			this._ws.onmessage = this._onmessage;
@@ -34,29 +52,23 @@
 		},
 
 		chat : function(text) {
+			
+			gallons = text;
+			
 			if (text != null && text.length > 0)
-				room._send(room._username, text);
+				room._send(text);
+				
+			room.output('request sent');
 		},
 
 		_onopen : function() {			
-			$('join').className = 'hidden';
-			$('joined').className = '';
-			$('phrase').focus();
-			room._send(room._username, 'has joined!');
+			$('gallonsButton').disabled = false;
+			room.output('connected');
 		},
-
-		_onmessage : function(m) {
-			if (m.data) {
-				var c = m.data.indexOf(':');
-				var from = m.data.substring(0, c).replace('<', '&lt;').replace(
-						'>', '&gt;');
-				var text = m.data.substring(c + 1).replace('<', '&lt;')
-						.replace('>', '&gt;');
-
+		
+		output : function(text) {
 				var chat = $('chat');
 				var spanFrom = document.createElement('span');
-				spanFrom.className = 'from';
-				spanFrom.innerHTML = from + ':&nbsp;';
 				var spanText = document.createElement('span');
 				spanText.className = 'text';
 				spanText.innerHTML = text;
@@ -65,14 +77,22 @@
 				chat.appendChild(spanText);
 				chat.appendChild(lineBreak);
 				chat.scrollTop = chat.scrollHeight - chat.clientHeight;
+		},
+		
+		_onmessage : function(m) {
+			if (m.data) {
+
+				var text = m.data;
+				
+				text = gallons + ' gallons of gasoline equals ' + text + ' foot pounds of tourque';
+				
+				room.output(text);
 			}
 		},
 
 		_onclose : function(m) {
 			this._ws = null;
-			$('join').className = '';
-			$('joined').className = 'hidden';
-			$('username').focus();
+
 			$('chat').innerHTML = '';
 		},
 
@@ -80,14 +100,18 @@
 			alert(e);
 		},
 		
-		_send : function(user, message) {
-			user = user.replace(':', '_');
+		_send : function( message) {
+
 			if (this._ws)
-				this._ws.send(user + ':' + message);
+				this._ws.send(message);
 		}
 	};
 </script>
 <style type='text/css'>
+
+body {
+	font-family:sans-serif;
+}
 div {
 	border: 0px solid black;
 }
@@ -130,56 +154,43 @@ span.from {
 }
 </style>
 </head>
-<body>
-	<div id="chat"></div>
-	<div id="input">
-		<div id="join">
-			Username:&nbsp;
-			<input id="username" type="text" /><input id="joinB"
-				class="button" type="submit" name="join" value="Join" />
+<body onload="connect()" >
+	<h3>Websockets Test</h3>
+	
+	<div id="inputGallons">
+	
+		<div id="gallonsDiv">
+			gallons of gasoline:&nbsp;
+			<input id="gallonsInput" type="text" value="1"> </input>
+			
+			<input id="gallonsButton" disabled="true"
+				class="button" type="submit" name="gallonsButton" value="Submit" />
+				
+				
 		</div>
-		<div id="joined" class="hidden">
-			Chat:&nbsp;<input id="phrase" type="text" /> <input id="sendB"
-				class="button" type="submit" name="join" value="Send" />
-		</div>
+		
+
 	</div>
 	
+	
+	<div id="chat"></div>
+	
+
+	
 	<script type="text/javascript">	
-		// 1) When user is NOT connected, 'join' div is displayed with Username input + Join button
-		$('username').setAttribute('autocomplete', 'OFF');
-		// Enter in the username field, opens Chat WebSockets
-		$('username').onkeyup = function(ev) {
-			var keyc = getKeyCode(ev);
-			if (keyc == 13 || keyc == 10) {
-				room.join($F('username'));
-				return false;
-			}
-			return true;
-		};
+
+		
 		// "Join" button click opens Chat WebSockets
-		$('joinB').onclick = function(event) {
-			room.join($F('username'));
+		$('gallonsButton').onclick = function(event) {
+		
+			room.chat($F('gallonsInput'));
+			$('gallonsInput').value = '';
+			
 			return false;
 		};
 		
-		// 2) When user is connected, 'phrase' div is displayed with Chat input + Send button		
-		$('phrase').setAttribute('autocomplete', 'OFF');
-		// Enter in the 'phrase' field send the message
-		$('phrase').onkeyup = function(ev) {
-			var keyc = getKeyCode(ev);
-			if (keyc == 13 || keyc == 10) {
-				room.chat($F('phrase'));
-				$('phrase').value = '';
-				return false;
-			}
-			return true;
-		};
-		// "Send" button click send the message
-		$('sendB').onclick = function(event) {
-			room.chat($F('phrase'));
-			$('phrase').value = '';
-			return false;
-		};
+		
+
 	</script>
 		
 </body>
