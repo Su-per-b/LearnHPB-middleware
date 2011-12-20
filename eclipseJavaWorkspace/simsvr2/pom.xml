@@ -34,7 +34,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>com.sri.simsvr2.App2</mainClass>
+                                    <mainClass>com.sri.simsvr2.PageServer</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>

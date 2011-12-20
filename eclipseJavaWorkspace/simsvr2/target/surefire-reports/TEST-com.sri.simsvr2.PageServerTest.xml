@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0" errors="0" skipped="0" tests="1" name="com.sri.simsvr2.PageServerTest">
+<testsuite failures="0" time="0.001" errors="0" skipped="0" tests="1" name="com.sri.simsvr2.PageServerTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.6.0_29\jre\bin"/>
@@ -19,7 +19,7 @@
     <property name="basedir" value="E:\SRI\esim\eclipseJavaWorkspace\simsvr2"/>
     <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.6.0_29\jre\lib\endorsed"/>
     <property name="os.arch" value="amd64"/>
-    <property name="surefire.real.class.path" value="E:\SRI\esim\eclipseJavaWorkspace\simsvr2\target\surefire\surefirebooter8108475984024391181.jar"/>
+    <property name="surefire.real.class.path" value="E:\SRI\esim\eclipseJavaWorkspace\simsvr2\target\surefire\surefirebooter2419117964841753934.jar"/>
     <property name="java.io.tmpdir" value="C:\Users\raj\AppData\Local\Temp\"/>
     <property name="line.separator" value="
 "/>
@@ -43,7 +43,7 @@
     <property name="java.vm.specification.version" value="1.0"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="C:\Program Files\Java\jdk1.6.0_29\jre"/>
-    <property name="sun.java.command" value="E:\SRI\esim\eclipseJavaWorkspace\simsvr2\target\surefire\surefirebooter8108475984024391181.jar E:\SRI\esim\eclipseJavaWorkspace\simsvr2\target\surefire\surefire1588675712715292316tmp E:\SRI\esim\eclipseJavaWorkspace\simsvr2\target\surefire\surefire7319919316904707141tmp"/>
+    <property name="sun.java.command" value="E:\SRI\esim\eclipseJavaWorkspace\simsvr2\target\surefire\surefirebooter2419117964841753934.jar E:\SRI\esim\eclipseJavaWorkspace\simsvr2\target\surefire\surefire243860657485583644tmp E:\SRI\esim\eclipseJavaWorkspace\simsvr2\target\surefire\surefire3134371892213827937tmp"/>
     <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
     <property name="user.language" value="en"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
