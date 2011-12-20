@@ -1,5 +1,5 @@
 
-package com.sri.simsvr2;
+package com.sri.simsvr;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

@@ -1,4 +1,4 @@
-package com.sri.simsvr2;
+package com.sri.simsvr;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.DefaultHandler;
