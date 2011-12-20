@@ -24,6 +24,7 @@
 			this._username = name;
 			//var location = document.location.toString().replace('http://',
 			//		'ws://').replace('https://', 'wss://');
+			
 			var location = "ws://localhost:8080/"
 			this._ws = new WebSocket(location);
 			this._ws.onopen = this._onopen;

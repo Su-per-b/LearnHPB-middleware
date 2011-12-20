@@ -22,7 +22,7 @@
 	          <version>2.2-beta-5</version>
 				<executions>
 					<execution>
-						<id>default-jar</id>
+						<id>http-jar</id>
 						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
@@ -39,6 +39,9 @@
                             </archive>
                         </configuration>
 					</execution>
+					
+
+					
 				</executions>
 				
 
