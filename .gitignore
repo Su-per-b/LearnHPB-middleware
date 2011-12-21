@@ -1,9 +1,8 @@
 
-/eclipseJavaWorkspace/.metadata
-/eclipseJavaWorkspace/esim/esim-app
-/eclipseJavaWorkspace/esim/target
-/eclipseJavaWorkspace/Torqueflite/PageServer/target
-/eclipseJavaWorkspace/simsvr/target
-/eclipseJavaWorkspace/Torqueflite/SocketServer/target
-/eclipseJavaWorkspace/Torqueflite/SocketServer/targetJar
-/eclipseJavaWorkspace/Torqueflite/PageServer/targetJar
+/eclipseWorkspace/.metadata
+/eclipseWorkspace/Straylight/SocketServer/target
+/eclipseWorkspace/Straylight/SocketServer/targetJar
+/eclipseWorkspace/Straylight/PageServer/target
+/eclipseWorkspace/Straylight/PageServer/targetJar
+/eclipseWorkspace/StrayLight/PageServer/target
+/eclipseWorkspace/StrayLight/SocketServer/target
