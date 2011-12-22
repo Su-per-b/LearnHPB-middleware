@@ -3,28 +3,27 @@ package com.sri.straylight.socketserver;
 import java.net.URL;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
-
-
+import com.sri.straylight.common.Banner;
+import java.util.Properties;
 
 public class SocketServer {
 
-	private static final String bannerPath = "banner.txt";
 	public static Logger logger = Log.getLogger("SocketServer");
+	public static Properties properties;
 	
 	
 	public void showBanner() {
-
-		logger.info( "Straylight SocketServer Starting" );
-
-        URL bannerUrl = this.getClass().getClassLoader().getResource(bannerPath);
-        String aciiArt = fileContentsToString(bannerUrl.getFile());
-      
-        System.out.println( aciiArt );
+			
+		java.net.URL url = SocketServer.class.getClassLoader().getResource("SocketServer.properties");
+		
+		Banner banner = new Banner(logger, "Socket Server", url);
+		banner.show();
 	}
 	
 	public void start() {
@@ -51,50 +50,5 @@ public class SocketServer {
 	}
 	
 	
-	
-	  /**
-	   * Read the contents of a file and place them in
-	   * a string object.
-	   *
-	   * @param file path to file.
-	   * @return String contents of the file.
-	   */
-	  public static String fileContentsToString(String file)
-	  {
-	      String contents = "";
 
-	      File f = null;
-	      try
-	      {
-	          f = new File(file);
-
-	          if (f.exists())
-	          {
-	              FileReader fr = null;
-	              try
-	              {
-	                  fr = new FileReader(f);
-	                  char[] template = new char[(int) f.length()];
-	                  fr.read(template);
-	                  contents = new String(template);
-	              }
-	              catch (Exception e)
-	              {
-	                  e.printStackTrace();
-	              }
-	              finally
-	              {
-	                  if (fr != null)
-	                  {
-	                      fr.close();
-	                  }
-	              }
-	          }
-	      }
-	      catch (Exception e)
-	      {
-	          e.printStackTrace();
-	      }
-	      return contents;
-	  }
 }

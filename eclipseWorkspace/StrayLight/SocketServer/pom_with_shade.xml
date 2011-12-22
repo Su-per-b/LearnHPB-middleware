@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>Straylight</artifactId>
+		<groupId>com.sri</groupId>
+		<version>0.0.1</version>
+	</parent>
+	<artifactId>SocketServer</artifactId>
+	<name>SocketServer</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-websocket</artifactId>
+			<version>7.5.4.v20111024</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sri</groupId>
+			<artifactId>Common</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.11</version>
+				<configuration>
+					<systemPropertyVariables combine.children="append">
+						<rajVar>${project.name}</rajVar>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+     <!-- shade
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.5</version>
+				<configuration>
+				
+                        <transformers>
+                        
+                            <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                           
+                                <mainClass>com.sri.straylight.socketserver.Main</mainClass>
+                            </transformer>
+                            
+                            <!-- Use resource transformers to prevent file overwrites -->
+                           <transformer
+                           implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                <resource>properties.properties</resource>
+                            </transformer>
+                            
+                            <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                                <resource>applicationContext.xml</resource>
+                            </transformer>
+                            
+                            <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                <resource>META-INF/cxf/cxf.extension</resource>
+                            </transformer>
+                            
+                            <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                                <resource>META-INF/cxf/bus-extensions.xml</resource>
+                            </transformer>
+                            
+                     </transformers>
+              
+
+              
+
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+ -->
+		</plugins>
+	</build>
+
+</project>

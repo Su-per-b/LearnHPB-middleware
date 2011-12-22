@@ -12,6 +12,9 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 
+import com.sri.straylight.common.Banner;
+
+
 
 public class PageServer {
 
@@ -22,13 +25,29 @@ public class PageServer {
 	
 	
 	public void showBanner() {
+		
+		/*
+		 * 
+		 * 
+			logger.info( "Straylight PageServer Starting" );
+	
+	        URL bannerUrl = this.getClass().getClassLoader().getResource(bannerPath);
+	        String aciiArt = fileContentsToString(bannerUrl.getFile());
+	      
+	        System.out.println( aciiArt );
+		 * 
+		 * 
+		 * 
+		 */
 
-		logger.info( "Straylight PageServer Starting" );
-
-        URL bannerUrl = this.getClass().getClassLoader().getResource(bannerPath);
-        String aciiArt = fileContentsToString(bannerUrl.getFile());
-      
-        System.out.println( aciiArt );
+        
+        
+		java.net.URL url = PageServer.class.getClassLoader().getResource("PageServer.properties");
+		
+		Banner banner = new Banner(logger, "Page Server!", url);
+		banner.show();
+		
+		
 	}
 	
 	public void start() {

@@ -4,6 +4,3 @@
  ___/ / /_/ /  / /_/ / /_/ / / / /_/ / / / / /_   / ) (
 /____/\__/_/   \__,_/\__, /_/_/\__, /_/ /_/\__/   \(_)/ 
                     /____/    /____/         
-Straylight Socket Server v0.02 Alpha
-by Raj Dye
-Copyright (c) 2011 SRI International 
