@@ -49,12 +49,6 @@
 				</executions>
 				<configuration>
 					<mainClass>com.sri.straylight.pageserver.Main</mainClass>
-					<systemProperties>
-						<systemProperty>
-							<key>project.version</key>
-							<value>${version}</value>
-						</systemProperty>
-					</systemProperties>
 				</configuration>
 			</plugin>
 		</plugins>

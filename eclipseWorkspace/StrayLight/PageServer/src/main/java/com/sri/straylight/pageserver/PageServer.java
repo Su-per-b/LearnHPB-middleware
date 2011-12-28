@@ -18,29 +18,14 @@ import com.sri.straylight.common.Banner;
 
 public class PageServer {
 
-	private static final String bannerPath = "banner.txt";
+
 	private static final String webRoot = "webroot/";
 	private static final String defaultFile = "index.html";
 	public static Logger logger = Log.getLogger("PageServer");
 	
 	
 	public void showBanner() {
-		
-		/*
-		 * 
-		 * 
-			logger.info( "Straylight PageServer Starting" );
-	
-	        URL bannerUrl = this.getClass().getClassLoader().getResource(bannerPath);
-	        String aciiArt = fileContentsToString(bannerUrl.getFile());
-	      
-	        System.out.println( aciiArt );
-		 * 
-		 * 
-		 * 
-		 */
 
-        
         
 		java.net.URL url = PageServer.class.getClassLoader().getResource("PageServer.properties");
 		

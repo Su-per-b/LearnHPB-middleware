@@ -3,6 +3,7 @@
 	<name>CloudControl</name>
 	<comment></comment>
 	<projects>
+		<project>BotoProject</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

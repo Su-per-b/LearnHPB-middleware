@@ -1,10 +1,5 @@
 package com.sri.straylight.socketserver;
 
-import java.net.URL;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.util.log.Log;

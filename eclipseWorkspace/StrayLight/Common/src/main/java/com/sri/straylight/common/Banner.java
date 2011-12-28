@@ -6,9 +6,6 @@ import java.io.FileReader;
 import java.net.URL;
 
 import org.eclipse.jetty.util.log.Logger;
-import java.net.URL;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
