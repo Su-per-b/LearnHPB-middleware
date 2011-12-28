@@ -7,4 +7,4 @@ from cloudcontrol.utils import ssh
 #launchWintermute()
 
 
-launchBuilder()
+ssh('Builder')
