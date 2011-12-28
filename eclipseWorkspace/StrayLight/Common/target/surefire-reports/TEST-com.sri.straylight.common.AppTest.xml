@@ -20,15 +20,15 @@
     <property name="basedir" value="E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common"/>
     <property name="java.endorsed.dirs" value="C:\Program Files (x86)\Java\jdk1.7.0_02\jre\lib\endorsed"/>
     <property name="os.arch" value="x86"/>
-    <property name="surefire.real.class.path" value="E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common\target\surefire\surefirebooter4996350350659584613.jar"/>
-    <property name="java.io.tmpdir" value="C:\Users\raj\AppData\Local\Temp\"/>
+    <property name="surefire.real.class.path" value="E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common\target\surefire\surefirebooter3074671809900262119.jar"/>
+    <property name="java.io.tmpdir" value="C:\TEMP\"/>
     <property name="line.separator" value="
 "/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="user.variant" value=""/>
     <property name="os.name" value="Windows 7"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
-    <property name="java.library.path" value="C:\Program Files (x86)\Java\jdk1.7.0_02\jre\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files (x86)\Java\jdk1.7.0_02\jre\bin;%CommonProgramFiles%\Microsoft Shared\Windows Live;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Common Files\Intuit\QBPOSSDKRuntime;C:\Program Files (x86)\Paradigma Software\vcomponents_win_vc;C:\Program Files\Microsoft Windows Performance Toolkit\;C:\Program Files (x86)\Autodesk\Backburner\;C:\Program Files (x86)\Common Files\Autodesk Shared\;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files (x86)\ZipGenius 6\;C:\Program Files (x86)\TortoiseHg\;%Path%;C:\Program Files (x86)\Java\jdk1.7.0_02\bin;c:\ant\bin;C:\Program Files (x86)\CineForm\Tools;C:\Program Files (x86)\Java\jre6\bin;C:\Program Files\Java\jre6\bin;C:\Python27;C:\cygwin\bin;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files\TortoiseSVN\bin;C:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\;C:\Program Files\Microsoft SQL Server\100\Tools\Binn\;C:\Program Files\Microsoft SQL Server\100\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\VSShell\Common7\IDE\;C:\Program Files (x86)\Microsoft SQL Server\100\DTS\Binn\;C:\Program Files (x86)\nodejs\;C:\Program Files\TortoiseGit\bin;C:\Program Files\Apache Software Foundation\apache-maven-3.0.3\bin;C:\Program Files (x86)\Java\jdk1.7.0_02\bin;."/>
+    <property name="java.library.path" value="C:\Program Files (x86)\Java\jdk1.7.0_02\jre\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\TortoiseHg\;c:\ant\bin;C:\Program Files\TortoiseSVN\bin;C:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\VSShell\Common7\IDE\;C:\Program Files\TortoiseGit\bin;C:\Program Files\Apache Software Foundation\apache-maven-3.0.3\bin;C:\Program Files (x86)\Java\jdk1.7.0_02\bin;C:\Users\raj\AppData\Roaming\Python\Scripts;C:\python\ActiveStatePython27;C:\python\ActiveStatePython27\Scripts;."/>
     <property name="surefire.test.class.path" value="E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common\target\test-classes;E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common\target\classes;C:\Users\raj\.m2\repository\junit\junit\3.8.1\junit-3.8.1.jar;C:\Users\raj\.m2\repository\org\eclipse\jetty\jetty-server\7.5.4.v20111024\jetty-server-7.5.4.v20111024.jar;C:\Users\raj\.m2\repository\javax\servlet\servlet-api\2.5\servlet-api-2.5.jar;C:\Users\raj\.m2\repository\org\eclipse\jetty\jetty-continuation\7.5.4.v20111024\jetty-continuation-7.5.4.v20111024.jar;C:\Users\raj\.m2\repository\org\eclipse\jetty\jetty-http\7.5.4.v20111024\jetty-http-7.5.4.v20111024.jar;C:\Users\raj\.m2\repository\org\eclipse\jetty\jetty-io\7.5.4.v20111024\jetty-io-7.5.4.v20111024.jar;C:\Users\raj\.m2\repository\org\eclipse\jetty\jetty-util\7.5.4.v20111024\jetty-util-7.5.4.v20111024.jar;"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.class.version" value="51.0"/>
@@ -44,7 +44,7 @@
     <property name="java.vm.specification.version" value="1.7"/>
     <property name="sun.arch.data.model" value="32"/>
     <property name="java.home" value="C:\Program Files (x86)\Java\jdk1.7.0_02\jre"/>
-    <property name="sun.java.command" value="E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common\target\surefire\surefirebooter4996350350659584613.jar E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common\target\surefire\surefire7432905203420260658tmp E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common\target\surefire\surefire8040787784712910779tmp"/>
+    <property name="sun.java.command" value="E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common\target\surefire\surefirebooter3074671809900262119.jar E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common\target\surefire\surefire1621649063705636510tmp E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common\target\surefire\surefire7026259852943166411tmp"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="en"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>

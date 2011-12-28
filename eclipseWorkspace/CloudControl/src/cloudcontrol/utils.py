@@ -39,6 +39,13 @@ def ssh(name) :
     instance.load(name)
     instance.openShell()
     
+def launchRaw() :
+    print '*****launch Builder******'
+    instance = Instance()
+    instance.create("11d68a54", "Raw")
+    instance.launchOne()
+    instance.openShell()
+    
     
 class Instance :
     def __init__(self):
