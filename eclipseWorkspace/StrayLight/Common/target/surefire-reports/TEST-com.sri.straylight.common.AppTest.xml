@@ -20,7 +20,7 @@
     <property name="basedir" value="E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common"/>
     <property name="java.endorsed.dirs" value="C:\Program Files (x86)\Java\jdk1.7.0_02\jre\lib\endorsed"/>
     <property name="os.arch" value="x86"/>
-    <property name="surefire.real.class.path" value="E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common\target\surefire\surefirebooter3074671809900262119.jar"/>
+    <property name="surefire.real.class.path" value="E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common\target\surefire\surefirebooter2663338553277003754.jar"/>
     <property name="java.io.tmpdir" value="C:\TEMP\"/>
     <property name="line.separator" value="
 "/>
@@ -44,7 +44,7 @@
     <property name="java.vm.specification.version" value="1.7"/>
     <property name="sun.arch.data.model" value="32"/>
     <property name="java.home" value="C:\Program Files (x86)\Java\jdk1.7.0_02\jre"/>
-    <property name="sun.java.command" value="E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common\target\surefire\surefirebooter3074671809900262119.jar E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common\target\surefire\surefire1621649063705636510tmp E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common\target\surefire\surefire7026259852943166411tmp"/>
+    <property name="sun.java.command" value="E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common\target\surefire\surefirebooter2663338553277003754.jar E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common\target\surefire\surefire5518425111117590640tmp E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\Common\target\surefire\surefire1154323023705063880tmp"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="en"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
