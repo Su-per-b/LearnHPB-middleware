@@ -37,13 +37,13 @@ public class Banner  {
 		String version = properties.getProperty( "project.version" ); 
 		String title = properties.getProperty( "project.title" ); 
 		
-		this.logger_.info(  title + " Starting" );
+		System.out.println(  title + " Starting" );
 		
-		this.logger_.info( "os.name: " + System.getProperty("os.name") );
-		this.logger_.info( "os.version: " + System.getProperty("os.version") );
-		this.logger_.info( "os.arch: " + System.getProperty("os.arch") );
-		this.logger_.info( "java.home: " + System.getProperty("java.home") );
-		this.logger_.info( "java.version: " + System.getProperty("java.version") );
+		System.out.println( "os.name: " + System.getProperty("os.name") );
+		System.out.println( "os.version: " + System.getProperty("os.version") );
+		System.out.println( "os.arch: " + System.getProperty("os.arch") );
+		System.out.println( "java.home: " + System.getProperty("java.home") );
+		System.out.println( "java.version: " + System.getProperty("java.version") );
 		
         URL bannerUrl = this.getClass().getClassLoader().getResource(bannerPath);
         String aciiArt = fileContentsToString(bannerUrl.getFile());
