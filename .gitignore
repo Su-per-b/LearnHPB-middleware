@@ -8,3 +8,5 @@
 /eclipseWorkspace/StrayLight/SocketServer/target
 /eclipseWorkspace/BotoProject
 /eclipseWorkspace/StrayLight/Common/target
+*.pyc
+__pycache__
