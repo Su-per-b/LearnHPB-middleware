@@ -47,17 +47,18 @@ def launchStraylightFromScratch() :
     instance.create("11d68a54", "Straylight")
     instance.launchOne()
     instance.associateIP('50.18.252.97')
-    instance.uploadScript(r'resources\build_from_scratch.sh')
+    instance.uploadScript(r'resources\setup.sh')
     instance.openShell()
     
     
-def uploadToRaw() :
+def uploadToStraylight() :
     instance = Server()
-    instance.load("Raw")
+    instance.load("Straylight")
     #instance.uploadFile(r'resources\build.sh')
-    instance.uploadScript(r'resources\build.sh')
+    instance.uploadScript(r'resources\setup.sh')
     
     
+
     
 class Server :
     def __init__(self):
@@ -112,36 +113,45 @@ class Server :
         else :
             return self.instance.public_dns_name
     
-    def uploadScript(self, filePath):
-        print '*****uploadScript******'
-        self.uploadFile(filePath)
-        ssh = paramiko.SSHClient()
-        ssh.set_missing_host_key_policy(
-        paramiko.AutoAddPolicy())
+    
+    def runRemoteScript(self, filePath):
+        print '*****runRemoteScript******'
+        
+        result = self.connectViaSSH()
+        
+        if not result:
+            return False
+        
         
         self.instance.update()
         host = self.getHostName()
         
-        try: 
-            ssh.connect(
-                        host, 
-                        username='ec2-user', 
-                        key_filename=self.key_file_paramiko
-                        )
-        except:
-            print 'SSH not available'
-            ssh.close()
+        fileName = os.path.basename(filePath)
+        remotePath = '/home/%s/%s' % (self.username, fileName)
+        stdin, stdout, stderr = self.ssh.exec_command('./' + fileName)
+        
+        
+        self.ssh.close()
+        
+        
+    def uploadScript(self, filePath):
+        print '*****uploadScript******'
+        
+        self.uploadFile(filePath)
+        
+        result = self.connectViaSSH()
+        if not result:
             return False
         
+        self.instance.update()
+        host = self.getHostName()
+        
         fileName = os.path.basename(filePath)
-        remotePath = '/home/%s/%s' % (self.username, fileName) 
-        stdin, stdout, stderr = ssh.exec_command('chmod 777 %s' % remotePath)
+        remotePath = '/home/%s/%s' % (self.username, fileName)
+        stdin, stdout, stderr = self.ssh.exec_command('chmod 777 %s' % remotePath)
         print 'chmod complete'
         
-        stdin, stdout, stderr = ssh.exec_command('sudo ./build.sh')
-        #print stdout.readlines()
-        lines = stdout.readlines()
-        print lines
+        self.ssh.close()
         
            
     def uploadFile(self, filePath):
@@ -169,18 +179,14 @@ class Server :
         transport.close()
         print 'upload complete'
         
-        
-        
-    def checkForSSH(self):
-        print 'checking for SSH daemon on remote host'
-        
+    def connectViaSSH(self):
+        print '***********getSSH***********'
         ssh = paramiko.SSHClient()
-        ssh.set_missing_host_key_policy(
-        paramiko.AutoAddPolicy())
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         
         self.instance.update()
         host = self.getHostName()
-
+        
         try: 
             ssh.connect(
                         host, 
@@ -191,18 +197,18 @@ class Server :
             print 'SSH not available'
             ssh.close()
             return False
-            
+        
         stdin, stdout, stderr = ssh.exec_command('echo "test ssh connection"')
-        #print stdout.readlines()
+
         lines = stdout.readlines()
         oneLine = lines[0]
-        print lines
-        
-        ssh.close()
+        print oneLine
         
         if oneLine == "test ssh connection\n":
+            self.ssh = ssh
             return True
         else:
+            ssh.close()
             return False
         
         
@@ -210,7 +216,11 @@ class Server :
         print '***** blockThreadUntilSSH ******'
         result = False
         while not result :
-            result = self.checkForSSH()
+            result = self.connectViaSSH()
+            
+        self.ssh.close()
+        
+        
         
         
     def blockThreadUntilRunning(self):
@@ -306,6 +316,10 @@ class Server :
         return self.instance.public_dns_name
     
     
+    
+
+
+        
     def openShell(self):
         print '***** openShell ******'
         self.blockThreadUntilRunning()
