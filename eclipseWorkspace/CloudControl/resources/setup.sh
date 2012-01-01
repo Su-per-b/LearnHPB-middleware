@@ -35,7 +35,7 @@ info() {
 	whoami
 	python --version
 	java -version
-	javac -version
+	#javac -version
 
 	#yum should be installed
 	printStep 'yum --version'
@@ -105,13 +105,13 @@ mavenBuild() {
 	printStep 'Build projects with Maven'
 	#checkout the desired build
 	cd ~/straylight_repo/eclipseWorkspace/StrayLight
-	mvn clean install
+	/usr/local/maven/bin/mvn clean install
 
 	cd ~/straylight_repo/eclipseWorkspace/StrayLight/SocketServer
-	mvn clean install
+	/usr/local/maven/bin/mvn clean install
 
 	cd ~/straylight_repo/eclipseWorkspace/StrayLight/PageServer
-	mvn clean install
+	/usr/local/maven/bin/mvn clean install
 
 }
 
@@ -131,6 +131,9 @@ copy_binaries() {
 	cp -R $ROOT_HOME/straylight_repo/eclipseWorkspace/StrayLight/SocketServer/target/classes  /usr/local/straylight/socketserver/target/
 	cp -R $ROOT_HOME/straylight_repo/eclipseWorkspace/StrayLight/SocketServer/.classpath  /usr/local/straylight/socketserver/.classpath
 	cp -R $ROOT_HOME/straylight_repo/eclipseWorkspace/StrayLight/SocketServer/pom.xml  /usr/local/straylight/socketserver/pom.xml
+
+	cp $ROOT_HOME/straylight_repo/eclipseWorkspace/CloudControl/resources/straylight.sh $USER_HOME/straylight.sh
+	chmod 777 $USER_HOME/straylight.sh
 }
 
 
@@ -138,16 +141,16 @@ copy_binaries() {
 launch() {
 	printStep 'Launch Projects'
 	cd /usr/local/straylight/pageserver/
-	mvn exec:java -Dexec.mainClass="com.sri.straylight.pageserver.Main" &
+	/usr/local/maven/bin/mvn exec:java -Dexec.mainClass="com.sri.straylight.pageserver.Main" &
 
 	cd /usr/local/straylight/socketserver/
-	mvn exec:java -Dexec.mainClass="com.sri.straylight.socketserver.Main" &
+	/usr/local/maven/bin/mvn exec:java -Dexec.mainClass="com.sri.straylight.socketserver.Main" &
 }
 
 
 
 usage() {
-	echo "Usage: sudo ./setup all|os|clone|env|maven|profile|precheck|clean|build|test"	
+	echo "Usage: sudo ./setup all|clone|env|build|profile|precheck|clean|test"	
 }
 
 
@@ -164,8 +167,7 @@ setEnvironmentVars() {
 
 	set +e
 	read -r -d '' SCRIPT_CODE <<-'EOF'
-		echo 'SERVER=StraylightQ'
-		export SERVER=StraylightQ
+		export SERVER=StraylightR
 
 		case "$TERM" in
 		xterm*|rxvt*)
@@ -181,16 +183,43 @@ setEnvironmentVars() {
 	EOF
 	set -e
 
-	updateLoginScript $ROOT_HOME $SCRIPT_CODE
-	updateLoginScript $USER_HOME $SCRIPT_CODE
+	BACKED_UP_FILE=$USER_HOME/.bashrc.orig	
+	FILE=$USER_HOME/.bashrc
+
+	if [ ! -f $BACKED_UP_FILE ]
+	then
+		echo '.bashrc.orig not found in '$BACKED_UP_FILE
+		echo 'backing up ".bashrc" as ".bashrc.orig'
+		
+		sudo -u $USER cp $FILE $BACKED_UP_FILE
+		sudo -u $USER echo "$SCRIPT_CODE" >> $FILE
+		
+	else 
+		echo '.bashrc.orig found in :'$BACKED_UP_FILE
+	fi
+
+	BACKED_UP_FILE=$ROOT_HOME/.bashrc.orig	
+	FILE=$ROOT_HOME/.bashrc
+
+	if [ ! -f $BACKED_UP_FILE ]
+	then
+		echo '.bashrc.orig not found in '$BACKED_UP_FILE
+		echo 'backing up ".bashrc" as ".bashrc.orig'
+		cp $FILE $BACKED_UP_FILE
+
+		echo "$SCRIPT_CODE" >> $FILE
+		
+	else 
+		echo '.bashrc.orig found in :'$BACKED_UP_FILE
+	fi
 
 }
 
 updateLoginScript() {
 
-	BACKED_UP_FILE=$1/.bashrc.orig	
-	FILE=$1/.bashrc
-	SCRIPT_CODE=$2
+	BACKED_UP_FILE=$USER_HOME/.bashrc.orig	
+	FILE=$USER_HOME/.bashrc
+
 
 	if [ ! -f $BACKED_UP_FILE ]
 	then
@@ -211,26 +240,20 @@ updateLoginScript() {
 case "$1" in
         'all')
 		precheck
-        info
+		info
 		installDependencies
-		setEnvironmentVariables
-		set_bash_profile
+		setEnvironmentVars
 		cloneGitRepo
 		mavenBuild
-        ;;
-        'os')
-        	info
-		installDependencies
-		setEnvironmentVariables
-		set_bash_profile
-        ;;
+		copy_binaries
+	;;
         'clone')
 		cloneGitRepo
         ;;
         'env')
 		setEnvironmentVariables
         ;;
-        'maven')
+        'build')
 		mavenBuild
         ;;
         'profile')
@@ -243,13 +266,6 @@ case "$1" in
         ;;
         'clean')
 		clean
-        ;;
-        'build')
-		precheck
-		cloneGitRepo
-		mavenBuild
-		copy_binaries
-		mavenBuild
         ;;
         'test')
 		precheck

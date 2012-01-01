@@ -52,6 +52,7 @@ service_start() {
 
 case "$1" in
         'start')
+        precheck
         service_start
         ;;
         'stop')
