@@ -134,6 +134,7 @@ copy_binaries() {
 
 	cp $ROOT_HOME/straylight_repo/eclipseWorkspace/CloudControl/resources/straylight.sh $USER_HOME/straylight.sh
 	chmod 777 $USER_HOME/straylight.sh
+	chown ec2-user:ec2-user $USER_HOME/straylight.sh
 }
 
 

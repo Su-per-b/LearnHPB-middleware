@@ -3,12 +3,12 @@
 ############################ OPTIONS ######################################################
 
 TITLE='Straylight Server'                          # Name for the server
-MAIN_PATH='/usr/local/straylight/'
-PAGE_SERVER_SUB_FOLDER='PageServer/target/'
+MAIN_PATH='/usr/local/straylight'
+PAGE_SERVER_PATH=$MAIN_PATH'/pageserver'
 PAGE_SERVER_JAR='PageServer-0.0.3.jar'
-PAGE_SERVER_PATH=$MAIN_PATH'pageserver/'
-
+PAGE_SERVER_MAIN_CLASS='com.sri.straylight.pageserver.Main'
 LOGFILE='/var/log/straylight.log'
+
 ############################ END OPTIONS ##################################################
 
 ########################### NO NEED TO EDIT UNDER HERE ####################################
@@ -41,18 +41,44 @@ echo
 service_start() {
 
   echo
-  echo "Starting $TITLE"
+  echo " *** Starting $TITLE ***"
   echo "$(date +"%b %a %d  %H:%M:%S"): Starting $TITLE" >> $LOGFILE
   cd $PAGE_SERVER_PATH
-  /usr/lib/jvm/jre-1.6.0-openjdk/bin/java -classpath /usr/local/apache-maven-2.2.1/boot/classworlds-1.1.jar -Dclassworlds.conf=/usr/local/apache-maven-2.2.1/bin/m2.conf -Dmaven.home=/usr/local/apache-maven-2.2.1 org.codehaus.classworlds.Launcher "exec:java" "-Dexec.mainClass=com.sri.straylight.pageserver.Main"
-  exit 1
+  /usr/lib/jvm/jre-1.6.0-openjdk/bin/java -classpath /usr/local/maven/boot/classworlds-1.1.jar -Dclassworlds.conf=/usr/local/maven/bin/m2.conf -Dmaven.home=/usr/local/apache-maven-2.2.1 org.codehaus.classworlds.Launcher "exec:java" "-Dexec.mainClass=com.sri.straylight.pageserver.Main" &
+  
+  sleep 1
+	
+  ps ax | grep -v grep | grep $PAGE_SERVER_MAIN_CLASS | grep -v export | awk '{print $1}' > $PAGE_SERVER_PATH/straylight.pid
+  echo "$TITLE screen process ID written to $PAGE_SERVER_PATH/straylight.pid"
+  echo "$TITLE started."
+
+  echo "$(date +"%b %a %d  %H:%M:%S"): $TITLE started" >> $LOGFILE
+
+ exit 0
+
+}
+
+
+service_stop() {
+
+  echo "Stopping $TITLE"
+  echo "$(date +"%b %a %d  %H:%M:%S"): Stopping $TITLE" >> $LOGFILE
+  for id in $(cat $PAGE_SERVER_PATH/straylight.pid)
+  do kill -TERM $id
+  echo "Killing process ID $id"
+  echo "Removing $TITLE pid file"
+  rm -rf $PAGE_SERVER_PATH/straylight.pid
+  break
+  done
+  echo "$TITLE stopped"
+  echo "$(date +"%b %a %d  %H:%M:%S"): $TITLE stopped" >> $LOGFILE
+  echo
 
 }
 
 
 case "$1" in
         'start')
-        precheck
         service_start
         ;;
         'stop')
