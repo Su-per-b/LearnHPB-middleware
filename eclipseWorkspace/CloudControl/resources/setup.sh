@@ -151,7 +151,7 @@ launch() {
 
 
 usage() {
-	echo "Usage: sudo ./setup all|clone|env|build|profile|precheck|clean|test"	
+	echo "Usage: sudo ./setup all|clone|env|build|precheck|clean|test"	
 }
 
 
@@ -217,10 +217,8 @@ setEnvironmentVars() {
 }
 
 updateLoginScript() {
-
 	BACKED_UP_FILE=$USER_HOME/.bashrc.orig	
 	FILE=$USER_HOME/.bashrc
-
 
 	if [ ! -f $BACKED_UP_FILE ]
 	then
@@ -236,6 +234,24 @@ updateLoginScript() {
 	fi
 }
 
+copy_startup_scripts() {
+
+	cp ~/straylight_repo/eclipseWorkspace/CloudControl/resources/straylight.sh $USER_HOME/straylight.sh
+	chmod 777 $USER_HOME/straylight.sh
+	chown ec2-user:ec2-user $USER_HOME/straylight.sh
+	
+	cp ~/straylight_repo/eclipseWorkspace/CloudControl/resources/straylight.sh /etc/init.d/straylight.sh
+	chmod 777 /etc/init.d/straylight.sh
+	
+	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc0.d/K91straylight
+	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc1.d/K91straylight
+	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc2.d/S91straylight
+	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc3.d/S91straylight
+	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc4.d/S91straylight
+	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc5./S91straylight
+	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc6./K91straylight
+	
+}
 
 
 case "$1" in
@@ -247,25 +263,25 @@ case "$1" in
 		cloneGitRepo
 		mavenBuild
 		copy_binaries
+		copy_startup_scripts
 	;;
         'clone')
+		precheck
 		cloneGitRepo
         ;;
         'env')
+		precheck
 		setEnvironmentVariables
         ;;
         'build')
+		precheck
 		mavenBuild
         ;;
-        'profile')
-		info
-		precheck
-		set_bash_profile
-	;;
         'precheck')
 		precheck
         ;;
         'clean')
+		precheck
 		clean
         ;;
         'test')

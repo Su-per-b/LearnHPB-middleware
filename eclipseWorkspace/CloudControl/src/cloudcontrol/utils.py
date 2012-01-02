@@ -278,7 +278,7 @@ class Server :
                         inst.terminate()
                     else:
                         print inst.id + ' in state: ' + inst.state
-                        raise ("filter request failed")
+                        raise Exception("filter request failed")
                 
         
         
