@@ -80,6 +80,38 @@ setvars() {
 	fi
 }
 
+service_status() {
+	setvars $1
+	output "***$TITLE status requested***"
+
+	checkForProcess
+	output "IS_PROCESS=$IS_PROCESS"
+
+	checkForPid
+	output "IS_PID_FILE=$IS_PID_FILE"
+
+	# Server not running and no pid-file found
+	if ! $IS_PROCESS && ! $IS_PID_FILE; then
+	  output "$TITLE process was not found and no pid-file found" debug	
+	fi
+
+	# Server is not running and pid-file found
+	if ! $IS_PROCESS && $IS_PID_FILE; then
+	  output "$TITLE process was not found but pid-file is present"
+	fi
+
+	# Server is running but no pid-file found
+	if $IS_PROCESS && ! $IS_PID_FILE; then
+	  output "$TITLE process was found but no pid file found."
+	fi
+
+	# Server running and pid-file found
+	if $IS_PROCESS && $IS_PID_FILE; then
+	  output "$TITLE process was found and pid-file found."
+	fi
+
+}
+
 
 service_start() {
 
@@ -252,8 +284,12 @@ case "$1" in
         'precheck')
          	precheck
         ;;
+        'status')
+	        service_status 'pageserver'
+		service_status 'socketserver'
+        ;;
         *)
-        echo "Usage ./straylight start|stop|restart|precheck"
+        echo "Usage ./straylight start|stop|restart|precheck|status"
 esac
 
 

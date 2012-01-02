@@ -248,8 +248,8 @@ copy_startup_scripts() {
 	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc2.d/S91straylight
 	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc3.d/S91straylight
 	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc4.d/S91straylight
-	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc5./S91straylight
-	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc6./K91straylight
+	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc5.d/S91straylight
+	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc6.d/K91straylight
 	
 }
 

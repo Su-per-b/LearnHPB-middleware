@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>Straylight</artifactId>
 		<groupId>com.sri</groupId>
-		<version>0.0.3</version>
+		<version>0.0.4</version>
 	</parent>
 	<artifactId>SocketServer</artifactId>
 	<name>SocketServer</name>
@@ -27,7 +27,7 @@
 		<dependency>
 			<groupId>com.sri</groupId>
 			<artifactId>Common</artifactId>
-			<version>0.0.3</version>
+			<version>0.0.4</version>
 		</dependency>
 
 		<dependency>
