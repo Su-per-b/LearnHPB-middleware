@@ -98,9 +98,17 @@ cloneGitRepo() {
 	printStep 'Clone the git repository'
 	cd ~
 	git clone $GIT_REPOSITORY straylight_repo
-
 }
 
+
+updateGitRepo() {
+	printStep 'Update the git repository'
+	cd ~/straylight_repo
+	git pull
+}
+
+
+# go to the srouce code folder and build binaries with Maven
 mavenBuild() {
 	printStep 'Build projects with Maven'
 	#checkout the desired build
@@ -115,12 +123,16 @@ mavenBuild() {
 
 }
 
-copy_binaries() {
-
-	printStep 'Copy Binaries'
+mkDirs() {
+	printStep 'Make Directories'
 	mkdir /usr/local/straylight 
 	mkdir /usr/local/straylight/pageserver /usr/local/straylight/pageserver/target
 	mkdir /usr/local/straylight/socketserver /usr/local/straylight/socketserver/target
+}
+
+
+copy_binaries() {
+	printStep 'Copy Binaries'
 
 	cp -R $ROOT_HOME/straylight_repo/eclipseWorkspace/StrayLight/PageServer/target/PageServer-*  /usr/local/straylight/pageserver/target/
 	cp -R $ROOT_HOME/straylight_repo/eclipseWorkspace/StrayLight/PageServer/target/classes  /usr/local/straylight/pageserver/target/
@@ -151,16 +163,41 @@ launch() {
 
 
 usage() {
-	echo "Usage: sudo ./setup all|clone|env|build|precheck|clean|test"	
+	echo "Usage: sudo ./setup all|clone|env|build|precheck|clean|test|update"	
 }
 
-
+#clean before upgrade
 clean() {
 	printStep 'clean'
-	rm -Rf ~/straylight_repo
-	sudo rm -Rf /usr/local/straylight
 	
+	#remove all binaries
+	rm -Rf /usr/local/straylight
+	
+	#remove scripts
+	rm -f /etc/init.d/straylight.sh
+	rm -f $USER_HOME/straylight.sh
+	rm -f $USER_HOME/setup.sh
+
+
 }
+
+#after clean, then remove everything
+uninstall() {
+	rm -Rf ~/straylight_repo
+
+
+	rm -f /etc/init.d/straylight.sh /etc/rc.d/rc0.d/K91straylight
+	rm -f /etc/init.d/straylight.sh /etc/rc.d/rc1.d/K91straylight
+	rm -f /etc/init.d/straylight.sh /etc/rc.d/rc2.d/S91straylight
+	rm -f /etc/init.d/straylight.sh /etc/rc.d/rc3.d/S91straylight
+	rm -f /etc/init.d/straylight.sh /etc/rc.d/rc4.d/S91straylight
+	rm -f /etc/init.d/straylight.sh /etc/rc.d/rc5.d/S91straylight
+	rm -f /etc/init.d/straylight.sh /etc/rc.d/rc6.d/K91straylight
+
+}
+
+
+
 
 setEnvironmentVars() {
 	
@@ -243,6 +280,12 @@ copy_startup_scripts() {
 	cp ~/straylight_repo/eclipseWorkspace/CloudControl/resources/straylight.sh /etc/init.d/straylight.sh
 	chmod 777 /etc/init.d/straylight.sh
 	
+
+	
+}
+
+make_startupLinks() {
+
 	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc0.d/K91straylight
 	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc1.d/K91straylight
 	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc2.d/S91straylight
@@ -250,7 +293,6 @@ copy_startup_scripts() {
 	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc4.d/S91straylight
 	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc5.d/S91straylight
 	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc6.d/K91straylight
-	
 }
 
 
@@ -262,12 +304,25 @@ case "$1" in
 		setEnvironmentVars
 		cloneGitRepo
 		mavenBuild
+		mkDirs
 		copy_binaries
 		copy_startup_scripts
+		make_startupLinks
 	;;
         'clone')
 		precheck
 		cloneGitRepo
+        ;;
+        'update')
+		./straylight.sh stop
+		precheck
+		clean
+		mkDirs
+		updateGitRepo
+		mavenBuild
+		copy_binaries
+		copy_startup_scripts
+		./straylight.sh start
         ;;
         'env')
 		precheck
