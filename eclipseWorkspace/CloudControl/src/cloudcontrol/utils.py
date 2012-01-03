@@ -15,7 +15,7 @@ import os.path
 def launchWintermute() :
     print '*****launch Wintermute******'
     instance = Server()
-    instance.create("9b0a54de", "Wintermute")
+    instance.create("ami-9b0a54de", "Wintermute")
     instance.launchOne()
     instance.associateIP('50.18.174.1')
     instance.openShell()
@@ -24,7 +24,7 @@ def launchWintermute() :
 def launchStraylight() :
     print '*****launch Straylight******'
     instance = Server()
-    instance.create("9b0a54de", "Straylight")
+    instance.create("ami-9b0a54de", "Straylight")
     instance.launchOne()
     instance.associateIP('50.18.252.97')
     instance.openShell()
@@ -32,7 +32,7 @@ def launchStraylight() :
 def launchBuilder() :
     print '*****launch Builder******'
     instance = Server()
-    instance.create("9b0a54de", "Builder")
+    instance.create("ami-9b0a54de", "Builder")
     instance.launchOne()
     instance.openShell()
 
@@ -41,10 +41,20 @@ def ssh(name) :
     instance.load(name)
     instance.openShell()
     
+def launchStraylightFromImage() :
+    print '*****launch Straylight From Image******'
+    instance = Server()
+    instance.createByName("StraylightImage", "Straylight")
+    instance.launchOne()
+    instance.associateIP('50.18.252.97')
+    instance.uploadScript(r'resources\setup.sh')
+    instance.openShell()
+    
+    
 def launchStraylightFromScratch() :
     print '*****launch Straylight From Scratch******'
     instance = Server()
-    instance.create("11d68a54", "Straylight")
+    instance.create("ami-11d68a54", "Straylight")
     instance.launchOne()
     instance.associateIP('50.18.252.97')
     instance.uploadScript(r'resources\setup.sh')
@@ -70,9 +80,24 @@ class Server :
         self.username = 'ec2-user'
         
         
-    def create (self, amiNumber, name): 
-        self.ami = 'ami-' + amiNumber
-        self.name = name
+        
+    def createByName (self, amiName, newInstanceName): 
+        f = {'tag:Name': amiName} 
+        images = self.connection.get_all_images(filters=f)
+        
+        if (len(images) != 1) :
+            raise Exception("Error self.connection.get_all_images should return 1 image")
+        
+        
+        self.create(images[0].id, newInstanceName)
+        
+        #self.reservation = theImage.run(1,1, self.key_name, self.security_groups, None, None, self.instance_type)
+        
+        
+        
+    def create (self, amiNumber, newInstanceName): 
+        self.ami = amiNumber
+        self.name = newInstanceName
         self.key_name = 'esimWestCoast'
         self.security_groups = ['esim']
         self.instance_type = 't1.micro'

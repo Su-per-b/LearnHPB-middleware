@@ -5,9 +5,10 @@ from cloudcontrol.utils import launchBuilder
 from cloudcontrol.utils import ssh 
 from cloudcontrol.utils import uploadToStraylight
 from cloudcontrol.utils import launchStraylightFromScratch
+from cloudcontrol.utils import launchStraylightFromImage
 
 #launchWintermute()
 
 
-launchStraylightFromScratch()
+launchStraylightFromImage()
 #ssh("Straylight")
