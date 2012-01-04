@@ -8,11 +8,12 @@ public class Main
     	
         Jmodelica jmodelica = new Jmodelica();
         jmodelica.test();
+        //jmodelica.run();
         
-    	SocketServer server = new SocketServer();
+    	//SocketServer server = new SocketServer();
         
-        server.showBanner();
-        server.start();
+        //server.showBanner();
+       // server.start();
         
     }
 }

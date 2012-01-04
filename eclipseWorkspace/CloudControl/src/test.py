@@ -10,5 +10,5 @@ from cloudcontrol.utils import launchStraylightFromImage
 #launchWintermute()
 
 
-launchStraylightFromImage()
+launchStraylightFromScratch()
 #ssh("Straylight")
