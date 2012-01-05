@@ -352,6 +352,63 @@ install_python() {
 }
 
 
+# JPype 0.5.4.2 (http://jpype.sourceforge.net/) http://hep.phys.utk.edu/BRM_Interface/index.php/Installing_JPype
+# lxml 2.3 (http://codespeak.net/lxml/) 
+# NumPy 1.6.1 (http://numpy.scipy.org/) http://www.scipy.org/Installing_SciPy/Linux
+# SciPy 0.9.0 (http://www.scipy.org/)	http://www.scipy.org/Installing_SciPy/Linux
+# Cython 0.15 (http://www.cython.org/)
+# Matplotlib 1.0.1 (http://matplotlib.sourceforge.net/)
+# wxPython 2.8 <http://www.wxpython.org/>
+# IPython 0.11 <http://ipython.org/>
+# Nose 1.1.2 <http://readthedocs.org/docs/nose/en/latest/> (Only needed to runthe test suits.)
+install_python_packages() {
+
+	
+
+	printStep 'Install JPype'
+	mkdir $HOME/local
+	cd /var/tmp
+	cp /root/straylight_repo/assets/libs/JPype-0.5.4.2.zip /var/tmp/JPype-0.5.4.2.zip
+	unzip JPype-0.5.4.2.zip
+	cd JPype-0.5.4.2
+	python setup.py install --prefix $HOME/local
+
+	export PYTHONPATH=$PYTHONPATH:$HOME/local/lib/python2.5/site-packages
+
+
+
+	#yum -y python-dev
+
+
+
+	printStep 'Install lxml'	
+	yum -y install libxslt-devel
+	python setup.py install
+	
+
+
+	#export BLAS=/path/to/libblas.so
+	#export LAPACK=/path/to/liblapack.so
+	#export ATLAS=/path/to/libatlas.so
+
+	printStep 'Install NumPy'
+	cd /var/tmp
+	cp /root/straylight_repo/assets/libs/numpy-1.6.1.zip /var/tmp/numpy-1.6.1.zip
+	unzip numpy-1.6.1.zip
+	cd numpy-1.6.1
+	python setup.py install --user
+	
+	
+	printStep 'Install SciPy'
+	cp /root/straylight_repo/assets/libs/scipy-0.10.0.tar.gz /var/tmp/scipy-0.10.0.tar.gz
+	unzip scipy-0.10.0.zip
+	cd scipy-0.10.0
+	python setup.py install --user
+
+
+}
+
+
 make_startupLinks() {
 
 	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc0.d/K91straylight
@@ -378,18 +435,20 @@ install_jmodelica() {
 	wget http://www.coin-or.org/download/source/Ipopt/Ipopt-3.10.1.tgz
 	tar xfz Ipopt-3.10.1.tgz
 	rm -f Ipopt-3.10.1.tgz
+	mv Ipopt-3.10.1 CoinIpopt
+
 
 
 	printStep 'Get Blas'
-	cd /var/tmp/Ipopt-3.10.1/ThirdParty/Blas
+	cd /var/tmp/CoinIpopt/ThirdParty/Blas
 	./get.Blas
 	
 	printStep 'Get Lapack'
-	cd /var/tmp/Ipopt-3.10.1/ThirdParty/Lapack
+	cd /var/tmp/CoinIpopt/ThirdParty/Lapack
 	./get.Lapack
 
 	printStep 'Get ASL'
-	cd /var/tmp/Ipopt-3.10.1/ThirdParty/ASL
+	cd /var/tmp/CoinIpopt/ThirdParty/ASL
 	./get.ASL
 	
 	printStep 'Make MA27'
@@ -397,34 +456,35 @@ install_jmodelica() {
 	cp /root/straylight_repo/assets/libs/ma27-1.0.0.tar.gz /var/tmp/ma27-1.0.0.tar.gz
 	tar xfz ma27-1.0.0.tar.gz
 	rm -f ma27-1.0.0.tar.gz
-	#cd var/tmp/ma27-1.0.0
-	#./configure
-	#make
-	cp /var/tmp/ma27-1.0.0/src/ma27d.f /var/tmp/Ipopt-3.10.1/ThirdParty/HSL/ma27d.f
+	cd /var/tmp/ma27-1.0.0
+	./configure
+	make
+	make install
+	cp /var/tmp/ma27-1.0.0/src/ma27d.f /var/tmp/CoinIpopt/ThirdParty/HSL/ma27d.f
+
 	
 	printStep 'Make MC19.'
 	cd /var/tmp
-	cp ~/straylight_repo/assets/libs/mc19-1.0.0.tar.gz /var/tmp/mc19-1.0.0.tar.gz
+	cp /root/straylight_repo/assets/libs/mc19-1.0.0.tar.gz /var/tmp/mc19-1.0.0.tar.gz
 	tar xfz mc19-1.0.0.tar.gz
 	rm -f mc19-1.0.0.tgz
 	#cd mc19-1.0.0
 	#./configure
 	#make
-	cp /var/tmp/mc19-1.0.0/src/mc19d.f /var/tmp/Ipopt-3.10.1/ThirdParty/HSL/mc19d.f
+	cp /var/tmp/mc19-1.0.0/src/mc19d.f /var/tmp/CoinIpopt/ThirdParty/HSL/mc19d.f
 
 
 	printStep 'Install Ipopt'
-	mkdir /var/tmp/Ipopt-3.10.1/build
-	cd /var/tmp/Ipopt-3.10.1
+	mkdir /var/tmp/CoinIpopt/build
+	cd /var/tmp/CoinIpopt/build
 
-	/var/tmp/Ipopt-3.10.1/configure
+	/var/tmp/CoinIpopt/configure
 	# output should be: "configure: Main configuration of Ipopt successful"
 	make
 	make test
 	make install
 	
 	printStep 'Get Sundials'
-	
 	cd /var/tmp
 	cp /root/straylight_repo/assets/libs/sundials-2.4.0.tar.gz /var/tmp/sundials-2.4.0.tar.gz
 	tar xfz sundials-2.4.0.tar.gz
@@ -433,18 +493,78 @@ install_jmodelica() {
 	make
 	make install
 
+	printStep 'Build JModelica'
 	cd /var/tmp
 	svn checkout --trust-server-cert --non-interactive https://svn.jmodelica.org/tags/1.6/ JModelica
 	cd /var/tmp/JModelica
 	mkdir build
-	cd build
-	/var/tmp/JModelica/build/configure --with-ipopt=/var/tmp/Ipopt-3.10.1/build --with-sundials=/var/tmp/sundials-2.4.0
+	cd /var/tmp/JModelica/build
+	/var/tmp/JModelica/configure --with-ipopt=/var/tmp/CoinIpopt/Ipopt --with-sundials=/var/tmp/sundials-2.4.0
 	make
 	make install
-
-
+	#make docs 
 
 }
+
+install_ipopt() {
+	
+	printStep 'Get Ipopt'
+	cd /var/tmp
+	wget http://www.coin-or.org/download/source/Ipopt/Ipopt-3.10.1.tgz
+	tar xfz Ipopt-3.10.1.tgz
+	rm -f Ipopt-3.10.1.tgz
+	mv Ipopt-3.10.1 CoinIpopt
+
+
+	printStep 'Get Blas'
+	cd /var/tmp/CoinIpopt/ThirdParty/Blas
+	./get.Blas
+	
+	printStep 'Get Lapack'
+	cd /var/tmp/CoinIpopt/ThirdParty/Lapack
+	./get.Lapack
+
+	printStep 'Get ASL'
+	cd /var/tmp/CoinIpopt/ThirdParty/ASL
+	./get.ASL
+	
+	printStep 'Get MA27'
+	cd /var/tmp
+	cp /root/straylight_repo/assets/libs/ma27-1.0.0.tar.gz /var/tmp/ma27-1.0.0.tar.gz
+	tar xfz ma27-1.0.0.tar.gz
+	rm -f ma27-1.0.0.tar.gz
+	cp /var/tmp/ma27-1.0.0/src/ma27d.f /var/tmp/CoinIpopt/ThirdParty/HSL/ma27d.f
+
+	printStep 'Get MC19'
+	cd /var/tmp
+	cp /root/straylight_repo/assets/libs/mc19-1.0.0.tar.gz /var/tmp/mc19-1.0.0.tar.gz
+	tar xfz mc19-1.0.0.tar.gz
+	rm -f mc19-1.0.0.tgz
+	cp /var/tmp/mc19-1.0.0/src/mc19d.f /var/tmp/CoinIpopt/ThirdParty/HSL/mc19d.f
+
+	cd /var/tmp/CoinIpopt/ThirdParty/HSL/
+	./configure -enable-loadable-library
+	make install
+
+	printStep 'Install Ipopt - configure'
+	#mkdir /var/tmp/CoinIpopt/build
+	cd /var/tmp/CoinIpopt
+
+	./configure
+	# output should be: "configure: Main configuration of Ipopt successful"
+	printStep 'Install Ipopt - make'
+	make
+	printStep 'Install Ipopt - make check'
+	make check
+	printStep 'Install Ipopt - make install'
+	make install
+
+}
+
+
+
+
+
 
 case "$1" in
         'all')
@@ -490,9 +610,7 @@ case "$1" in
 		clean
         ;;
         'test')
-		precheck
-		info
-		setEnvironmentVars
+		install_ipopt
         ;;
         'python')
 		install_python
@@ -500,6 +618,7 @@ case "$1" in
         'jmodelica')
 		installDependencies
 		cloneGitRepo
+		install_ipopt
         ;;	
         *)
 	usage
