@@ -94,6 +94,11 @@ installDependencies() {
 	rm -f apache-maven-2.2.1-bin.tar.gz
 	ln -s apache-maven-2.2.1 maven
 	/usr/local/maven/bin/mvn -version
+
+	printStep 'Development Tools'
+
+	yum -y groupinstall 'Development Tools'
+	yum -y install openssl-devel* zlib*.x86_64
 }
 
 
@@ -300,10 +305,7 @@ install_python() {
 	printStep 'install_python'
 	
 
-	printStep 'Development Tools'
 
-	yum -y groupinstall 'Development Tools'
-	yum -y install openssl-devel* zlib*.x86_64
 
 	printStep 'Install SQL Lite'
 	cd /var/tmp
@@ -391,38 +393,56 @@ install_jmodelica() {
 	./get.ASL
 	
 	printStep 'Make MA27'
+	cd /var/tmp
+	cp /root/straylight_repo/assets/libs/ma27-1.0.0.tar.gz /var/tmp/ma27-1.0.0.tar.gz
 	tar xfz ma27-1.0.0.tar.gz
 	rm -f ma27-1.0.0.tar.gz
-	cd var/tmp/ma27-1.0.0
-	./configure
-	make
+	#cd var/tmp/ma27-1.0.0
+	#./configure
+	#make
 	cp /var/tmp/ma27-1.0.0/src/ma27d.f /var/tmp/Ipopt-3.10.1/ThirdParty/HSL/ma27d.f
 	
 	printStep 'Make MC19.'
 	cd /var/tmp
+	cp ~/straylight_repo/assets/libs/mc19-1.0.0.tar.gz /var/tmp/mc19-1.0.0.tar.gz
 	tar xfz mc19-1.0.0.tar.gz
 	rm -f mc19-1.0.0.tgz
-	cd mc19-1.0.0
-	./configure
-	make
+	#cd mc19-1.0.0
+	#./configure
+	#make
 	cp /var/tmp/mc19-1.0.0/src/mc19d.f /var/tmp/Ipopt-3.10.1/ThirdParty/HSL/mc19d.f
 
 
 	printStep 'Install Ipopt'
 	mkdir /var/tmp/Ipopt-3.10.1/build
+	cd /var/tmp/Ipopt-3.10.1
+
 	/var/tmp/Ipopt-3.10.1/configure
-
-
-
-	
-	svn checkout --trust-server-cert --non-interactive https://svn.jmodelica.org/tags/1.6/ jmodelica
-	
-
-	cd Ipopt-3.10.1
-	./configure
+	# output should be: "configure: Main configuration of Ipopt successful"
 	make
 	make test
 	make install
+	
+	printStep 'Get Sundials'
+	
+	cd /var/tmp
+	cp /root/straylight_repo/assets/libs/sundials-2.4.0.tar.gz /var/tmp/sundials-2.4.0.tar.gz
+	tar xfz sundials-2.4.0.tar.gz
+	cd sundials-2.4.0
+	./configure
+	make
+	make install
+
+	cd /var/tmp
+	svn checkout --trust-server-cert --non-interactive https://svn.jmodelica.org/tags/1.6/ JModelica
+	cd /var/tmp/JModelica
+	mkdir build
+	cd build
+	/var/tmp/JModelica/build/configure --with-ipopt=/var/tmp/Ipopt-3.10.1/build --with-sundials=/var/tmp/sundials-2.4.0
+	make
+	make install
+
+
 
 }
 
@@ -478,7 +498,8 @@ case "$1" in
 		install_python
         ;;	
         'jmodelica')
-		install_jmodelica
+		installDependencies
+		cloneGitRepo
         ;;	
         *)
 	usage

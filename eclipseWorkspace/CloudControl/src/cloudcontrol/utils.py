@@ -60,7 +60,17 @@ def launchStraylightFromScratch() :
     instance.uploadScript(r'resources\setup.sh')
     instance.openShell()
     
-    
+def launchWintermuteFromScratch() :
+    print '*****launch Wintermute From Scratch******'
+    instance = Server()
+    instance.create("ami-11d68a54", "Wintermute")
+    instance.instance_type = 'm1.small'
+    instance.launchOne()
+    instance.associateIP('50.18.174.1')
+    instance.uploadScript(r'resources\setup.sh')
+    instance.openShell()
+      
+      
 def uploadToStraylight() :
     instance = Server()
     instance.load("Straylight")
