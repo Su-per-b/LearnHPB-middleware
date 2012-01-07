@@ -7,10 +7,12 @@ from cloudcontrol.utils import uploadToStraylight
 from cloudcontrol.utils import launchStraylightFromScratch
 from cloudcontrol.utils import launchStraylightFromImage
 from cloudcontrol.utils import launchWintermuteFromScratch
+from cloudcontrol.utils import launchUbuntuFromScratch
 
 
 #launchWintermute()
 
 
-launchWintermuteFromScratch()
-#ssh("Straylight")
+launchUbuntuFromScratch()
+
+#ssh("Straylight", 'ubuntu')

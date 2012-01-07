@@ -36,9 +36,9 @@ def launchBuilder() :
     instance.launchOne()
     instance.openShell()
 
-def ssh(name) :
+def ssh(name, username) :
     instance = Server()
-    instance.load(name)
+    instance.load(name, username)
     instance.openShell()
     
 def launchStraylightFromImage() :
@@ -63,7 +63,7 @@ def launchStraylightFromScratch() :
 def launchWintermuteFromScratch() :
     print '*****launch Wintermute From Scratch******'
     instance = Server()
-    instance.create("ami-11d68a54", "Wintermute")
+    instance.createByName("StrayLightImage2", "Wintermute")
     instance.instance_type = 'm1.small'
     instance.launchOne()
     instance.associateIP('50.18.174.1')
@@ -76,6 +76,20 @@ def uploadToStraylight() :
     instance.load("Straylight")
     #instance.uploadFile(r'resources\build.sh')
     instance.uploadScript(r'resources\setup.sh')
+    
+      
+def launchUbuntuFromScratch() :
+    print '*****launch Ubuntu From Scratch******'
+    instance = Server()
+    instance.username = 'ubuntu'
+    instance.create("ami-c9a1fe8c", "Straylight")
+    instance.instance_type = 'm1.small'
+    instance.launchOne()
+    instance.associateIP('50.18.252.97')
+    instance.uploadScript(r'resources\ub.sh')
+    instance.openShell()
+    
+    
     
     
 
@@ -114,7 +128,10 @@ class Server :
 
         
     
-    def load (self, name):
+    def load (self, name, username):
+        if username != None:
+            self.username = username
+            
         self.connect()
 
         self.name = name
@@ -225,7 +242,7 @@ class Server :
         try: 
             ssh.connect(
                         host, 
-                        username='ec2-user', 
+                        username=self.username, 
                         key_filename=self.key_file_paramiko
                         )
         except:

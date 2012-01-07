@@ -2,6 +2,14 @@
 # run with: sudo ./setup.sh test
 set -e #exit script if an error occurs
 
+# version StrayLight2
+#installDependencies
+#setEnvironmentVars
+#cloneGitRepo
+#install_python
+
+# version StrayLight3
+#install_ipopt
 
 ############################ OPTIONS ######################################################
 
@@ -195,7 +203,6 @@ clean() {
 	rm -f $USER_HOME/straylight.sh
 	rm -f $USER_HOME/setup.sh
 
-
 }
 
 #after clean, then remove everything
@@ -335,7 +342,9 @@ install_python() {
 	echo "/opt/python2.7.2/lib/" >> /etc/ld.so.conf.d/opt-python2.7.2.conf
 
 	ln -sf /opt/python2.7.2/bin/python /usr/bin/python2.7
-	ln -sf /opt/python2.7.2/bin/python /usr/bin/python
+	#ln -sf /opt/python2.7.2/bin/python /usr/bin/python
+	#ln -sf /usr/lib/python2.6 /usr/bin/python
+	
 	ln -sf /opt/python2.7.2/lib/libpython2.7.so /usr/lib/libpython2.7.so
 
 	ldconfig
@@ -372,12 +381,13 @@ install_python_packages() {
 	
 
 	printStep 'Install JPype'
-	mkdir $HOME/local
+	#mkdir $HOME/local
 	cd $WORKINGDIR
 	cp $GIT_REPOSITORY_LOCAL/assets/libs/JPype-0.5.4.2.zip $WORKINGDIR/JPype-0.5.4.2.zip
 	unzip JPype-0.5.4.2.zip
 	cd JPype-0.5.4.2
-	python2.7 setup.py install --prefix $HOME/local
+	#python2.7 setup.py install --prefix $HOME/local
+	python2.7 setup.py install
 
 	export PYTHONPATH=$PYTHONPATH:/opt/python2.7.2/lib/python2.7/site-packages
 
@@ -391,7 +401,7 @@ install_python_packages() {
 	#python2.7 setup.py install
 	
 
-
+	
 	#export BLAS=/path/to/libblas.so
 	#export LAPACK=/path/to/liblapack.so
 	#export ATLAS=/path/to/libatlas.so
@@ -406,9 +416,10 @@ install_python_packages() {
 	
 	
 	printStep 'Install SciPy'
+	cd $WORKINGDIR
 	cp $GIT_REPOSITORY_LOCAL/assets/libs/scipy-0.10.0.tar.gz $WORKINGDIR/scipy-0.10.0.tar.gz
-	unzip scipy-0.10.0.zip
-	rm -f scipy-0.10.0.zip
+	tar xvf scipy-0.10.0.tar.gz
+	rm -f scipy-0.10.0.tar.gz
 	cd scipy-0.10.0
 	python2.7 setup.py install
 
@@ -429,20 +440,42 @@ install_python_packages() {
 	python2.7 setup.py install
 	#python2.7 build-wxpython.py --build_dir=../bld
 
+	printStep 'Install ipython-0.12 for python 2.7'
+	pip install ipython
+
+	printStep 'Install nose for python 2.7'
+	pip install nose
+	pip install lxml
+	pip install blas
+
+	printStep 'Install FreeType2'
+	cd $WORKINGDIR
+	wget http://downloads.sourceforge.net/freetype/freetype-2.4.8.tar.bz2
+	tar xvf freetype-2.4.8.tar.bz2
+	rm -f freetype-2.4.8.tar.bz2
+	cd freetype-2.4.8
+	./configure --prefix=/usr
+	make
+	make install
+
+	printStep 'Install libpng-1.2.29'
+	cd $WORKINGDIR
+	wget http://downloads.sourceforge.net/libpng/libpng-1.2.29.tar.bz2
+	tar xvf libpng-1.2.29.tar.bz2
+	rm -f libpng-1.2.29.tar.bz2
+	cd libpng-1.2.29
+	./configure --prefix=/usr
+	make
+	make install
+
 	printStep 'Install matplotlib'
 	cd $WORKINGDIR
 	wget http://iweb.dl.sourceforge.net/project/matplotlib/matplotlib/matplotlib-1.1.0/matplotlib-1.1.0.tar.gz
 	tar xfz matplotlib-1.1.0.tar.gz
 	rm -f matplotlib-1.1.0.tar.gz
 	cd matplotlib-1.1.0
+	python2.7 setup.py build
 	python2.7 setup.py install
-
-	printStep 'Install ipython-0.12 for python 2.7'
-	cd $WORKINGDIR
-	wget http://archive.ipython.org/release/0.12/ipython-0.12-py2.7.egg
-	easy_install ipython-0.12-py2.7
-	
-	
 
 }
 
@@ -468,7 +501,9 @@ install_jmodelica() {
 
 	printStep 'Install Jmodelica'
 	cd $WORKINGDIR
-	
+
+	ln -sf /opt/python2.7.2/bin/python /usr/bin/python
+
 	printStep 'Get Sundials'
 	cd $WORKINGDIR
 	cp $GIT_REPOSITORY_LOCAL/assets/libs/sundials-2.4.0.tar.gz $WORKINGDIR/sundials-2.4.0.tar.gz
@@ -477,7 +512,8 @@ install_jmodelica() {
 	./configure
 	make
 	make install
-
+	
+	#installs some to /usr/local/jmodelica
 	printStep 'Build JModelica'
 	cd $WORKINGDIR
 	svn checkout --trust-server-cert --non-interactive https://svn.jmodelica.org/tags/1.6/ JModelica
@@ -489,8 +525,9 @@ install_jmodelica() {
 	$WORKINGDIR/JModelica/configure --with-ipopt=$WORKINGDIR/CoinIpopt --with-sundials=/usr/local
 	make
 	make install
-	#make docs 
+	#make docs
 
+	ln -sf /usr/lib/python2.6 /usr/bin/python
 }
 
 install_ipopt() {
@@ -528,6 +565,7 @@ install_ipopt() {
 	rm -f mc19-1.0.0.tgz
 	cp $WORKINGDIR/mc19-1.0.0/src/mc19d.f $WORKINGDIR/CoinIpopt/ThirdParty/HSL/mc19d.f
 
+	printStep 'Make HSL'
 	cd $WORKINGDIR/CoinIpopt/ThirdParty/HSL/
 	./configure -enable-loadable-library
 	make install
@@ -549,7 +587,28 @@ install_ipopt() {
 
 #http://www.gtk.org/download/linux.php
 install_gtk() {
+	printStep 'Install libffi-3.0.10'
+	cd $WORKINGDIR
+	wget ftp://sourceware.org/pub/libffi/libffi-3.0.10.tar.gz
+	tar xvf libffi-3.0.10.tar.gz
+	rm -f libffi-3.0.10.tar.gz
+	cd libffi-3.0.10
+	./configure --prefix=/usr
+	make
+	make install
 
+	printStep 'Install GLib 2.30'
+	cd $WORKINGDIR
+	wget http://ftp.gnome.org/pub/gnome/sources/glib/2.30/glib-2.30.2.tar.bz2
+	tar xvfj glib-2.30.2.tar.bz2
+	rm -f glib-2.30.2.tar.bz2
+	cd glib-2.30.2
+	./configure --prefix=/usr
+	make
+	make install
+	export PKG_CONFIG_PATH=/usr/lib/pkgconfig/glib-2.0.pc:${PKG_CONFIG_PATH}
+
+	exit 0
 	printStep 'Install ATK 2.0'
 	cd $WORKINGDIR
 	wget http://ftp.gnome.org/pub/gnome/sources/atk/2.0/atk-2.0.1.tar.bz2
@@ -561,7 +620,7 @@ install_gtk() {
 	make install
 	
 	
-	exit 0
+
 	printStep 'Install Pango 1.28.4'
 	cd $WORKINGDIR
 	wget http://ftp.gnome.org/pub/gnome/sources/gdk-pixbuf/2.24/gdk-pixbuf-2.24.0.tar.bz2
@@ -572,7 +631,7 @@ install_gtk() {
 	make
 	make install
 
-	exit 0
+
 
 	printStep 'Gdk-Pixbuf 2.24'
 	cd $WORKINGDIR
@@ -584,29 +643,6 @@ install_gtk() {
 	make
 	make install
 
-
-	printStep 'Install GLib 2.30'
-	cd $WORKINGDIR
-	wget http://ftp.gnome.org/pub/gnome/sources/glib/2.30/glib-2.30.2.tar.bz2
-	tar xvfj glib-2.30.2.tar.bz2
-	rm -f glib-2.30.2.tar.bz2
-	cd glib-2.30.2
-	make
-	make install
-
-	exit 0
-
-	printStep 'Install libffi-3.0.10'
-	cd $WORKINGDIR
-	wget ftp://sourceware.org/pub/libffi/libffi-3.0.10.tar.gz
-	tar xvf libffi-3.0.10.tar.gz
-	rm -f libffi-3.0.10.tar.gz
-	cd libffi-3.0.10
-	./configure --prefix=/usr
-	make
-	make install
-
-	exit 0
 
 
 	printStep 'Install GTK+-3.2.2'
@@ -630,6 +666,104 @@ install_gtk() {
 	#make
 	#make install
 
+}
+
+install_gcc() {
+
+
+
+
+	#installs in /usr/local/lib
+	printStep 'install_gcc g77'
+	cd $WORKINGDIR
+	wget http://fileboar.com/gcc/releases/gcc-4.6.2/gcc-4.6.2.tar.bz2
+	tar xvfj gcc-4.6.2.tar.bz2
+	rm -f gcc-4.6.2.tar.bz2
+	cd gcc-4.6.2
+	./configure
+	make
+	make install
+
+	exit 0
+
+
+}
+
+
+test2() {
+
+	install_gcc
+	exit 0
+
+
+	printStep 'install MPFR version 2.4.2'
+	cd $WORKINGDIR
+	wget http://www.mpfr.org/mpfr-2.4.2/mpfr-2.4.2.tar.bz2
+	tar xvfj mpfr-2.4.2.tar.bz2
+	rm -f mpfr-2.4.2.tar.bz2
+	cd mpfr-2.4.2
+	./configure
+	make
+	make install
+
+
+	printStep 'install mpc'
+	cd $WORKINGDIR
+	wget http://www.multiprecision.org/mpc/download/mpc-0.9.tar.gz
+	tar xvf mpc-0.9.tar.gz
+	rm -f mpc-0.9.tar.gz
+	cd mpc-0.9
+	./configure --prefix=/usr/local/
+	make
+	make install
+
+	printStep 'install gmp-4.3.2'
+	cd $WORKINGDIR
+	wget ftp://ftp.gnu.org/gnu/gmp/gmp-4.3.2.tar.bz2
+	tar xvfj gmp-4.3.2.tar.bz2
+	rm -f gmp-4.3.2.tar.bz2
+	cd gmp-4.3.2
+	./configure
+	make
+	make install
+
+
+
+	printStep 'Install BLAS'
+	cd $WORKINGDIR
+	wget http://www.netlib.org/blas/blas.tgz
+	tar xzf blas.tgz
+	cd BLAS
+	g77 -O2 -fno-second-underscore -c *.f                     # with g77
+	gfortran -O2 -std=legacy -fno-second-underscore -c *.f    # with gfortran
+	ar r libfblas.a *.o
+	ranlib libfblas.a
+	rm -rf *.o
+	export BLAS=$WORKINGDIR/BLAS/libfblas.a
+
+	# NOTE: The selected fortran compiler must be consistent for BLAS, LAPACK, NumPy, and SciPy.
+	# For GNU compiler on 32-bit systems:
+	
+
+	exit 0
+	printStep 'Install SciPy'
+	cd $WORKINGDIR
+	cp $GIT_REPOSITORY_LOCAL/assets/libs/scipy-0.10.0.tar.gz $WORKINGDIR/scipy-0.10.0.tar.gz
+	tar xvf scipy-0.10.0.tar.gz
+	rm -f scipy-0.10.0.tar.gz
+	cd scipy-0.10.0
+	python2.7 setup.py install
+
+	#http://www.scipy.org/Installing_SciPy/BuildingGeneral
+	printStep 'Install blas'
+	cd $WORKINGDIR
+	wget http://www.netlib.org/blas/blas.tgz
+	tar xzvf blas.tgz
+	rm -f blas.tgz
+	cd BLAS
+	python2.7 setup.py install
+
+
 
 
 }
@@ -642,6 +776,8 @@ case "$1" in
 		installDependencies
 		setEnvironmentVars
 		cloneGitRepo
+		install_python
+		install_gtk
 		mavenBuild
 		mkDirs
 		copy_binaries
@@ -679,7 +815,7 @@ case "$1" in
 		clean
         ;;
         'test')
-		install_gtk
+		test2
         ;;
         'python')
 		install_python
