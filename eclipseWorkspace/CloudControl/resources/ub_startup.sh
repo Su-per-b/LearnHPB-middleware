@@ -1,3 +1,4 @@
+#!/bin/bash
 # startup script
 set -e
 
@@ -41,9 +42,10 @@ checkForProcess() {
 	else 
 		if [ "$IS_PROCESS_RUNNING" == "1" ]; then
 			IS_PROCESS=true
-		else
+		else	
+			IS_PROCESS=true
 			output "Error checking for running process - returned:  $IS_PROCESS_RUNNING"
-			exit 1
+			#exit 1
 		fi	
 	fi
 
@@ -61,20 +63,21 @@ checkForPid() {
 
 
 setvars() {
-
+	
+	echo "1 = $1"
 	if [ "$1" == "pageserver" ]; then
 		TITLE='Straylight PageServer'
 		CLASS='com.sri.straylight.pageserver.Main'
 		PID_FILE=$MAIN_PATH/pageserver.pid
-		SERVER_PATH=$MAIN_PATH/pageserver
+		SERVER_PATH=$MAIN_PATH/PageServer
 	else 
 		if [ "$1" == "socketserver" ]; then
 			TITLE='Straylight SocketServer'
 			CLASS='com.sri.straylight.socketserver.Main'
 			PID_FILE=$MAIN_PATH/socketserver.pid
-			SERVER_PATH=$MAIN_PATH/socketserver
+			SERVER_PATH=$MAIN_PATH/SocketServer
 		else
-			output "service_start must be called with an argument of pageserver or socketserver"
+			output "service_start must be called with an argument of 'pageserver' or 'socketserver'"
 			exit 1
 		fi
 	fi
@@ -164,8 +167,13 @@ service_start_helper() {
 
 	output " *** Starting $TITLE ***"
 	cd "$WORKER_DIR"
+	#cd /var/tmp/straylight_repo/eclipseWorkspace/StrayLight/PageServer
+	echo "cd $WORKER_DIR"
+
+	#/usr/bin/java -classpath /usr/local/maven/boot/classworlds-1.1.jar -Dclassworlds.conf=/usr/share/maven2/bin/m2.conf -Dmaven.home=/usr/share/maven2 org.codehaus.classworlds.Launcher "exec:java" "-Dexec.mainClass=$CLASS" &
 	
-	/usr/lib/jvm/jre-1.6.0-openjdk/bin/java -classpath /usr/local/maven/boot/classworlds-1.1.jar -Dclassworlds.conf=/usr/local/maven/bin/m2.conf -Dmaven.home=/usr/local/apache-maven-2.2.1 org.codehaus.classworlds.Launcher "exec:java" "-Dexec.mainClass=$CLASS" &
+	mvn exec:java -Dexec.mainClass="$CLASS" &
+	#/usr/lib/jvm/java-6-openjdk/bin/java -classpath /usr/share/maven2/boot/classworlds.jar -Dclassworlds.conf=/usr/share/maven2/bin/m2.conf -Dmaven.home=/usr/share/maven2 org.codehaus.classworlds.Launcher "exec:java" "-Dexec.mainClass=com.sri.straylight.pageserver.Main"
 	sleep 1
 
 	writePidFile
@@ -246,6 +254,7 @@ clean() {
 }
 
 
+
 output() {
 	MESSAGE=$1
 	DEBUG_MESSAGE=$2
@@ -261,6 +270,7 @@ output() {
 	fi
 }
 
+echo 'test' 
 
 case "$1" in
         'start')

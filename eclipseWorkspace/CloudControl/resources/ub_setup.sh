@@ -174,9 +174,23 @@ mkDirs() {
 
 copy_binaries() {
 	printStep 'Copy Binaries'
+	
+	echo "cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight  $INSTALL_DIR"
+	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight  $INSTALL_DIR
+	
+	
+	
+	exit 0
 
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/PageServer/target/PageServer-*  $INSTALL_DIR/pageserver/target/
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/PageServer/target/classes  $INSTALL_DIR/pageserver/target/
+	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/Common  $INSTALL_DIR/pageserver/target
+
+
+	echo "cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/PageServer/target  $INSTALL_DIR/pageserver/target"
+
+	
+	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/PageServer/target  $INSTALL_DIR/pageserver/target
+
+	echo "cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/PageServer/.classpath  $INSTALL_DIR/pageserver/.classpath"
 	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/PageServer/.classpath  $INSTALL_DIR/pageserver/.classpath
 	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/PageServer/pom.xml  $INSTALL_DIR/pageserver/pom.xml
 
@@ -190,14 +204,6 @@ copy_binaries() {
 
 
 
-launch() {
-	printStep 'Launch Projects'
-	cd $INSTALL_DIR/pageserver/
-	$MAVEN_DIR/mvn exec:java -Dexec.mainClass="com.sri.straylight.pageserver.Main" &
-
-	cd $INSTALL_DIR/socketserver/
-	$MAVEN_DIR/mvn exec:java -Dexec.mainClass="com.sri.straylight.socketserver.Main" &
-}
 
 
 
@@ -219,19 +225,7 @@ clean() {
 
 }
 
-#after clean, then remove everything
-uninstall() {
-	rm -Rf $GIT_REPOSITORY_LOCAL
 
-	rm -f /etc/init.d/ub_startup.sh /etc/rc.d/rc0.d/K91straylight
-	rm -f /etc/init.d/ub_startup.sh /etc/rc.d/rc1.d/K91straylight
-	rm -f /etc/init.d/ub_startup.sh /etc/rc.d/rc2.d/S91straylight
-	rm -f /etc/init.d/ub_startup.sh /etc/rc.d/rc3.d/S91straylight
-	rm -f /etc/init.d/ub_startup.sh /etc/rc.d/rc4.d/S91straylight
-	rm -f /etc/init.d/ub_startup.sh /etc/rc.d/rc5.d/S91straylight
-	rm -f /etc/init.d/ub_startup.sh /etc/rc.d/rc6.d/K91straylight
-
-}
 
 
 
@@ -311,6 +305,7 @@ updateLoginScript() {
 
 copy_startup_scripts() {
 
+	printStep 'Copy Startup Script'
 
 	echo "cp $GIT_REPOSITORY_LOCAL/eclipseWorkspace/CloudControl/resources/ub_startup.sh $USER_HOME/ub_startup.sh"
 	cp $GIT_REPOSITORY_LOCAL/eclipseWorkspace/CloudControl/resources/ub_startup.sh $USER_HOME/ub_startup.sh
@@ -321,8 +316,8 @@ copy_startup_scripts() {
 	echo "chown $USER_NAME:$GROUP_NAME $USER_HOME/ub_startup.sh"
 	chown $USER_NAME:$GROUP_NAME $USER_HOME/ub_startup.sh
 	
-	cp $GIT_REPOSITORY_LOCAL/eclipseWorkspace/CloudControl/resources/ub_startup.sh /etc/init.d/ub_startup.sh
-	chmod 777 /etc/init.d/ub_startup.sh
+	#cp $GIT_REPOSITORY_LOCAL/eclipseWorkspace/CloudControl/resources/ub_startup.sh /etc/init.d/ub_startup.sh
+	#chmod 777 /etc/init.d/ub_startup.sh
 	
 }
 
@@ -795,7 +790,7 @@ case "$1" in
 		cloneGitRepo
         ;;
         'update')
-		~/ub_startup.sh stop
+		#~/ub_startup.sh stop
 		precheck
 		clean
 		mkDirs
@@ -803,7 +798,7 @@ case "$1" in
 		mavenBuild
 		copy_binaries
 		copy_startup_scripts
-		~/ub_startup.sh start
+		#~/ub_startup.sh start
         ;;
         'env')
 		precheck
@@ -821,13 +816,15 @@ case "$1" in
 		clean
         ;;
         'test')
-		precheck
-		installDependencies
-		cloneGitRepo
-		mkDirs
-		mavenBuild
+		#precheck
+		#installDependencies
+		#cloneGitRepo
+		#mkDirs
+		#mavenBuild
+		#copy_binaries
+		clean
+		#mkDirs
 		copy_binaries
-		#copy_startup_scripts
 		#~/ub_startup.sh start
 
         ;;
