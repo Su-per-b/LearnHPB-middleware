@@ -32,7 +32,6 @@ MAVEN_DIR='/usr/bin'
 
 STEPNUMBER=0
 
-
 printStep()
 { 
 	STEPNUMBER=$[$STEPNUMBER+1]
@@ -49,7 +48,6 @@ printStep()
 
 }
 
-
 info() {
 	printStep 'info'
 	echo 'whoami:'
@@ -62,7 +60,6 @@ info() {
 	printStep 'yum --version'
 	yum --version
 }
-
 
 precheck() {
 	#printStep 'precheck'
@@ -82,6 +79,8 @@ precheck() {
 }
 
 
+
+
 installDependencies() {
 	printStep 'Update apt-get'
 	apt-get -y update
@@ -91,6 +90,11 @@ installDependencies() {
 
 	printStep 'Install Git'
 	apt-get -y install git
+
+	#http://www.webupd8.org/2011/09/how-to-install-oracle-java-7-jdk-in.html
+
+	#printStep 'Install Open JDK 7'
+	#apt-get -y install openjdk-7-jre-headless
 
 	printStep 'Install OpenJDK-6'
 	apt-get -y install openjdk-6-jdk
@@ -104,6 +108,7 @@ installDependencies() {
 	updatedb
 
 }
+
 
 
 
@@ -137,6 +142,8 @@ mavenBuild() {
 }
 
 
+
+
 copy_binaries() {
 	printStep 'Copy Binaries'
 	
@@ -149,7 +156,6 @@ copy_binaries() {
 usage() {
 	echo "Usage: sudo ./setup all|clone|env|build|precheck|clean|test|update"	
 }
-
 
 #clean before upgrade
 clean() {
@@ -164,6 +170,8 @@ clean() {
 	#rm -f $USER_HOME/setup.sh
 
 }
+
+
 
 
 
@@ -222,7 +230,6 @@ setEnvironmentVars() {
 
 
 }
-
 
 updateLoginScript() {
 	BACKED_UP_FILE=$USER_HOME/.bashrc.orig	
@@ -309,50 +316,50 @@ install_python() {
 # Nose 1.1.2 <http://readthedocs.org/docs/nose/en/latest/> (Only needed to runthe test suits.)
 install_python_packages() {
 
-	
+	printStep 'Install Python Setup Tools'
+	cd $WORKINGDIR
+	wget http://pypi.python.org/packages/2.7/s/setuptools/setuptools-0.6c11-py2.7.egg
+	chmod 775 setuptools-0.6c11-py2.7.egg
+	sh setuptools-0.6c11-py2.7.egg
+	#This should install the egg here: /opt/python2.7.2/site-packages/
+
+	/usr/local/bin/easy_install pip
+
+	pip install virtualenv
+
+
+	printStep 'Install python-dev'
+	apt-get -y install python-dev
 
 	printStep 'Install JPype'
 	#mkdir $HOME/local
 	cd $WORKINGDIR
 	cp $GIT_REPOSITORY_LOCAL/assets/libs/JPype-0.5.4.2.zip $WORKINGDIR/JPype-0.5.4.2.zip
+	
 	unzip JPype-0.5.4.2.zip
+	rm -f $WORKINGDIR/setup.py
+	cp $GIT_REPOSITORY_LOCAL/assets/libs/setup_ubuntu.py $WORKINGDIR/JPype-0.5.4.2/setup.py
+
 	cd JPype-0.5.4.2
-	#python2.7 setup.py install --prefix $HOME/local
-	python2.7 setup.py install
+	python setup.py install
 
-	export PYTHONPATH=$PYTHONPATH:/opt/python2.7.2/lib/python2.7/site-packages
-
+	#export PYTHONPATH=$PYTHONPATH:/opt/python2.7.2/lib/python2.7/site-packages
 	#printStep 'Test JPype'
 	#python2.7
 	#import jpype
 
+	printStep 'Install libxslt-dev'	
+	apt-get -y install libxslt-dev
 
-	printStep 'Install lxml'	
-	yum -y install libxslt-devel
-	#python2.7 setup.py install
-	
+	pip install numpy
 
-	
-	#export BLAS=/path/to/libblas.so
-	#export LAPACK=/path/to/liblapack.so
-	#export ATLAS=/path/to/libatlas.so
+	printStep 'Install BLAS and LAPACK'
+	apt-get -y install liblapack-dev
 
-	printStep 'Install NumPy'
-	cd $WORKINGDIR
-	cp $GIT_REPOSITORY_LOCAL/assets/libs/numpy-1.6.1.zip $WORKINGDIR/numpy-1.6.1.zip
-	unzip numpy-1.6.1.zip
-	rm -f numpy-1.6.1.zip
-	cd numpy-1.6.1
-	python2.7 setup.py install
+	pip install scipy
 	
-	
-	printStep 'Install SciPy'
-	cd $WORKINGDIR
-	cp $GIT_REPOSITORY_LOCAL/assets/libs/scipy-0.10.0.tar.gz $WORKINGDIR/scipy-0.10.0.tar.gz
-	tar xvf scipy-0.10.0.tar.gz
-	rm -f scipy-0.10.0.tar.gz
-	cd scipy-0.10.0
-	python2.7 setup.py install
+	pip install cython
+	exit 0
 
 	printStep 'Install Cython'
 	cd $WORKINGDIR
@@ -427,7 +434,13 @@ install_jmodelica_helper() {
 	make
 	make install
 	
-	#installs some to /usr/local/jmodelica
+	printStep 'checkout JModelica'
+	cd $WORKINGDIR
+	svn checkout --trust-server-cert --non-interactive https://svn.jmodelica.org/tags/1.6/ JModelica
+	cd $WORKINGDIR/JModelica
+	
+	mkdir build
+	cd $WORKINGDIR/JModelica/build
 
 
 }
@@ -437,18 +450,17 @@ install_jmodelica_helper() {
 install_jmodelica() {
 
 
-	install_jmodelica_helper
+	#install_jmodelica_helper
 
-	printStep 'Build JModelica'
-	cd $WORKINGDIR
-	svn checkout --trust-server-cert --non-interactive https://svn.jmodelica.org/tags/1.6/ JModelica
-	cd $WORKINGDIR/JModelica
-	
-	mkdir build
-	cd $WORKINGDIR/JModelica/build
 
+
+	printStep 'configure JModelica'
 	$WORKINGDIR/JModelica/configure --with-ipopt=$WORKINGDIR/CoinIpopt --with-sundials=/usr/local
+	
+	printStep 'make JModelica'
 	make
+	
+	printStep 'printStep 'make JModelica' JModelica'
 	make install
 	#make docs
 
@@ -495,12 +507,9 @@ install_ipop_helper() {
 	cp $WORKINGDIR/mc19-1.0.0/src/mc19d.f $WORKINGDIR/CoinIpopt/ThirdParty/HSL/mc19d.f
 
 }
-
-
-
 install_ipopt() {
 	
-	install_ipop_helper
+	#install_ipop_helper
 
 
 	printStep 'Make HSL'
@@ -525,8 +534,194 @@ install_ipopt() {
 }
 
 
+#http://www.gtk.org/download/linux.php
+install_gtk() {
+	printStep 'Install libffi-3.0.10'
+	cd $WORKINGDIR
+	wget ftp://sourceware.org/pub/libffi/libffi-3.0.10.tar.gz
+	tar xvf libffi-3.0.10.tar.gz
+	rm -f libffi-3.0.10.tar.gz
+	cd libffi-3.0.10
+	./configure --prefix=/usr
+	make
+	make install
+
+	printStep 'Install GLib 2.30'
+	cd $WORKINGDIR
+	wget http://ftp.gnome.org/pub/gnome/sources/glib/2.30/glib-2.30.2.tar.bz2
+	tar xvfj glib-2.30.2.tar.bz2
+	rm -f glib-2.30.2.tar.bz2
+	cd glib-2.30.2
+	./configure --prefix=/usr
+	make
+	make install
+	export PKG_CONFIG_PATH=/usr/lib/pkgconfig/glib-2.0.pc:${PKG_CONFIG_PATH}
+
+	exit 0
+	printStep 'Install ATK 2.0'
+	cd $WORKINGDIR
+	wget http://ftp.gnome.org/pub/gnome/sources/atk/2.0/atk-2.0.1.tar.bz2
+	tar xvfj atk-2.0.1.tar.bz2
+	rm -f atk-2.0.1.tar.bz2
+	cd atk-2.0.1
+	./configure
+	make
+	make install
+	
+	
+
+	printStep 'Install Pango 1.28.4'
+	cd $WORKINGDIR
+	wget http://ftp.gnome.org/pub/gnome/sources/gdk-pixbuf/2.24/gdk-pixbuf-2.24.0.tar.bz2
+	tar xvfj gdk-pixbuf-2.24.0.tar.bz2
+	rm -f gdk-pixbuf-2.24.0.tar.bz2
+	cd gdk-pixbuf-2.24.0
+	./configure
+	make
+	make install
 
 
+
+	printStep 'Gdk-Pixbuf 2.24'
+	cd $WORKINGDIR
+	wget http://ftp.gnome.org/pub/gnome/sources/pango/1.28/pango-1.28.4.tar.bz2
+	tar xvfj pango-1.28.4.tar.bz2
+	rm -f pango-1.28.4.tar.bz2
+	cd pango-1.28.4
+	./configure
+	make
+	make install
+
+
+
+	printStep 'Install GTK+-3.2.2'
+	cd $WORKINGDIR
+	wget http://ftp.gnome.org/pub/gnome/sources/gtk+/3.2/gtk+-3.2.2.tar.bz2
+	tar xvfj gtk+-3.2.2.tar.bz2
+	rm -f gtk+-3.2.2.tar.bz2
+	cd gtk+-3.2.2
+	./configure --prefix=/opt/gtk
+	make
+	make install
+
+
+	#printStep 'Install GTK+-2.24.8'
+	#cd $WORKINGDIR
+	#wget http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.8.tar.bz2
+	#tar xvfj gtk+-2.24.8.tar.bz2
+	#rm -f gtk+-2.24.8.tar.bz2
+	#cd gtk+-2.24.8
+	#./configure --prefix=/opt/gtk
+	#make
+	#make install
+
+}
+
+install_gcc() {
+
+
+
+
+	#installs in /usr/local/lib
+	printStep 'install_gcc g77'
+	cd $WORKINGDIR
+	wget http://fileboar.com/gcc/releases/gcc-4.6.2/gcc-4.6.2.tar.bz2
+	tar xvfj gcc-4.6.2.tar.bz2
+	rm -f gcc-4.6.2.tar.bz2
+	cd gcc-4.6.2
+	./configure
+	make
+	make install
+
+	exit 0
+
+
+}
+
+
+test2() {
+
+	#http://kingkong.amath.washington.edu/uwamath583/sphinx/notes/html/lapack_install.html
+
+	exit 0
+
+	printStep 'Install BLAS'
+	cd $WORKINGDIR
+	wget http://www.netlib.org/blas/blas.tgz
+	tar xzf blas.tgz
+	cd BLAS
+	g77 -O2 -fno-second-underscore -c *.f                     # with g77
+	gfortran -O2 -std=legacy -fno-second-underscore -c *.f    # with gfortran
+	ar r libfblas.a *.o
+	ranlib libfblas.a
+	rm -rf *.o
+	export BLAS=$WORKINGDIR/BLAS/libfblas.a
+
+
+
+
+
+	printStep 'install MPFR version 2.4.2'
+	cd $WORKINGDIR
+	wget http://www.mpfr.org/mpfr-2.4.2/mpfr-2.4.2.tar.bz2
+	tar xvfj mpfr-2.4.2.tar.bz2
+	rm -f mpfr-2.4.2.tar.bz2
+	cd mpfr-2.4.2
+	./configure
+	make
+	make install
+
+
+	printStep 'install mpc'
+	cd $WORKINGDIR
+	wget http://www.multiprecision.org/mpc/download/mpc-0.9.tar.gz
+	tar xvf mpc-0.9.tar.gz
+	rm -f mpc-0.9.tar.gz
+	cd mpc-0.9
+	./configure --prefix=/usr/local/
+	make
+	make install
+
+	printStep 'install gmp-4.3.2'
+	cd $WORKINGDIR
+	wget ftp://ftp.gnu.org/gnu/gmp/gmp-4.3.2.tar.bz2
+	tar xvfj gmp-4.3.2.tar.bz2
+	rm -f gmp-4.3.2.tar.bz2
+	cd gmp-4.3.2
+	./configure
+	make
+	make install
+
+
+
+
+
+	# NOTE: The selected fortran compiler must be consistent for BLAS, LAPACK, NumPy, and SciPy.
+	# For GNU compiler on 32-bit systems:
+	
+
+	exit 0
+	printStep 'Install SciPy'
+	cd $WORKINGDIR
+	cp $GIT_REPOSITORY_LOCAL/assets/libs/scipy-0.10.0.tar.gz $WORKINGDIR/scipy-0.10.0.tar.gz
+	tar xvf scipy-0.10.0.tar.gz
+	rm -f scipy-0.10.0.tar.gz
+	cd scipy-0.10.0
+	python2.7 setup.py install
+
+	#http://www.scipy.org/Installing_SciPy/BuildingGeneral
+	printStep 'Install blas'
+	cd $WORKINGDIR
+	wget http://www.netlib.org/blas/blas.tgz
+	tar xzvf blas.tgz
+	rm -f blas.tgz
+	cd BLAS
+	python2.7 setup.py install
+
+
+
+
+}
 
 
 case "$1" in
@@ -565,14 +760,7 @@ case "$1" in
 		clean
         ;;
         'test')
-		#clean
-		
-			precheck
-			#installDependencies
-			cloneGitRepo
-			mavenBuild
-			copy_binaries
-			~/ub_startup.sh start
+		test2
         ;;
         'python')
 		install_python
@@ -580,6 +768,9 @@ case "$1" in
         'j')
 		#test2
 		#install_ipopt
+		#setEnvironmentVars
+		updateGitRepo
+		install_python_packages
 		install_jmodelica
         ;;
         *)

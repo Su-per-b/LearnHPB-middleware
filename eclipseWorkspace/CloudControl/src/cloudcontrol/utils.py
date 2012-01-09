@@ -91,7 +91,7 @@ def launchUbuntuFromScratch() :
     
     instance.openShell()
     
-def launchUbuntuFromScratch2() :
+def launchUbuntuFromScratch_Wintermute() :
     print '*****launch Ubuntu From Scratch******'
     instance = Server()
     instance.username = 'ubuntu'
@@ -102,8 +102,6 @@ def launchUbuntuFromScratch2() :
     instance.uploadScript(r'resources\ub_setup.sh')
     instance.uploadScript(r'resources\ub_startup.sh')
     instance.openShell()
-    
-    
     
 
     

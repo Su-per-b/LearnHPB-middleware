@@ -1,0 +1,1 @@
+/var/tmp/JModelica/build/Python/jm_python.sh ./test.py
