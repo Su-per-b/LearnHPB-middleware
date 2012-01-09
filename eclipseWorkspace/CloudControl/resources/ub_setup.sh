@@ -32,6 +32,7 @@ MAVEN_DIR='/usr/bin'
 
 STEPNUMBER=0
 
+
 printStep()
 { 
 	STEPNUMBER=$[$STEPNUMBER+1]
@@ -48,6 +49,7 @@ printStep()
 
 }
 
+
 info() {
 	printStep 'info'
 	echo 'whoami:'
@@ -60,6 +62,7 @@ info() {
 	printStep 'yum --version'
 	yum --version
 }
+
 
 precheck() {
 	#printStep 'precheck'
@@ -78,29 +81,6 @@ precheck() {
 	echo ""
 }
 
-installJavaOracle() {
-	printStep 'Install Oracle JDK 7'
-	cd $WORKINGDIR
-	wget http://download.oracle.com/otn-pub/java/jdk/7/jdk-7-linux-i586.tar.gz
-	tar -zxvf jdk-7-linux-i586.tar.gz
-	mv jdk1.7.0/ java-7-oracle/
-	mkdir -p  /usr/lib/jvm/ #just in case
-	mv java-7-oracle/ /usr/lib/jvm/
-	printStep 'Install add repository'
-	add-apt-repository -y ppa:nilarimogard/webupd8
-
-	printStep 'apt-get -y update'
-	apt-get -y update
-
-	printStep 'apt-get -y install update-java'
-	apt-get -y install update-java
-
-	printStep 'update-java'
-	update-java
-}
-
-
-
 
 installDependencies() {
 	printStep 'Update apt-get'
@@ -112,26 +92,18 @@ installDependencies() {
 	printStep 'Install Git'
 	apt-get -y install git
 
-	#http://www.webupd8.org/2011/09/how-to-install-oracle-java-7-jdk-in.html
-
-	#printStep 'Install Open JDK 7'
-	#apt-get -y install openjdk-7-jre-headless
-
 	printStep 'Install OpenJDK-6'
 	apt-get -y install openjdk-6-jdk
 
 	printStep 'Install Maven 2'
 	apt-get -y install maven2
 
+	printStep 'Install SVN'
+	apt-get -y install subversion
+
 	updatedb
 
-	exit 0
-
-	printStep 'install ant'
-	yum -y install ant
-	yum -y install openssl-devel* zlib*.x86_64
 }
-
 
 
 
@@ -164,52 +136,20 @@ mavenBuild() {
 
 }
 
-mkDirs() {
-	printStep "Make Directories under: $INSTALL_DIR" 
-	mkdir $INSTALL_DIR 
-	mkdir $INSTALL_DIR/pageserver $INSTALL_DIR/pageserver/target
-	mkdir $INSTALL_DIR/socketserver $INSTALL_DIR/socketserver/target
-}
-
 
 copy_binaries() {
 	printStep 'Copy Binaries'
 	
 	echo "cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight  $INSTALL_DIR"
 	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight  $INSTALL_DIR
-	
-	
-	
-	exit 0
-
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/Common  $INSTALL_DIR/pageserver/target
-
-
-	echo "cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/PageServer/target  $INSTALL_DIR/pageserver/target"
-
-	
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/PageServer/target  $INSTALL_DIR/pageserver/target
-
-	echo "cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/PageServer/.classpath  $INSTALL_DIR/pageserver/.classpath"
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/PageServer/.classpath  $INSTALL_DIR/pageserver/.classpath
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/PageServer/pom.xml  $INSTALL_DIR/pageserver/pom.xml
-
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/SocketServer/target/SocketServer-*  $INSTALL_DIR/socketserver/target/
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/SocketServer/target/classes  $INSTALL_DIR/socketserver/target/
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/SocketServer/.classpath  $INSTALL_DIR/socketserver/.classpath
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/SocketServer/pom.xml  $INSTALL_DIR/socketserver/pom.xml
-
-
 }
-
-
-
 
 
 
 usage() {
 	echo "Usage: sudo ./setup all|clone|env|build|precheck|clean|test|update"	
 }
+
 
 #clean before upgrade
 clean() {
@@ -219,13 +159,11 @@ clean() {
 	rm -Rf $INSTALL_DIR
 	
 	#remove scripts
-	rm -f /etc/init.d/ub_startup.sh
-	rm -f $USER_HOME/ub_startup.sh
-	rm -f $USER_HOME/setup.sh
+	#rm -f /etc/init.d/ub_startup.sh
+	#rm -f $USER_HOME/ub_startup.sh
+	#rm -f $USER_HOME/setup.sh
 
 }
-
-
 
 
 
@@ -285,6 +223,7 @@ setEnvironmentVars() {
 
 }
 
+
 updateLoginScript() {
 	BACKED_UP_FILE=$USER_HOME/.bashrc.orig	
 	FILE=$USER_HOME/.bashrc
@@ -302,25 +241,6 @@ updateLoginScript() {
 		echo '.bashrc.orig found in :'$BACKED_UP_FILE
 	fi
 }
-
-copy_startup_scripts() {
-
-	printStep 'Copy Startup Script'
-
-	echo "cp $GIT_REPOSITORY_LOCAL/eclipseWorkspace/CloudControl/resources/ub_startup.sh $USER_HOME/ub_startup.sh"
-	cp $GIT_REPOSITORY_LOCAL/eclipseWorkspace/CloudControl/resources/ub_startup.sh $USER_HOME/ub_startup.sh
-
-	echo "chmod 777 $USER_HOME/ub_startup.sh"
-	chmod 777 $USER_HOME/ub_startup.sh
-
-	echo "chown $USER_NAME:$GROUP_NAME $USER_HOME/ub_startup.sh"
-	chown $USER_NAME:$GROUP_NAME $USER_HOME/ub_startup.sh
-	
-	#cp $GIT_REPOSITORY_LOCAL/eclipseWorkspace/CloudControl/resources/ub_startup.sh /etc/init.d/ub_startup.sh
-	#chmod 777 /etc/init.d/ub_startup.sh
-	
-}
-
 
 
 #install Python
@@ -494,16 +414,9 @@ install_python_packages() {
 
 
 
-
-
-
-#https://svn.jmodelica.org/tags/1.6/INSTALL
-install_jmodelica() {
-
+install_jmodelica_helper() {
 	printStep 'Install Jmodelica'
 	cd $WORKINGDIR
-
-	ln -sf /opt/python2.7.2/bin/python /usr/bin/python
 
 	printStep 'Get Sundials'
 	cd $WORKINGDIR
@@ -515,6 +428,17 @@ install_jmodelica() {
 	make install
 	
 	#installs some to /usr/local/jmodelica
+
+
+}
+
+
+#https://svn.jmodelica.org/tags/1.6/INSTALL
+install_jmodelica() {
+
+
+	install_jmodelica_helper
+
 	printStep 'Build JModelica'
 	cd $WORKINGDIR
 	svn checkout --trust-server-cert --non-interactive https://svn.jmodelica.org/tags/1.6/ JModelica
@@ -528,11 +452,15 @@ install_jmodelica() {
 	make install
 	#make docs
 
-	ln -sf /usr/lib/python2.6 /usr/bin/python
 }
 
-install_ipopt() {
-	
+
+
+install_ipop_helper() {
+
+	printStep 'Install gfortran'
+	apt-get -y install gfortran libgtk2.0-dev libgtk-3-dev
+
 	printStep 'Get Ipopt'
 	cd $WORKINGDIR
 	wget http://www.coin-or.org/download/source/Ipopt/Ipopt-3.10.1.tgz
@@ -566,6 +494,15 @@ install_ipopt() {
 	rm -f mc19-1.0.0.tgz
 	cp $WORKINGDIR/mc19-1.0.0/src/mc19d.f $WORKINGDIR/CoinIpopt/ThirdParty/HSL/mc19d.f
 
+}
+
+
+
+install_ipopt() {
+	
+	install_ipop_helper
+
+
 	printStep 'Make HSL'
 	cd $WORKINGDIR/CoinIpopt/ThirdParty/HSL/
 	./configure -enable-loadable-library
@@ -578,227 +515,39 @@ install_ipopt() {
 	# output should be: "configure: Main configuration of Ipopt successful"
 	printStep 'Install Ipopt - make'
 	make
+
 	printStep 'Install Ipopt - make check'
 	make check
+
 	printStep 'Install Ipopt - make install'
 	make install
 
 }
 
 
-#http://www.gtk.org/download/linux.php
-install_gtk() {
-	printStep 'Install libffi-3.0.10'
-	cd $WORKINGDIR
-	wget ftp://sourceware.org/pub/libffi/libffi-3.0.10.tar.gz
-	tar xvf libffi-3.0.10.tar.gz
-	rm -f libffi-3.0.10.tar.gz
-	cd libffi-3.0.10
-	./configure --prefix=/usr
-	make
-	make install
-
-	printStep 'Install GLib 2.30'
-	cd $WORKINGDIR
-	wget http://ftp.gnome.org/pub/gnome/sources/glib/2.30/glib-2.30.2.tar.bz2
-	tar xvfj glib-2.30.2.tar.bz2
-	rm -f glib-2.30.2.tar.bz2
-	cd glib-2.30.2
-	./configure --prefix=/usr
-	make
-	make install
-	export PKG_CONFIG_PATH=/usr/lib/pkgconfig/glib-2.0.pc:${PKG_CONFIG_PATH}
-
-	exit 0
-	printStep 'Install ATK 2.0'
-	cd $WORKINGDIR
-	wget http://ftp.gnome.org/pub/gnome/sources/atk/2.0/atk-2.0.1.tar.bz2
-	tar xvfj atk-2.0.1.tar.bz2
-	rm -f atk-2.0.1.tar.bz2
-	cd atk-2.0.1
-	./configure
-	make
-	make install
-	
-	
-
-	printStep 'Install Pango 1.28.4'
-	cd $WORKINGDIR
-	wget http://ftp.gnome.org/pub/gnome/sources/gdk-pixbuf/2.24/gdk-pixbuf-2.24.0.tar.bz2
-	tar xvfj gdk-pixbuf-2.24.0.tar.bz2
-	rm -f gdk-pixbuf-2.24.0.tar.bz2
-	cd gdk-pixbuf-2.24.0
-	./configure
-	make
-	make install
 
 
-
-	printStep 'Gdk-Pixbuf 2.24'
-	cd $WORKINGDIR
-	wget http://ftp.gnome.org/pub/gnome/sources/pango/1.28/pango-1.28.4.tar.bz2
-	tar xvfj pango-1.28.4.tar.bz2
-	rm -f pango-1.28.4.tar.bz2
-	cd pango-1.28.4
-	./configure
-	make
-	make install
-
-
-
-	printStep 'Install GTK+-3.2.2'
-	cd $WORKINGDIR
-	wget http://ftp.gnome.org/pub/gnome/sources/gtk+/3.2/gtk+-3.2.2.tar.bz2
-	tar xvfj gtk+-3.2.2.tar.bz2
-	rm -f gtk+-3.2.2.tar.bz2
-	cd gtk+-3.2.2
-	./configure --prefix=/opt/gtk
-	make
-	make install
-
-
-	#printStep 'Install GTK+-2.24.8'
-	#cd $WORKINGDIR
-	#wget http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.8.tar.bz2
-	#tar xvfj gtk+-2.24.8.tar.bz2
-	#rm -f gtk+-2.24.8.tar.bz2
-	#cd gtk+-2.24.8
-	#./configure --prefix=/opt/gtk
-	#make
-	#make install
-
-}
-
-install_gcc() {
-
-
-
-
-	#installs in /usr/local/lib
-	printStep 'install_gcc g77'
-	cd $WORKINGDIR
-	wget http://fileboar.com/gcc/releases/gcc-4.6.2/gcc-4.6.2.tar.bz2
-	tar xvfj gcc-4.6.2.tar.bz2
-	rm -f gcc-4.6.2.tar.bz2
-	cd gcc-4.6.2
-	./configure
-	make
-	make install
-
-	exit 0
-
-
-}
-
-
-test2() {
-
-	install_gcc
-	exit 0
-
-
-	printStep 'install MPFR version 2.4.2'
-	cd $WORKINGDIR
-	wget http://www.mpfr.org/mpfr-2.4.2/mpfr-2.4.2.tar.bz2
-	tar xvfj mpfr-2.4.2.tar.bz2
-	rm -f mpfr-2.4.2.tar.bz2
-	cd mpfr-2.4.2
-	./configure
-	make
-	make install
-
-
-	printStep 'install mpc'
-	cd $WORKINGDIR
-	wget http://www.multiprecision.org/mpc/download/mpc-0.9.tar.gz
-	tar xvf mpc-0.9.tar.gz
-	rm -f mpc-0.9.tar.gz
-	cd mpc-0.9
-	./configure --prefix=/usr/local/
-	make
-	make install
-
-	printStep 'install gmp-4.3.2'
-	cd $WORKINGDIR
-	wget ftp://ftp.gnu.org/gnu/gmp/gmp-4.3.2.tar.bz2
-	tar xvfj gmp-4.3.2.tar.bz2
-	rm -f gmp-4.3.2.tar.bz2
-	cd gmp-4.3.2
-	./configure
-	make
-	make install
-
-
-
-	printStep 'Install BLAS'
-	cd $WORKINGDIR
-	wget http://www.netlib.org/blas/blas.tgz
-	tar xzf blas.tgz
-	cd BLAS
-	g77 -O2 -fno-second-underscore -c *.f                     # with g77
-	gfortran -O2 -std=legacy -fno-second-underscore -c *.f    # with gfortran
-	ar r libfblas.a *.o
-	ranlib libfblas.a
-	rm -rf *.o
-	export BLAS=$WORKINGDIR/BLAS/libfblas.a
-
-	# NOTE: The selected fortran compiler must be consistent for BLAS, LAPACK, NumPy, and SciPy.
-	# For GNU compiler on 32-bit systems:
-	
-
-	exit 0
-	printStep 'Install SciPy'
-	cd $WORKINGDIR
-	cp $GIT_REPOSITORY_LOCAL/assets/libs/scipy-0.10.0.tar.gz $WORKINGDIR/scipy-0.10.0.tar.gz
-	tar xvf scipy-0.10.0.tar.gz
-	rm -f scipy-0.10.0.tar.gz
-	cd scipy-0.10.0
-	python2.7 setup.py install
-
-	#http://www.scipy.org/Installing_SciPy/BuildingGeneral
-	printStep 'Install blas'
-	cd $WORKINGDIR
-	wget http://www.netlib.org/blas/blas.tgz
-	tar xzvf blas.tgz
-	rm -f blas.tgz
-	cd BLAS
-	python2.7 setup.py install
-
-
-
-
-}
 
 
 case "$1" in
         'all')
 		precheck
-		info
 		installDependencies
-		setEnvironmentVars
 		cloneGitRepo
-		install_python
-		install_gtk
 		mavenBuild
-		mkDirs
 		copy_binaries
-		copy_startup_scripts
-		make_startupLinks
+		~/ub_startup.sh start
 	;;
         'clone')
 		precheck
 		cloneGitRepo
         ;;
         'update')
-		#~/ub_startup.sh stop
 		precheck
 		clean
-		mkDirs
 		updateGitRepo
 		mavenBuild
 		copy_binaries
-		copy_startup_scripts
-		#~/ub_startup.sh start
         ;;
         'env')
 		precheck
@@ -816,28 +565,25 @@ case "$1" in
 		clean
         ;;
         'test')
-		#precheck
-		#installDependencies
-		#cloneGitRepo
-		#mkDirs
-		#mavenBuild
-		#copy_binaries
-		clean
-		#mkDirs
-		copy_binaries
-		#~/ub_startup.sh start
-
+		#clean
+		
+			precheck
+			#installDependencies
+			cloneGitRepo
+			mavenBuild
+			copy_binaries
+			~/ub_startup.sh start
         ;;
         'python')
 		install_python
         ;;	
-        'jmodelica')
-		installDependencies
-		cloneGitRepo
-		install_ipopt
+        'j')
+		#test2
+		#install_ipopt
+		install_jmodelica
         ;;
         *)
-	usage
+	
 esac
 
 

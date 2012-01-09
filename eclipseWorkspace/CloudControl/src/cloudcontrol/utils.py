@@ -91,6 +91,17 @@ def launchUbuntuFromScratch() :
     
     instance.openShell()
     
+def launchUbuntuFromScratch2() :
+    print '*****launch Ubuntu From Scratch******'
+    instance = Server()
+    instance.username = 'ubuntu'
+    instance.create("ami-c9a1fe8c", "Wintermute")
+    instance.instance_type = 'm1.small'
+    instance.launchOne()
+    instance.associateIP('50.18.174.1')
+    instance.uploadScript(r'resources\ub_setup.sh')
+    instance.uploadScript(r'resources\ub_startup.sh')
+    instance.openShell()
     
     
     

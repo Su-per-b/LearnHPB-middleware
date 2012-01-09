@@ -40,6 +40,91 @@ setEnvironmentVariables() {
 }
 
 
+
+#http://www.gtk.org/download/linux.php
+install_gtk() {
+	printStep 'Install libffi-3.0.10'
+	cd $WORKINGDIR
+	wget ftp://sourceware.org/pub/libffi/libffi-3.0.10.tar.gz
+	tar xvf libffi-3.0.10.tar.gz
+	rm -f libffi-3.0.10.tar.gz
+	cd libffi-3.0.10
+	./configure --prefix=/usr
+	make
+	make install
+
+	printStep 'Install GLib 2.30'
+	cd $WORKINGDIR
+	wget http://ftp.gnome.org/pub/gnome/sources/glib/2.30/glib-2.30.2.tar.bz2
+	tar xvfj glib-2.30.2.tar.bz2
+	rm -f glib-2.30.2.tar.bz2
+	cd glib-2.30.2
+	./configure --prefix=/usr
+	make
+	make install
+	export PKG_CONFIG_PATH=/usr/lib/pkgconfig/glib-2.0.pc:${PKG_CONFIG_PATH}
+
+	exit 0
+	printStep 'Install ATK 2.0'
+	cd $WORKINGDIR
+	wget http://ftp.gnome.org/pub/gnome/sources/atk/2.0/atk-2.0.1.tar.bz2
+	tar xvfj atk-2.0.1.tar.bz2
+	rm -f atk-2.0.1.tar.bz2
+	cd atk-2.0.1
+	./configure
+	make
+	make install
+	
+	
+
+	printStep 'Install Pango 1.28.4'
+	cd $WORKINGDIR
+	wget http://ftp.gnome.org/pub/gnome/sources/gdk-pixbuf/2.24/gdk-pixbuf-2.24.0.tar.bz2
+	tar xvfj gdk-pixbuf-2.24.0.tar.bz2
+	rm -f gdk-pixbuf-2.24.0.tar.bz2
+	cd gdk-pixbuf-2.24.0
+	./configure
+	make
+	make install
+
+
+
+	printStep 'Gdk-Pixbuf 2.24'
+	cd $WORKINGDIR
+	wget http://ftp.gnome.org/pub/gnome/sources/pango/1.28/pango-1.28.4.tar.bz2
+	tar xvfj pango-1.28.4.tar.bz2
+	rm -f pango-1.28.4.tar.bz2
+	cd pango-1.28.4
+	./configure
+	make
+	make install
+
+
+
+	printStep 'Install GTK+-3.2.2'
+	cd $WORKINGDIR
+	wget http://ftp.gnome.org/pub/gnome/sources/gtk+/3.2/gtk+-3.2.2.tar.bz2
+	tar xvfj gtk+-3.2.2.tar.bz2
+	rm -f gtk+-3.2.2.tar.bz2
+	cd gtk+-3.2.2
+	./configure --prefix=/opt/gtk
+	make
+	make install
+
+
+	#printStep 'Install GTK+-2.24.8'
+	#cd $WORKINGDIR
+	#wget http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.8.tar.bz2
+	#tar xvfj gtk+-2.24.8.tar.bz2
+	#rm -f gtk+-2.24.8.tar.bz2
+	#cd gtk+-2.24.8
+	#./configure --prefix=/opt/gtk
+	#make
+	#make install
+
+}
+
+
 	BACKED_UP_FILE=$ROOT_HOME/.bashrc.orig	
 	FILE=$ROOT_HOME/.bashrc
 
@@ -71,3 +156,4 @@ setEnvironmentVariables() {
 	else 
 		echo '.bashrc.orig found in :'$BACKED_UP_FILE
 	fi
+	
