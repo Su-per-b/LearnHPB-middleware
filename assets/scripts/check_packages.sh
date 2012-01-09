@@ -1,1 +1,1 @@
-/home/ubuntu/jm_python.sh ./check_packages.py
+./jm_python.sh ./check_packages.py
