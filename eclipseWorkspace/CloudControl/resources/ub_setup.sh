@@ -65,8 +65,45 @@ precheck() {
 	echo ""
 }
 
+inst() {
 
+	printStep "Install $1"
+	#eval "apt-get -y install $1"
+	apt-get -y install $1
 
+}
+installDependencies2() {
+
+	printStep 'Update apt-get'
+	apt-get -y update
+
+	inst build-essential
+	inst git
+	inst openjdk-6-jdk
+	inst maven2
+	inst subversion
+	inst libatlas-base-dev
+	inst libgtk2.0-dev
+	inst python-gtk2
+	inst python-gtk2-dev
+	inst cmake
+	inst gfortran
+	inst libgtk2.0-dev 
+	inst libgtk-3-dev
+	inst swig
+	inst ant
+	inst liblapack-dev
+	inst libsundials-*
+	inst coinor-libipopt-dev
+	inst mpich-bin
+	inst libblas-dev
+	inst libmumps-seq-4.9.2
+	#inst apt-get -y install swig1.3
+	inst octave3.2-headers
+
+	updatedb
+
+}
 
 installDependencies() {
 	printStep 'Update apt-get'
@@ -102,8 +139,48 @@ installDependencies() {
 	printStep 'Install cmake'
 	apt-get -y install cmake
 
+	printStep 'Install gfortran'
+	apt-get -y install gfortran 
+	
+	printStep 'Install gfortran'
+	apt-get -y install libgtk2.0-dev 
+	
+	printStep 'Install libgtk-3-dev'
+	apt-get -y install libgtk-3-dev
+	 
+	printStep 'Install swig'
+	apt-get -y install swig
+	
+	printStep 'Install ant'
+	apt-get -y install ant	
+	
+	printStep 'Install BLAS and LAPACK'
+	apt-get -y install liblapack-dev
+
+	printStep 'Install libsundials-*'
+	apt-get -y install libsundials-*
+
+	printStep 'Install coinor-libipopt-dev'
+	apt-get -y install coinor-libipopt-dev
+
+	printStep 'Install mpich-bin'
+	apt-get -y install mpich-bin
+
+	printStep 'Install libblas-dev'
+	apt-get -y install libblas-dev
+
+	printStep 'Install libmumps-seq-4.9.2'
+	apt-get -y install libmumps-seq-4.9.2	
+
+	printStep 'Install swig1.3'
+	apt-get -y install swig1.3	
+
+	printStep 'Install octave3.2-headers'
+	apt-get -y install octave3.2-headers
+
 	updatedb
 }
+
 
 
 
@@ -263,35 +340,20 @@ install_python_packages() {
 	printStep 'Install python-dev'
 	apt-get -y install python-dev
 
-
 	printStep 'Install wxPython 2.8'
 	apt-get -y install python-wxgtk2.8
 	apt-get -y install python-wxtools
 	apt-get -y install wx2.8-i18n
 	apt-get -y install libwxgtk2.8-dev
-
-	printStep 'Install JPype'
-	#mkdir $HOME/local
-	cd $WORKINGDIR
-	cp $GIT_REPOSITORY_LOCAL/assets/libs/JPype-0.5.4.2.zip $WORKINGDIR/JPype-0.5.4.2.zip
 	
-	unzip JPype-0.5.4.2.zip
-	rm -f $WORKINGDIR/setup.py
-	cp $GIT_REPOSITORY_LOCAL/assets/libs/setup_ubuntu.py $WORKINGDIR/JPype-0.5.4.2/setup.py
-
-	cd JPype-0.5.4.2
-	python setup.py install
+	printStep 'Install JPype'
+	apt-get -y install python-jpype
 
 	printStep 'Install libxslt-dev'
 	apt-get -y install libxslt-dev
 
 	pip install numpy
-
-	printStep 'Install BLAS and LAPACK'
-	apt-get -y install liblapack-dev
-
 	pip install scipy
-	
 	pip install cython
 
 	printStep 'Install ipython-0.12'
@@ -342,6 +404,13 @@ test_jmodelica() {
 	cp /var/tmp/straylight_repo/assets/testFmu.sh ~/testFmu.sh
 	chmod 775 ~/testFmu.sh
 
+
+	cp /var/tmp/straylight_repo/assets/check_packages.py ~/check_packages.py
+	chmod 775 ~/check_packages.py
+
+	cp /var/tmp/straylight_repo/assets/check_packages.sh ~/check_packages.sh
+	chmod 775 ~/check_packages.sh
+
 	#cp /var/tmp/straylight_repo/assets/test.py ~/test.py
 	chmod 775 ~/test.py
 
@@ -355,31 +424,17 @@ test_jmodelica() {
 install_jmodelica() {
 
 
-	printStep 'Install Jmodelica'
-	cd $WORKINGDIR
-
-	printStep 'Install Sundials'
-	cp $GIT_REPOSITORY_LOCAL/assets/libs/sundials-2.4.0.tar.gz $WORKINGDIR/sundials-2.4.0.tar.gz
-	tar xfz sundials-2.4.0.tar.gz
-	cd sundials-2.4.0
-	./configure
-	make
-	make install
-	
-
-	install_casadi
-
 	printStep 'checkout JModelica'
 	cd $WORKINGDIR
-	svn checkout --trust-server-cert --non-interactive https://svn.jmodelica.org/tags/1.6/ JModelica
+	#svn checkout --trust-server-cert --non-interactive https://svn.jmodelica.org/tags/1.6/ JModelica
 	cd $WORKINGDIR/JModelica
 	
-	mkdir build
+	#mkdir build
 	cd $WORKINGDIR/JModelica/build
 
 	printStep 'configure JModelica'
-	$WORKINGDIR/JModelica/configure --with-ipopt=$WORKINGDIR/CoinIpopt --with-sundials=/usr/local \
-	--with-casadi=/home/jakesson/svn_projects/CasADi/build/swig/python
+	$WORKINGDIR/JModelica/configure --with-ipopt=$WORKINGDIR/CoinIpopt --with-sundials=/usr/local #\
+	#--with-casadi=/var/tmp/CasADi  #(?) --with-casadi=var/tmp/CasADi/build/
 	
 	printStep 'make JModelica'
 	make
@@ -390,16 +445,26 @@ install_jmodelica() {
 
 }
 
+install_sundials() {
+	printStep 'Install Sundials'
+	cd $WORKINGDIR
+	cp $GIT_REPOSITORY_LOCAL/assets/libs/sundials-2.4.0.tar.gz $WORKINGDIR/sundials-2.4.0.tar.gz
+	tar xfz sundials-2.4.0.tar.gz
+	cd sundials-2.4.0
+	./configure #prefix=usr/local
+	make
+	make install
+}
 
 
 install_ipopt() {
 	
-	printStep 'Install gfortran'
-	apt-get -y install gfortran libgtk2.0-dev libgtk-3-dev
+
 
 	printStep 'Get Ipopt'
 	cd $WORKINGDIR
 	wget http://www.coin-or.org/download/source/Ipopt/Ipopt-3.10.1.tgz
+	#wget http://www.coin-or.org/download/source/Ipopt/Ipopt-doxydoc-3.9.3.tgz
 	tar xfz Ipopt-3.10.1.tgz
 	rm -f Ipopt-3.10.1.tgz
 	mv Ipopt-3.10.1 CoinIpopt
@@ -412,10 +477,18 @@ install_ipopt() {
 	cd $WORKINGDIR/CoinIpopt/ThirdParty/Lapack
 	./get.Lapack
 
+	printStep 'Get Mumps'
+	cd $WORKINGDIR/CoinIpopt/ThirdParty/Mumps
+	./get.Mumps
+
 	printStep 'Get ASL'
 	cd $WORKINGDIR/CoinIpopt/ThirdParty/ASL
 	./get.ASL
 	
+	printStep 'Get Metis'
+	cd $WORKINGDIR/CoinIpopt/ThirdParty/Metis
+	./get.Metis
+
 	printStep 'Get MA27'
 	cd $WORKINGDIR
 	cp $GIT_REPOSITORY_LOCAL/assets/libs/ma27-1.0.0.tar.gz $WORKINGDIR/ma27-1.0.0.tar.gz
@@ -430,7 +503,6 @@ install_ipopt() {
 	rm -f mc19-1.0.0.tgz
 	cp $WORKINGDIR/mc19-1.0.0/src/mc19d.f $WORKINGDIR/CoinIpopt/ThirdParty/HSL/mc19d.f
 
-
 	printStep 'Make HSL'
 	cd $WORKINGDIR/CoinIpopt/ThirdParty/HSL/
 	./configure -enable-loadable-library
@@ -439,7 +511,7 @@ install_ipopt() {
 	printStep 'Install Ipopt - configure'
 	cd $WORKINGDIR/CoinIpopt
 
-	./configure
+	./configure --disable-pkg-config  # is defaulting to --prefix=/var/tmp/CoinIpopt
 	# output should be: "configure: Main configuration of Ipopt successful"
 	printStep 'Install Ipopt - make'
 	make
@@ -449,6 +521,7 @@ install_ipopt() {
 
 	printStep 'Install Ipopt - make install'
 	make install
+	#/var/tmp/CoinIpopt/lib
 
 }
 
@@ -458,14 +531,16 @@ install_ipopt() {
 case "$1" in
         'all')
 		precheck
-		installDependencies
-		setEnvironmentVars
-		cloneGitRepo
-		install_ipopt
-		install_python_packages
-		install_jmodelica
-		mavenBuild
-		copy_binaries
+		#installDependencies
+		#setEnvironmentVars
+		#cloneGitRepo
+		#install_python_packages
+		#install_sundials
+		#install_ipopt
+		#install_casadi
+		#install_jmodelica
+		#mavenBuild
+		#copy_binaries
 	;;
         'clone')
 		precheck
@@ -494,7 +569,7 @@ case "$1" in
 		clean
         ;;
         'test')
-		install_casadi
+		test_jmodelica
         ;;
         'j')
 		#test2

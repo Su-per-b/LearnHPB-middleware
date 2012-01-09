@@ -157,3 +157,16 @@ install_gtk() {
 		echo '.bashrc.orig found in :'$BACKED_UP_FILE
 	fi
 	
+	
+	
+	#mkdir $HOME/local
+	cd $WORKINGDIR
+	cp $GIT_REPOSITORY_LOCAL/assets/libs/JPype-0.5.4.2.zip $WORKINGDIR/JPype-0.5.4.2.zip
+	
+	unzip JPype-0.5.4.2.zip
+	rm -f $WORKINGDIR/setup.py
+	cp $GIT_REPOSITORY_LOCAL/assets/libs/setup_ubuntu.py $WORKINGDIR/JPype-0.5.4.2/setup.py
+
+	cd JPype-0.5.4.2
+	python setup.py install
+	
