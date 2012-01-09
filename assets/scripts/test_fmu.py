@@ -1,4 +1,4 @@
 from jmodelica.fmi import FMUModel
 
-myModel=FMUModel('/var/tmp/bouncingBall.fmu')
+myModel=FMUModel('/home/ubuntu/bouncingBall.fmu')
 myModel.simulate()

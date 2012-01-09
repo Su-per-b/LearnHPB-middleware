@@ -1,0 +1,1 @@
+./jm_python.sh ./test_fmu.py
