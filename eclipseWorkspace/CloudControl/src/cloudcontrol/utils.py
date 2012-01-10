@@ -87,7 +87,7 @@ def launchUbuntuFromScratch() :
     instance.instance_type = 'm1.small'
     instance.launchOne()
     instance.associateIP('50.18.252.97')
-    instance.uploadScript(r'resources\ub_setup.sh')
+    instance.uploadScript(r'resources\setup4.sh')
     instance.uploadScript(r'resources\ub_startup.sh')
     
     instance.openShell()

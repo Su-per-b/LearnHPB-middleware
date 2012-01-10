@@ -14,6 +14,6 @@ from cloudcontrol.utils import launchUbuntuFromScratch_Wintermute
 #launchWintermute()
 
 
-launchStraylightFromImage()
+launchUbuntuFromScratch()
 #launchUbuntuFromScratch_Wintermute()
 #ssh("Straylight", 'ubuntu')
