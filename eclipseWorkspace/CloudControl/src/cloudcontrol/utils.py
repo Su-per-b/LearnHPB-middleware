@@ -44,7 +44,8 @@ def ssh(name, username) :
 def launchStraylightFromImage() :
     print '*****launch Straylight From Image******'
     instance = Server()
-    instance.createByName("StraylightImage", "Straylight")
+    instance.createByName("StrayLightImageUnuntu3", "Straylight")
+    instance.instance_type = 'm1.small'
     instance.launchOne()
     instance.associateIP('50.18.252.97')
     instance.uploadScript(r'resources\setup.sh')

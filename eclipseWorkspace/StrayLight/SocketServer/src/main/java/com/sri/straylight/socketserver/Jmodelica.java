@@ -73,9 +73,9 @@ public class Jmodelica {
 
 
         	
-        	pyEngine.eval("import jpype");
+        	//pyEngine.eval("import jpype");
         	 
-            //pyEngine.eval("from jmodelica.fmi import FMUModel");
+            pyEngine.eval("from jmodelica.fmi import FMUModel");
             
             
            // pyEngine.eval(code);

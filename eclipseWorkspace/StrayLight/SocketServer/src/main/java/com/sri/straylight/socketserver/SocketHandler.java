@@ -1,5 +1,6 @@
 package com.sri.straylight.socketserver;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -33,33 +34,83 @@ public class SocketHandler extends WebSocketHandler {
 			webSockets.add(this);
 		}
 
+		public void runSim() {
+			
+			//untime.getRuntime().exec(String command, String[] enviroment, File workingdir) 
+			
+			//Process p = Runtime.getRuntime().exec("C:\\ProgramFiles\\JModelica.org-1.6");
+			
+
+			
+			
+			
+			//try {
+				//Runtime rt = Runtime.getRuntime();
+				//rt.exec("cd c:\\ProgramFiles\\JModelica.org-1.6");
+				//rt.exec("cmd /c c:\\ProgramFiles\\JModelica.org-1.6\\test_fmu.bat");
+				
+
+				
+				
+				
+				
+				//try {
+					//Runtime.getRuntime().exec("c:\\ProgramFiles\\JModelica.org-1.6\\test_fmu.bat",null,"c:\\ProgramFiles\\JModelica.org-1.6");
+					//ProcessBuilder pb = new ProcessBuilder("cmd /c test_fmu.bat");
+					//pb.directory(new File("c:\\ProgramFiles\\JModelica.org-1.6"));
+					//Process p = pb.start();
+					//int exitStatus = rt.wait();
+					
+				//}
+				//catch (InterruptedException e) {
+				//	e.printStackTrace();
+				//}
+				
+			//} catch (IOException  e) {
+				// Error was detected, close the ChatWebSocket client side
+				//e.printStackTrace();
+				
+			//}
+			
+
+		}
+		
 		public void onMessage(String data) {
 			// Loop for each instance of ChatWebSocket to send message server to
 			// each client WebSockets.
 			
-			SocketServer.logger.info( "onMessage: " + data ); 
-					
-			Double gallons = Double.parseDouble(data);
-			Double footPounds = gallons * 97181188.7888;
-			
-			//String footPoundsStr = String.valueOf(footPounds);
-			
-			
-			DecimalFormat df = new DecimalFormat("###,###.##");
-			String shortString = (df.format(footPounds));
-
-			
-			//String footPoundsStr = Double.toString(((int)(footPounds * 1000))/1000.0);
-			
-			try {
-				for (MyWebSocket webSocket : webSockets) {
-					// send a message to the current client WebSocket.
-					webSocket.connection.sendMessage(shortString);
+			if (data.matches("run")) {
+				//this.runSim();
+				
+			} else {
+				
+				SocketServer.logger.info( "onMessage: " + data ); 
+						
+				Double gallons = Double.parseDouble(data);
+				Double footPounds = gallons * 97181188.7888;
+				
+				//String footPoundsStr = String.valueOf(footPounds);
+				
+				
+				DecimalFormat df = new DecimalFormat("###,###.##");
+				String shortString = (df.format(footPounds));
+	
+				
+				//String footPoundsStr = Double.toString(((int)(footPounds * 1000))/1000.0);
+				
+				try {
+					for (MyWebSocket webSocket : webSockets) {
+						// send a message to the current client WebSocket.
+						webSocket.connection.sendMessage(shortString);
+					}
+				} catch (IOException x) {
+					// Error was detected, close the ChatWebSocket client side
+					this.connection.disconnect();
 				}
-			} catch (IOException x) {
-				// Error was detected, close the ChatWebSocket client side
-				this.connection.disconnect();
+
 			}
+			
+			
 
 		}
 

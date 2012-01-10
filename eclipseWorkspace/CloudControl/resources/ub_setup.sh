@@ -387,9 +387,9 @@ install_python_packages() {
 install_casadi() {
 	
 	printStep 'Install CasADi'
-	cd $WORKINGDIR
- 	svn co https://casadi.svn.sourceforge.net/svnroot/casadi/trunk CasADi
-	cd CasADi
+	cd /opt/packages
+ 	svn co https://casadi.svn.sourceforge.net/svnroot/casadi/trunk casadi
+	cd casadi
 	mkdir build
 	cd build
 	cmake ../ -DEXTRA_LIBRARIES:STRING=-lgfortran
@@ -433,7 +433,11 @@ install_jmodelica() {
 	cd $WORKINGDIR/JModelica/build
 
 	printStep 'configure JModelica'
-	$WORKINGDIR/JModelica/configure --with-ipopt=$WORKINGDIR/CoinIpopt --with-sundials=/usr/local #\
+	$WORKINGDIR/JModelica/configure \
+	--prefix=/opt/packages/jmodelica/jmodelica-install
+	--with-ipopt=/opt/packages/coin-or/ipopt-install \
+	--with-sundials=/opt/packages/sundials/sundials-install \
+	--with-casadi=/opt/packages/casadi/build/swig/python
 	#--with-casadi=/var/tmp/CasADi  #(?) --with-casadi=var/tmp/CasADi/build/
 	
 	printStep 'make JModelica'
@@ -451,7 +455,7 @@ install_sundials() {
 	cp $GIT_REPOSITORY_LOCAL/assets/libs/sundials-2.4.0.tar.gz $WORKINGDIR/sundials-2.4.0.tar.gz
 	tar xfz sundials-2.4.0.tar.gz
 	cd sundials-2.4.0
-	./configure #prefix=usr/local
+	./configure prefix=/opt/packages/sundials/sundials-install
 	make
 	make install
 }
@@ -459,8 +463,6 @@ install_sundials() {
 
 install_ipopt() {
 	
-
-
 	printStep 'Get Ipopt'
 	cd $WORKINGDIR
 	wget http://www.coin-or.org/download/source/Ipopt/Ipopt-3.10.1.tgz
@@ -511,7 +513,8 @@ install_ipopt() {
 	printStep 'Install Ipopt - configure'
 	cd $WORKINGDIR/CoinIpopt
 
-	./configure --disable-pkg-config  # is defaulting to --prefix=/var/tmp/CoinIpopt
+	./configure --disable-pkg-config \
+	prefix=/opt/packages/coin-or/ipopt-install # was defaulting to --prefix=/var/tmp/CoinIpopt
 	# output should be: "configure: Main configuration of Ipopt successful"
 	printStep 'Install Ipopt - make'
 	make

@@ -172,6 +172,9 @@ installDependencies() {
 	printStep 'Install libmumps-seq-4.9.2'
 	apt-get -y install libmumps-seq-4.9.2	
 
+	printStep 'Install swig1.3'
+	apt-get -y install swig1.3	
+
 	printStep 'Install octave3.2-headers'
 	apt-get -y install octave3.2-headers
 
@@ -372,54 +375,55 @@ install_python_packages() {
 	printStep 'Install lxml'
 	pip install lxml
 
-	printStep 'Install assimulo'
-	pip install assimulo
-
 	printStep 'Install matplotlib'
 	pip install matplotlib
 
+	#config matplotlib
+	rm -f /usr/local/lib/python2.7/dist-packages/matplotlib/mpl-data/matplotlibrc
+	cp $GIT_REPOSITORY_LOCAL/assets/config/matplotlib/matplotlibrc /usr/local/lib/python2.7/dist-packages/matplotlib/mpl-data/matplotlibrc
+	
+	#pyreadline
+
 }
 
-# not tested yet
+# http://sourceforge.net/apps/trac/casadi/wiki/InstallationInstructions
 install_casadi() {
 	
 	printStep 'Install CasADi'
-	cd $WORKINGDIR
- 	svn co https://casadi.svn.sourceforge.net/svnroot/casadi/trunk CasADi
-	cd CasADi
+	cd /opt/packages
+
+ 	svn co https://casadi.svn.sourceforge.net/svnroot/casadi/trunk casadi
+	#svn co https://casadi.svn.sourceforge.net/svnroot/casadi/tags/v1.3.0beta/ casadi
+
+	cd casadi
 	mkdir build
 	cd build
 	cmake ../ -DEXTRA_LIBRARIES:STRING=-lgfortran
 	make python
 }
 
+
+
 test_jmodelica() {
 
-	cp /var/tmp/JModelica/build/Python/jm_python.sh ~/jm_python.sh
-	chmod 775 ~/jm_python.sh
+	if [ -d ~/scripts ]; then
+		echo "Delete scripts directory"
+		rm -Rf ~/scripts
+	fi
 
-	cp /var/tmp/straylight_repo/assets/testFmu.sh ~/testFmu.sh
-	chmod 775 ~/testFmu.sh
+	cp -R $GIT_REPOSITORY_LOCAL/assets/scripts ~/scripts
+	cp /var/tmp/JModelica/build/Python/jm_python.sh ~/scripts/jm_python.sh
 
-
-	cp /var/tmp/straylight_repo/assets/check_packages.py ~/check_packages.py
-	chmod 775 ~/check_packages.py
-
-	cp /var/tmp/straylight_repo/assets/check_packages.sh ~/check_packages.sh
-	chmod 775 ~/check_packages.sh
-
-	#cp /var/tmp/straylight_repo/assets/test.py ~/test.py
-	chmod 775 ~/test.py
-
-	cp /var/tmp/straylight_repo/assets/bouncingBall.fmu ~/bouncingBall.fmu
-	sh ~/testFmu.sh
+	chmod 775 -R ~/scripts
+	cd ~/scripts
+	sh ./check_packages.sh
+	sh ./test_fmu.sh
 }
 
 
 
 #https://svn.jmodelica.org/tags/1.6/INSTALL
 install_jmodelica() {
-
 
 	printStep 'checkout JModelica'
 	cd $WORKINGDIR
@@ -430,8 +434,11 @@ install_jmodelica() {
 	cd $WORKINGDIR/JModelica/build
 
 	printStep 'configure JModelica'
-	$WORKINGDIR/JModelica/configure --with-ipopt=/opt/coin-or/ipopt-package --with-sundials=/usr/local #\
-	#--with-casadi=/var/tmp/CasADi  #(?) --with-casadi=var/tmp/CasADi/build/
+	$WORKINGDIR/JModelica/configure \
+	--prefix=/opt/packages/jmodelica/jmodelica-install \
+	--with-ipopt=/opt/packages/coin-or/ipopt-install \
+	--with-sundials=/opt/packages/sundials/sundials-install \
+	--with-casadi=/opt/packages/casadi/build/swig/python
 	
 	printStep 'make JModelica'
 	make
@@ -448,16 +455,17 @@ install_sundials() {
 	cp $GIT_REPOSITORY_LOCAL/assets/libs/sundials-2.4.0.tar.gz $WORKINGDIR/sundials-2.4.0.tar.gz
 	tar xfz sundials-2.4.0.tar.gz
 	cd sundials-2.4.0
-	./configure prefix=/opt/sundials/sundials-package
+	./configure prefix=/opt/packages/sundials/sundials-install
 	make
 	make install
+
+	#should end with Libraries have been installed in: 
+	# /opt/packages/sundials/sundials-install/lib
 }
 
 
 install_ipopt() {
 	
-
-
 	printStep 'Get Ipopt'
 	cd $WORKINGDIR
 	wget http://www.coin-or.org/download/source/Ipopt/Ipopt-3.10.1.tgz
@@ -508,7 +516,8 @@ install_ipopt() {
 	printStep 'Install Ipopt - configure'
 	cd $WORKINGDIR/CoinIpopt
 
-	./configure --disable-pkg-config --prefix=/opt/CoinOr/Ipopt # is defaulting to --prefix=/var/tmp/CoinIpopt
+	./configure --disable-pkg-config \
+	prefix=/opt/packages/coin-or/ipopt-install # was defaulting to --prefix=/var/tmp/CoinIpopt
 	# output should be: "configure: Main configuration of Ipopt successful"
 	printStep 'Install Ipopt - make'
 	make
@@ -566,7 +575,9 @@ case "$1" in
 		clean
         ;;
         'test')
-		install_jmodelica
+		#updateGitRepo
+		#install_assimulo
+
         ;;
         'j')
 		#test2
