@@ -68,11 +68,11 @@ precheck() {
 inst() {
 
 	printStep "Install $1"
-	#eval "apt-get -y install $1"
 	apt-get -y install $1
 
 }
-installDependencies2() {
+
+installDependencies() {
 
 	printStep 'Update apt-get'
 	apt-get -y update
@@ -104,85 +104,6 @@ installDependencies2() {
 	updatedb
 
 }
-
-installDependencies() {
-	printStep 'Update apt-get'
-	apt-get -y update
-
-	printStep 'Install Developer Tools (build-essential)'
-	apt-get -y install build-essential
-
-	printStep 'Install Git'
-	apt-get -y install git
-
-	printStep 'Install OpenJDK-6'
-	apt-get -y install openjdk-6-jdk
-
-	printStep 'Install Maven 2'
-	apt-get -y install maven2
-
-	printStep 'Install SVN'
-	apt-get -y install subversion
-
-	printStep 'Install blas'
-	apt-get -y install libatlas-base-dev
-	
-	printStep 'Install libgtk2.0-dev'
-	apt-get -y install libgtk2.0-dev
-
-	printStep 'Install python-gtk2'
-	apt-get -y install python-gtk2
-
-	printStep 'Install python-gtk2-dev'
-	apt-get -y install python-gtk2-dev
-
-	printStep 'Install cmake'
-	apt-get -y install cmake
-
-	printStep 'Install gfortran'
-	apt-get -y install gfortran 
-	
-	printStep 'Install gfortran'
-	apt-get -y install libgtk2.0-dev 
-	
-	printStep 'Install libgtk-3-dev'
-	apt-get -y install libgtk-3-dev
-	 
-	printStep 'Install swig'
-	apt-get -y install swig
-	
-	printStep 'Install ant'
-	apt-get -y install ant	
-	
-	printStep 'Install BLAS and LAPACK'
-	apt-get -y install liblapack-dev
-
-	printStep 'Install libsundials-*'
-	apt-get -y install libsundials-*
-
-	printStep 'Install coinor-libipopt-dev'
-	apt-get -y install coinor-libipopt-dev
-
-	printStep 'Install mpich-bin'
-	apt-get -y install mpich-bin
-
-	printStep 'Install libblas-dev'
-	apt-get -y install libblas-dev
-
-	printStep 'Install libmumps-seq-4.9.2'
-	apt-get -y install libmumps-seq-4.9.2	
-
-	printStep 'Install swig1.3'
-	apt-get -y install swig1.3	
-
-	printStep 'Install octave3.2-headers'
-	apt-get -y install octave3.2-headers
-
-	updatedb
-}
-
-
-
 
 
 cloneGitRepo() {
@@ -414,8 +335,10 @@ test_jmodelica() {
 	cp -R $GIT_REPOSITORY_LOCAL/assets/scripts ~/scripts
 	cp /var/tmp/JModelica/build/Python/jm_python.sh ~/scripts/jm_python.sh
 
+	chown $USER_NAME:$USER_GROUP -R ~/scripts
 	chmod 775 -R ~/scripts
 	cd ~/scripts
+	
 	sh ./check_packages.sh
 	sh ./test_fmu.sh
 }
@@ -427,10 +350,10 @@ install_jmodelica() {
 
 	printStep 'checkout JModelica'
 	cd $WORKINGDIR
-	#svn checkout --trust-server-cert --non-interactive https://svn.jmodelica.org/tags/1.6/ JModelica
+	svn checkout --trust-server-cert --non-interactive https://svn.jmodelica.org/tags/1.6/ JModelica
 	cd $WORKINGDIR/JModelica
 	
-	#mkdir build
+	mkdir build
 	cd $WORKINGDIR/JModelica/build
 
 	printStep 'configure JModelica'
@@ -537,14 +460,15 @@ install_ipopt() {
 case "$1" in
         'all')
 		precheck
-		#installDependencies
-		#setEnvironmentVars
-		#cloneGitRepo
-		#install_python_packages
-		#install_sundials
-		#install_ipopt
-		#install_casadi
-		#install_jmodelica
+		installDependencies
+		setEnvironmentVars
+		cloneGitRepo
+		install_python_packages
+		install_sundials
+		install_ipopt
+		install_casadi
+		install_jmodelica
+		test_jmodelica
 		#mavenBuild
 		#copy_binaries
 	;;
@@ -574,9 +498,9 @@ case "$1" in
 		precheck
 		clean
         ;;
-        'test')
-		#updateGitRepo
-		#install_assimulo
+        'test')	
+		updateGitRepo
+		test_jmodelica
 
         ;;
         'j')

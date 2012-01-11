@@ -33,54 +33,35 @@ public class SocketHandler extends WebSocketHandler {
 			// instance.
 			webSockets.add(this);
 		}
-
-		public void runSim() {
+		
+		
+		
+		private void sendMessage(String msg) {
 			
-			//untime.getRuntime().exec(String command, String[] enviroment, File workingdir) 
-			
-			//Process p = Runtime.getRuntime().exec("C:\\ProgramFiles\\JModelica.org-1.6");
-			
-
-			
-			
-			
-			//try {
-				//Runtime rt = Runtime.getRuntime();
-				//rt.exec("cd c:\\ProgramFiles\\JModelica.org-1.6");
-				//rt.exec("cmd /c c:\\ProgramFiles\\JModelica.org-1.6\\test_fmu.bat");
-				
-
-				
-				
-				
-				
-				//try {
-					//Runtime.getRuntime().exec("c:\\ProgramFiles\\JModelica.org-1.6\\test_fmu.bat",null,"c:\\ProgramFiles\\JModelica.org-1.6");
-					//ProcessBuilder pb = new ProcessBuilder("cmd /c test_fmu.bat");
-					//pb.directory(new File("c:\\ProgramFiles\\JModelica.org-1.6"));
-					//Process p = pb.start();
-					//int exitStatus = rt.wait();
-					
-				//}
-				//catch (InterruptedException e) {
-				//	e.printStackTrace();
-				//}
-				
-			//} catch (IOException  e) {
+			try {
+				for (MyWebSocket webSocket : webSockets) {
+					// send a message to the current client WebSocket.
+					webSocket.connection.sendMessage(msg);
+				}
+			} catch (IOException x) {
 				// Error was detected, close the ChatWebSocket client side
-				//e.printStackTrace();
-				
-			//}
+				this.connection.disconnect();
+			}
 			
-
 		}
+
 		
 		public void onMessage(String data) {
 			// Loop for each instance of ChatWebSocket to send message server to
 			// each client WebSockets.
 			
 			if (data.matches("run")) {
-				//this.runSim();
+
+				Jmodelica jmodelica = new Jmodelica();
+				String shortString = jmodelica.run();
+				
+				this.sendMessage(shortString);
+				
 				
 			} else {
 				
@@ -89,25 +70,12 @@ public class SocketHandler extends WebSocketHandler {
 				Double gallons = Double.parseDouble(data);
 				Double footPounds = gallons * 97181188.7888;
 				
-				//String footPoundsStr = String.valueOf(footPounds);
-				
 				
 				DecimalFormat df = new DecimalFormat("###,###.##");
 				String shortString = (df.format(footPounds));
 	
 				
-				//String footPoundsStr = Double.toString(((int)(footPounds * 1000))/1000.0);
-				
-				try {
-					for (MyWebSocket webSocket : webSockets) {
-						// send a message to the current client WebSocket.
-						webSocket.connection.sendMessage(shortString);
-					}
-				} catch (IOException x) {
-					// Error was detected, close the ChatWebSocket client side
-					this.connection.disconnect();
-				}
-
+				this.sendMessage(shortString);
 			}
 			
 			
