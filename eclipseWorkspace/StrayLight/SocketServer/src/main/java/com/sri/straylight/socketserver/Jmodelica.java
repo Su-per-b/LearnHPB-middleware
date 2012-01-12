@@ -11,8 +11,6 @@ import javax.script.ScriptException;
 
 import org.python.util.*;
 import org.python.core.*;
-import jep.Jep;
-import jep.JepException;
 import java.lang.ClassLoader;
 
 import java.lang.Runtime;
@@ -182,20 +180,21 @@ public class Jmodelica {
 	
 	
 	
-	public void testJep() {
+	//public void testJep() {
 		
-		try {
-			ClassLoader cl = this.getClass().getClassLoader();
+	//	try {
+		//	ClassLoader cl = this.getClass().getClassLoader();
 			
-			Jep objJep = new Jep(true, "C:", cl);
+			//Jep objJep = new Jep(true, "C:", cl);
 			
-
+/*
 			objJep.eval("print 'test 1'");
 			objJep.eval("print 'test 2'");
 			
 			objJep.eval("import sys");
 			objJep.eval("print sys.version_info");
-				
+			*/
+			
 			//objJep.runScript("C:\\ProgramFiles\\JModelica.org-1.6\\test1.py");
 			//objJep.runScript("C:\\test1.py");
 			
@@ -223,10 +222,10 @@ public class Jmodelica {
 			//objJep.eval("help('modules')");
 			
 			
-		} catch (JepException ex) {
-			 ex.printStackTrace();
-		}
-	}
+	//	} catch (JepException ex) {
+		//	 ex.printStackTrace();
+		//}
+	//}
 	
 	
 	
