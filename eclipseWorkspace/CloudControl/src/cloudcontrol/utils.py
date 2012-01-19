@@ -11,66 +11,22 @@ import paramiko
 import paramiko.sftp
 import os.path
 
+UBUNTU_AMI = 'ami-c9a1fe8c'
+IP_WINTERMUTE = '50.18.174.1'
+IP_STRAYLIGHT = '50.18.252.97'
 
-def launchWintermute() :
-    print '*****launch Wintermute******'
-    instance = Server()
-    instance.create("ami-9b0a54de", "Wintermute")
-    instance.launchOne()
-    instance.associateIP('50.18.174.1')
-    instance.openShell()
+ISTANCE_TYPE_MICRO='t1.micro'
+ISTANCE_TYPE_SMALL='m1.small'
 
-    
-def launchStraylight() :
-    print '*****launch Straylight******'
-    instance = Server()
-    instance.create("ami-9b0a54de", "Straylight")
-    instance.launchOne()
-    instance.associateIP('50.18.252.97')
-    instance.openShell()
-    
-def launchBuilder() :
-    print '*****launch Builder******'
-    instance = Server()
-    instance.create("ami-9b0a54de", "Builder")
-    instance.launchOne()
-    instance.openShell()
+
 
 def ssh(name, username) :
     instance = Server()
     instance.load(name, username)
     instance.openShell()
     
-def launchStraylightFromImage() :
-    print '*****launch Straylight From Image******'
-    instance = Server()
-    instance.createByName("StrayLightImageUnuntu3", "Straylight")
-    instance.instance_type = 'm1.small'
-    instance.launchOne()
-    instance.associateIP('50.18.252.97')
-    instance.uploadScript(r'resources\setup.sh')
-    instance.openShell()
     
-    
-def launchStraylightFromScratch() :
-    print '*****launch Straylight From Scratch******'
-    instance = Server()
-    instance.create("ami-11d68a54", "Straylight")
-    instance.launchOne()
-    instance.associateIP('50.18.252.97')
-    instance.uploadScript(r'resources\setup.sh')
-    instance.openShell()
-    
-def launchWintermuteFromScratch() :
-    print '*****launch Wintermute From Scratch******'
-    instance = Server()
-    instance.createByName("StrayLightImage2", "Wintermute")
-    instance.instance_type = 'm1.small'
-    instance.launchOne()
-    instance.associateIP('50.18.174.1')
-    instance.uploadScript(r'resources\setup.sh')
-    instance.openShell()
-      
+
       
 def uploadToStraylight() :
     instance = Server()
@@ -79,41 +35,49 @@ def uploadToStraylight() :
     instance.uploadScript(r'resources\setup.sh')
     
       
-def launchUbuntuFromScratch() :
-    print '*****launch Ubuntu From Scratch******'
+
+def launchFromScratch(hostname='Straylight') :
+    print '*****launchFromScratch: luanching ' + hostname + ' From Scratch******'
     instance = Server()
-    instance.username = 'ubuntu'
-    instance.create("ami-c9a1fe8c", "Straylight")
+    instance.create(UBUNTU_AMI, hostname)
+    instance.instance_type = ISTANCE_TYPE_SMALL
+    instance.launchOne()
+    associateIP(instance)
+    instance.uploadScript(r'resources\setup.sh')
+    instance.uploadScript(r'resources\startup.sh')
+    
+
+def launchFromImage(hostname='Straylight', imagename='StrayLightImageUnuntu4'):
+    print '*****launchFromImage: luanching ' + hostname + ' From Image******'
+    print 'using image: ' + imagename
+
+    instance = Server()
+    instance.createByName(imagename, hostname)
     instance.instance_type = 'm1.small'
     instance.launchOne()
-    instance.associateIP('50.18.252.97')
-    instance.uploadScript(r'resources\setup4.sh')
-    instance.uploadScript(r'resources\ub_startup.sh')
-    
-    instance.openShell()
-    
-def launchUbuntuFromScratch_Wintermute() :
-    print '*****launch Ubuntu From Scratch******'
-    instance = Server()
-    instance.username = 'ubuntu'
-    instance.create("ami-c9a1fe8c", "Wintermute")
-    instance.instance_type = 'm1.small'
-    instance.launchOne()
-    instance.associateIP('50.18.174.1')
-    instance.uploadScript(r'resources\ub_setup.sh')
-    instance.uploadScript(r'resources\ub_startup.sh')
+    associateIP(instance)
     instance.openShell()
     
 
+def associateIP(instance) :
+    if (instance.name == 'Wintermute'):
+       instance.associateIP(IP_WINTERMUTE)                  
+    else :
+        if (instance.name == 'Straylight') :
+            instance.associateIP(IP_STRAYLIGHT)
+    
+    
+    
+    
     
 class Server :
     def __init__(self):
-        self.connect()
         self.address = None
         self.key_file_paramiko = os.path.normpath('C:\putty\esimWestCoast.pem')
         self.key_file_putty = os.path.normpath('C:\putty\esimWestCoast.ppk')
         self.path_to_putty = os.path.normpath('C:\putty\putty.exe')
-        self.username = 'ec2-user'
+        self.username = 'ubuntu'
+        self.connect()
         
         
         
@@ -322,6 +286,7 @@ class Server :
     #    print 'association_id: ' + addresses[0].association_id
     def connect(self):
         self.connection = boto.connect_ec2()
+        
         print self.connection
         print self.connection.region
   

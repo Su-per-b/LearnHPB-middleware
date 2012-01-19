@@ -2,29 +2,22 @@
 # run with: sudo ./setup.sh test
 set -e #exit script if an error occurs
 
-# version StrayLight2
-#installDependencies
-#setEnvironmentVars
-#cloneGitRepo
-#install_python
-
-# version StrayLight3
-#install_ipopt
 
 ############################ OPTIONS ######################################################
 
 GIT_REPOSITORY_REMOTE='git://github.com/rajdye/straylight.git'        	# Url for the git repository
-SERVER_NAME='StraylightR'
+SERVER_NAME='Straylight - Ubuntu'
 
-USER_NAME='ec2-user'                                            # User running server
-USER_GROUP='ec2-user'
-USER_HOME='/home/ec2-user'
+USER_NAME='ubuntu'                                            # User running server
+GROUP_NAME="$USER_NAME"
+USER_HOME="/home/$USER_NAME"
 LOGFILE='/var/log/straylight.log'                              	# Logfile location and file
 ROOT_HOME='/root'
-PAUSE=true 							#pause before executing each step for debugging
+PAUSE=false 							#pause before executing each step for debugging
 WORKINGDIR='/var/tmp'
 GIT_REPOSITORY_LOCAL="$WORKINGDIR/straylight_repo"
 INSTALL_DIR='/usr/local/straylight'
+MAVEN_DIR='/usr/bin'
 
 ############################ END OPTIONS ##################################################
 
@@ -52,15 +45,11 @@ info() {
 	whoami
 	python --version
 	java -version
-	#javac -version
-
-	#yum should be installed
-	printStep 'yum --version'
-	yum --version
+	javac -version
 }
 
 precheck() {
-	printStep 'precheck'
+	#printStep 'precheck'
 	USER=$(whoami)
 	echo ""
 	if [ "$USER" == "root" ]
@@ -76,52 +65,49 @@ precheck() {
 	echo ""
 }
 
-installDependencies() {
+inst() {
 
-	printStep 'add jpackage to yum repos'
-	cd /etc/yum.repos.d/
-	wget http://jpackage.org/jpackage.repo
+	printStep "Install $1"
+	apt-get -y install $1
 
-	printStep 'update all packages'
-	yum -y update
-
-	printStep 'Install locate'
-	yum -y install mlocate
-	updatedb
-
-	printStep 'Install git'
-	yum -y install git
-
-	printStep 'Install JDK'
-	yum -y install java-1.6.0-openjdk-devel
-	java -version
-	javac -version
-	
-	printStep 'install ant'
-	yum -y install ant
-
-	printStep 'install maven2'
-	cd $WORKINGDIR
-	wget http://apache.cyberuse.com//maven/binaries/apache-maven-2.2.1-bin.tar.gz
-	mv apache-maven-2.2.1-bin.tar.gz /usr/local
-	cd /usr/local
-	tar -zxvf apache-maven-2.2.1-bin.tar.gz
-	rm -f apache-maven-2.2.1-bin.tar.gz
-	ln -s apache-maven-2.2.1 maven
-	/usr/local/maven/bin/mvn -version
-
-	printStep 'Development Tools'
-	cd $WORKINGDIR
-	yum -y groupinstall 'Development Tools'
-	yum -y install openssl-devel* zlib*.x86_64
 }
 
+installDependencies() {
 
+	printStep 'Update apt-get'
+	apt-get -y update
+
+	inst build-essential
+	inst git
+	inst openjdk-6-jdk
+	inst maven2
+	inst subversion
+	inst libatlas-base-dev
+	inst libgtk2.0-dev
+	inst python-gtk2
+	inst python-gtk2-dev
+	inst cmake
+	inst gfortran
+	inst libgtk2.0-dev 
+	inst libgtk-3-dev
+	inst swig
+	inst ant
+	inst liblapack-dev
+	inst libsundials-*
+	inst coinor-libipopt-dev
+	inst mpich-bin
+	inst libblas-dev
+	inst libmumps-seq-4.9.2
+	#inst apt-get -y install swig1.3
+	inst octave3.2-headers
+
+	updatedb
+
+}
 
 
 cloneGitRepo() {
 	printStep 'Clone the git repository'
-	#cd $WORKINGDIR
 	git clone $GIT_REPOSITORY_REMOTE $GIT_REPOSITORY_LOCAL
 }
 
@@ -136,53 +122,27 @@ updateGitRepo() {
 # go to the srouce code folder and build binaries with Maven
 mavenBuild() {
 	printStep 'Build projects with Maven'
+
 	#checkout the desired build
 	cd $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight
-	/usr/local/maven/bin/mvn clean install
+	$MAVEN_DIR/mvn clean install
 
 	cd $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/SocketServer
-	/usr/local/maven/bin/mvn clean install
+	$MAVEN_DIR/mvn clean install
 
 	cd $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/PageServer
-	/usr/local/maven/bin/mvn clean install
+	$MAVEN_DIR/mvn clean install
 
 }
 
-mkDirs() {
-	printStep 'Make Directories'
-	mkdir $INSTALL_DIR 
-	mkdir $INSTALL_DIR/pageserver $INSTALL_DIR/pageserver/target
-	mkdir $INSTALL_DIR/socketserver $INSTALL_DIR/socketserver/target
-}
+
 
 
 copy_binaries() {
 	printStep 'Copy Binaries'
-
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/PageServer/target/PageServer-*  $INSTALL_DIR/pageserver/target/
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/PageServer/target/classes  $INSTALL_DIR/pageserver/target/
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/PageServer/.classpath  $INSTALL_DIR/pageserver/.classpath
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/PageServer/pom.xml  $INSTALL_DIR/pageserver/pom.xml
-
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/SocketServer/target/SocketServer-*  $INSTALL_DIR/socketserver/target/
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/SocketServer/target/classes  $INSTALL_DIR/socketserver/target/
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/SocketServer/.classpath  $INSTALL_DIR/socketserver/.classpath
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight/SocketServer/pom.xml  $INSTALL_DIR/socketserver/pom.xml
-
-	cp $GIT_REPOSITORY_LOCAL/eclipseWorkspace/CloudControl/resources/straylight.sh $USER_HOME/straylight.sh
-	chmod 777 $USER_HOME/straylight.sh
-	chown ec2-user:ec2-user $USER_HOME/straylight.sh
-}
-
-
-
-launch() {
-	printStep 'Launch Projects'
-	cd $INSTALL_DIR/pageserver/
-	/usr/local/maven/bin/mvn exec:java -Dexec.mainClass="com.sri.straylight.pageserver.Main" &
-
-	cd $INSTALL_DIR/socketserver/
-	/usr/local/maven/bin/mvn exec:java -Dexec.mainClass="com.sri.straylight.socketserver.Main" &
+	
+	echo "cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight  $INSTALL_DIR"
+	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight  $INSTALL_DIR
 }
 
 
@@ -195,31 +155,9 @@ usage() {
 clean() {
 	printStep 'clean'
 	
-	#remove all binaries
 	rm -Rf $INSTALL_DIR
 	
-	#remove scripts
-	rm -f /etc/init.d/straylight.sh
-	rm -f $USER_HOME/straylight.sh
-	rm -f $USER_HOME/setup.sh
-
 }
-
-#after clean, then remove everything
-uninstall() {
-	rm -Rf $GIT_REPOSITORY_LOCAL
-
-	rm -f /etc/init.d/straylight.sh /etc/rc.d/rc0.d/K91straylight
-	rm -f /etc/init.d/straylight.sh /etc/rc.d/rc1.d/K91straylight
-	rm -f /etc/init.d/straylight.sh /etc/rc.d/rc2.d/S91straylight
-	rm -f /etc/init.d/straylight.sh /etc/rc.d/rc3.d/S91straylight
-	rm -f /etc/init.d/straylight.sh /etc/rc.d/rc4.d/S91straylight
-	rm -f /etc/init.d/straylight.sh /etc/rc.d/rc5.d/S91straylight
-	rm -f /etc/init.d/straylight.sh /etc/rc.d/rc6.d/K91straylight
-
-}
-
-
 
 
 setEnvironmentVars() {
@@ -238,13 +176,8 @@ setEnvironmentVars() {
 		;;
 		esac
 
-		export JAVA_HOME=/usr/lib/jvm/jre-1.6.0-openjdk
-		export M2_HOME=/usr/local/apache-maven-2.2.1
-		export PYTHON_HOME=/opt/python2.7.2
-		export PATH=${M2_HOME}/bin:${PYTHON_HOME}/bin:${PATH}
-
-		alias python='${PYTHON_HOME}/bin/python'
-		alias python2.7='${PYTHON_HOME}/bin/python'
+		export JAVA_HOME=/usr/lib/jvm/java-6-openjdk
+		export M2_HOME=/usr/bin
 
 	EOF
 	set -e
@@ -300,70 +233,7 @@ updateLoginScript() {
 	fi
 }
 
-copy_startup_scripts() {
 
-	cp ~/straylight_repo/eclipseWorkspace/CloudControl/resources/straylight.sh $USER_HOME/straylight.sh
-	chmod 777 $USER_HOME/straylight.sh
-	chown ec2-user:ec2-user $USER_HOME/straylight.sh
-	
-	cp ~/straylight_repo/eclipseWorkspace/CloudControl/resources/straylight.sh /etc/init.d/straylight.sh
-	chmod 777 /etc/init.d/straylight.sh
-	
-}
-
-
-#install Python
-# from http://mythinkpond.wordpress.com/2011/12/28/how-to-upgrade-to-python-2-7-on-centos/
-# http://willsani.com/2011/03/02/centos-5-5-x86_64-install-python-2-7/
-install_python() {
-
-	printStep 'Install SQL Lite'
-	cd $WORKINGDIR
-	wget http://sqlite.org/sqlite-amalgamation-3.7.3.tar.gz
-	tar xfz sqlite-amalgamation-3.7.3.tar.gz
-	rm -f ./sqlite-amalgamation-3.7.3.tar.gz
-	cd sqlite-3.7.3/
-	./configure
-	make
-	make install
-	
-	
-	printStep 'Install Python-2.7.2'
-	cd $WORKINGDIR
-	wget http://python.org/ftp/python/2.7.2/Python-2.7.2.tgz
-	tar xfz Python-2.7.2.tgz
-	rm -f Python-2.7.2.tgz
-	cd Python-2.7.2
-	./configure --prefix=/opt/python2.7.2 --with-threads --enable-shared
-	make
-	make install
-
-	touch /etc/ld.so.conf.d/opt-python2.7.2.conf
-	echo "/opt/python2.7.2/lib/" >> /etc/ld.so.conf.d/opt-python2.7.2.conf
-
-	ln -sf /opt/python2.7.2/bin/python /usr/bin/python2.7
-	#ln -sf /opt/python2.7.2/bin/python /usr/bin/python
-	#ln -sf /usr/lib/python2.6 /usr/bin/python
-	
-	ln -sf /opt/python2.7.2/lib/libpython2.7.so /usr/lib/libpython2.7.so
-
-	ldconfig
-
-	printStep 'Install Python Setup Tools'
-	cd $WORKINGDIR
-	wget http://pypi.python.org/packages/2.7/s/setuptools/setuptools-0.6c11-py2.7.egg
-	chmod 775 setuptools-0.6c11-py2.7.egg
-	sh setuptools-0.6c11-py2.7.egg --prefix=/opt/python2.7.2
-	#This should install the egg here: /opt/python2.7.2/site-packages/
-
-	/opt/python2.7.2/bin/easy_install pip
-	ln -sf /opt/python2.7.2/bin/pip /usr/bin/pip
-
-	pip install virtualenv
-	ln -sf /opt/python2.7.2/bin/virtualenv /usr/bin/virtualenv
-
-
-}
 
 
 # JPype 0.5.4.2 (http://jpype.sourceforge.net/) 
@@ -378,85 +248,37 @@ install_python() {
 # Nose 1.1.2 <http://readthedocs.org/docs/nose/en/latest/> (Only needed to runthe test suits.)
 install_python_packages() {
 
+	printStep 'Install Python Setup Tools'
+	cd $WORKINGDIR
+	wget http://pypi.python.org/packages/2.7/s/setuptools/setuptools-0.6c11-py2.7.egg
+	chmod 775 setuptools-0.6c11-py2.7.egg
+	sh setuptools-0.6c11-py2.7.egg
 	
+	#This should install the egg here: /opt/python2.7.2/site-packages/
+	/usr/local/bin/easy_install pip
+	pip install virtualenv
 
+	printStep 'Install python-dev'
+	apt-get -y install python-dev
+
+	printStep 'Install wxPython 2.8'
+	apt-get -y install python-wxgtk2.8
+	apt-get -y install python-wxtools
+	apt-get -y install wx2.8-i18n
+	apt-get -y install libwxgtk2.8-dev
+	
 	printStep 'Install JPype'
-	#mkdir $HOME/local
-	cd $WORKINGDIR
-	cp $GIT_REPOSITORY_LOCAL/assets/libs/JPype-0.5.4.2.zip $WORKINGDIR/JPype-0.5.4.2.zip
-	unzip JPype-0.5.4.2.zip
-	cd JPype-0.5.4.2
-	#python2.7 setup.py install --prefix $HOME/local
-	python2.7 setup.py install
+	apt-get -y install python-jpype
 
-	export PYTHONPATH=$PYTHONPATH:/opt/python2.7.2/lib/python2.7/site-packages
+	printStep 'Install libxslt-dev'
+	apt-get -y install libxslt-dev
 
-	#printStep 'Test JPype'
-	#python2.7
-	#import jpype
+	pip install numpy
+	pip install scipy
+	pip install cython
 
-
-	printStep 'Install lxml'	
-	yum -y install libxslt-devel
-	#python2.7 setup.py install
-	
-
-	
-	#export BLAS=/path/to/libblas.so
-	#export LAPACK=/path/to/liblapack.so
-	#export ATLAS=/path/to/libatlas.so
-
-	printStep 'Install NumPy'
-	cd $WORKINGDIR
-	cp $GIT_REPOSITORY_LOCAL/assets/libs/numpy-1.6.1.zip $WORKINGDIR/numpy-1.6.1.zip
-	unzip numpy-1.6.1.zip
-	rm -f numpy-1.6.1.zip
-	cd numpy-1.6.1
-	python2.7 setup.py install
-	
-	
-	printStep 'Install SciPy'
-	cd $WORKINGDIR
-	cp $GIT_REPOSITORY_LOCAL/assets/libs/scipy-0.10.0.tar.gz $WORKINGDIR/scipy-0.10.0.tar.gz
-	tar xvf scipy-0.10.0.tar.gz
-	rm -f scipy-0.10.0.tar.gz
-	cd scipy-0.10.0
-	python2.7 setup.py install
-
-	printStep 'Install Cython'
-	cd $WORKINGDIR
-	wget http://www.cython.org/release/Cython-0.15.1.tar.gz
-	tar xfz Cython-0.15.1.tar.gz
-	rm -f Cython-0.15.1.tar.gz
-	cd Cython-0.15.1
-	python2.7 setup.py install
-
-	printStep 'Install wxPython'
-	cd $WORKINGDIR
-	wget http://cdnetworks-us-2.dl.sourceforge.net/project/wxpython/wxPython/2.8.12.1/wxPython-src-2.8.12.1.tar.bz2
-	tar xvfj wxPython-src-2.8.12.1.tar.bz2
-	rm -f wxPython-src-2.8.12.1.tar.bz2
-	cd wxPython-src-2.8.12.1/wxPython
-	python2.7 setup.py install
-	#python2.7 build-wxpython.py --build_dir=../bld
-
-	printStep 'Install ipython-0.12 for python 2.7'
+	printStep 'Install ipython-0.12'
 	pip install ipython
-
-	printStep 'Install nose for python 2.7'
-	pip install nose
-	pip install lxml
-	pip install blas
-
-	printStep 'Install FreeType2'
-	cd $WORKINGDIR
-	wget http://downloads.sourceforge.net/freetype/freetype-2.4.8.tar.bz2
-	tar xvf freetype-2.4.8.tar.bz2
-	rm -f freetype-2.4.8.tar.bz2
-	cd freetype-2.4.8
-	./configure --prefix=/usr
-	make
-	make install
 
 	printStep 'Install libpng-1.2.29'
 	cd $WORKINGDIR
@@ -468,53 +290,65 @@ install_python_packages() {
 	make
 	make install
 
+	printStep 'Install nose'
+	pip install nose
+
+	printStep 'Install lxml'
+	pip install lxml
+
 	printStep 'Install matplotlib'
-	cd $WORKINGDIR
-	wget http://iweb.dl.sourceforge.net/project/matplotlib/matplotlib/matplotlib-1.1.0/matplotlib-1.1.0.tar.gz
-	tar xfz matplotlib-1.1.0.tar.gz
-	rm -f matplotlib-1.1.0.tar.gz
-	cd matplotlib-1.1.0
-	python2.7 setup.py build
-	python2.7 setup.py install
+	pip install matplotlib
 
+	#config matplotlib
+	rm -f /usr/local/lib/python2.7/dist-packages/matplotlib/mpl-data/matplotlibrc
+	cp $GIT_REPOSITORY_LOCAL/assets/config/matplotlib/matplotlibrc /usr/local/lib/python2.7/dist-packages/matplotlib/mpl-data/matplotlibrc
+	
+	#pyreadline
+
+}
+
+# http://sourceforge.net/apps/trac/casadi/wiki/InstallationInstructions
+install_casadi() {
+	
+	printStep 'Install CasADi'
+	cd /opt/packages
+
+ 	svn co https://casadi.svn.sourceforge.net/svnroot/casadi/trunk casadi
+	#svn co https://casadi.svn.sourceforge.net/svnroot/casadi/tags/v1.3.0beta/ casadi
+
+	cd casadi
+	mkdir build
+	cd build
+	cmake ../ -DEXTRA_LIBRARIES:STRING=-lgfortran
+	make python
 }
 
 
 
+test_jmodelica() {
 
+	if [ -d ~/scripts ]; then
+		echo "Delete scripts directory"
+		rm -Rf ~/scripts
+	fi
 
+	cp -R $GIT_REPOSITORY_LOCAL/assets/scripts ~/scripts
+	cp /var/tmp/JModelica/build/Python/jm_python.sh ~/scripts/jm_python.sh
 
-make_startupLinks() {
-
-	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc0.d/K91straylight
-	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc1.d/K91straylight
-	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc2.d/S91straylight
-	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc3.d/S91straylight
-	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc4.d/S91straylight
-	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc5.d/S91straylight
-	ln -s /etc/init.d/straylight.sh /etc/rc.d/rc6.d/K91straylight
+	chown $USER_NAME:$USER_GROUP -R ~/scripts
+	chmod 775 -R ~/scripts
+	cd ~/scripts
+	
+	sh ./check_packages.sh
+	sh ./test_fmu.sh
 }
+
 
 
 #https://svn.jmodelica.org/tags/1.6/INSTALL
 install_jmodelica() {
 
-	printStep 'Install Jmodelica'
-	cd $WORKINGDIR
-
-	ln -sf /opt/python2.7.2/bin/python /usr/bin/python
-
-	printStep 'Get Sundials'
-	cd $WORKINGDIR
-	cp $GIT_REPOSITORY_LOCAL/assets/libs/sundials-2.4.0.tar.gz $WORKINGDIR/sundials-2.4.0.tar.gz
-	tar xfz sundials-2.4.0.tar.gz
-	cd sundials-2.4.0
-	./configure
-	make
-	make install
-	
-	#installs some to /usr/local/jmodelica
-	printStep 'Build JModelica'
+	printStep 'checkout JModelica'
 	cd $WORKINGDIR
 	svn checkout --trust-server-cert --non-interactive https://svn.jmodelica.org/tags/1.6/ JModelica
 	cd $WORKINGDIR/JModelica
@@ -522,19 +356,43 @@ install_jmodelica() {
 	mkdir build
 	cd $WORKINGDIR/JModelica/build
 
-	$WORKINGDIR/JModelica/configure --with-ipopt=$WORKINGDIR/CoinIpopt --with-sundials=/usr/local
+	printStep 'configure JModelica'
+	$WORKINGDIR/JModelica/configure \
+	--prefix=/opt/packages/jmodelica/jmodelica-install \
+	--with-ipopt=/opt/packages/coin-or/ipopt-install \
+	--with-sundials=/opt/packages/sundials/sundials-install \
+	--with-casadi=/opt/packages/casadi/build/swig/python
+	
+	printStep 'make JModelica'
 	make
+	
+	printStep 'printStep 'make JModelica' JModelica'
 	make install
 	#make docs
 
-	ln -sf /usr/lib/python2.6 /usr/bin/python
 }
+
+install_sundials() {
+	printStep 'Install Sundials'
+	cd $WORKINGDIR
+	cp $GIT_REPOSITORY_LOCAL/assets/libs/sundials-2.4.0.tar.gz $WORKINGDIR/sundials-2.4.0.tar.gz
+	tar xfz sundials-2.4.0.tar.gz
+	cd sundials-2.4.0
+	./configure prefix=/opt/packages/sundials/sundials-install
+	make
+	make install
+
+	#should end with Libraries have been installed in: 
+	# /opt/packages/sundials/sundials-install/lib
+}
+
 
 install_ipopt() {
 	
 	printStep 'Get Ipopt'
 	cd $WORKINGDIR
 	wget http://www.coin-or.org/download/source/Ipopt/Ipopt-3.10.1.tgz
+	#wget http://www.coin-or.org/download/source/Ipopt/Ipopt-doxydoc-3.9.3.tgz
 	tar xfz Ipopt-3.10.1.tgz
 	rm -f Ipopt-3.10.1.tgz
 	mv Ipopt-3.10.1 CoinIpopt
@@ -547,10 +405,18 @@ install_ipopt() {
 	cd $WORKINGDIR/CoinIpopt/ThirdParty/Lapack
 	./get.Lapack
 
+	printStep 'Get Mumps'
+	cd $WORKINGDIR/CoinIpopt/ThirdParty/Mumps
+	./get.Mumps
+
 	printStep 'Get ASL'
 	cd $WORKINGDIR/CoinIpopt/ThirdParty/ASL
 	./get.ASL
 	
+	printStep 'Get Metis'
+	cd $WORKINGDIR/CoinIpopt/ThirdParty/Metis
+	./get.Metis
+
 	printStep 'Get MA27'
 	cd $WORKINGDIR
 	cp $GIT_REPOSITORY_LOCAL/assets/libs/ma27-1.0.0.tar.gz $WORKINGDIR/ma27-1.0.0.tar.gz
@@ -573,231 +439,49 @@ install_ipopt() {
 	printStep 'Install Ipopt - configure'
 	cd $WORKINGDIR/CoinIpopt
 
-	./configure
+	./configure --disable-pkg-config \
+	prefix=/opt/packages/coin-or/ipopt-install # was defaulting to --prefix=/var/tmp/CoinIpopt
 	# output should be: "configure: Main configuration of Ipopt successful"
 	printStep 'Install Ipopt - make'
 	make
+
 	printStep 'Install Ipopt - make check'
 	make check
+
 	printStep 'Install Ipopt - make install'
 	make install
+	#/var/tmp/CoinIpopt/lib
 
 }
 
 
-#http://www.gtk.org/download/linux.php
-install_gtk() {
-	printStep 'Install libffi-3.0.10'
-	cd $WORKINGDIR
-	wget ftp://sourceware.org/pub/libffi/libffi-3.0.10.tar.gz
-	tar xvf libffi-3.0.10.tar.gz
-	rm -f libffi-3.0.10.tar.gz
-	cd libffi-3.0.10
-	./configure --prefix=/usr
-	make
-	make install
-
-	printStep 'Install GLib 2.30'
-	cd $WORKINGDIR
-	wget http://ftp.gnome.org/pub/gnome/sources/glib/2.30/glib-2.30.2.tar.bz2
-	tar xvfj glib-2.30.2.tar.bz2
-	rm -f glib-2.30.2.tar.bz2
-	cd glib-2.30.2
-	./configure --prefix=/usr
-	make
-	make install
-	export PKG_CONFIG_PATH=/usr/lib/pkgconfig/glib-2.0.pc:${PKG_CONFIG_PATH}
-
-	exit 0
-	printStep 'Install ATK 2.0'
-	cd $WORKINGDIR
-	wget http://ftp.gnome.org/pub/gnome/sources/atk/2.0/atk-2.0.1.tar.bz2
-	tar xvfj atk-2.0.1.tar.bz2
-	rm -f atk-2.0.1.tar.bz2
-	cd atk-2.0.1
-	./configure
-	make
-	make install
-	
-	
-
-	printStep 'Install Pango 1.28.4'
-	cd $WORKINGDIR
-	wget http://ftp.gnome.org/pub/gnome/sources/gdk-pixbuf/2.24/gdk-pixbuf-2.24.0.tar.bz2
-	tar xvfj gdk-pixbuf-2.24.0.tar.bz2
-	rm -f gdk-pixbuf-2.24.0.tar.bz2
-	cd gdk-pixbuf-2.24.0
-	./configure
-	make
-	make install
-
-
-
-	printStep 'Gdk-Pixbuf 2.24'
-	cd $WORKINGDIR
-	wget http://ftp.gnome.org/pub/gnome/sources/pango/1.28/pango-1.28.4.tar.bz2
-	tar xvfj pango-1.28.4.tar.bz2
-	rm -f pango-1.28.4.tar.bz2
-	cd pango-1.28.4
-	./configure
-	make
-	make install
-
-
-
-	printStep 'Install GTK+-3.2.2'
-	cd $WORKINGDIR
-	wget http://ftp.gnome.org/pub/gnome/sources/gtk+/3.2/gtk+-3.2.2.tar.bz2
-	tar xvfj gtk+-3.2.2.tar.bz2
-	rm -f gtk+-3.2.2.tar.bz2
-	cd gtk+-3.2.2
-	./configure --prefix=/opt/gtk
-	make
-	make install
-
-
-	#printStep 'Install GTK+-2.24.8'
-	#cd $WORKINGDIR
-	#wget http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.8.tar.bz2
-	#tar xvfj gtk+-2.24.8.tar.bz2
-	#rm -f gtk+-2.24.8.tar.bz2
-	#cd gtk+-2.24.8
-	#./configure --prefix=/opt/gtk
-	#make
-	#make install
-
-}
-
-install_gcc() {
-
-
-
-
-	#installs in /usr/local/lib
-	printStep 'install_gcc g77'
-	cd $WORKINGDIR
-	wget http://fileboar.com/gcc/releases/gcc-4.6.2/gcc-4.6.2.tar.bz2
-	tar xvfj gcc-4.6.2.tar.bz2
-	rm -f gcc-4.6.2.tar.bz2
-	cd gcc-4.6.2
-	./configure
-	make
-	make install
-
-	exit 0
-
-
-}
-
-
-test2() {
-
-	install_gcc
-	exit 0
-
-
-	printStep 'install MPFR version 2.4.2'
-	cd $WORKINGDIR
-	wget http://www.mpfr.org/mpfr-2.4.2/mpfr-2.4.2.tar.bz2
-	tar xvfj mpfr-2.4.2.tar.bz2
-	rm -f mpfr-2.4.2.tar.bz2
-	cd mpfr-2.4.2
-	./configure
-	make
-	make install
-
-
-	printStep 'install mpc'
-	cd $WORKINGDIR
-	wget http://www.multiprecision.org/mpc/download/mpc-0.9.tar.gz
-	tar xvf mpc-0.9.tar.gz
-	rm -f mpc-0.9.tar.gz
-	cd mpc-0.9
-	./configure --prefix=/usr/local/
-	make
-	make install
-
-	printStep 'install gmp-4.3.2'
-	cd $WORKINGDIR
-	wget ftp://ftp.gnu.org/gnu/gmp/gmp-4.3.2.tar.bz2
-	tar xvfj gmp-4.3.2.tar.bz2
-	rm -f gmp-4.3.2.tar.bz2
-	cd gmp-4.3.2
-	./configure
-	make
-	make install
-
-
-
-	printStep 'Install BLAS'
-	cd $WORKINGDIR
-	wget http://www.netlib.org/blas/blas.tgz
-	tar xzf blas.tgz
-	cd BLAS
-	g77 -O2 -fno-second-underscore -c *.f                     # with g77
-	gfortran -O2 -std=legacy -fno-second-underscore -c *.f    # with gfortran
-	ar r libfblas.a *.o
-	ranlib libfblas.a
-	rm -rf *.o
-	export BLAS=$WORKINGDIR/BLAS/libfblas.a
-
-	# NOTE: The selected fortran compiler must be consistent for BLAS, LAPACK, NumPy, and SciPy.
-	# For GNU compiler on 32-bit systems:
-	
-
-	exit 0
-	printStep 'Install SciPy'
-	cd $WORKINGDIR
-	cp $GIT_REPOSITORY_LOCAL/assets/libs/scipy-0.10.0.tar.gz $WORKINGDIR/scipy-0.10.0.tar.gz
-	tar xvf scipy-0.10.0.tar.gz
-	rm -f scipy-0.10.0.tar.gz
-	cd scipy-0.10.0
-	python2.7 setup.py install
-
-	#http://www.scipy.org/Installing_SciPy/BuildingGeneral
-	printStep 'Install blas'
-	cd $WORKINGDIR
-	wget http://www.netlib.org/blas/blas.tgz
-	tar xzvf blas.tgz
-	rm -f blas.tgz
-	cd BLAS
-	python2.7 setup.py install
-
-
-
-
-}
 
 
 case "$1" in
         'all')
 		precheck
-		info
 		installDependencies
 		setEnvironmentVars
 		cloneGitRepo
-		install_python
-		install_gtk
-		mavenBuild
-		mkDirs
-		copy_binaries
-		copy_startup_scripts
-		make_startupLinks
+		install_python_packages
+		install_sundials
+		install_ipopt
+		install_casadi
+		install_jmodelica
+		test_jmodelica
+		#mavenBuild
+		#copy_binaries
 	;;
         'clone')
 		precheck
 		cloneGitRepo
         ;;
         'update')
-		./straylight.sh stop
 		precheck
 		clean
-		mkDirs
 		updateGitRepo
 		mavenBuild
 		copy_binaries
-		copy_startup_scripts
-		./straylight.sh start
         ;;
         'env')
 		precheck
@@ -814,19 +498,21 @@ case "$1" in
 		precheck
 		clean
         ;;
-        'test')
-		test2
+        'test')	
+		updateGitRepo
+		test_jmodelica
+
         ;;
-        'python')
-		install_python
-        ;;	
-        'jmodelica')
-		installDependencies
-		cloneGitRepo
-		install_ipopt
+        'j')
+		#test2
+		#install_ipopt
+		#setEnvironmentVars
+		updateGitRepo
+		install_python_packages
+		install_jmodelica
         ;;
         *)
-	usage
+	
 esac
 
 
