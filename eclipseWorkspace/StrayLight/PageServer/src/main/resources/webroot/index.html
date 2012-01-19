@@ -5,6 +5,55 @@
 <script type="text/javascript">
 
 
+
+	//var qsParm = new Array();
+	//qsParm['socket-server'] = 'straylight';
+	//qs();
+	
+
+	socketServerUrl = 'none';
+	findSocketServer();
+	
+	function findSocketServer() {
+
+		url = String (window.location)
+		console.log('window.location: '+ url)
+		
+		hostname = url.split('/')[2];
+		console.log('hostname: '+ hostname)
+		
+
+		if (hostname == 'wintermute') {
+			socketServerUrl = "ws://wintermute.rajlab.com:8080/"
+		} else if (hostname == 'straylight') {
+			socketServerUrl = "ws://straylight.rajlab.com:8080/"
+		} else if (hostname == 'localhost') {
+			socketServerUrl = "ws://localhost:8080/"
+		} else {
+			alert ('invalid hostname: ' + hostname);
+		}
+			
+		
+	}
+	/*
+	
+	function qs() {
+		var query = window.location.search.substring(1);
+		var parms = query.split('&');
+		for (var i=0; i<parms.length; i++) {
+			var pos = parms[i].indexOf('=');
+			if (pos > 0) {
+				var key = parms[i].substring(0,pos);
+				var val = parms[i].substring(pos+1);
+				qsParm[key] = val;
+			}	
+		}
+	}
+	*/
+	
+
+
+	var remote
 	if (!window.WebSocket)
 		alert("WebSocket not supported by this browser");
 
@@ -17,36 +66,25 @@
 	function connect() {
 		room.connect();
 	}
-	
-	var gallons = 1;
+
 
 	function getKeyCode(ev) {
 		if (window.event)
 			return window.event.keyCode;
 		return ev.keyCode;
 	}
-	var convert = {
-		gallonsToFootPound : function(gallons) {
-			var location = "ws://localhost:8080/"
-			this._gallons = gallons;
-			this._ws = new WebSocket(location);
-			this._ws.onopen = this._onopen;
-			this._ws.onmessage = this._onmessage;
-			this._ws.onclose = this._onclose;
-			this._ws.onerror = this._onerror;
-		}
-	}
 	
+
 	var room = {
+			
 		connect : function() {
 
-			
 			room.output('establishing connection...');
+
+
 			
-			var location = "ws://straylight.rajlab.com:8080/"
-			//var location = "ws://localhost:8080/"
 			
-			this._ws = new WebSocket(location);
+			this._ws = new WebSocket(socketServerUrl);
 			this._ws.onopen = this._onopen;
 			this._ws.onmessage = this._onmessage;
 			this._ws.onclose = this._onclose;
@@ -64,8 +102,8 @@
 		},
 
 		_onopen : function() {			
-			$('gallonsButton').disabled = false;
-			room.output('connected');
+			$('submitButton').disabled = false;
+			room.output('connected to: ' + socketServerUrl);
 		},
 		
 		output : function(text) {
@@ -86,7 +124,7 @@
 
 				var text = m.data;
 				
-				text = gallons + ' gallons of gasoline equals ' + text + ' foot pounds of tourque';
+				//text = gallons + ' gallons of gasoline equals ' + text + ' foot pounds of tourque';
 				
 				room.output(text);
 			}
@@ -120,8 +158,8 @@ div {
 
 div#chat {
 	clear: both;
-	width: 40em;
-	height: 20ex;
+	width: 90%;
+	height: 80ex;
 	overflow: auto;
 	background-color: #f0f0f0;
 	padding: 4px;
@@ -157,24 +195,22 @@ span.from {
 </style>
 </head>
 <body onload="connect()" >
-	<h3>Websockets Test</h3>
+	<h3>Simulation Test</h3>
 	
-	<div id="inputGallons">
+	<div>
 	
-		<div id="gallonsDiv">
-			gallons of gasoline:&nbsp;
-			<input id="gallonsInput" type="text" value="1"> </input>
-			
-			<input id="gallonsButton" disabled="true"
-				class="button" type="submit" name="gallonsButton" value="Submit" />
-				
+		<div>
+			command:&nbsp;
+			<input id="commandInput" type="text" value="run"> </input>
+		
+			<input id="submitButton" disabled="true"
+				class="button" type="submit" name="submitButton" value="Submit" />
 				
 		</div>
 		
-
 	</div>
 	
-	
+		<br />
 	<div id="chat"></div>
 	
 
@@ -183,10 +219,10 @@ span.from {
 
 		
 		// "Join" button click opens Chat WebSockets
-		$('gallonsButton').onclick = function(event) {
+		$('submitButton').onclick = function(event) {
 		
-			room.chat($F('gallonsInput'));
-			$('gallonsInput').value = '';
+			room.chat($F('commandInput'));
+			$('commandInput').value = '';
 			
 			return false;
 		};
