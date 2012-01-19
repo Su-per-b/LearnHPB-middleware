@@ -40,13 +40,13 @@ public class Jmodelica {
 			if (theOs.matches("Windows 7")) {
 				
 				cmd = "C:\\python\\Python2.7\\python.exe";
-				arg = "C:\\ProgramFiles\\JModelica.org-1.6\\test_fmu.py";
+				arg = "C:\\ProgramFiles\\JModelica.org-1.6\\test_bouncingBall.py";
 				directory = "C:\\ProgramFiles\\JModelica.org-1.6";
 				
 			} else {
 				
 				cmd = "/usr/bin/python";
-				arg = "/opt/packages/jmodelica/jmodelica-install/test_fmu.py";
+				arg = "/opt/packages/jmodelica/jmodelica-install/test_bouncingBall.py";
 				directory = "/opt/packages/jmodelica/jmodelica-install";
 				
 			}
