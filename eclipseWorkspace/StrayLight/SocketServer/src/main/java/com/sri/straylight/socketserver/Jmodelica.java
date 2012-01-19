@@ -45,13 +45,13 @@ public class Jmodelica {
 				
 			} else {
 				
-				cmd = "/usr/bin/python";
+				cmd = "/opt/packages/jmodelica/jmodelica-install/bin/jm_python.sh";
 				arg = "/opt/packages/jmodelica/jmodelica-install/test_bouncingBall.py";
 				directory = "/opt/packages/jmodelica/jmodelica-install";
 				
 			}
 			
-		
+			
 			ProcessBuilder pb = new ProcessBuilder(cmd, arg);
 			
 		    File workingDir = new File(directory);
