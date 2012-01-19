@@ -4,7 +4,7 @@ set -e
 
 
 LOGFILE='/var/log/straylight.log'
-MAIN_PATH='/usr/local/straylight'
+MAIN_PATH='/opt/packages/sri/straylight'
 
 DEBUG=false
 
@@ -166,9 +166,9 @@ service_start_helper() {
 	CLASS=$3
 
 	output " *** Starting $TITLE ***"
+	echo "cd $WORKER_DIR"
 	cd "$WORKER_DIR"
 	#cd /var/tmp/straylight_repo/eclipseWorkspace/StrayLight/PageServer
-	echo "cd $WORKER_DIR"
 
 	#/usr/bin/java -classpath /usr/local/maven/boot/classworlds-1.1.jar -Dclassworlds.conf=/usr/share/maven2/bin/m2.conf -Dmaven.home=/usr/share/maven2 org.codehaus.classworlds.Launcher "exec:java" "-Dexec.mainClass=$CLASS" &
 	
@@ -300,6 +300,7 @@ case "$1" in
         ;;
         *)
         echo "Usage ./straylight start|stop|restart|precheck|status"
+	;;
 esac
 
 

@@ -4,8 +4,10 @@ set -e #exit script if an error occurs
 
 
 ############################ OPTIONS ######################################################
-
+WORKINGDIR='/var/tmp'
 GIT_REPOSITORY_REMOTE='git://github.com/rajdye/straylight.git'        	# Url for the git repository
+GIT_REPOSITORY_LOCAL="$WORKINGDIR/straylight_repo"
+
 SERVER_NAME='Straylight - Ubuntu'
 
 USER_NAME='ubuntu'                                            # User running server
@@ -14,9 +16,9 @@ USER_HOME="/home/$USER_NAME"
 LOGFILE='/var/log/straylight.log'                              	# Logfile location and file
 ROOT_HOME='/root'
 PAUSE=false 							#pause before executing each step for debugging
-WORKINGDIR='/var/tmp'
-GIT_REPOSITORY_LOCAL="$WORKINGDIR/straylight_repo"
-INSTALL_DIR='/usr/local/straylight'
+
+
+STRAYLIGHT_INSTALL_DIR='/opt/packages/sri/straylight'
 MAVEN_DIR='/usr/bin'
 
 ############################ END OPTIONS ##################################################
@@ -54,9 +56,9 @@ precheck() {
 	echo ""
 	if [ "$USER" == "root" ]
 	then
-		echo "You are logged in as:  $USER"	
+		echo "You are logged in as user: $USER"	
 	else
-		echo "You are incorrectly running this script as: $USER"
+		echo "You are incorrectly running this script as user:$USER"
 		usage
 	  #echo "$(date +"%b %a %d  %H:%M:%S"): You do not have Sudo installed." >> $LOGFILE
 		exit 1
@@ -141,21 +143,39 @@ mavenBuild() {
 copy_binaries() {
 	printStep 'Copy Binaries'
 	
-	echo "cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight  $INSTALL_DIR"
-	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight  $INSTALL_DIR
+	if [ ! -d /opt/packages/sri ]
+	then
+		mkdir /opt/packages/sri
+	fi
+
+
+	echo "cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight $STRAYLIGHT_INSTALL_DIR"
+	cp -R $GIT_REPOSITORY_LOCAL/eclipseWorkspace/StrayLight  $STRAYLIGHT_INSTALL_DIR
+
+	rm -Rf $STRAYLIGHT_INSTALL_DIR/PageServer/src
+	rm -Rf $STRAYLIGHT_INSTALL_DIR/SocketServer/src
+	rm -Rf $STRAYLIGHT_INSTALL_DIR/Common
+	
+
+	#config matplotlib
+	#rm -f /usr/local/lib/python2.7/dist-packages/matplotlib/mpl-data/matplotlibrc
+	cp -f $GIT_REPOSITORY_LOCAL/assets/config/matplotlib/matplotlibrc /usr/local/lib/python2.7/dist-packages/matplotlib/mpl-data/matplotlibrc
+
+	cp -f $GIT_REPOSITORY_LOCAL/assets/test_bouncingBall.py /opt/packages/jmodelica/jmodelica-install/test_bouncingBall.py
+	chmod 775 /opt/packages/jmodelica/jmodelica-install/test_bouncingBall.py
+
+	cp -f $GIT_REPOSITORY_LOCAL/assets/bouncingBall.fmu /opt/packages/jmodelica/jmodelica-install/bouncingBall.fmu
 }
 
 
 
-usage() {
-	echo "Usage: sudo ./setup all|clone|env|build|precheck|clean|test|update"	
-}
+
 
 #clean before upgrade
 clean() {
 	printStep 'clean'
 	
-	rm -Rf $INSTALL_DIR
+	rm -Rf $STRAYLIGHT_INSTALL_DIR
 	
 }
 
@@ -254,7 +274,6 @@ install_python_packages() {
 	chmod 775 setuptools-0.6c11-py2.7.egg
 	sh setuptools-0.6c11-py2.7.egg
 	
-	#This should install the egg here: /opt/python2.7.2/site-packages/
 	/usr/local/bin/easy_install pip
 	pip install virtualenv
 
@@ -299,9 +318,7 @@ install_python_packages() {
 	printStep 'Install matplotlib'
 	pip install matplotlib
 
-	#config matplotlib
-	rm -f /usr/local/lib/python2.7/dist-packages/matplotlib/mpl-data/matplotlibrc
-	cp $GIT_REPOSITORY_LOCAL/assets/config/matplotlib/matplotlibrc /usr/local/lib/python2.7/dist-packages/matplotlib/mpl-data/matplotlibrc
+
 	
 	#pyreadline
 
@@ -455,7 +472,9 @@ install_ipopt() {
 }
 
 
-
+usage() {
+	echo "Usage: sudo ./setup all|clone|env|build|precheck|clean|test|update"	
+}
 
 case "$1" in
         'all')
@@ -469,8 +488,8 @@ case "$1" in
 		install_casadi
 		install_jmodelica
 		test_jmodelica
-		#mavenBuild
-		#copy_binaries
+		mavenBuild
+		copy_binaries
 	;;
         'clone')
 		precheck
@@ -500,18 +519,14 @@ case "$1" in
         ;;
         'test')	
 		updateGitRepo
-		test_jmodelica
+		clean
+		copy_binaries
 
         ;;
-        'j')
-		#test2
-		#install_ipopt
-		#setEnvironmentVars
-		updateGitRepo
-		install_python_packages
-		install_jmodelica
-        ;;
         *)
+		usage
+	;;
+
 	
 esac
 
