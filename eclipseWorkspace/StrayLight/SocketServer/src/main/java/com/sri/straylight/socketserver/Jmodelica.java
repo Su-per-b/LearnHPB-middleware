@@ -45,12 +45,17 @@ public class Jmodelica {
 				arg = "C:\\ProgramFiles\\JModelica.org-1.6\\test_bouncingBall.py";
 				directory = "C:\\ProgramFiles\\JModelica.org-1.6";
 				
-			} else {
+			} else if (theOs.matches("Windows Server 2008")) {
 				
+				cmd = "C:\\Python27\\python.exe";
+				arg = "C:\\ProgramFiles\\JModelica.org-1.6\\test_bouncingBall.py";
+				directory = "C:\\ProgramFiles\\JModelica.org-1.6";
+				
+				
+			} else {
 				cmd = "/opt/packages/jmodelica/jmodelica-install/bin/jm_python.sh";
 				arg = "/opt/packages/jmodelica/jmodelica-install/test_bouncingBall.py";
 				directory = "/opt/packages/jmodelica/jmodelica-install";
-				
 			}
 			
 			
