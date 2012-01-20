@@ -21,6 +21,16 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.File;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.File;
+import java.io.FileReader;
+import java.net.URL;
+
 
 public class Jmodelica {
 	private static final String fmuFile = "testFMI.fmu";
@@ -30,36 +40,44 @@ public class Jmodelica {
 	
 	public String run() {
 	
-		
 			String theOs = System.getProperty("os.name");
 			
 			String cmd;
-			String arg;
+			String arg1;
+			//String fmuFileName = "bouncingBall.fmu";
+			String fmuFileName = "testFMI.fmu";
 			String directory;
 			
+			
+			String[] ary = fmuFileName.split("\\.");
+
+			int idx2 = ary.length - 1;
+			
+			String resultFile = StringUtils.join(ary, ".", 0, idx2);
+			resultFile += "_result.txt";
+			
 			System.out.println( "Operating system detected: " + theOs);
+			System.out.println( "resultFile: " + resultFile);
 			
 			if (theOs.matches("Windows 7")) {
-				
 				cmd = "C:\\python\\Python2.7\\python.exe";
-				arg = "C:\\ProgramFiles\\JModelica.org-1.6\\test_bouncingBall.py";
+				arg1 = "C:\\ProgramFiles\\JModelica.org-1.6\\run_simulation.py";
 				directory = "C:\\ProgramFiles\\JModelica.org-1.6";
-				
+				resultFile = "C:\\ProgramFiles\\JModelica.org-1.6\\" + resultFile;
 			} else if (theOs.matches("Windows Server 2008")) {
-				
 				cmd = "C:\\Python27\\python.exe";
-				arg = "C:\\ProgramFiles\\JModelica.org-1.6\\test_bouncingBall.py";
+				arg1 = "C:\\ProgramFiles\\JModelica.org-1.6\\run_simulation.py";
 				directory = "C:\\ProgramFiles\\JModelica.org-1.6";
-				
-				
+				resultFile = "C:\\ProgramFiles\\JModelica.org-1.6\\" + resultFile;
 			} else {
 				cmd = "/opt/packages/jmodelica/jmodelica-install/bin/jm_python.sh";
-				arg = "/opt/packages/jmodelica/jmodelica-install/test_bouncingBall.py";
+				arg1 = "/opt/packages/jmodelica/jmodelica-install/run_simulation.py";
 				directory = "/opt/packages/jmodelica/jmodelica-install";
+				resultFile = "/opt/packages/jmodelica/jmodelica-install/" + resultFile;
 			}
 			
-			
-			ProcessBuilder pb = new ProcessBuilder(cmd, arg);
+			ProcessBuilder pb = new ProcessBuilder("python", arg1, fmuFileName);
+			pb.redirectErrorStream(true);
 			
 		    File workingDir = new File(directory);
 		    pb.directory(workingDir);
@@ -68,32 +86,38 @@ public class Jmodelica {
 		    
 			try {
 			    Process p = pb.start(); 
-			    File dir = pb.directory();
-
+			   // File dir = pb.directory();
+			    System.out.println("Process started");
+			    
+			    
+			    StringBuffer sb = new StringBuffer();
 			    
 				try {
+
+					BufferedReader outputReader  = new BufferedReader( new InputStreamReader(p.getInputStream()) );
+					BufferedReader errorReader = new BufferedReader( new InputStreamReader(p.getErrorStream()) );
+					String line;
+					while ((line = outputReader.readLine()) != null) {
+						
+						 sb.append(line + "\n");
+					}
+					
+					System.out.println("Waiting for process");
 			        int exitValue = p.waitFor();
 			        
+
 			        
 			        BufferedReader reader;
 					
-			        if (exitValue == 0) {
-			                reader = new BufferedReader( new InputStreamReader(p.getInputStream()) );
-			        } else {
-			                reader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-			        }
+			        this.outputHTML(outputReader);
+			        this.outputHTML(errorReader);
 			        
-			        
-			        StringBuffer sb = new StringBuffer();
-			        String temp = reader.readLine();
-			        while (temp != null) {
-			                sb.append(temp + "<br>\n");
-			                System.out.println(temp);
-			                temp = reader.readLine();
-			        }
 
-			        reader.close();
-			        result = sb.toString();
+			        
+			        	result = "\n*********STATS*********\n\n";
+						result += sb.toString();
+						result += "\n*********RESULTS*********\n\n";
+						result += this.fileContentsToString(resultFile);
 					
 				}
 					catch (InterruptedException e) {
@@ -104,12 +128,107 @@ public class Jmodelica {
 				e.printStackTrace();
 			}
 			
-	
+			
+			System.out.print( result);
+					
+			
+			result = result.replace("\n", "<br />");
+			
 	        return result;
 	}
 	
+   private void outputHTML(BufferedReader reader)
+   {
+    
+		StringBuffer sb = new StringBuffer();
+	       
+	    try {
+		  
+	      String temp = reader.readLine();
+	      while (temp != null) {
+	              sb.append(temp + "<br>\n");
+	              System.out.println(temp);
+	              temp = reader.readLine();
+	      }
 	
-	
+	      
+	      reader.close();
+		  
+		  } catch (IOException e) {
+				e.printStackTrace();
+		  }
+			
+	      String result = sb.toString();
+	   
+	   
+    }
+	   
+   private String loadStream(InputStream s) throws Exception
+    {
+        BufferedReader br = new BufferedReader(new InputStreamReader(s));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while((line=br.readLine()) != null)
+            sb.append(line).append("\n");
+        return sb.toString();
+    }
+	   
+	private void displayResults(String resultFile) {
+		// TODO Auto-generated method stub
+		
+		String resultsStr = this.fileContentsToString(resultFile);
+		System.out.print(resultsStr);
+		
+	}
+
+
+	  /**
+	   * Read the contents of a file and place them in
+	   * a string object.
+	   *
+	   * @param file path to file.
+	   * @return String contents of the file.
+	   */
+	  public static String fileContentsToString(String file)
+	  {
+	      String contents = "";
+
+	      File f = null;
+	      try
+	      {
+	          f = new File(file);
+
+	          if (f.exists())
+	          {
+	              FileReader fr = null;
+	              try
+	              {
+	                  fr = new FileReader(f);
+	                  char[] template = new char[(int) f.length()];
+	                  fr.read(template);
+	                  contents = new String(template);
+	              }
+	              catch (Exception e)
+	              {
+	                  e.printStackTrace();
+	              }
+	              finally
+	              {
+	                  if (fr != null)
+	                  {
+	                      fr.close();
+	                  }
+	              }
+	          }
+	      }
+	      catch (Exception e)
+	      {
+	          e.printStackTrace();
+	      }
+	      return contents;
+	  }
+	  
+	  
 	public void test3() {
 		
 		
