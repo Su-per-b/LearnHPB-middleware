@@ -37,6 +37,8 @@ public class Jmodelica {
 			String arg;
 			String directory;
 			
+			System.out.println( "Operating system detected: " + theOs);
+			
 			if (theOs.matches("Windows 7")) {
 				
 				cmd = "C:\\python\\Python2.7\\python.exe";

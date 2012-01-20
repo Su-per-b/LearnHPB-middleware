@@ -44,7 +44,9 @@ def launchFromScratch(hostname='Straylight') :
     instance.launchOne()
     associateIP(instance)
     instance.uploadScript(r'resources\setup.sh')
-    instance.uploadScript(r'resources\startup.sh')
+    instance.uploadScript(r'resources\ctrl.sh')
+    associateIP(instance)
+    instance.openShell()
     
 
 def launchFromImage(hostname='Straylight', imagename='StrayLightImageUnuntu4'):
