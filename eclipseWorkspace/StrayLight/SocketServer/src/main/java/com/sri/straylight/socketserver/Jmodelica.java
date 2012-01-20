@@ -38,15 +38,19 @@ public class Jmodelica {
 	
 	
 	
-	public String run() {
+	public String run(String fmuFileName) {
 	
 			String theOs = System.getProperty("os.name");
+			
+			
 			
 			String cmd;
 			String arg1;
 			//String fmuFileName = "bouncingBall.fmu";
-			String fmuFileName = "testFMI.fmu";
+			//String fmuFileName = "testFMI.fmu";
 			String directory;
+			
+			
 			
 			
 			String[] ary = fmuFileName.split("\\.");
@@ -62,18 +66,21 @@ public class Jmodelica {
 			if (theOs.matches("Windows 7")) {
 				cmd = "C:\\python\\Python2.7\\python.exe";
 				arg1 = "C:\\ProgramFiles\\JModelica.org-1.6\\run_simulation.py";
-				directory = "C:\\ProgramFiles\\JModelica.org-1.6";
-				resultFile = "C:\\ProgramFiles\\JModelica.org-1.6\\" + resultFile;
+				directory = "C:\\ProgramFiles\\JModelica.org-1.6\\fmus";
+				resultFile = directory + "\\" + resultFile;
+				fmuFileName = directory + "\\" + fmuFileName;
 			} else if (theOs.matches("Windows Server 2008")) {
 				cmd = "C:\\Python27\\python.exe";
 				arg1 = "C:\\ProgramFiles\\JModelica.org-1.6\\run_simulation.py";
 				directory = "C:\\ProgramFiles\\JModelica.org-1.6";
-				resultFile = "C:\\ProgramFiles\\JModelica.org-1.6\\" + resultFile;
+				resultFile = directory + "\\" + resultFile;
+				fmuFileName = directory + "\\" + fmuFileName;
 			} else {
 				cmd = "/opt/packages/jmodelica/jmodelica-install/bin/jm_python.sh";
 				arg1 = "/opt/packages/jmodelica/jmodelica-install/run_simulation.py";
 				directory = "/opt/packages/jmodelica/jmodelica-install";
-				resultFile = "/opt/packages/jmodelica/jmodelica-install/" + resultFile;
+				resultFile = directory + "/" + resultFile;
+				fmuFileName = directory + "/" + fmuFileName;
 			}
 			
 			ProcessBuilder pb = new ProcessBuilder("python", arg1, fmuFileName);

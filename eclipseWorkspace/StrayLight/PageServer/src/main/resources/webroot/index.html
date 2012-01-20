@@ -66,7 +66,7 @@
 		return document.getElementById(arguments[0]).value;
 	}
 	function connect() {
-		room.connect();
+		channel.connect();
 	}
 
 
@@ -77,11 +77,11 @@
 	}
 	
 
-	var room = {
+	var channel = {
 			
 		connect : function() {
 
-			room.output('establishing connection to: ' + socketServerUrl);
+			channel.output('establishing connection to: ' + socketServerUrl);
 
 
 			
@@ -93,32 +93,34 @@
 			this._ws.onerror = this._onerror;
 		},
 
-		chat : function(text) {
+		sendMessage : function(text) {
 			
 			gallons = text;
 			
 			if (text != null && text.length > 0)
-				room._send(text);
+				channel._send(text);
 				
-			room.output('request sent');
+			channel.output('request sent');
 		},
 
 		_onopen : function() {			
 			$('submitButton').disabled = false;
-			room.output('connected');
+			//$('submitButton').disabled = false;
+			
+			channel.output('connected');
 		},
 		
 		output : function(text) {
-				var chat = $('chat');
+				var messageBox = $('messageBox');
 				var spanFrom = document.createElement('span');
 				var spanText = document.createElement('span');
 				spanText.className = 'text';
 				spanText.innerHTML = text;
 				var lineBreak = document.createElement('br');
-				chat.appendChild(spanFrom);
-				chat.appendChild(spanText);
-				chat.appendChild(lineBreak);
-				chat.scrollTop = chat.scrollHeight - chat.clientHeight;
+				messageBox.appendChild(spanFrom);
+				messageBox.appendChild(spanText);
+				messageBox.appendChild(lineBreak);
+				messageBox.scrollTop = messageBox.scrollHeight - messageBox.clientHeight;
 		},
 		
 		_onmessage : function(m) {
@@ -128,14 +130,14 @@
 				
 				//text = gallons + ' gallons of gasoline equals ' + text + ' foot pounds of tourque';
 				
-				room.output(text);
+				channel.output(text);
 			}
 		},
 
 		_onclose : function(m) {
 			this._ws = null;
 
-			$('chat').innerHTML = '';
+			$('messageBox').innerHTML = '';
 		},
 
 		_onerror : function(e) {
@@ -158,7 +160,7 @@ div {
 	border: 0px solid black;
 }
 
-div#chat {
+div#messageBox {
 	clear: both;
 	width: 90%;
 	height: 80ex;
@@ -201,34 +203,56 @@ span.from {
 	
 	<div>
 	
+	
 		<div>
-			command:&nbsp;
-			<input id="commandInput" type="text" value="run"> </input>
+		
+
+
+		
+		</div>
+		<div>
+		
+			simulation:&nbsp;
+			<select id="simulationSelect">
+			  <option selected="selected" value="testFMI.fmu">testFMI.fmu</option>
+			  <option value="bouncingBall.fmu">bouncingBall.fmu</option>
+			  <option value="Furuta.fmu">Furuta.fmu</option>
+			  <option value="SecondOrder.fmu">SecondOrder.fmu</option>
+			</select>
 		
 			<input id="submitButton" disabled="true"
 				class="button" type="submit" name="submitButton" value="Submit" />
 				
+			<input id="clearButton" 
+				class="button" type="button" name="submitButton" value="Clear" />		
 		</div>
 		
 	</div>
 	
 		<br />
-	<div id="chat"></div>
+	<div id="messageBox"></div>
 	
 
 	
 	<script type="text/javascript">	
 
+	$('clearButton').onclick = function(event) {
 		
-		// "Join" button click opens Chat WebSockets
-		$('submitButton').onclick = function(event) {
+		$('messageBox').innerHTML = '';
+	}
+	
+	// "Join" button click opens Chat WebSockets
+	$('submitButton').onclick = function(event) {
+	
+		filename = $F('simulationSelect');
 		
-			room.chat($F('commandInput'));
-			$('commandInput').value = '';
-			
-			return false;
-		};
+		channel.sendMessage(filename);
 		
+		//$('commandInput').value = '';
+		
+		return false;
+	};
+	
 		
 
 	</script>

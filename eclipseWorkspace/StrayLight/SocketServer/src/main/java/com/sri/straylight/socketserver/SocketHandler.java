@@ -52,33 +52,13 @@ public class SocketHandler extends WebSocketHandler {
 
 		
 		public void onMessage(String data) {
-			// Loop for each instance of ChatWebSocket to send message server to
-			// each client WebSockets.
-			
-			if (data.matches("run")) {
 
-				Jmodelica jmodelica = new Jmodelica();
-				String shortString = jmodelica.run();
-				
-				this.sendMessage(shortString);
-				
-				
-			} else {
-				
-				SocketServer.logger.info( "onMessage: " + data ); 
-						
-				Double gallons = Double.parseDouble(data);
-				Double footPounds = gallons * 97181188.7888;
-				
-				
-				DecimalFormat df = new DecimalFormat("###,###.##");
-				String shortString = (df.format(footPounds));
-	
-				
-				this.sendMessage(shortString);
-			}
+
+			Jmodelica jmodelica = new Jmodelica();
+			String resultStr = jmodelica.run(data);
 			
-			
+			this.sendMessage(resultStr);
+				
 
 		}
 

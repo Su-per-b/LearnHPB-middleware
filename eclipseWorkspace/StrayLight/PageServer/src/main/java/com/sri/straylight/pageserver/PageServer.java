@@ -14,7 +14,9 @@ import org.eclipse.jetty.util.log.Logger;
 
 import com.sri.straylight.common.Banner;
 
-
+import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 public class PageServer {
 
@@ -44,20 +46,42 @@ public class PageServer {
 			
 			Server server = new Server(80);
 			
-	        ResourceHandler resource_handler = new ResourceHandler();
-	        resource_handler.setDirectoriesListed(true);
-	        resource_handler.setWelcomeFiles(new String[]{ defaultFile });
+	        ResourceHandler staticResourceHandler  = new ResourceHandler();
+	        staticResourceHandler.setDirectoriesListed(true);
+	        staticResourceHandler.setWelcomeFiles(new String[]{ defaultFile });   
+	        staticResourceHandler.setResourceBase(webRootString);
+	     
+	       // ContextHandler staticContextHandler = new ContextHandler();
+	      //  staticContextHandler.setContextPath(webRootString);       
+	       // staticContextHandler.setHandler(staticResourceHandler); 
 	        
-	        resource_handler.setResourceBase(webRootString);
-	        	
-	        logger.info("Webroot is: " + resource_handler.getBaseResource());
+	        // Create servlet context handler for main servlet.
+	        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+	        context.setContextPath("/upload");
+	        server.setHandler(context);
+	 
+	        context.addServlet(new ServletHolder(new HelloServlet()),"/*");
+	        context.addServlet(new ServletHolder(new HelloServlet("Buongiorno Mondo")),"/it/*");
+	       // context.addServlet(new ServletHolder(new HelloServlet("Bonjour le Monde")),"/fr/*");
+	        
+	      //  ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+	      //  servletContextHandler.setContextPath("/");       
+	       // servletContextHandler.addServlet(new ServletHolder(new HelloServlet()),"/");
+
+	        
+	        
+	       // logger.info("Webroot is: " + staticResourceHandler .getBaseResource());
 	        
 	        HandlerList handlers = new HandlerList();
-	        handlers.setHandlers(new Handler[] { resource_handler, new DefaultHandler() });
+	        handlers.setHandlers(new Handler[] { staticResourceHandler ,  context });
+	        
 	        server.setHandler(handlers);
 
 	        server.start();
 	        server.join();
+	        
+
+	        
 			
 		} catch (Throwable e) {
 			e.printStackTrace();
