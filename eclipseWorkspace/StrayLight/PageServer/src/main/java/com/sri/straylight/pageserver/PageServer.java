@@ -11,10 +11,12 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
+import org.eclipse.jetty.webapp.WebAppContext;
 
 import com.sri.straylight.common.Banner;
 
 import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
@@ -37,7 +39,34 @@ public class PageServer {
 		
 	}
 	
+	
 	public void start() {
+
+		try {
+
+
+			   Server server = new Server();
+
+			    SelectChannelConnector connector = new SelectChannelConnector();
+			    connector.setPort(8080);
+			    server.addConnector(connector);
+
+			    WebAppContext webApp = new WebAppContext();
+			    webApp.setContextPath("/");
+			    webApp.setWar("webapp/test-jaas");
+			    server.setHandler(webApp);
+			    server.start();
+			    server.join();
+			    
+			    
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void start_bak() {
 
 		try {
 
@@ -60,9 +89,9 @@ public class PageServer {
 	        context.setContextPath("/upload");
 	        server.setHandler(context);
 	 
-	        context.addServlet(new ServletHolder(new HelloServlet()),"/*");
-	        context.addServlet(new ServletHolder(new HelloServlet("Buongiorno Mondo")),"/it/*");
-	       // context.addServlet(new ServletHolder(new HelloServlet("Bonjour le Monde")),"/fr/*");
+	        context.addServlet(new ServletHolder(new UploadServlet()),"/*");
+	        //context.addServlet(new ServletHolder(new HelloServlet("Buongiorno Mondo")),"/it/*");
+	        context.addServlet(new ServletHolder(new HelloServlet("Bonjour le Monde")),"/fr/*");
 	        
 	      //  ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
 	      //  servletContextHandler.setContextPath("/");       
