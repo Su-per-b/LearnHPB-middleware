@@ -15,8 +15,8 @@
     <description>Location to store uploaded file</description> 
     <param-name>file-upload</param-name> 
     <param-value>
-         E:\uploaded\
-     </param-value> 
+         C:\ProgramFiles\JModelica.org-1.6\fmus\
+    </param-value> 
 </context-param>
 
 
