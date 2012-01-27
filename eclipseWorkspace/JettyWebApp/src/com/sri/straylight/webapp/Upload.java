@@ -23,9 +23,16 @@ public class Upload {
 	
 	//private String _fileUploadPath; 
 	private ProgressListener _progressListener;
+	private String _fmuFolder;
+	
 	
     public Upload() {
     		
+    	
+		
+ 	   //ServletContext context = pageContext.getServletContext();
+ 	  // String filePath = context.getInitParameter("fmu-folder");
+ 	   
     	//_fileUploadPath = context.getInitParameter("file-upload");
     	//Create a progress listener
     	ProgressListener _progressListener = new ProgressListener(){
@@ -48,9 +55,10 @@ public class Upload {
 	
 	public ArrayList<String> getFMUList() {
 		
-		
 
-	    File fmuFolder = new File("C:\\ProgramFiles\\JModelica.org-1.6\\fmus");
+		   
+	    File fmuFolder = new File(this._fmuFolder);
+	    
 	    File[] allFiles = fmuFolder.listFiles();
 	   
 	    ArrayList<File> fmuFiles =  new ArrayList<File>();
@@ -86,12 +94,14 @@ public class Upload {
 	
 	
 	public void checkForUpload(PageContext pageContext, HttpServletRequest request) {
+		
+		ServletContext context = pageContext.getServletContext();
+		this._fmuFolder = context.getInitParameter("fmu-folder");
+		   
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 		
 		if (isMultipart) {
-			
 			this.process(pageContext, request);
-			
 		}
 	
 	}
@@ -105,10 +115,6 @@ public class Upload {
 		   int maxFileSize = 5000 * 1024 * 1024;
 		   int maxMemSize = 5000 * 1024;
 		   
-
-		   //get the file path
-		   ServletContext context = pageContext.getServletContext();
-		   String filePath = context.getInitParameter("file-upload");
 		   
 		   // Verify the content type
 		   String contentType = request.getContentType();
@@ -148,10 +154,10 @@ public class Upload {
 		            long sizeInBytes = fi.getSize();
 		            // Write the file
 		            if( fileName.lastIndexOf("\\") >= 0 ){
-		            file = new File( filePath + 
+		            file = new File( this._fmuFolder + 
 		            fileName.substring( fileName.lastIndexOf("\\"))) ;
 		            }else{
-		            file = new File( filePath + 
+		            file = new File( this._fmuFolder + 
 		            fileName.substring(fileName.lastIndexOf("\\")+1)) ;
 		            }
 		            fi.write( file ) ;

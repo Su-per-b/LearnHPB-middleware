@@ -51,9 +51,6 @@ uploadObj.checkForUpload(pageContext, request);
 		<br />
 	<div id="messageBox"></div>
 	
-
-	
-
 		
 </body>
 </html>
