@@ -121,10 +121,10 @@ public class Jmodelica {
 			        
 
 			        
-			        	result = "\n*********STATS*********\n\n";
+			        	//result = "\n*********STATS*********\n\n";
 						result += sb.toString();
-						result += "\n*********RESULTS*********\n\n";
-						result += this.fileContentsToString(resultFile);
+						//result += "\n*********RESULTS*********\n\n";
+						//result += this.fileContentsToString(resultFile);
 					
 				}
 					catch (InterruptedException e) {
