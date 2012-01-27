@@ -72,7 +72,7 @@ public class Jmodelica {
 			} else if (theOs.matches("Windows Server 2008")) {
 				cmd = "C:\\Python27\\python.exe";
 				arg1 = "C:\\ProgramFiles\\JModelica.org-1.6\\run_simulation.py";
-				directory = "C:\\ProgramFiles\\JModelica.org-1.6";
+				directory = "C:\\ProgramFiles\\JModelica.org-1.6\\fmus";
 				resultFile = directory + "\\" + resultFile;
 				fmuFileName = directory + "\\" + fmuFileName;
 			} else {
