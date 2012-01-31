@@ -35,7 +35,9 @@ function onLoad() {
 	findSocketServer();
 
 
-	if (!window.WebSocket)
+	
+	
+	if (!window.WebSocket && !window.MozWebSocket )
 		alert("WebSocket not supported by this browser");
 	
 	
@@ -70,8 +72,14 @@ var channel = {
 
 
 		
+		if (window.MozWebSocket) {
+			this._ws = new MozWebSocket(socketServerUrl);
+		} else if (window.WebSocket) {
+			this._ws = new WebSocket(socketServerUrl);			
+		}
+			
+
 		
-		this._ws = new WebSocket(socketServerUrl);
 		this._ws.onopen = this._onopen;
 		this._ws.onmessage = this._onmessage;
 		this._ws.onclose = this._onclose;

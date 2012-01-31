@@ -30,108 +30,82 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.FileReader;
 import java.net.URL;
+import com.thoughtworks.xstream.XStream;
 
 
 public class Jmodelica {
 	private static final String fmuFile = "testFMI.fmu";
 	
 	
+	public Jmodelica() {
+		
+
 	
+		
+	}
+	
+	
+	/*
+	private void makeResultFilename(String fmuFileName) {
+		//make the result file name
+		String[] ary = fmuFileName.split("\\.");
+		int idx2 = ary.length - 1;
+		
+		String resultFile = StringUtils.join(ary, ".", 0, idx2);
+		resultFile += "_result.txt";
+		
+		System.out.println( "resultFile: " + resultFile);
+		
+	}
+	*/
 	
 	public String run(String fmuFileName) {
 	
-			String theOs = System.getProperty("os.name");
-			
-			
-			
-			String cmd;
-			String arg1;
-			//String fmuFileName = "bouncingBall.fmu";
-			//String fmuFileName = "testFMI.fmu";
-			String directory;
-			
-			
-			
-			
-			String[] ary = fmuFileName.split("\\.");
 
-			int idx2 = ary.length - 1;
+			String fmuFilePath = Main.config.fmuFolder + File.separator + fmuFileName;
 			
-			String resultFile = StringUtils.join(ary, ".", 0, idx2);
-			resultFile += "_result.txt";
+			ProcessBuilder pb = new ProcessBuilder(
+					Main.config.pythonPath, 
+					Main.config.runSimulationPath,
+					fmuFilePath
+					);
 			
-			System.out.println( "Operating system detected: " + theOs);
-			System.out.println( "resultFile: " + resultFile);
 			
-			if (theOs.matches("Windows 7")) {
-				cmd = "C:\\python\\Python2.7\\python.exe";
-				arg1 = "C:\\ProgramFiles\\JModelica.org-1.6\\run_simulation.py";
-				directory = "C:\\ProgramFiles\\JModelica.org-1.6\\fmus";
-				resultFile = directory + "\\" + resultFile;
-				fmuFileName = directory + "\\" + fmuFileName;
-			} else if (theOs.matches("Windows Server 2008")) {
-				cmd = "C:\\Python27\\python.exe";
-				arg1 = "C:\\ProgramFiles\\JModelica.org-1.6\\run_simulation.py";
-				directory = "C:\\ProgramFiles\\JModelica.org-1.6\\fmus";
-				resultFile = directory + "\\" + resultFile;
-				fmuFileName = directory + "\\" + fmuFileName;
-			} else {
-				cmd = "/opt/packages/jmodelica/jmodelica-install/bin/jm_python.sh";
-				arg1 = "/opt/packages/jmodelica/jmodelica-install/run_simulation.py";
-				directory = "/opt/packages/jmodelica/jmodelica-install";
-				resultFile = directory + "/" + resultFile;
-				fmuFileName = directory + "/" + fmuFileName;
-			}
-			
-			ProcessBuilder pb = new ProcessBuilder("python", arg1, fmuFileName);
 			pb.redirectErrorStream(true);
 			
-		    File workingDir = new File(directory);
+		    File workingDir = new File(Main.config.fmuFolder);
 		    pb.directory(workingDir);
 		    
 		    String result = "no result";
 		    
 			try {
 			    Process p = pb.start(); 
-			   // File dir = pb.directory();
+
 			    System.out.println("Process started");
-			    
-			    
 			    StringBuffer sb = new StringBuffer();
 			    
-				try {
 
-					BufferedReader outputReader  = new BufferedReader( new InputStreamReader(p.getInputStream()) );
-					BufferedReader errorReader = new BufferedReader( new InputStreamReader(p.getErrorStream()) );
-					String line;
-					while ((line = outputReader.readLine()) != null) {
-						
-						 sb.append(line + "\n");
-					}
+				BufferedReader outputReader  = new BufferedReader( new InputStreamReader(p.getInputStream()) );
+				BufferedReader errorReader = new BufferedReader( new InputStreamReader(p.getErrorStream()) );
+				String line;
+				while ((line = outputReader.readLine()) != null) {
 					
-					System.out.println("Waiting for process");
-			        int exitValue = p.waitFor();
-			        
-
-			        
-			        BufferedReader reader;
-					
-			        this.outputHTML(outputReader);
-			        this.outputHTML(errorReader);
-			        
-
-			        
-			        	//result = "\n*********STATS*********\n\n";
-						result += sb.toString();
-						//result += "\n*********RESULTS*********\n\n";
-						//result += this.fileContentsToString(resultFile);
-					
+					 sb.append(line + "\n");
 				}
-					catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			    
+				
+				System.out.println("Waiting for process");
+		        int exitValue = p.waitFor();
+		        BufferedReader reader;
+				
+		        this.outputHTML(outputReader);
+		        this.outputHTML(errorReader);
+		        
+				result += sb.toString();
+					
+
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			
