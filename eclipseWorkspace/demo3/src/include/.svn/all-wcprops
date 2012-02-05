@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/fmu/!svn/ver/69/branches/wzuo/coSimulation/import/fmu-dev/src/include
+END
+fmuTemplate.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/fmu/!svn/ver/69/branches/wzuo/coSimulation/import/fmu-dev/src/include/fmuTemplate.c
+END
+fmiModelTypes.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/fmu/!svn/ver/69/branches/wzuo/coSimulation/import/fmu-dev/src/include/fmiModelTypes.h
+END
+fmuTemplate.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/fmu/!svn/ver/69/branches/wzuo/coSimulation/import/fmu-dev/src/include/fmuTemplate.h
+END
+fmiModelFunctions.h
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/fmu/!svn/ver/69/branches/wzuo/coSimulation/import/fmu-dev/src/include/fmiModelFunctions.h
+END

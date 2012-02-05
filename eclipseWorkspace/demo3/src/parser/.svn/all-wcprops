@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/fmu/!svn/ver/142/branches/wzuo/coSimulation/import/fmu-dev/src/parser
+END
+parser.h
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/fmu/!svn/ver/135/branches/wzuo/coSimulation/import/fmu-dev/src/parser/parser.h
+END
+parser.c
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/fmu/!svn/ver/142/branches/wzuo/coSimulation/import/fmu-dev/src/parser/parser.c
+END
+build.xml
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/fmu/!svn/ver/82/branches/wzuo/coSimulation/import/fmu-dev/src/parser/build.xml
+END

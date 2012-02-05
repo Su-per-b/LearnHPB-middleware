@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dependencies>
+   <includePath signature="">
+      <source file="..\src\common\expat_external.h" lastModified="1354851716d">
+      </source>
+      <source file="..\src\common\fmiModelTypes.h" lastModified="1354851716f">
+      </source>
+      <source file="..\src\common\util.h" lastModified="13548517173">
+         <sysinclude file="C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Include\Windows.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\sys\stat.h"/>
+      </source>
+      <source file="..\src\include\fmiModelTypes.h" lastModified="135485171a2">
+      </source>
+      <source file="..\src\common\expat.h" lastModified="13548517144">
+         <include file="..\src\common\expat_external.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdlib.h"/>
+      </source>
+      <source file="..\src\common\stack.h" lastModified="13548517171">
+      </source>
+      <source file="..\src\common\xml_parser_cosim.h" lastModified="13548517175">
+         <include file="..\src\common\expat.h"/>
+         <include file="..\src\common\fmiModelTypes.h"/>
+         <include file="..\src\common\stack.h"/>
+      </source>
+      <source file="..\src\common\util.c" lastModified="13548517172">
+         <include file="..\src\common\util.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdlib.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\string.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\sys\stat.h"/>
+      </source>
+      <source file="..\src\common\stack.c" lastModified="13548517171">
+         <include file="..\src\common\stack.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\assert.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\malloc.h"/>
+      </source>
+      <source file="..\src\common\xml_parser_cosim.c" lastModified="13548517175">
+         <include file="..\src\common\xml_parser_cosim.h"/>
+         <include file="..\src\common\util.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\assert.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\string.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\limits.h"/>
+      </source>
+      <source file="..\src\demo-win\main.h" lastModified="1354851718a">
+         <include file="..\src\include\fmiModelFunctions.h"/>
+         <include file="..\src\common\xml_parser_cosim.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Include\Windows.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\sys\stat.h"/>
+      </source>
+      <source file="..\src\include\fmiModelFunctions.h" lastModified="135485171a0">
+         <include file="..\src\include\fmiModelFunctions.h"/>
+         <include file="..\src\include\fmiModelTypes.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdlib.h"/>
+      </source>
+      <source file="..\src\demo-win\main.c" lastModified="13548517189">
+         <include file="..\src\demo-win\main.h"/>
+         <include file="..\src\common\expat.h"/>
+         <include file="..\src\common\util.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdlib.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\string.h"/>
+      </source>
+   </includePath>
+</dependencies>
