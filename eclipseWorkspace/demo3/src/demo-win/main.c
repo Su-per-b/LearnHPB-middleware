@@ -102,19 +102,19 @@ static int loadDll(const char* dllPat, FMU *fmu) {
   }
   fmu->dllHandle = h;
   fmu->getVersion              = (fGetVersion)         getAdr(fmu, "fmiGetVersion");
-	fmu->instantiateSlave        = (fInstantiateSlave)   getAdr(fmu, "fmiInstantiateSlave");		
-	fmu->freeSlaveInstance       = (fFreeSlaveInstance)  getAdr(fmu, "fmiFreeSlaveInstance");		
+  fmu->instantiateSlave        = (fInstantiateSlave)   getAdr(fmu, "fmiInstantiateSlave");
+  fmu->freeSlaveInstance       = (fFreeSlaveInstance)  getAdr(fmu, "fmiFreeSlaveInstance");
   fmu->setDebugLogging         = (fSetDebugLogging)    getAdr(fmu, "fmiSetDebugLogging");
   fmu->setReal                 = (fSetReal)            getAdr(fmu, "fmiSetReal");
   fmu->setInteger              = (fSetInteger)         getAdr(fmu, "fmiSetInteger");
   fmu->setBoolean              = (fSetBoolean)         getAdr(fmu, "fmiSetBoolean");
   fmu->setString               = (fSetString)          getAdr(fmu, "fmiSetString");
-	fmu->initializeSlave         = (fInitializeSlave)    getAdr(fmu, "fmiInitializeSlave");			
+  fmu->initializeSlave         = (fInitializeSlave)    getAdr(fmu, "fmiInitializeSlave");
   fmu->getReal                 = (fGetReal)            getAdr(fmu, "fmiGetReal");
   fmu->getInteger              = (fGetInteger)         getAdr(fmu, "fmiGetInteger");
   fmu->getBoolean              = (fGetBoolean)         getAdr(fmu, "fmiGetBoolean");
   fmu->getString               = (fGetString)          getAdr(fmu, "fmiGetString");
-	fmu->doStep						       = (fDoStep)			       getAdr(fmu, "fmiDoStep");						
+  fmu->doStep				   = (fDoStep)			   getAdr(fmu, "fmiDoStep");
 
   return 0;
 }

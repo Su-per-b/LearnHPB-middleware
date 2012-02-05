@@ -29,12 +29,6 @@
          <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\string.h"/>
          <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\sys\stat.h"/>
       </source>
-      <source file="..\src\common\stack.c" lastModified="13548517171">
-         <include file="..\src\common\stack.h"/>
-         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h"/>
-         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\assert.h"/>
-         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\malloc.h"/>
-      </source>
       <source file="..\src\common\xml_parser_cosim.c" lastModified="13548517175">
          <include file="..\src\common\xml_parser_cosim.h"/>
          <include file="..\src\common\util.h"/>
@@ -43,7 +37,13 @@
          <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\string.h"/>
          <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\limits.h"/>
       </source>
-      <source file="..\src\demo-win\main.h" lastModified="1354851718a">
+      <source file="..\src\common\stack.c" lastModified="13548517171">
+         <include file="..\src\common\stack.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\assert.h"/>
+         <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\malloc.h"/>
+      </source>
+      <source file="..\src\demo-win\main.h" lastModified="1354ed206e1">
          <include file="..\src\include\fmiModelFunctions.h"/>
          <include file="..\src\common\xml_parser_cosim.h"/>
          <sysinclude file="C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Include\Windows.h"/>
@@ -54,7 +54,7 @@
          <include file="..\src\include\fmiModelTypes.h"/>
          <sysinclude file="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdlib.h"/>
       </source>
-      <source file="..\src\demo-win\main.c" lastModified="13548517189">
+      <source file="..\src\demo-win\main.c" lastModified="1354ed294b6">
          <include file="..\src\demo-win\main.h"/>
          <include file="..\src\common\expat.h"/>
          <include file="..\src\common\util.h"/>
