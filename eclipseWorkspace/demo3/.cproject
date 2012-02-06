@@ -39,6 +39,9 @@
 									<listOptionValue builtIn="false" value="&quot;C:\Program Files\Microsoft SDKs\Windows\v7.0\Lib&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib&quot;"/>
 								</option>
+								<option id="org.eclipse.cdt.msvc.link.option.libraries.1990026569" superClass="org.eclipse.cdt.msvc.link.option.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/demo3/lib/windows/expat/lib/libexpatMT.lib}&quot;"/>
+								</option>
 								<inputType id="org.eclipse.cdt.msvc.link.inputType.420730108" superClass="org.eclipse.cdt.msvc.link.inputType"/>
 							</tool>
 							<tool id="org.eclipse.cdt.msvc.lib.149194186" name="Library Manager (lib)" superClass="org.eclipse.cdt.msvc.lib"/>
@@ -100,4 +103,5 @@
 	<storageModule moduleId="refreshScope" versionNumber="1">
 		<resource resourceType="PROJECT" workspacePath="/demo3"/>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>

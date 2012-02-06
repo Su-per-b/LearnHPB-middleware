@@ -11,3 +11,6 @@
 *.pyc
 __pycache__
 /eclipseWorkspace/StrayLight/Common/target
+/visualStudioWorkspace/Debug
+/visualStudioWorkspace/straylight/Debug
+/visualStudioWorkspace/straylight/DoubleInputDoubleOutput
