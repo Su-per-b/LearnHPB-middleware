@@ -99,7 +99,7 @@ static int loadDll(const char* dllPat, FMU *fmu) {
 	wchar_t * dllPatW;
 	int len;
 	int wlen;
-	HANDLE h;
+	HINSTANCE h;
 
 	len = strlen(dllPat) + 1; // I had to add an additional character I believe is is
 							//an end-of-line character
@@ -108,7 +108,7 @@ static int loadDll(const char* dllPat, FMU *fmu) {
 
 	if (dllPatW == NULL){
 		printfError("Failed to allocate memory for wText\n", dllPat);
-		return;
+		return 1;
 	}
 
 	wlen = MultiByteToWideChar(  0, 0, dllPat, -1, dllPatW,len);
@@ -284,7 +284,7 @@ static void replaceRefsInMessage(const char* msg, char* buffer, int nBuffer, FMU
       c = msg[i];
     }
     else {
-      char* end = strchr(msg+i+1, '#');
+      char* end = (char*) strchr(msg+i+1, '#');
       if (!end) {
         printf("unmatched '#' in '%s'\n", msg);
         buffer[k++]='#';
@@ -368,8 +368,8 @@ static void fmuLogger(fmiComponent c, fmiString instanceName, fmiStatus status,
 ///////////////////////////////////////////////////////////////////////////////
 static int simulate(FMU* fmu, double tEnd, double h, fmiBoolean loggingOn, char separator) {
 		
-  int i, n;
-  fmiBoolean timeEvent, stateEvent, stepEvent;
+
+
   double time;  
   ModelDescription* md;            // handle to the parsed XML file        
   const char* guid;                // global unique id of the fmu
@@ -577,7 +577,6 @@ static void printHelp(const char* fmusim) {
 ///////////////////////////////////////////////////////////////////////////////
 int main(int argc, char *argv[]) {
     const char* fmuFilNam;
-    char* fmuPat;
     char* tmpPat;
     char* xmlPat;
     char* dllPat;
@@ -652,7 +651,7 @@ int main(int argc, char *argv[]) {
     }
 
     printDebug("parse tmpPat\\modelDescription.xml\n");
-    xmlPat = calloc(sizeof(char), strlen(tmpPat) + strlen(XML_FILE) + 1);
+    xmlPat = (char *) calloc(sizeof(char), strlen(tmpPat) + strlen(XML_FILE) + 1);
     sprintf(xmlPat, "%s%s", tmpPat, XML_FILE);
 
     // Parse only parses the model description and store in structure fmu.modelDescription
@@ -661,7 +660,7 @@ int main(int argc, char *argv[]) {
     if (!fmu.modelDescription) exit(EXIT_FAILURE);
 
     // Allocate the memory for dllPat
-    dllPat = calloc(sizeof(char), strlen(tmpPat) + strlen(DLL_DIR) 
+    dllPat = (char *) calloc(sizeof(char), strlen(tmpPat) + strlen(DLL_DIR) 
             + strlen( getModelIdentifier(fmu.modelDescription)) +  strlen(".dll") + 1); 
     sprintf(dllPat,"%s%s%s.dll", tmpPat, DLL_DIR, getModelIdentifier(fmu.modelDescription)); 
 

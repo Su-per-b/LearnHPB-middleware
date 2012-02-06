@@ -67,7 +67,7 @@ typedef fmiStatus (*fDoStep) (fmiComponent c, fmiReal currentCommunicationPoint,
 
 typedef struct {
     ModelDescription* modelDescription;
-    HANDLE dllHandle;
+    HINSTANCE dllHandle;
     //fGetModelTypesPlatform getModelTypesPlatform;	// Zuo: definition in model-ex V1.0
 	fGetTypesPlatform getTypesPlatform;				// Zuo: definition in V1.0
 
