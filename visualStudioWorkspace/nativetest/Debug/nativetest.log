@@ -1,0 +1,37 @@
+﻿Build started 2/6/2012 10:16:33 AM.
+     1>Project "E:\SRI\straylight_repo\visualStudioWorkspace\nativetest\nativetest.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\nativetest.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _USRDLL /D NATIVETEST_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"Debug\nativetest.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
+         stdafx.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _USRDLL /D NATIVETEST_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt dllmain.cpp
+         dllmain.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _USRDLL /D NATIVETEST_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\nativetest.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt nativetest.cpp
+         nativetest.cpp
+       ManifestResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\nativetest.dll.embed.manifest.res" Debug\nativetest_manifest.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\SRI\straylight_repo\visualStudioWorkspace\Debug\nativetest.dll" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\nativetest.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\SRI\straylight_repo\visualStudioWorkspace\Debug\nativetest.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\SRI\straylight_repo\visualStudioWorkspace\Debug\nativetest.lib" /MACHINE:X86 /DLL Debug\nativetest.dll.embed.manifest.res
+         Debug\dllmain.obj
+         Debug\nativetest.obj
+         Debug\stdafx.obj
+            Creating library E:\SRI\straylight_repo\visualStudioWorkspace\Debug\nativetest.lib and object E:\SRI\straylight_repo\visualStudioWorkspace\Debug\nativetest.exp
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\nativetest.dll.embed.manifest" /manifest Debug\nativetest.dll.intermediate.manifest
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\nativetest.dll.embed.manifest.res" Debug\nativetest_manifest.rc 
+       LinkEmbedManifest:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\SRI\straylight_repo\visualStudioWorkspace\Debug\nativetest.dll" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\nativetest.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\SRI\straylight_repo\visualStudioWorkspace\Debug\nativetest.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\SRI\straylight_repo\visualStudioWorkspace\Debug\nativetest.lib" /MACHINE:X86 /DLL Debug\nativetest.dll.embed.manifest.res
+         Debug\dllmain.obj
+         Debug\nativetest.obj
+         Debug\stdafx.obj
+            Creating library E:\SRI\straylight_repo\visualStudioWorkspace\Debug\nativetest.lib and object E:\SRI\straylight_repo\visualStudioWorkspace\Debug\nativetest.exp
+         nativetest.vcxproj -> E:\SRI\straylight_repo\visualStudioWorkspace\Debug\nativetest.dll
+       FinalizeBuildStatus:
+         Deleting file "Debug\nativetest.unsuccessfulbuild".
+         Touching "Debug\nativetest.lastbuildstate".
+     1>Done Building Project "E:\SRI\straylight_repo\visualStudioWorkspace\nativetest\nativetest.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.30

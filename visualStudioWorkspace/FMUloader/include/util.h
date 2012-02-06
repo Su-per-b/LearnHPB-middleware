@@ -32,7 +32,7 @@ void doubleToCommaString(char* buffer, double r);
 
 char *getTmpPath(const char *nam, int length);
 
-void printDebug(const char* msg);
+void printDebug(char* msg);
 
 void printDebugHelper(const char* msg);
 

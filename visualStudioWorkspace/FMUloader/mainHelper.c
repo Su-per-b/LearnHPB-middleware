@@ -424,8 +424,8 @@ int simulate(FMU* fmu, double tEnd, double h, fmiBoolean loggingOn, char separat
   }
  
   // Output solution for time t0 
-  outputRow(fmu, c, t0, file, separator, TRUE);  // output column names
-  outputRow(fmu, c, t0, file, separator, FALSE); // output initla value of fmu 
+  outputRow(fmu, c, t0, file, separator);  // output column names
+  outputRow(fmu, c, t0, file, separator); // output initla value of fmu 
 
   ///////////////////////////////////////////////////////////////////////////// 
   // Get value references for input and output varibles
@@ -525,7 +525,7 @@ int simulate(FMU* fmu, double tEnd, double h, fmiBoolean loggingOn, char separat
     fprintf(file, "\n");      
    
     time = min(time+h, tEnd);
-    outputRow(fmu, c, time, file, separator, FALSE); // output values for this step
+    outputRow(fmu, c, time, file, separator); // output values for this step
     nSteps++;
    
   } // end of while  

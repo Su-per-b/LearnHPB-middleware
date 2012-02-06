@@ -1,4 +1,4 @@
-﻿Build started 2/6/2012 6:06:18 AM.
+﻿Build started 2/6/2012 9:34:42 AM.
      1>Project "E:\SRI\straylight_repo\visualStudioWorkspace\DLLtest\DLLtest.vcxproj" on node 4 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\DLLtest.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -32,4 +32,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.16
+Time Elapsed 00:00:04.12

@@ -1,14 +1,19 @@
 // FMUloader.cpp : Defines the exported functions for the DLL application.
 //
+#include <jni.h>
+#include <sys/types.h>
 
-#include "stdafx.h"
+
+#include <sys/stat.h>
+#include <fcntl.h>
+
+
 #include "FMUloader.h"
 
 //#include "FMU.h"
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+
+
 
 
 
@@ -20,6 +25,28 @@
 
 //static FMU fmu; // the fmu to simulate
 
+  /*
+   * Class:     ReadFile
+   * Method:    loadFile
+   * Signature: (Ljava/lang/String;)[B
+   */
+JNIEXPORT void JNICALL Java_ReadFile_loadFile
+  (JNIEnv * env, jobject jobj, jstring name) {
+
+
+
+    jbyteArray jb;
+    jboolean iscopy;
+    struct stat finfo;
+
+
+
+    return;
+
+
+
+}
+
 
 namespace Straylight
 {
@@ -28,7 +55,10 @@ namespace Straylight
 		FMUloader::FMUloader(void)
 		{
 			timeEnd_ = 1.0;
-
+			csv_separator_ = ',';
+			t0 = 0;
+			timeDelta_=0.1;
+			fmuPointer_ = &fmu_;
 		}
 
 
@@ -76,8 +106,6 @@ namespace Straylight
 		void FMUloader::parseXML() {
 			char* xmlFilePath;
 
-
-
 		    printDebug("parse tmpPat\\modelDescription.xml\n");
 			xmlFilePath = (char *) calloc(sizeof(char), strlen(unzippedPath_) + strlen(XML_FILE) + 1);
 			sprintf(xmlFilePath, "%s%s", unzippedPath_, XML_FILE);
@@ -106,56 +134,54 @@ namespace Straylight
 
 
 
+		int FMUloader::runSimulation() {
 
-		void FMUloader::runSimulation() {
 
-			double h=0.1;
-			int loggingOn = 0;
-			char csv_separator = ','; 
-
-			// Run the simulation
-			printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d, csv separator='%c'\n", 
-					fmuFileName_, timeEnd_, h, loggingOn, csv_separator);
-
-			if (this->simulateHelper(&fmu_, h, loggingOn, csv_separator)){
+			if (simulateHelper()){
 			  printError("Simulation failed\n");
 			  exit(EXIT_FAILURE);
 			}
+
+			printf("CSV file '%s' written", RESULT_FILE);
+
+			// Release FMU 
+			FreeLibrary(fmu_.dllHandle);
+			freeElement(fmu_.modelDescription);
+			return 0;
+
 		}
 
+		int FMUloader::simulateHelperInit() {
 
-		int FMUloader::simulateHelper(FMU* fmu, double h, fmiBoolean loggingOn, char separator) {
-
-			double time;  
+			loggingOn = 0;
 			ModelDescription* md;            // handle to the parsed XML file        
 			const char* guid;                // global unique id of the fmu
 			fmiCallbackFunctions callbacks;  // called by the model during simulation
-			fmiComponent c;                  // instance of the fmu 
-			fmiStatus fmiFlag;               // return code of the fmu functions
-			fmiReal t0 = 0;                  // start time
-			fmiBoolean toleranceControlled = fmiFalse;
-			int nSteps = 0;
-			FILE* file;
 
-			fmiValueReference vr;			// add it to get value reference for variables
+			fmiStatus fmiFlag;               // return code of the fmu functions
+
+			fmiBoolean toleranceControlled = fmiFalse;
+			nSteps = 0;
+
+
+			// Run the simulation
+			printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d, csv separator='%c'\n", 
+					fmuFileName_, timeEnd_, timeDelta_, loggingOn, csv_separator_);
+
 
 			//Note: User defined references
 			//Begin------------------------------------------------------------------
-			fmiValueReference vru[2], vry[2]; // value references for two input and two output variables 
+
 			//End--------------------------------------------------------------------
 
-			ScalarVariable** vars = fmu->modelDescription->modelVariables;		// add it to get variables
-			int k;							// add a counter for variables
-			fmiReal ru1, ru2, ry, ry1, ry2;	// add real variables for input and output
-			fmiInteger ix, iy;				// add integer variables for input and output
-			fmiBoolean bx, by;				// add boolean variables for input and output
-			fmiString sx, sy;				// Zuo: add string variables for input and output
-			fmiStatus status;				// Zuo: add stauus for fmi
+			vars = fmuPointer_->modelDescription->modelVariables;		// add it to get variables
+
+
 
 			printDebug("Instantiate the fmu\n");
 
 			// instantiate the fmu
-			md = fmu->modelDescription;
+			md = fmuPointer_->modelDescription;
 			guid = getString(md, att_guid);
 			printfDebug("Got GUID = %s!\n", guid);	
 			callbacks.logger = fmuLogger;
@@ -164,8 +190,10 @@ namespace Straylight
 			callbacks.freeMemory = free;
 			printDebug("Got callbacks!\n");
 			printfDebug("Model Identifer is %s\n", getModelIdentifier(md));
- 			c = fmu->instantiateSlave(getModelIdentifier(md), guid, "Model1", "", 10, fmiFalse, fmiFalse, callbacks, loggingOn);
-			if (!c) {
+
+			fmiComponent_ = fmuPointer_->instantiateSlave(getModelIdentifier(md), guid, "Model1", "", 10, fmiFalse, fmiFalse, callbacks, loggingOn);
+
+			if (!fmiComponent_) {
 			printError("could not instantiate slaves\n");
 			return 1;
 			}
@@ -180,57 +208,122 @@ namespace Straylight
 			printDebug("Open results file!\n");    
 
 			// Set the start time and initialize
-			time = t0;
+			time_ = t0;
 
 			printDebug("start to initialize fmu!\n");	   
-			fmiFlag =  fmu->initializeSlave(c, t0, fmiTrue, timeEnd_);	
+			fmiFlag =  fmuPointer_->initializeSlave(fmiComponent_, t0, fmiTrue, timeEnd_);	
 			printDebug("Initialized fmu!\n");
 			if (fmiFlag > fmiWarning) {
 			printError("could not initialize model");
-			return 1;
-			}
+			return 1;																
+		}
  
 			// Output solution for time t0 
-			outputRow(fmu, c, t0, file, separator); // output initla value of fmu 
+			outputRow(fmuPointer_, fmiComponent_, t0, file, csv_separator_); // output initla value of fmu 
 
 			///////////////////////////////////////////////////////////////////////////// 
 			// Get value references for input and output varibles
 			// Note: User needs to specify the name of variables for their own fmus
 			//Begin------------------------------------------------------------------
-			vru[0] = getValueReference(getVariableByName(md, "u1"));
-			vru[1] = getValueReference(getVariableByName(md, "u2"));
-			vry[0] = getValueReference(getVariableByName(md, "y1"));
-			vry[1] = getValueReference(getVariableByName(md, "y2"));
+			vru_[0] = getValueReference(getVariableByName(md, "u1"));
+			vru_[1] = getValueReference(getVariableByName(md, "u2"));
+			vry_[0] = getValueReference(getVariableByName(md, "y1"));
+			vry_[1] = getValueReference(getVariableByName(md, "y2"));
 			  //End--------------------------------------------------------------------
   
-			  printDebug("Enter in simulation loop\n");	
+			printDebug("Enter in simulation loop\n");	
+		}
+
+		int FMUloader::simulateHelper( ) {
+
+			simulateHelperInit();
+
 
 			// enter the simulation loop
-			while (time < timeEnd_) {
+			while (isSimulationComplete()) {
+				doOneStep();
+			} 
+
+			simulateHelperCleanup();
+
+			return 0; // success
+		}
+
+		int FMUloader::isSimulationComplete() {
+
+			return (time_ < timeEnd_) ;
+		}
 
 
-			if (loggingOn) printf("Step %d to t=%.4f\n", nSteps, time);		  
+		void FMUloader::simulateHelperCleanup( ) {
+
+			// Cleanup
+			fclose(file);
+
+			// Print simulation summary 
+			if (loggingOn) printf("Step %d to t=%.4f\n", nSteps, time_);		
+			printf("Simulation from %g to %g terminated successful\n", t0, timeEnd_);
+			printf("  steps ............ %d\n", nSteps);
+			printf("  fixed step size .. %g\n", timeDelta_);
+		}
+
+
+		fmiReal FMUloader::getResultSnapshot() {
+
+			  int k;
+			  fmiReal r;
+			  fmiInteger i;
+			  fmiBoolean b;
+			  fmiString s;
+			  fmiValueReference vr;				
+			  ScalarVariable** vars = fmuPointer_->modelDescription->modelVariables;
+			  char buffer[32];
+
+			  // Print all other columns
+
+				ScalarVariable* sv = vars[0];
+
+				// Output values
+				vr = getValueReference(sv);
+				switch (sv->typeSpec->type){
+				case elm_Real:
+					fmuPointer_->getReal(fmiComponent_, &vr, 1, &r);
+					return r;
+					break;
+				default:
+					return 0;
+					break;
+				}
+
+		}
+
+		
+		void FMUloader::doOneStep() {
+
+
+			if (loggingOn) printf("Step %d to t=%.4f\n", nSteps, time_);		  
+			int kCounter_;							// add a counter for variables
 
 			///////////////////////////////////////////////////////////////////////////
 			// Step 1: get values of output variables	from slaves
-			for (k=0; vars[k]; k++) {
-				ScalarVariable* sv = vars[k];
+			for (kCounter_=0; vars[kCounter_]; kCounter_++) {
+				ScalarVariable* sv = vars[kCounter_];
 				if (getAlias(sv)!=enu_noAlias) continue;
 				if (getCausality(sv) != enu_output) continue; // only get output variable
 				vr = getValueReference(sv);
 
 				switch (sv->typeSpec->type){
 				case elm_Real:
-					fmu->getReal(c, &vr, 1, &ry); 
+					fmuPointer_->getReal(fmiComponent_, &vr, 1, &ry); 
 					break;
 				case elm_Integer:
-					fmu->getInteger(c, &vr, 1, &iy);  
+					fmuPointer_->getInteger(fmiComponent_, &vr, 1, &iy);  
 					break;
 				case elm_Boolean:
-					fmu->getBoolean(c, &vr, 1, &by);
+					fmuPointer_->getBoolean(fmiComponent_, &vr, 1, &by);
 					break;
 				case elm_String:
-					fmu->getString(c, &vr, 1, &sy);
+					fmuPointer_->getString(fmiComponent_, &vr, 1, &sy);
 					break;
 				}
 
@@ -238,8 +331,8 @@ namespace Straylight
 				// Allocate values to cooresponding varibles on master program
 				// Note: User needs to specify the output variables for their own fmu 
 				//Begin------------------------------------------------------------------
-				if (vr == vry[0]) ry1 = ry;
-				else if(vr == vry[1]) ry2 = ry;
+				if (vr == vry_[0]) ry1 = ry;
+				else if(vr == vry_[1]) ry2 = ry;
 				//End--------------------------------------------------------------------
 			} 
     
@@ -253,8 +346,8 @@ namespace Straylight
 
 			//////////////////////////////////////////////////////////////////////////
 			// Step 3: set input variables back to slaves
-			for (k=0; vars[k]; k++) {
-				ScalarVariable* sv = vars[k];
+			for (kCounter_=0; vars[kCounter_]; kCounter_++) {
+				ScalarVariable* sv = vars[kCounter_];
 				if (getAlias(sv)!=enu_noAlias) continue;
 				if (getCausality(sv) != enu_input) continue; // only set input variable
 				vr = getValueReference(sv);
@@ -263,53 +356,41 @@ namespace Straylight
 				switch (sv->typeSpec->type){
 					case elm_Real:
 
-					if(vr == vru[0]) {
-						fmu->setReal(c, &vr, 1, &ru1); 				
+					if(vr == vru_[0]) {
+						fmuPointer_->setReal(fmiComponent_, &vr, 1, &ru1); 				
 						printDebug("Set u1\n");
 					}
-					else if (vr == vru[1]) {
-						fmu->setReal(c, &vr, 1, &ru2);
+					else if (vr == vru_[1]) {
+						fmuPointer_->setReal(fmiComponent_, &vr, 1, &ru2);
 						printDebug("Set u2\n");
 					}
 					else
 						printf("Warning: no data given for input variable\n");
 					break;
 					case elm_Integer:
-					fmu->setInteger(c, &vr, 1, &ix);  
+					fmuPointer_->setInteger(fmiComponent_, &vr, 1, &ix);  
 					break;
 					case elm_Boolean:
-					fmu->setBoolean(c, &vr, 1, &bx);
+					fmuPointer_->setBoolean(fmiComponent_, &vr, 1, &bx);
 					break;
 					case elm_String:
-					fmu->setString(c, &vr, 1, &sx);
+					fmuPointer_->setString(fmiComponent_, &vr, 1, &sx);
 					break;        
 				}
 				//End--------------------------------------------------------------------        
 			} 
     
 			// Advance to next time step
-			status = fmu->doStep(c, time, h, fmiTrue);  
+			status = fmuPointer_->doStep(fmiComponent_, time_, timeDelta_, fmiTrue);  
 			// Terminate this row
 			fprintf(file, "\n");      
    
-			time = min(time+h, timeEnd_);
-			outputRow(fmu, c, time, file, separator); // output values for this step
+			time_ = min(time_+timeDelta_, timeEnd_);
+			outputRow(fmuPointer_, fmiComponent_, time_, file, csv_separator_); // output values for this step
 			nSteps++;
-   
-			} // end of while  
 
-			  // Cleanup
-			  fclose(file);
 
-			  // Print simulation summary 
-			  if (loggingOn) printf("Step %d to t=%.4f\n", nSteps, time);		
-			  printf("Simulation from %g to %g terminated successful\n", t0, timeEnd_);
-			  printf("  steps ............ %d\n", nSteps);
-			  printf("  fixed step size .. %g\n", h);
-
-			  return 0; // success
 		}
-
 
 
 
