@@ -1,5 +1,5 @@
-﻿Build started 2/8/2012 1:00:30 AM.
-     1>Project "E:\SRI\straylight_repo\visualStudioWorkspace\FMUexe\FMUexe.vcxproj" on node 3 (rebuild target(s)).
+﻿Build started 2/8/2012 1:34:50 AM.
+     1>Project "E:\SRI\straylight_repo\visualStudioWorkspace\FMUexe\FMUexe.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\FMUexe.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
@@ -15,7 +15,6 @@
          Debug\stdafx.obj
          E:\SRI\straylight_repo\visualStudioWorkspace\Debug\FMUwrapper.lib
        Manifest:
-         Deleting file "Debug\FMUexe.exe.embed.manifest".
          C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\FMUexe.exe.embed.manifest" /manifest Debug\FMUexe.exe.intermediate.manifest
          C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\FMUexe.exe.embed.manifest.res" Debug\FMUexe_manifest.rc 
        LinkEmbedManifest:
@@ -27,8 +26,8 @@
        FinalizeBuildStatus:
          Deleting file "Debug\FMUexe.unsuccessfulbuild".
          Touching "Debug\FMUexe.lastbuildstate".
-     1>Done Building Project "E:\SRI\straylight_repo\visualStudioWorkspace\FMUexe\FMUexe.vcxproj" (rebuild target(s)).
+     1>Done Building Project "E:\SRI\straylight_repo\visualStudioWorkspace\FMUexe\FMUexe.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:02.09
+Time Elapsed 00:00:03.77
