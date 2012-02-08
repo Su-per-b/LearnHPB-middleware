@@ -1,0 +1,2 @@
+copy E:\SRI\straylight_repo\visualStudioWorkspace\Debug\FMUwrapper.dll E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\SocketServer\FMUwrapper.dll
+copy E:\SRI\straylight_repo\visualStudioWorkspace\Debug\JNIinterface.dll E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\SocketServer\JNIinterface.dll

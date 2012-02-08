@@ -285,55 +285,7 @@ public class Jmodelica {
 	}
 	
 	
-	
-	
-	//public void testJep() {
-		
-	//	try {
-		//	ClassLoader cl = this.getClass().getClassLoader();
-			
-			//Jep objJep = new Jep(true, "C:", cl);
-			
-/*
-			objJep.eval("print 'test 1'");
-			objJep.eval("print 'test 2'");
-			
-			objJep.eval("import sys");
-			objJep.eval("print sys.version_info");
-			*/
-			
-			//objJep.runScript("C:\\ProgramFiles\\JModelica.org-1.6\\test1.py");
-			//objJep.runScript("C:\\test1.py");
-			
-			//objJep.runScript("C:\\test1.py", cl);
-			
-			
-			//objJep.eval("import sys");
-			//objJep.eval("import os");
-			//objJep.eval("for p in sys.path:");
-			//objJep.eval("	print os.listdir( p )");
-			
-			//objJep.eval("os.putenv('JMODELICA_HOME', 'C:\\ProgramFiles\\JModelica.org-1.6')");
-			//objJep.eval("os.putenv('IPOPT_HOME', 'C:\\ProgramFiles\\JModelica.org-1.6\\Ipopt-MUMPS')");
-			//objJep.eval("os.putenv('SUNDIALS_HOME', 'C:\\ProgramFiles\\JModelica.org-1.6\\SUNDIALS')");
-			//objJep.eval("os.putenv('CPPAD_HOME', 'C:\\ProgramFiles\\JModelica.org-1.6\\CppAD')");
-			//objJep.eval("os.putenv('MINGW_HOME', 'C:\\ProgramFiles\\JModelica.org-1.6\\mingw')");
-			
-			//
-			
-			
-			    
-			    
-			    
-			    
-			//objJep.eval("help('modules')");
-			
-			
-	//	} catch (JepException ex) {
-		//	 ex.printStackTrace();
-		//}
-	//}
-	
+
 	
 	
 	public void test() {

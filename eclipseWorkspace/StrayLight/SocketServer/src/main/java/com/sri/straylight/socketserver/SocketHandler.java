@@ -23,7 +23,8 @@ public class SocketHandler extends WebSocketHandler {
 	private class MyWebSocket implements WebSocket.OnTextMessage {
 
 		private Connection connection;
-
+		private JNIinterface jniInterface;
+		
 		public void onOpen(Connection connection) {
 			// Client (Browser) WebSockets has opened a connection.
 			// 1) Store the opened connection
@@ -32,6 +33,9 @@ public class SocketHandler extends WebSocketHandler {
 			// instances
 			// instance.
 			webSockets.add(this);
+			
+
+			
 		}
 		
 		
@@ -54,10 +58,33 @@ public class SocketHandler extends WebSocketHandler {
 		public void onMessage(String data) {
 
 
-			Jmodelica jmodelica = new Jmodelica();
-			String resultStr = jmodelica.run(data);
+
+			if (data.equals("start")) {
+				jniInterface = new JNIinterface();
+				String result = jniInterface.initAll();
+				
+				
+		    	while(!jniInterface.isSimulationComplete()) {
+		    		
+		    		result = jniInterface.runStep();
+		    		double r = jniInterface.getResultSnapshot();
+		    		
+		    		String str = Double.toString(r);
+		    		System.out.println(str);
+		    		this.sendMessage(str);
+		    		
+		    		try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		    	}
+				
+			}
 			
-			this.sendMessage(resultStr);
+			
+			
 				
 
 		}

@@ -1,5 +1,7 @@
 package com.sri.straylight.socketserver;
 
+
+
 import java.net.URL;
 
 
@@ -12,6 +14,12 @@ public class Main
 	
     public static void main( String[] args )
     {
+    	
+    	//JNIinterface jniInterface = new JNIinterface();
+    	
+    	
+    	//String result = jniInterface.sayHello("sayHello");
+    	
     	
     	config = ConfigHelper.load();
 

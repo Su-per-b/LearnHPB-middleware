@@ -12,7 +12,7 @@ extern "C" {
  * Method:    sayHello
  * Signature: (Ljava/lang/String;)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_JNIinterface_sayHello
+JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_sayHello
   (JNIEnv *, jobject, jstring);
 
 /*
@@ -20,7 +20,7 @@ JNIEXPORT jstring JNICALL Java_JNIinterface_sayHello
  * Method:    test1
  * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_JNIinterface_test1
+JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_test1
   (JNIEnv *, jobject);
 
 /*
@@ -28,7 +28,7 @@ JNIEXPORT jstring JNICALL Java_JNIinterface_test1
  * Method:    initAll
  * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_JNIinterface_initAll
+JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_initAll
   (JNIEnv *, jobject);
 
 /*
@@ -36,7 +36,7 @@ JNIEXPORT jstring JNICALL Java_JNIinterface_initAll
  * Method:    runStep
  * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_JNIinterface_runStep
+JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_runStep
   (JNIEnv *, jobject);
 
 /*
@@ -44,7 +44,7 @@ JNIEXPORT jstring JNICALL Java_JNIinterface_runStep
  * Method:    cleanup
  * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_JNIinterface_cleanup
+JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_cleanup
   (JNIEnv *, jobject);
 
 /*
@@ -52,7 +52,7 @@ JNIEXPORT jstring JNICALL Java_JNIinterface_cleanup
  * Method:    isSimulationComplete
  * Signature: ()Z
  */
-JNIEXPORT jboolean JNICALL Java_JNIinterface_isSimulationComplete
+JNIEXPORT jboolean JNICALL Java_com_sri_straylight_socketserver_JNIinterface_isSimulationComplete
   (JNIEnv *, jobject);
 
 
@@ -62,7 +62,7 @@ JNIEXPORT jboolean JNICALL Java_JNIinterface_isSimulationComplete
  * Method:    getResultSnapshot
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_JNIinterface_getResultSnapshot
+JNIEXPORT jdouble JNICALL Java_com_sri_straylight_socketserver_JNIinterface_getResultSnapshot
   (JNIEnv *, jobject);
 
 
@@ -71,7 +71,7 @@ JNIEXPORT jdouble JNICALL Java_JNIinterface_getResultSnapshot
  * Method:    simulateHelperCleanup
  * Signature: ()Z
  */
-JNIEXPORT jboolean JNICALL Java_JNIinterface_simulateHelperCleanup
+JNIEXPORT jboolean JNICALL Java_com_sri_straylight_socketserver_JNIinterface_simulateHelperCleanup
   (JNIEnv *, jobject);
 
 #ifdef __cplusplus

@@ -13,7 +13,7 @@
 Straylight::MainFMUwrapper * fmuLoader;
 
 
-JNIEXPORT jstring JNICALL Java_JNIinterface_sayHello
+JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_sayHello
   (JNIEnv *env, jobject thisobject, jstring js)
 
 {
@@ -21,7 +21,7 @@ JNIEXPORT jstring JNICALL Java_JNIinterface_sayHello
 }
 
 
-JNIEXPORT jstring JNICALL Java_JNIinterface_test1
+JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_test1
   (JNIEnv * env, jobject) {
 
 	Straylight::FMUtester::test1();
@@ -40,13 +40,13 @@ JNIEXPORT jstring JNICALL Java_JNIinterface_test1
  * Method:    initAll
  * Signature: ()V
  */
-JNIEXPORT jstring JNICALL Java_JNIinterface_initAll
+JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_initAll
   (JNIEnv * env, jobject) 
 {
 	fmuLoader = new Straylight::MainFMUwrapper();
 	fmuLoader->initAll();
 
-	jstring jstrBuf = env->NewStringUTF("Java_JNIinterface_initAll");
+	jstring jstrBuf = env->NewStringUTF("Java_com_sri_straylight_socketserver_JNIinterface_initAll");
 
 	return jstrBuf;
 
@@ -60,7 +60,7 @@ JNIEXPORT jstring JNICALL Java_JNIinterface_initAll
  * Method:    runStep
  * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_JNIinterface_runStep
+JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_runStep
   (JNIEnv * env, jobject) 
 {
 
@@ -75,7 +75,7 @@ JNIEXPORT jstring JNICALL Java_JNIinterface_runStep
 	std::string str = os.str();
 
 
-	jstring jstrBuf = env->NewStringUTF("Java_JNIinterface_runStep");
+	jstring jstrBuf = env->NewStringUTF("Java_com_sri_straylight_socketserver_JNIinterface_runStep");
 
 	return jstrBuf;
 }
@@ -86,12 +86,12 @@ JNIEXPORT jstring JNICALL Java_JNIinterface_runStep
  * Method:    cleanup
  * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_JNIinterface_cleanup
+JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_cleanup
   (JNIEnv * env, jobject)
 
 {
 
-	jstring jstrBuf = env->NewStringUTF("Java_JNIinterface_cleanup");
+	jstring jstrBuf = env->NewStringUTF("Java_com_sri_straylight_socketserver_JNIinterface_cleanup");
 	return jstrBuf;
 
 }
@@ -102,7 +102,7 @@ JNIEXPORT jstring JNICALL Java_JNIinterface_cleanup
  * Method:    cleanup
  * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jboolean JNICALL Java_JNIinterface_isSimulationComplete
+JNIEXPORT jboolean JNICALL Java_com_sri_straylight_socketserver_JNIinterface_isSimulationComplete
   (JNIEnv * env, jobject)
 
 {
@@ -127,7 +127,7 @@ JNIEXPORT jboolean JNICALL Java_JNIinterface_isSimulationComplete
  * Method:    getResultSnapshot
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_JNIinterface_getResultSnapshot
+JNIEXPORT jdouble JNICALL Java_com_sri_straylight_socketserver_JNIinterface_getResultSnapshot
   (JNIEnv *, jobject) 
 {
 
@@ -144,7 +144,7 @@ JNIEXPORT jdouble JNICALL Java_JNIinterface_getResultSnapshot
  * Method:    simulateHelperCleanup
  * Signature: ()Z
  */
-JNIEXPORT jboolean JNICALL Java_JNIinterface_simulateHelperCleanup
+JNIEXPORT jboolean JNICALL Java_com_sri_straylight_socketserver_JNIinterface_simulateHelperCleanup
   (JNIEnv *, jobject)
 {
 

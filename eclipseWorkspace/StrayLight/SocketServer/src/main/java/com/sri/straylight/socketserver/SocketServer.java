@@ -15,6 +15,7 @@ public class SocketServer {
 	
 	public void showBanner() {
 			
+
 		java.net.URL url = SocketServer.class.getClassLoader().getResource("SocketServer.properties");
 		
 		Banner banner = new Banner(logger, "Socket Server", url);
@@ -28,9 +29,19 @@ public class SocketServer {
 			Server server = new Server(8080);
 			
 			// 2) Register ChatWebSocketHandler in the Jetty server instance.
-			SocketHandler theHandler = new SocketHandler();
-			theHandler.setHandler(new DefaultHandler());
-			server.setHandler(theHandler);
+			SocketHandler socketHandler = new SocketHandler();
+			socketHandler.setHandler(new DefaultHandler());
+			
+			server.setHandler(socketHandler);
+			
+			
+			//SocketHandler theHandler = new SocketHandler();
+			//theHandler.setHandler(new DefaultHandler());
+			//server.setHandler(theHandler);
+			
+			
+		//	socketServerUrl = "ws://" + hostname + ":8080/streaming"
+			
 			
 			// 2) Start the Jetty server.
 			server.start();
