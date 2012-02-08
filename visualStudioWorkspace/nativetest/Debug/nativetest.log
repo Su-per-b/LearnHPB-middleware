@@ -1,5 +1,5 @@
-﻿Build started 2/6/2012 10:16:33 AM.
-     1>Project "E:\SRI\straylight_repo\visualStudioWorkspace\nativetest\nativetest.vcxproj" on node 2 (build target(s)).
+﻿Build started 2/8/2012 1:00:26 AM.
+     1>Project "E:\SRI\straylight_repo\visualStudioWorkspace\nativetest\nativetest.vcxproj" on node 3 (rebuild target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\nativetest.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
@@ -18,6 +18,7 @@
          Debug\stdafx.obj
             Creating library E:\SRI\straylight_repo\visualStudioWorkspace\Debug\nativetest.lib and object E:\SRI\straylight_repo\visualStudioWorkspace\Debug\nativetest.exp
        Manifest:
+         Deleting file "Debug\nativetest.dll.embed.manifest".
          C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\nativetest.dll.embed.manifest" /manifest Debug\nativetest.dll.intermediate.manifest
          C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\nativetest.dll.embed.manifest.res" Debug\nativetest_manifest.rc 
        LinkEmbedManifest:
@@ -30,8 +31,8 @@
        FinalizeBuildStatus:
          Deleting file "Debug\nativetest.unsuccessfulbuild".
          Touching "Debug\nativetest.lastbuildstate".
-     1>Done Building Project "E:\SRI\straylight_repo\visualStudioWorkspace\nativetest\nativetest.vcxproj" (build target(s)).
+     1>Done Building Project "E:\SRI\straylight_repo\visualStudioWorkspace\nativetest\nativetest.vcxproj" (rebuild target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:02.30
+Time Elapsed 00:00:02.31

@@ -1,0 +1,2 @@
+copy E:\SRI\straylight_repo\visualStudioWorkspace\Debug\FMUwrapper.dll E:\SRI\straylight_repo\eclipseWorkspace\JNItest2\FMUwrapper.dll
+copy E:\SRI\straylight_repo\visualStudioWorkspace\Debug\JNIinterface.dll E:\SRI\straylight_repo\eclipseWorkspace\JNItest2\JNIinterface.dll
