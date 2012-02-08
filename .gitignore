@@ -24,3 +24,9 @@ __pycache__
 /eclipseWorkspace/JettyWebApp/bin
 /visualStudioWorkspace/nativetest/Debug
 /visualStudioWorkspace/FMUexe/Debug
+/eclipseWorkspace/JNItest/DoubleInputDoubleOutput
+/eclipseWorkspace/JNItest/src/JNIinterface.h
+/eclipseWorkspace/JNItest/src/FMUwrapper.class
+/eclipseWorkspace/JNItest/src/JNIinterface.class
+/eclipseWorkspace/JNItest/bin
+/visualStudioWorkspace/ipch
