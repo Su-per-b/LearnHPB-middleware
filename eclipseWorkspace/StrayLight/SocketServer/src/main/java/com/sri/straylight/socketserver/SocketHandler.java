@@ -74,16 +74,18 @@ public class SocketHandler extends WebSocketHandler {
 		    		this.sendMessage(str);
 		    		
 		    		try {
-						Thread.sleep(1000);
+						Thread.sleep(250);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 		    	}
-				
+		    	
+		    	jniInterface.simulateHelperCleanup();
+		    	jniInterface = null;
 			}
 			
-			
+	
 			
 				
 

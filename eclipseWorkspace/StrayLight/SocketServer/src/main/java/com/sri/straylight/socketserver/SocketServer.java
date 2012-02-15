@@ -26,7 +26,7 @@ public class SocketServer {
 
 		try {
 			// 1) Create a Jetty server with the 8080 port.
-			Server server = new Server(8080);
+			Server server = new Server(8081);
 			
 			// 2) Register ChatWebSocketHandler in the Jetty server instance.
 			SocketHandler socketHandler = new SocketHandler();

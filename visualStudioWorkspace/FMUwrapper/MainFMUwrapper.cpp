@@ -54,7 +54,7 @@ namespace Straylight
 
 		MainFMUwrapper::~MainFMUwrapper(void)
 		{
-			free(unzippedPath_);
+			
 			
 		}
 
@@ -263,6 +263,14 @@ namespace Straylight
 
 			// Cleanup
 			fclose(file);
+			free(unzippedPath_);
+
+
+			// Release FMU 
+			FreeLibrary(fmu_.dllHandle);
+			freeElement(fmu_.modelDescription);
+
+
 
 			// Print simulation summary 
 			if (loggingOn) printf("Step %d to t=%.4f\n", nSteps, time_);		

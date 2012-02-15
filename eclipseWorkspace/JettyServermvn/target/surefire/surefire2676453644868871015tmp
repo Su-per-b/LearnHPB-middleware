@@ -1,6 +1,0 @@
-#surefire
-#Mon Feb 06 09:34:16 PST 2012
-maven.surefire.debug=true
-user.dir=E\:\\SRI\\straylight_repo\\eclipseWorkspace\\JettyServermvn
-localRepository=C\:\\Users\\raj\\.m2\\repository
-basedir=E\:\\SRI\\straylight_repo\\eclipseWorkspace\\JettyServermvn
