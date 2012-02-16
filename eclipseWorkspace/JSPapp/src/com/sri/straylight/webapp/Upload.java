@@ -1,7 +1,6 @@
 package com.sri.straylight.webapp;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -148,10 +147,11 @@ public class Upload {
 		            if ( !fi.isFormField () )	
 		            {
 		            // Get the uploaded file parameters
-		            String fieldName = fi.getFieldName();
+		           // String fieldName = fi.getFieldName();
 		            String fileName = fi.getName();
-		            boolean isInMemory = fi.isInMemory();
-		            long sizeInBytes = fi.getSize();
+		            //boolean isInMemory = fi.isInMemory();
+		           // long sizeInBytes = fi.getSize();
+		            
 		            // Write the file
 		            if( fileName.lastIndexOf("\\") >= 0 ){
 		            file = new File( this._fmuFolder + 
