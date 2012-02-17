@@ -22,7 +22,7 @@
 
 			</select>
 		
-			<input id="submitButton" disabled="true"class="button" type="submit" name="submitButton" value="Submit" />
+			<input id="submitButton" disabled="disabled"class="button" type="submit" name="submitButton" value="Submit" />
 			<input id="clearButton" class="button" type="button" name="submitButton" value="Clear" />	
 				
 

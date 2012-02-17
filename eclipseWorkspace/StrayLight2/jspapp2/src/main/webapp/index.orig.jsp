@@ -178,7 +178,7 @@ span.from {
 			  <option value="SecondOrder.fmu">SecondOrder.fmu</option>
 			</select>
 		
-			<input id="submitButton" disabled="true"
+			<input id="submitButton" disabled="disabled"
 				class="button" type="submit" name="submitButton" value="Submit" />
 				
 			<input id="clearButton" 

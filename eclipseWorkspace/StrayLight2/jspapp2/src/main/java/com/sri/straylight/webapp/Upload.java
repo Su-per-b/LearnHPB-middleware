@@ -1,7 +1,6 @@
 package com.sri.straylight.webapp;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -11,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.ProgressListener;
+//import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
@@ -22,7 +21,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 public class Upload {
 	
 	//private String _fileUploadPath; 
-	private ProgressListener _progressListener;
+	//private ProgressListener _progressListener;
 	private String _fmuFolder;
 	
 	
@@ -35,6 +34,8 @@ public class Upload {
  	   
     	//_fileUploadPath = context.getInitParameter("file-upload");
     	//Create a progress listener
+    	
+    	/*
     	ProgressListener _progressListener = new ProgressListener(){
     	   public void update(long pBytesRead, long pContentLength, int pItems) {
     	       System.out.println("We are currently reading item " + pItems);
@@ -46,6 +47,7 @@ public class Upload {
     	       }
     	   }
     	};
+    	*/
     	
     }
     
@@ -132,14 +134,24 @@ public class Upload {
 		      ServletFileUpload upload = new ServletFileUpload(factory);
 		      // maximum file size to be uploaded.
 		      upload.setSizeMax( maxFileSize );
-		      upload.setProgressListener(this._progressListener);
+		     // upload.setProgressListener(this._progressListener);
 		    	
 		      try{ 
 		         // Parse the request to get file items.
-		         List fileItems = upload.parseRequest(request);
+		    	  List<FileItem> fileItems = upload.parseRequest(request);
 
+		    	  
+		    	  //List<FileItem> lf = new  List<FileItem>();
+		    	  
+		    	  
+		    	  
+		    	//  List<FileItem> fileItems = 
+		    		//	  Collections.checkedList( upload.parseRequest(request), );
+		    	  
+		    	  
+		    	  
 		         // Process the uploaded file items
-		         Iterator i = fileItems.iterator();
+		         Iterator<FileItem> i = fileItems.iterator();
 
 
 		         while ( i.hasNext () ) 
@@ -148,7 +160,7 @@ public class Upload {
 		            if ( !fi.isFormField () )	
 		            {
 		            // Get the uploaded file parameters
-		            String fieldName = fi.getFieldName();
+		          //  String fieldName = fi.getFieldName();
 		            String fileName = fi.getName();
 		           // boolean isInMemory = fi.isInMemory();
 		          //  long sizeInBytes = fi.getSize();
