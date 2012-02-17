@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
 Archiver-Version: Plexus Archiver
 Created-By: 20.1-b02 (Sun Microsystems Inc.)
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 

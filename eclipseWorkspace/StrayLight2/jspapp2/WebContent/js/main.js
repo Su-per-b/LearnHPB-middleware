@@ -3,13 +3,13 @@
 
 function findSocketServer() {
 
-	url = String (window.location)
-	console.log('window.location: '+ url)
+	url = String (window.location);
+	console.log('window.location: '+ url);
 	
 	hostname = url.split('/')[2];
-	console.log('hostname: '+ hostname)
+	console.log('hostname: '+ hostname);
 	
-	socketServerUrl = "ws://" + hostname + ":8081/"
+	socketServerUrl = "ws://" + hostname + ":8081/";
 
 }
 
@@ -17,7 +17,7 @@ function onLoad() {
 	
 	$('clearButton').onclick = function(event) {
 		$('messageBox').innerHTML = '';
-	}
+	};
 	
 	// "Join" button click opens Chat WebSockets
 	$('submitButton').onclick = function(event) {

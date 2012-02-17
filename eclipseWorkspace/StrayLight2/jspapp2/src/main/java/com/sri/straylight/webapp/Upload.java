@@ -150,8 +150,8 @@ public class Upload {
 		            // Get the uploaded file parameters
 		            String fieldName = fi.getFieldName();
 		            String fileName = fi.getName();
-		            boolean isInMemory = fi.isInMemory();
-		            long sizeInBytes = fi.getSize();
+		           // boolean isInMemory = fi.isInMemory();
+		          //  long sizeInBytes = fi.getSize();
 		            // Write the file
 		            if( fileName.lastIndexOf("\\") >= 0 ){
 		            file = new File( this._fmuFolder + 
