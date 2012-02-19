@@ -9,14 +9,11 @@
 	<parent>
 		<artifactId>straylight3</artifactId>
 		<groupId>com.sri</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+  		<version>0.0.1</version>
 	</parent>
 
 	<artifactId>jspapp3</artifactId>
 	<name>jspapp3</name>
-
-	<url>http://maven.apache.org</url>
-
 
 	<packaging>war</packaging>
 

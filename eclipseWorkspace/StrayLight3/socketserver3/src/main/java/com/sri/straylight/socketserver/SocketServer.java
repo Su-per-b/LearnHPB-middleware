@@ -4,7 +4,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
-import com.sri.straylight.common.Banner;
+import com.sri.straylight.common3.Banner;
 import java.util.Properties;
 
 public class SocketServer {

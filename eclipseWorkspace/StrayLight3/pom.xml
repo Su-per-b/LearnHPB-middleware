@@ -7,7 +7,7 @@
 
   <groupId>com.sri</groupId>
   <artifactId>straylight3</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <packaging>pom</packaging>
 
   <name>straylight3</name>
@@ -58,6 +58,7 @@
   	<module>jspserver3</module>
   	<module>jspapp3</module>
   	<module>socketserver3</module>
+  	<module>common3</module>
   </modules>
   
 

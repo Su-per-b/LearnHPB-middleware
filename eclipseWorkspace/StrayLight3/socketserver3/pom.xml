@@ -1,28 +1,28 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>straylight3</artifactId>
-    <groupId>com.sri</groupId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <groupId>com.sri</groupId>
-  <artifactId>socketserver3</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>socketserver3</name>
-  <url>http://maven.apache.org</url>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-  <dependencies>
-  
-  
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>straylight3</artifactId>
+		<groupId>com.sri</groupId>
+		<version>0.0.1</version>
+	</parent>
+
+	<artifactId>socketserver3</artifactId>
+	<name>socketserver3</name>
+
+
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
 
 		<dependency>
 			<groupId>com.sri</groupId>
-			<artifactId>Common</artifactId>
-			<version>0.0.4</version>
+			<artifactId>common3</artifactId>
+			<version>0.0.1</version>
 		</dependency>
 
 		<dependency>
@@ -32,17 +32,59 @@
 		</dependency>
 
 		<dependency>
-		    <groupId>org.python</groupId>
-		    <artifactId>jython-standalone</artifactId>
-		    <version>2.5.2</version>
+			<groupId>org.python</groupId>
+			<artifactId>jython-standalone</artifactId>
+			<version>2.5.2</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-websocket</artifactId>
-			<version>7.5.4.v20111024</version>
+			<version>${jetty.version}</version>
 		</dependency>
 
+		
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-io</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.mojo.jspc</groupId>
+			<artifactId>jspc-maven-plugin</artifactId>
+			<version>2.0-alpha-3</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
@@ -50,9 +92,10 @@
 			<version>1.4.2</version>
 		</dependency>
 
-  </dependencies>
-  
-  
+
+	</dependencies>
+
+
 	<build>
 		<plugins>
 			<plugin>
@@ -75,13 +118,13 @@
 			</plugin>
 		</plugins>
 
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
-    
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
 	</build>
 
 
