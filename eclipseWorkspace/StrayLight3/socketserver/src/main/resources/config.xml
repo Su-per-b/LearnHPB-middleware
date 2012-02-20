@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+
+	<pythonPath>C:\python\Python2.7\python.exe</pythonPath>
+	<runSimulationPath>C:\ProgramFiles\JModelica.org-1.6\run_simulation.py</runSimulationPath>
+	<fmuFolder>C:\ProgramFiles\JModelica.org-1.6\fmus</fmuFolder>
+	<fmuResultsFolder>C:\ProgramFiles\JModelica.org-1.6\fmuResults</fmuResultsFolder>
+	
+</config>
