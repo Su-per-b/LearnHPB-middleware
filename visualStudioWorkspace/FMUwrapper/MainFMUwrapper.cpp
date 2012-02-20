@@ -1,5 +1,6 @@
 // MainFMUwrapper.cpp : Defines the exported functions for the DLL application.
 //
+#include "stdafx.h"
 #include <jni.h>
 #include <sys/types.h>
 
