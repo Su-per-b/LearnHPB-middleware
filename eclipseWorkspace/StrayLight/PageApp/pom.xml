@@ -7,13 +7,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<artifactId>straylight3</artifactId>
+		<artifactId>StrayLight</artifactId>
 		<groupId>com.sri</groupId>
   		<version>0.0.1</version>
 	</parent>
 
-	<artifactId>jspapp3</artifactId>
-	<name>jspapp3</name>
+	<artifactId>PageApp</artifactId>
+	<name>PageApp</name>
 
 	<packaging>war</packaging>
 
@@ -26,20 +26,18 @@
 			<version>${jetty.version}</version>
 		</dependency>
 	
-<dependency>
-	<groupId>commons-fileupload</groupId>
-	<artifactId>commons-fileupload</artifactId>
-	<version>1.2.2</version>
-</dependency>
-
-<dependency>
-	<groupId>commons-io</groupId>
-	<artifactId>commons-io</artifactId>
-	<version>20030203.000550</version>
-</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>20030203.000550</version>
+		</dependency>
             
-            
-
 		<dependency>
 			<groupId>javax.el</groupId>
 			<artifactId>el-api</artifactId>

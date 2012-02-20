@@ -3,13 +3,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>straylight3</artifactId>
+		<artifactId>StrayLight</artifactId>
 		<groupId>com.sri</groupId>
   		<version>0.0.1</version>
 	</parent>
   
-  <artifactId>common3</artifactId>
-  <name>common3</name>
+  <artifactId>Common</artifactId>
+  <name>Common</name>
 
 
   

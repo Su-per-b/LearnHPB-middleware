@@ -5,13 +5,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<artifactId>straylight3</artifactId>
+		<artifactId>StrayLight</artifactId>
 		<groupId>com.sri</groupId>
   		<version>0.0.1</version>
 	</parent>
 
-	<artifactId>jspserver3</artifactId>
-	<name>jspserver3</name>
+	<artifactId>PageServer</artifactId>
+	<name>PageServer</name>
 
 
 	<dependencies>

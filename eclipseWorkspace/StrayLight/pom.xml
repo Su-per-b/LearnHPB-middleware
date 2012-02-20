@@ -6,11 +6,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.sri</groupId>
-  <artifactId>straylight3</artifactId>
+  <artifactId>StrayLight</artifactId>
   <version>0.0.1</version>
   <packaging>pom</packaging>
 
-  <name>straylight3</name>
+  <name>StrayLight</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -65,10 +65,10 @@
   </dependencies>
   
   <modules>
-  	<module>jspserver3</module>
-  	<module>jspapp3</module>
-  	<module>socketserver</module>
-  	<module>common3</module>
+  	<module>PageServer</module>
+  	<module>PageApp</module>
+  	<module>SocketServer</module>
+  	<module>Common</module>
   </modules>
   
 
