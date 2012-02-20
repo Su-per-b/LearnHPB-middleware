@@ -7,7 +7,7 @@
 
   <groupId>com.sri</groupId>
   <artifactId>StrayLight</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <packaging>pom</packaging>
 
   <name>StrayLight</name>
