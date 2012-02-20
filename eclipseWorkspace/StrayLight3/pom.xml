@@ -57,7 +57,7 @@
   <modules>
   	<module>jspserver3</module>
   	<module>jspapp3</module>
-  	<module>socketserver3</module>
+  	<module>socketserver</module>
   	<module>common3</module>
   </modules>
   
