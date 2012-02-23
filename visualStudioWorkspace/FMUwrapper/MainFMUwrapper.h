@@ -56,6 +56,8 @@ namespace Straylight
 	
 		__declspec(dllexport) void unzip();
 
+		void unzip_bak();
+
 		__declspec(dllexport) void parseXML();
 
 		__declspec(dllexport) void loadDLL();

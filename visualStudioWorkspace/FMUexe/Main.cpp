@@ -12,7 +12,7 @@
 	int _tmain(int argc, _TCHAR* argv[])
 	{
 
-		test5();
+		test6();
 		return 0;
 	}
 
@@ -106,6 +106,34 @@
 	}
 
 
+	void test6() {
+		Straylight::MainFMUwrapper *fmuWrapper;
+
+	    fmuWrapper = new Straylight::MainFMUwrapper();
+		fmuWrapper->setFMU("DoubleInputDoubleOutput.fmu");
+		fmuWrapper->unzip();
+		fmuWrapper->parseXML();
+		fmuWrapper->loadDLL();
+		
+		fmuWrapper->simulateHelperInit();
+
+		// enter the simulation loop
+		while (!fmuWrapper->isSimulationComplete()) {
+			fmuWrapper->doOneStep();
+			fmiReal d = fmuWrapper->getResultSnapshot();
+
+			std::ostringstream os;
+			os << d;
+			std::string str = os.str();
+
+
+		}
+
+
+		fmuWrapper->simulateHelperCleanup();
+
+
+	}
 
 
 

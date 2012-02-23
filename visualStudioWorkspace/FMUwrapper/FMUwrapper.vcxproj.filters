@@ -92,4 +92,7 @@
       <Filter>lib</Filter>
     </Library>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="lib\zlibwapi.dll" />
+  </ItemGroup>
 </Project>

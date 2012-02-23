@@ -2,6 +2,8 @@ package com.sri.straylight.socketserver;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.DefaultHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 import com.sri.straylight.common3.Banner;
@@ -29,20 +31,27 @@ public class SocketServer {
 			Server server = new Server(8081);
 			
 			// 2) Register ChatWebSocketHandler in the Jetty server instance.
-			SocketHandler socketHandler = new SocketHandler();
-			socketHandler.setHandler(new DefaultHandler());
+			SocketHandlerAll socketHandler = new SocketHandlerAll();
+			//socketHandler.setHandler(new DefaultHandler());
 			
 			server.setHandler(socketHandler);
 			
-			
-			//SocketHandler theHandler = new SocketHandler();
-			//theHandler.setHandler(new DefaultHandler());
-			//server.setHandler(theHandler);
-			
-			
-		//	socketServerUrl = "ws://" + hostname + ":8080/streaming"
+
+			//SocketHandlerUpload theHandler2 = new SocketHandlerUpload();
+			//theHandler2.setHandler(new DefaultHandler());
+			//server.setHandler(theHandler2);
 			
 			
+			//ServletContextHandler context0 = new ServletContextHandler(ServletContextHandler.NO_SECURITY | ServletContextHandler.NO_SESSIONS);
+			//context0.setContextPath("/");
+			
+			//String className = SocketHandlerStream.class.getName();
+			//context0.addServlet(className,"/*");
+			
+			//context0.a
+			//context0.addServlet(new ServletHolder(socketHandler),"/it/*");
+			
+			//server.setHandler(context0);
 			// 2) Start the Jetty server.
 			server.start();
 			// Jetty server is stopped when the Thread is interruped.

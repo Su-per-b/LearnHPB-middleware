@@ -12,11 +12,13 @@
 #include "MainFMUwrapper.h"
 
 
+
+
 #define BUFSIZE 4096
 #define XML_FILE  "modelDescription.xml"
 #define DLL_DIR   ""
 #define RESULT_FILE "result.csv"
-
+#define ZLIB_WINAPI
 //static FMU fmu; // the fmu to simulate
 
   /*
@@ -28,13 +30,7 @@ JNIEXPORT void JNICALL Java_ReadFile_loadFile
   (JNIEnv * env, jobject jobj, jstring name) {
 
 
-
-
-
-
     return;
-
-
 
 }
 
@@ -86,6 +82,40 @@ namespace Straylight
 			  exit(EXIT_FAILURE);
 			}
 
+
+			//const char * fmuFileName_;
+
+			//CString ss = "test";
+
+			//unzFile uzf(unzOpen(sCompressedPath));
+
+			//unzFile fl = unzOpen(fmuFileName_);
+			//MyCompress mc;
+			//bool result = mc.Uncompress(m_sPathIn, m_sPathOut));
+
+
+			//bool result = MyCompress::Uncompress(const CString& sUncompressedPath,
+							//const CString& sCompressedPath) const
+
+
+
+		}
+
+		void MainFMUwrapper::unzip_bak() {
+
+			double tEnd = 1.0;
+			double h=0.1;
+			int loggingOn = 0;
+			char csv_separator = ',';  
+
+			// Get absolute path to FMU, NULL if not found  
+			unzippedPath_ = getTmpPath(fmuFileName_, strlen(this->fmuFileName_)-4);
+
+			if(unzippedPath_==NULL){
+			  printError("Cannot allocate temporary path\n");
+			  exit(EXIT_FAILURE);
+			}
+
 			// Unzip the FMU to the tmpPat directory
 			if (unpack(fmuFileName_, unzippedPath_)) {  
 				printfError("Fail to unpack fmu \"%s\"\n", fmuFileName_);
@@ -94,6 +124,9 @@ namespace Straylight
 
 		}
 
+
+
+		
 		void MainFMUwrapper::parseXML() {
 			char* xmlFilePath;
 
@@ -130,7 +163,6 @@ namespace Straylight
 			this->parseXML();
 			this->loadDLL();
 			this->simulateHelperInit();
-
 
 		}
 
