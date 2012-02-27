@@ -17,8 +17,8 @@
 extern "C"
 {
 
-#include "include/expat.h"
-#include "include/util.h"
+#include "..\expat-2.0.1\lib\expat.h"
+#include "util.h"
 #include "mainHelper.h"
 
 }

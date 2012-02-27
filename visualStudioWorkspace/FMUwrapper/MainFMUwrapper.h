@@ -15,8 +15,10 @@ namespace Straylight
     
 	private:
 		const char * fmuFileName_;
-		char* unzippedPath_;
-		char* dllPath_;
+
+		char* unzipfolder_;
+		char* xmlFilePath_;
+		char* dllFilePath_;
 
 		double timeEnd_;
 		FMU fmu_; // the fmu to simulate
@@ -43,26 +45,17 @@ namespace Straylight
 
 		fmiBoolean loggingOn;
 		double timeDelta_;
-
+		ModelDescription* modelDescription_;
 
 
 	public:
 		__declspec(dllexport) MainFMUwrapper(void);
 		__declspec(dllexport) ~MainFMUwrapper(void);
-
         __declspec(dllexport) void doAll(const char * fileName);
-
-		__declspec(dllexport) void setFMU(const char * fileName);
-	
 		__declspec(dllexport) void unzip();
 
-		void unzip_bak();
-
-		__declspec(dllexport) void parseXML();
-
-		__declspec(dllexport) void loadDLL();
-
-		__declspec(dllexport) int runSimulation();
+		__declspec(dllexport) void parseXML(char* unzipfolder);
+		__declspec(dllexport) void parseXML2();
 
 		__declspec(dllexport) int isSimulationComplete();
 
@@ -74,8 +67,11 @@ namespace Straylight
 
 		__declspec(dllexport) fmiReal getResultSnapshot();
 		
-		__declspec(dllexport) void initAll();
-		
+		__declspec(dllexport) int loadDll();
+
+
+	private:
+		int loadDLLhelper(const char* , FMU *);
 
     };
 

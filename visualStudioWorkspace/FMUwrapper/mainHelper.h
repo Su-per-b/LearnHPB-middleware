@@ -17,11 +17,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "include/expat.h"
-#include "include/util.h"
+#include "..\expat-2.0.1\lib\expat.h"
+#include "util.h"
 
-#include "include/fmiModelFunctions.h"
-#include "include/xml_parser_cosim.h"	// Zuo: parser for co-simulation
+#include "fmiModelFunctions.h"
+#include "xml_parser_cosim.h"	// Zuo: parser for co-simulation
 
 
 //typedef const char* (*fGetModelTypesPlatform)();	// Zuo: definition in model-ex V1.0
@@ -107,7 +107,7 @@ typedef struct {
 
 
 
-int doall(const char* fmuFilNam);
+//int doall(const char* fmuFilNam);
 
 int simulate(FMU* fmu, double tEnd, double h, fmiBoolean loggingOn, char separator);
 
@@ -118,4 +118,4 @@ void fmuLogger(fmiComponent c, fmiString instanceName, fmiStatus status,
 
 void outputRow(FMU *fmu, fmiComponent c, double time, FILE* file, char separator);
 
-int loadDLLhelper(const char* dllPat, FMU *fmu);
+void* getAdr(FMU *, const char*);

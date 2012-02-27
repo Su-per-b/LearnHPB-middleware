@@ -8,6 +8,8 @@ public class Config {
 	public String runSimulationPath;
 	public String fmuFolder;
 	public String fmuResultsFolder;
+	public String unzipFolderBase;
+	public String testFmuFile;
 	
 	
 }

@@ -6,8 +6,8 @@
 extern "C"
 {
 
-#include "include/expat.h"
-#include "include/util.h"
+
+#include "util.h"
 #include "mainHelper.h"
 
 }

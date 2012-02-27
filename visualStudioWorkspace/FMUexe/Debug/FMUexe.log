@@ -1,27 +1,57 @@
-﻿Build started 2/22/2012 8:37:19 AM.
-     1>Project "E:\SRI\straylight_repo\visualStudioWorkspace\FMUexe\FMUexe.vcxproj" on node 4 (build target(s)).
+﻿Build started 2/27/2012 3:13:50 PM.
+     1>Project "E:\SRI\straylight_repo\visualStudioWorkspace\FMUexe\FMUexe.vcxproj" on node 3 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\FMUexe.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IE:\SRI\straylight_repo\visualStudioWorkspace\FMUwrapper /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"Debug\FMUexe.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
-         stdafx.cpp
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IE:\SRI\straylight_repo\visualStudioWorkspace\FMUwrapper /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Main.cpp
+         All outputs are up-to-date.
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IE:\SRI\straylight_repo\visualStudioWorkspace\FMUwrapper /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Main.cpp
          Main.cpp
        ManifestResourceCompile:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\FMUexe.exe.embed.manifest.res" Debug\FMUexe_manifest.rc 
+         All outputs are up-to-date.
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\SRI\straylight_repo\visualStudioWorkspace\Debug\FMUexe.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\FMUexe.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\SRI\straylight_repo\visualStudioWorkspace\Debug\FMUexe.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\SRI\straylight_repo\visualStudioWorkspace\Debug\FMUexe.lib" /MACHINE:X86 Debug\FMUexe.exe.embed.manifest.res
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\SRI\straylight_repo\visualStudioWorkspace\Debug\FMUexe.exe" /VERBOSE:Lib /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\FMUexe.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\SRI\straylight_repo\visualStudioWorkspace\Debug\FMUexe.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\SRI\straylight_repo\visualStudioWorkspace\Debug\FMUexe.lib" /MACHINE:X86 Debug\FMUexe.exe.embed.manifest.res
          Debug\Main.obj
          Debug\stdafx.obj
          E:\SRI\straylight_repo\visualStudioWorkspace\Debug\FMUwrapper.lib
+         
+         Searching libraries
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+             Searching E:\SRI\straylight_repo\visualStudioWorkspace\Debug\FMUwrapper.lib:
+             Searching C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\libcpmtd.lib:
+             Searching C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\LIBCMTD.lib:
+             Searching C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\OLDNAMES.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+             Searching C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+             Searching E:\SRI\straylight_repo\visualStudioWorkspace\Debug\FMUwrapper.lib:
+             Searching C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\libcpmtd.lib:
+         
+         Finished searching libraries
        Manifest:
          C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\FMUexe.exe.embed.manifest" /manifest Debug\FMUexe.exe.intermediate.manifest
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\FMUexe.exe.embed.manifest.res" Debug\FMUexe_manifest.rc 
+         All outputs are up-to-date.
        LinkEmbedManifest:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\SRI\straylight_repo\visualStudioWorkspace\Debug\FMUexe.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\FMUexe.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\SRI\straylight_repo\visualStudioWorkspace\Debug\FMUexe.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\SRI\straylight_repo\visualStudioWorkspace\Debug\FMUexe.lib" /MACHINE:X86 Debug\FMUexe.exe.embed.manifest.res
-         Debug\Main.obj
-         Debug\stdafx.obj
-         E:\SRI\straylight_repo\visualStudioWorkspace\Debug\FMUwrapper.lib
+         All outputs are up-to-date.
          FMUexe.vcxproj -> E:\SRI\straylight_repo\visualStudioWorkspace\Debug\FMUexe.exe
        FinalizeBuildStatus:
          Deleting file "Debug\FMUexe.unsuccessfulbuild".
@@ -30,4 +60,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.45
+Time Elapsed 00:00:02.23

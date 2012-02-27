@@ -3,7 +3,7 @@
   <!-- ===================================================================== -->
   <!-- This file contains the default descriptor for web applications.       -->
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  <!-- The intent of this descriptor is to include jetty specific or Common3  -->
+  <!-- The intent of this descriptor is to include jetty specific or common  -->
   <!-- configuration for all webapps.   If a context has a webdefault.xml    -->
   <!-- descriptor, it is applied before the contexts own web.xml file        -->
   <!--                                                                       -->

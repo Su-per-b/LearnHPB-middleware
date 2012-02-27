@@ -1,4 +1,4 @@
-package com.sri.straylight.socketserver3;
+package com.sri.straylight.socketserver;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

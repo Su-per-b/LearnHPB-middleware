@@ -69,7 +69,7 @@ static FMU fmu; // the fmu to simulate
 ///\param funnam Function name .
 ///\return Address of the specific function.
 //////////////////////////////////////////////////////////////////////////////
-static void* getAdr(FMU *fmu, const char* funNam){
+void* getAdr(FMU *fmu, const char* funNam){
     char name[BUFSIZE];
     void* fp;
     sprintf(name, "%s_%s", getModelIdentifier(fmu->modelDescription), funNam); // Zuo: adding the model name in front of funciton name
@@ -81,61 +81,7 @@ static void* getAdr(FMU *fmu, const char* funNam){
     return fp;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-/// Load the given dll and set function pointers in fmu.
-/// It changes the names of the standard FMI functions by adding the modlei identifer
-/// and links the new functions with QTronic's FMU structure.
-///
-///\param dllPat Path of the dll file.
-///\param fmu Name of FMU.
-///\return 0 if there is no error occurred.
-///////////////////////////////////////////////////////////////////////////////
-int loadDLLhelper(const char* dllPat, FMU *fmu) {
-  
-	wchar_t * dllPatW;
-	int len;
-	int wlen;
-	HINSTANCE h;
 
-	len = strlen(dllPat) + 1; // I had to add an additional character I believe is is
-							//an end-of-line character
-	dllPatW = (wchar_t *) calloc(sizeof(wchar_t), len);
-
-
-	if (dllPatW == NULL){
-		printfError("Failed to allocate memory for wText\n", dllPat);
-		return 1;
-	}
-
-	wlen = MultiByteToWideChar(  0, 0, dllPat, -1, dllPatW,len);
-
-
-  h = LoadLibrary(dllPatW);
-  free(dllPatW);
-
-  if(!h) {
-    printfError("Can not load %s\n", dllPat);
-    return 1;
-  }
-
-  fmu->dllHandle = h;
-  fmu->getVersion              = (fGetVersion)         getAdr(fmu, "fmiGetVersion");
-  fmu->instantiateSlave        = (fInstantiateSlave)   getAdr(fmu, "fmiInstantiateSlave");
-  fmu->freeSlaveInstance       = (fFreeSlaveInstance)  getAdr(fmu, "fmiFreeSlaveInstance");
-  fmu->setDebugLogging         = (fSetDebugLogging)    getAdr(fmu, "fmiSetDebugLogging");
-  fmu->setReal                 = (fSetReal)            getAdr(fmu, "fmiSetReal");
-  fmu->setInteger              = (fSetInteger)         getAdr(fmu, "fmiSetInteger");
-  fmu->setBoolean              = (fSetBoolean)         getAdr(fmu, "fmiSetBoolean");
-  fmu->setString               = (fSetString)          getAdr(fmu, "fmiSetString");
-  fmu->initializeSlave         = (fInitializeSlave)    getAdr(fmu, "fmiInitializeSlave");
-  fmu->getReal                 = (fGetReal)            getAdr(fmu, "fmiGetReal");
-  fmu->getInteger              = (fGetInteger)         getAdr(fmu, "fmiGetInteger");
-  fmu->getBoolean              = (fGetBoolean)         getAdr(fmu, "fmiGetBoolean");
-  fmu->getString               = (fGetString)          getAdr(fmu, "fmiGetString");
-  fmu->doStep				   = (fDoStep)			   getAdr(fmu, "fmiDoStep");
-
-  return 0;
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Output time and all non-alias variables in CSV format.
@@ -360,7 +306,6 @@ void fmuLogger(fmiComponent c, fmiString instanceName, fmiStatus status,
 int simulate(FMU* fmu, double tEnd, double h, fmiBoolean loggingOn, char separator) {
 		
 
-
   double time;  
   ModelDescription* md;            // handle to the parsed XML file        
   const char* guid;                // global unique id of the fmu
@@ -568,6 +513,8 @@ static void printHelp(const char* fmusim) {
 /// tests the DLL
 ///
 ///////////////////////////////////////////////////////////////////////////////
+
+/*
 int doall(const char* fmuFilNam) {
 	char* tmpPat;
     char* xmlPat;
@@ -631,3 +578,51 @@ int doall(const char* fmuFilNam) {
 
 }
 
+
+int loadDLLhelper(const char* dllPat, FMU *fmu) {
+  
+	wchar_t * dllPatW;
+	int len;
+	int wlen;
+	HINSTANCE h;
+
+	len = strlen(dllPat) + 1; // I had to add an additional character I believe is is
+							//an end-of-line character
+	dllPatW = (wchar_t *) calloc(sizeof(wchar_t), len);
+
+
+	if (dllPatW == NULL){
+		printfError("Failed to allocate memory for wText\n", dllPat);
+		return 1;
+	}
+
+	wlen = MultiByteToWideChar(  0, 0, dllPat, -1, dllPatW,len);
+
+
+  h = LoadLibrary(dllPatW);
+  free(dllPatW);
+
+  if(!h) {
+    printfError("Can not load %s\n", dllPat);
+    return 1;
+  }
+
+  fmu->dllHandle = h;
+  fmu->getVersion              = (fGetVersion)         getAdr(fmu, "fmiGetVersion");
+  fmu->instantiateSlave        = (fInstantiateSlave)   getAdr(fmu, "fmiInstantiateSlave");
+  fmu->freeSlaveInstance       = (fFreeSlaveInstance)  getAdr(fmu, "fmiFreeSlaveInstance");
+  fmu->setDebugLogging         = (fSetDebugLogging)    getAdr(fmu, "fmiSetDebugLogging");
+  fmu->setReal                 = (fSetReal)            getAdr(fmu, "fmiSetReal");
+  fmu->setInteger              = (fSetInteger)         getAdr(fmu, "fmiSetInteger");
+  fmu->setBoolean              = (fSetBoolean)         getAdr(fmu, "fmiSetBoolean");
+  fmu->setString               = (fSetString)          getAdr(fmu, "fmiSetString");
+  fmu->initializeSlave         = (fInitializeSlave)    getAdr(fmu, "fmiInitializeSlave");
+  fmu->getReal                 = (fGetReal)            getAdr(fmu, "fmiGetReal");
+  fmu->getInteger              = (fGetInteger)         getAdr(fmu, "fmiGetInteger");
+  fmu->getBoolean              = (fGetBoolean)         getAdr(fmu, "fmiGetBoolean");
+  fmu->getString               = (fGetString)          getAdr(fmu, "fmiGetString");
+  fmu->doStep				   = (fDoStep)			   getAdr(fmu, "fmiDoStep");
+
+  return 0;
+}
+*/

@@ -4,13 +4,65 @@
 #include "stdafx.h"
 
 #include "JNIinterface.h"	
-#include "mainFMUwrapper.h"
+#include "MainFMUwrapper.h"
 #include "FMUtester.h"
 
 #define JNI_FALSE  0 
 #define JNI_TRUE   1 
 
-Straylight::MainFMUwrapper * fmuLoader;
+Straylight::MainFMUwrapper * fmuWrapper;
+
+wchar_t * JavaToWSZ(JNIEnv* env, jstring string)
+{
+    if (string == NULL)
+        return NULL;
+    int len = env->GetStringLength(string);
+    const jchar* raw = env->GetStringChars(string, NULL);
+    if (raw == NULL)
+        return NULL;
+
+    wchar_t* wsz = new wchar_t[len+1];
+    memcpy(wsz, raw, len*2);
+    wsz[len] = 0;
+
+    env->ReleaseStringChars(string, raw);
+
+    return wsz;
+}
+
+char * JavaToSZ(JNIEnv* env, jstring string)
+{
+    if (string == NULL)
+        return NULL;
+    int len = env->GetStringLength(string);
+    const jchar* raw = env->GetStringChars(string, NULL);
+    if (raw == NULL)
+        return NULL;
+
+    char* sz = new char[len+1];
+    memcpy(sz, raw, len);
+    sz[len] = 0;
+
+    env->ReleaseStringChars(string, raw);
+
+    return sz;
+}
+
+
+
+JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_load
+  (JNIEnv *env, jobject thisobject, jstring unzipfolder) {
+
+    char * unzipfolder_wchar = JavaToSZ(env, unzipfolder);
+
+	fmuWrapper = new Straylight::MainFMUwrapper();
+	fmuWrapper->parseXML(unzipfolder_wchar);
+
+	jstring jstrBuf = env->NewStringUTF("load");
+	return jstrBuf;
+}
+
+
 
 
 JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_sayHello
@@ -19,6 +71,8 @@ JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_sayH
 {
 	return js;
 }
+
+
 
 
 JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_test1
@@ -43,8 +97,8 @@ JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_test
 JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_initAll
   (JNIEnv * env, jobject) 
 {
-	fmuLoader = new Straylight::MainFMUwrapper();
-	fmuLoader->initAll();
+	fmuWrapper = new Straylight::MainFMUwrapper();
+	//fmuWrapper->initAll();
 
 	jstring jstrBuf = env->NewStringUTF("Java_com_sri_straylight_socketserver_JNIinterface_initAll");
 
@@ -66,8 +120,8 @@ JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_runS
 
 
 
-	fmuLoader->doOneStep();
-	fmiReal d = fmuLoader->getResultSnapshot();
+	fmuWrapper->doOneStep();
+	fmiReal d = fmuWrapper->getResultSnapshot();
 
 	std::ostringstream os;
 	os << d;
@@ -107,7 +161,7 @@ JNIEXPORT jboolean JNICALL Java_com_sri_straylight_socketserver_JNIinterface_isS
 
 {
 	
-	int isComplete= fmuLoader->isSimulationComplete();
+	int isComplete= fmuWrapper->isSimulationComplete();
 	jboolean result;
 
 	if (isComplete) {
@@ -131,7 +185,7 @@ JNIEXPORT jdouble JNICALL Java_com_sri_straylight_socketserver_JNIinterface_getR
   (JNIEnv *, jobject) 
 {
 
-	double result = fmuLoader->getResultSnapshot();
+	double result = fmuWrapper->getResultSnapshot();
 
 
 	return result;
@@ -149,7 +203,7 @@ JNIEXPORT jboolean JNICALL Java_com_sri_straylight_socketserver_JNIinterface_sim
 {
 
 
-	fmuLoader->simulateHelperCleanup();
+	fmuWrapper->simulateHelperCleanup();
 
 	return JNI_TRUE;
 }

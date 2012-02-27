@@ -7,6 +7,14 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+
+
+
+JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_load
+  (JNIEnv *, jobject, jstring);
+
+
 /*
  * Class:     JNIinterface
  * Method:    sayHello

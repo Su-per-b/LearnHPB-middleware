@@ -27,7 +27,7 @@ namespace Straylight
     {
        printDebug("test2\n");
 
-	   doall("DoubleInputDoubleOutput.fmu");
+	//   doall("DoubleInputDoubleOutput.fmu");
     }
 
 
@@ -35,7 +35,7 @@ namespace Straylight
     {
        printDebug("FMUwrapper::test3\n");
 
-	   doall(fmuFilNam);
+	   //doall(fmuFilNam);
     }
 };
 

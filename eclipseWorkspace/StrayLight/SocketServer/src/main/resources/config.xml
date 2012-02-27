@@ -6,4 +6,9 @@
 	<fmuFolder>C:\ProgramFiles\JModelica.org-1.6\fmus</fmuFolder>
 	<fmuResultsFolder>C:\ProgramFiles\JModelica.org-1.6\fmuResults</fmuResultsFolder>
 	
+	<unzipFolderBase>C:\Temp</unzipFolderBase>
+	<testFmuFile>C:\ProgramFiles\JModelica.org-1.6\fmus\DoubleInputDoubleOutput.fmu</testFmuFile>
+	
+	
+	
 </config>

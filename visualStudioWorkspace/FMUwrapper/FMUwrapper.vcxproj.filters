@@ -24,33 +24,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\fmiModelFunctions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\expat.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\xml_parser_cosim.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\expat_external.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\fmiFunctions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\fmiModelTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\fmiPlatformTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\stack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="mainHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -60,21 +33,33 @@
     <ClInclude Include="MainFMUwrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="xml_parser_cosim.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fmiFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fmiModelFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fmiModelTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fmiPlatformTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="include\stack.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="include\util.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="include\xml_parser_cosim.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mainHelper.c">
@@ -86,13 +71,14 @@
     <ClCompile Include="MainFMUwrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="lib\libexpatMT.lib">
-      <Filter>lib</Filter>
-    </Library>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="lib\zlibwapi.dll" />
+    <ClCompile Include="stack.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="util.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="xml_parser_cosim.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

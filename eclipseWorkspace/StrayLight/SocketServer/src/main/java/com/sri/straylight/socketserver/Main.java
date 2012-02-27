@@ -10,21 +10,20 @@ public class Main
 {
 	
 	public static Config config;
+	public static FMU fmu_;
 	
 	
     public static void main( String[] args )
     {
     	
-    	//JNIinterface jniInterface = new JNIinterface();
-    	
-    	
-    	//String result = jniInterface.sayHello("sayHello");
-    	
+
     	
     	config = ConfigHelper.load();
 
-    	//ConfigHelper.make();
+
     	
+    	
+    	test();
     	
         SocketServer server = new SocketServer();
 	    
@@ -37,5 +36,15 @@ public class Main
         
     }
     
+    public static void test( ) {
+    	
+    	
+    	fmu_ = new FMU(config.testFmuFile);
+    	fmu_.unzip();
+    	
+    	fmu_.load();
+    	
+    	
+    }
     
 }

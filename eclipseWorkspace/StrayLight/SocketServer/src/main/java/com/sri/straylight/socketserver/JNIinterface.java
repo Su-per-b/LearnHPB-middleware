@@ -16,6 +16,8 @@ public class JNIinterface {
 	
 	public native String cleanup();
 	
+	public native String load(String fmuUnzippedFolder);
+	
 	public native boolean isSimulationComplete();
 	
 	public native double getResultSnapshot();

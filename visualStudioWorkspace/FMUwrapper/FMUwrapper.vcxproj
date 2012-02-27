@@ -20,13 +20,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -39,8 +39,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProjectDir)includes;C:\Program Files (x86)\Java\jdk1.7.0_02\include;C:\Program Files (x86)\Java\jdk1.7.0_02\include\win32;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)$(Configuration)</OutDir>
+    <IntDir>$(SolutionDir)$(Configuration)</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -52,12 +54,15 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FMUWRAPPER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;C:\Program Files (x86)\Java\jdk1.7.0_02\include;C:\Program Files (x86)\Java\jdk1.7.0_02\include\win32</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\SRI\straylight_repo\visualStudioWorkspace\expat-2.0.1\lib;$(ProjectDir)include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ShowProgress>LinkVerboseLib</ShowProgress>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -68,6 +73,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FMUWRAPPER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -79,15 +85,13 @@
   <ItemGroup>
     <ClInclude Include="MainFMUwrapper.h" />
     <ClInclude Include="FMUtester.h" />
-    <ClInclude Include="include\expat.h" />
-    <ClInclude Include="include\expat_external.h" />
-    <ClInclude Include="include\fmiFunctions.h" />
-    <ClInclude Include="include\fmiModelFunctions.h" />
-    <ClInclude Include="include\fmiModelTypes.h" />
-    <ClInclude Include="include\fmiPlatformTypes.h" />
-    <ClInclude Include="include\stack.h" />
-    <ClInclude Include="include\util.h" />
-    <ClInclude Include="include\xml_parser_cosim.h" />
+    <ClInclude Include="fmiFunctions.h" />
+    <ClInclude Include="fmiModelFunctions.h" />
+    <ClInclude Include="fmiModelTypes.h" />
+    <ClInclude Include="fmiPlatformTypes.h" />
+    <ClInclude Include="stack.h" />
+    <ClInclude Include="util.h" />
+    <ClInclude Include="xml_parser_cosim.h" />
     <ClInclude Include="mainHelper.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -103,9 +107,9 @@
     </ClCompile>
     <ClCompile Include="MainFMUwrapper.cpp" />
     <ClCompile Include="FMUtester.cpp" />
-    <ClCompile Include="include\stack.c" />
-    <ClCompile Include="include\util.c" />
-    <ClCompile Include="include\xml_parser_cosim.c" />
+    <ClCompile Include="stack.c" />
+    <ClCompile Include="util.c" />
+    <ClCompile Include="xml_parser_cosim.c" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -113,10 +117,9 @@
     <ClCompile Include="mainHelper.c" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="lib\libexpatMT.lib" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="lib\zlibwapi.dll" />
+    <ProjectReference Include="..\expat-2.0.1\lib\expat.vcxproj">
+      <Project>{e607c5b4-13c6-392a-9175-3ca89a1d013a}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

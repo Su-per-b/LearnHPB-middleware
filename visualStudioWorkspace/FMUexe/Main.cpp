@@ -18,70 +18,23 @@
 
 
 
-	void test1() {
-		Straylight::FMUtester::test1();
 
-		Straylight::FMUtester::test3(
-			"DoubleInputDoubleOutput.fmu"
-		);
-	}
 
-	void test2() {
-		Straylight::MainFMUwrapper *loader;
-		loader = new Straylight::MainFMUwrapper();
-		loader->doAll("DoubleInputDoubleOutput.fmu");
-	}
 
-	void test3() {
-		Straylight::MainFMUwrapper *loader;
-		loader = new Straylight::MainFMUwrapper();
-		loader->setFMU("DoubleInputDoubleOutput.fmu");
-		loader->unzip();
-		loader->parseXML();
-		loader->loadDLL();
+
+	void test6() {
+		Straylight::MainFMUwrapper *fmuWrapper;
+
+	    fmuWrapper = new Straylight::MainFMUwrapper();
+		fmuWrapper->parseXML("C:\\Temp\\DoubleInputDoubleOutput.fmu_unzipped");
+		fmuWrapper->loadDll();
+		fmuWrapper->simulateHelperInit();
+
 		
-		loader->runSimulation();
-	}
-
-
-	void test4() {
-		Straylight::MainFMUwrapper *loader;
-		loader = new Straylight::MainFMUwrapper();
-		loader->setFMU("DoubleInputDoubleOutput.fmu");
-		loader->unzip();
-		loader->parseXML();
-		loader->loadDLL();
-		
-		loader->simulateHelperInit();
-
 		// enter the simulation loop
-		while (!loader->isSimulationComplete()) {
-			loader->doOneStep();
-			fmiReal d = loader->getResultSnapshot();
-
-			std::ostringstream os;
-			os << d;
-			std::string str = os.str();
-
-
-		}
-
-
-		loader->simulateHelperCleanup();
-
-
-	}
-
-	void test5() {
-
-		Straylight::MainFMUwrapper *loader;
-		loader = new Straylight::MainFMUwrapper();
-		loader->initAll();
-
-		// enter the simulation loop
-		while (!loader->isSimulationComplete()) {
-			loader->doOneStep();
-			fmiReal d = loader->getResultSnapshot();
+		while (!fmuWrapper->isSimulationComplete()) {
+			fmuWrapper->doOneStep();
+			fmiReal d = fmuWrapper->getResultSnapshot();
 
 
 			std::ostringstream os;
@@ -91,7 +44,7 @@
 			//LPWSTR sss = os.str();
 			//LPWSTR sss = s2ws2(str);
 
-			//OutputDebugString(str);
+			OutputDebugString(str.c_str() );
 
 		//	CString temp;
 		//	temp.Format("%f",pDoc->m_r1);
@@ -100,39 +53,7 @@
 		}
 
 
-
-		loader->simulateHelperCleanup();
-
-	}
-
-
-	void test6() {
-		Straylight::MainFMUwrapper *fmuWrapper;
-
-	    fmuWrapper = new Straylight::MainFMUwrapper();
-		fmuWrapper->setFMU("DoubleInputDoubleOutput.fmu");
-		fmuWrapper->unzip();
-		fmuWrapper->parseXML();
-		fmuWrapper->loadDLL();
-		
-		fmuWrapper->simulateHelperInit();
-
-		// enter the simulation loop
-		while (!fmuWrapper->isSimulationComplete()) {
-			fmuWrapper->doOneStep();
-			fmiReal d = fmuWrapper->getResultSnapshot();
-
-			std::ostringstream os;
-			os << d;
-			std::string str = os.str();
-
-
-		}
-
-
 		fmuWrapper->simulateHelperCleanup();
-
-
 	}
 
 

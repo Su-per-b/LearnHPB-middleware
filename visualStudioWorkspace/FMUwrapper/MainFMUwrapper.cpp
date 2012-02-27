@@ -3,22 +3,16 @@
 #include "stdafx.h"
 #include <jni.h>
 #include <sys/types.h>
-
-
 #include <sys/stat.h>
 #include <fcntl.h>
-
-
 #include "MainFMUwrapper.h"
-
-
-
 
 #define BUFSIZE 4096
 #define XML_FILE  "modelDescription.xml"
-#define DLL_DIR   ""
+#define DLL_DIR   "binaries\\win32\\"
 #define RESULT_FILE "result.csv"
 #define ZLIB_WINAPI
+
 //static FMU fmu; // the fmu to simulate
 
   /*
@@ -51,142 +45,119 @@ namespace Straylight
 
 		MainFMUwrapper::~MainFMUwrapper(void)
 		{
-			
+			free(dllFilePath_);
 			
 		}
 
 
 		
-		void MainFMUwrapper::doAll(const char * f) {
-			fmuFileName_ = f;
-			doall(f);
-		}
 
 
-		void MainFMUwrapper::setFMU(const char * f) {
-			fmuFileName_ = f;
-		}
 
-		void MainFMUwrapper::unzip() {
+		int MainFMUwrapper::loadDll( ) {
 
-			double tEnd = 1.0;
-			double h=0.1;
-			int loggingOn = 0;
-			char csv_separator = ',';  
 
-			// Get absolute path to FMU, NULL if not found  
-			unzippedPath_ = getTmpPath(fmuFileName_, strlen(this->fmuFileName_)-4);
+			const char* modelId = getModelIdentifier(fmu_.modelDescription);
 
-			if(unzippedPath_==NULL){
-			  printError("Cannot allocate temporary path\n");
-			  exit(EXIT_FAILURE);
+			dllFilePath_ = (char *) calloc(sizeof(char), strlen(unzipfolder_) + strlen(DLL_DIR) 
+					+ strlen( modelId ) +  strlen(".dll") + 1); 
+
+			sprintf(dllFilePath_,
+				"%s%s%s.dll",
+				unzipfolder_,
+				DLL_DIR,
+				modelId
+			);
+
+
+
+			if (dllFilePath_ == NULL){
+				printfError("Failed to allocate memory for wText\n", dllFilePath_);
+				return 1;
 			}
 
 
-			//const char * fmuFileName_;
+			int result = loadDLLhelper(dllFilePath_, &fmu_);
 
-			//CString ss = "test";
+			if (result) exit(EXIT_FAILURE);
 
-			//unzFile uzf(unzOpen(sCompressedPath));
-
-			//unzFile fl = unzOpen(fmuFileName_);
-			//MyCompress mc;
-			//bool result = mc.Uncompress(m_sPathIn, m_sPathOut));
-
-
-			//bool result = MyCompress::Uncompress(const CString& sUncompressedPath,
-							//const CString& sCompressedPath) const
-
-
-
+			return 0;
 		}
 
-		void MainFMUwrapper::unzip_bak() {
+		///////////////////////////////////////////////////////////////////////////////
+		/// Load the given dll and set function pointers in fmu.
+		/// It changes the names of the standard FMI functions by adding the model identifer
+		/// and links the new functions with QTronic's FMU structure.
+		///
+		///\param dllPat Path of the dll file.
+		///\param fmu Name of FMU.
+		///\return 0 if there is no error occurred.
+		///////////////////////////////////////////////////////////////////////////////
+		int MainFMUwrapper::loadDLLhelper(const char* dllPat, FMU *fmu) {
+  
+		//wchar_t * dllPatW;
 
-			double tEnd = 1.0;
-			double h=0.1;
-			int loggingOn = 0;
-			char csv_separator = ',';  
 
-			// Get absolute path to FMU, NULL if not found  
-			unzippedPath_ = getTmpPath(fmuFileName_, strlen(this->fmuFileName_)-4);
+			HINSTANCE h;
 
-			if(unzippedPath_==NULL){
-			  printError("Cannot allocate temporary path\n");
-			  exit(EXIT_FAILURE);
-			}
+		  h = LoadLibrary(dllPat);
+		  free((void *) dllPat);
 
-			// Unzip the FMU to the tmpPat directory
-			if (unpack(fmuFileName_, unzippedPath_)) {  
-				printfError("Fail to unpack fmu \"%s\"\n", fmuFileName_);
-				exit(EXIT_FAILURE);
-			}
+		  if(!h) {
+			printfError("Can not load %s\n", dllPat);
+			return 1;
+		  }
 
+		  fmu->dllHandle = h;
+		  fmu->getVersion = (fGetVersion) getAdr(fmu, "fmiGetVersion");
+		  fmu->instantiateSlave = (fInstantiateSlave) getAdr(fmu, "fmiInstantiateSlave");
+		  fmu->freeSlaveInstance = (fFreeSlaveInstance) getAdr(fmu, "fmiFreeSlaveInstance");
+		  fmu->setDebugLogging = (fSetDebugLogging) getAdr(fmu, "fmiSetDebugLogging");
+		  fmu->setReal = (fSetReal) getAdr(fmu, "fmiSetReal");
+		  fmu->setInteger = (fSetInteger) getAdr(fmu, "fmiSetInteger");
+		  fmu->setBoolean = (fSetBoolean) getAdr(fmu, "fmiSetBoolean");
+		  fmu->setString = (fSetString) getAdr(fmu, "fmiSetString");
+		  fmu->initializeSlave = (fInitializeSlave) getAdr(fmu, "fmiInitializeSlave");
+		  fmu->getReal = (fGetReal) getAdr(fmu, "fmiGetReal");
+		  fmu->getInteger = (fGetInteger) getAdr(fmu, "fmiGetInteger");
+		  fmu->getBoolean = (fGetBoolean) getAdr(fmu, "fmiGetBoolean");
+		  fmu->getString = (fGetString) getAdr(fmu, "fmiGetString");
+		  fmu->doStep = (fDoStep) getAdr(fmu, "fmiDoStep");
+
+		  return 0;
 		}
-
 
 
 		
-		void MainFMUwrapper::parseXML() {
-			char* xmlFilePath;
 
-		    printDebug("parse tmpPat\\modelDescription.xml\n");
-			xmlFilePath = (char *) calloc(sizeof(char), strlen(unzippedPath_) + strlen(XML_FILE) + 1);
-			sprintf(xmlFilePath, "%s%s", unzippedPath_, XML_FILE);
+		void MainFMUwrapper::parseXML(char* unzipfolder) {
+			
+
+			char* xmlFilePath1;
+
+			int xmlFilePath1_len = strlen(unzipfolder) + 2;
+
+			xmlFilePath1 = (char *) calloc(sizeof(char), xmlFilePath1_len);
+			sprintf(xmlFilePath1, "%s%s", unzipfolder, "\\");
+
+			unzipfolder_ = xmlFilePath1;
+
+			int xmlFilePath2_len = strlen(xmlFilePath1) + 1 + strlen(XML_FILE);
+			xmlFilePath_ = (char *) calloc(sizeof(char), xmlFilePath2_len);
+			
+			sprintf(xmlFilePath_, "%s%s", xmlFilePath1, XML_FILE);
+
+
+
+			fmu_.modelDescription = parse(xmlFilePath_); 
 
 			// Parse only parses the model description and store in structure fmu.modelDescription
-			this->fmu_.modelDescription = parse(xmlFilePath); 
 			
-			free(xmlFilePath);
 			if (!fmu_.modelDescription) exit(EXIT_FAILURE);
 
 		}
 
 
-		void MainFMUwrapper::loadDLL() {
-
-			dllPath_ = (char *) calloc(sizeof(char), strlen(unzippedPath_) + strlen(DLL_DIR) 
-					+ strlen( getModelIdentifier(fmu_.modelDescription)) +  strlen(".dll") + 1); 
-			sprintf(dllPath_,"%s%s%s.dll", unzippedPath_, DLL_DIR, getModelIdentifier(fmu_.modelDescription)); 
-
-		    // Load the FMU dll
-			if (loadDLLhelper(dllPath_, &fmu_)) exit(EXIT_FAILURE); 
-			printfDebug("Loaded \"%s\"\n", dllPath_); 
-
-		}
-
-
-		void MainFMUwrapper::initAll() {
-
-			this->setFMU("DoubleInputDoubleOutput.fmu");
-			this->unzip();
-			this->parseXML();
-			this->loadDLL();
-			this->simulateHelperInit();
-
-		}
-
-
-
-
-
-
-		int MainFMUwrapper::runSimulation() {
-
-
-			if (simulateLoop()){
-			  printError("Simulation failed\n");
-			  exit(EXIT_FAILURE);
-			}
-
-			printf("CSV file '%s' written", RESULT_FILE);
-
-			// Release FMU 
-			FreeLibrary(fmu_.dllHandle);
-			freeElement(fmu_.modelDescription);
-			return 0;
-
-		}
 
 		int MainFMUwrapper::simulateHelperInit() {
 
@@ -203,7 +174,7 @@ namespace Straylight
 
 			// Run the simulation
 			printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d, csv separator='%c'\n", 
-					fmuFileName_, timeEnd_, timeDelta_, loggingOn, csv_separator_);
+					unzipfolder_, timeEnd_, timeDelta_, loggingOn, csv_separator_);
 
 
 			//Note: User defined references
@@ -269,6 +240,8 @@ namespace Straylight
 			  //End--------------------------------------------------------------------
   
 			printDebug("Enter in simulation loop\n");	
+
+			return 1;
 		}
 
 		int MainFMUwrapper::simulateLoop( ) {
@@ -296,16 +269,15 @@ namespace Straylight
 
 			// Cleanup
 			fclose(file);
-			free(unzippedPath_);
+			free(unzipfolder_);
+			free(xmlFilePath_);
 
-
+			
 			// Release FMU 
 			FreeLibrary(fmu_.dllHandle);
 			freeElement(fmu_.modelDescription);
 
-
-
-			// Print simulation summary 
+			// Print simulation summary
 			if (loggingOn) printf("Step %d to t=%.4f\n", nSteps, time_);		
 			printf("Simulation from %g to %g terminated successful\n", t0, timeEnd_);
 			printf("  steps ............ %d\n", nSteps);
