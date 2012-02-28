@@ -56,8 +56,6 @@
    fmiString        : 32 bit pointer
 
 */
-// mwetter: added ifndef
-#ifndef fmiModelTypes_h
    typedef void*        fmiComponent;
    typedef unsigned int fmiValueReference;
    typedef double       fmiReal   ;
@@ -72,5 +70,4 @@
 /* Undefined value for fmiValueReference (largest unsigned int value) */
 #define fmiUndefinedValueReference (fmiValueReference)(-1)
 
-#endif // added mwetter
 #endif

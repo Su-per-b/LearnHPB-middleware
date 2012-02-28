@@ -24,8 +24,6 @@ namespace Straylight
 		FMU fmu_; // the fmu to simulate
 		FMU* fmuPointer_;
 
-		int simulateLoop( );
-
 
 		double time_;
 		fmiValueReference vru_[2], vry_[2]; // value references for two input and two output variables 

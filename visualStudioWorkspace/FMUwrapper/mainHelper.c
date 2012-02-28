@@ -54,7 +54,6 @@
 #include "mainHelper.h"
 
 
-
 #define BUFSIZE 4096
 #define XML_FILE  "modelDescription.xml"
 #define DLL_DIR   ""
@@ -167,7 +166,7 @@ static const char* fmiStatusToString(fmiStatus status){
     case fmiWarning: return "warning";
     case fmiDiscard: return "discard";
     case fmiError:   return "error";
-	  case fmiPending: return "pending";	
+	 // case fmiPending: return "pending";	
     default:         return "?";
   }
 }

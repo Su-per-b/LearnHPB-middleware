@@ -1,7 +1,6 @@
 // MainFMUwrapper.cpp : Defines the exported functions for the DLL application.
 //
 #include "stdafx.h"
-#include <jni.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -13,20 +12,7 @@
 #define RESULT_FILE "result.csv"
 #define ZLIB_WINAPI
 
-//static FMU fmu; // the fmu to simulate
 
-  /*
-   * Class:     ReadFile
-   * Method:    loadFile
-   * Signature: (Ljava/lang/String;)[B
-   */
-JNIEXPORT void JNICALL Java_ReadFile_loadFile
-  (JNIEnv * env, jobject jobj, jstring name) {
-
-
-    return;
-
-}
 
 
 namespace Straylight
@@ -244,20 +230,7 @@ namespace Straylight
 			return 1;
 		}
 
-		int MainFMUwrapper::simulateLoop( ) {
 
-			simulateHelperInit();
-
-
-			// enter the simulation loop
-			while (!isSimulationComplete()) {
-				doOneStep();
-			} 
-
-			simulateHelperCleanup();
-
-			return 0; // success
-		}
 
 		int MainFMUwrapper::isSimulationComplete() {
 

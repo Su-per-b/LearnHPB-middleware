@@ -8,6 +8,7 @@
 #include "targetver.h"
 
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+
 // Windows Header Files:
 #include <windows.h>
 #include <stdlib.h>
@@ -15,16 +16,10 @@
 #include <string.h>
 
 
-
-
 extern "C"
 {
-
 #include "..\expat-2.0.1\lib\expat.h"
 #include "util.h"
 #include "mainHelper.h"
-
-
 }
 
-// TODO: reference additional headers your program requires here
