@@ -39,45 +39,7 @@ void doubleToCommaString(char* buffer, double r){
     if (comma) *comma = ',';
 }
 
-//////////////////////////////////////////////////////////////////////////
-/// Delete the temporary folder
-///
-///\param tmpPat The path of the tmeporary folder
-///\return 0 if no error occurred
-/////////////////////////////////////////////////////////////////////////
-int deleteFolder(char* tmpPat){
-	int version = 0;
-	char* cmd;
 
-  struct stat st;
-
-  // Ceck if the folder present
-  if(stat(tmpPat,&st) != 0){
-    printfError("Folder \"%s\" is not existing\n", tmpPat);
-    return -1;
-  }    
-
-	cmd = (char *) calloc(sizeof(char), strlen(tmpPat) +18);
-	if (cmd == NULL){
-	    printfError("Fail to allocate memory for cmd\n", tmpPat);
-	    return -1;
-	  }
-  
-  if (WINDOWS)
-  	sprintf(cmd, "rd %s /S/Q", tmpPat); // Command in windows
-  else
-  	sprintf(cmd, "rm -r %s", tmpPat); // Command in Linux
-
-
-	printfDebug("Generated cmd: \"%s\"\n", cmd);
-	if ( system(cmd) != 0 ){	
-	//if(rmdir(tmpPat) != 0)
-	  printError("Fail to delete the temporary files");
-	  return -1;
-	}
-	printDebug("Deleted temporary files");
-	return 0;
-}
 
 //////////////////////////////////////////////////////////////////////////////
 /// Get temporary path
@@ -265,61 +227,4 @@ void printfError(const char* str1, const char* str2){
   }
 }
 
-//////////////////////////////////////////////////////////////////////////////
-/// Unpack the fmu using 7z
-///
-///\param fmuFilNam The name of fmu file
-///\param tmpPat Temporary path of the output file
-///\return 0 if no error occurred
-/////////////////////////////////////////////////////////////////////////////
-int unpack(const char* fmuFilNam, char* tmpPat){
-  
-
-  char* cmd;
-  int result;
-
-  FILE *fmuFil = NULL; 
-
-
-  result = system ("dir");
-
-  // Unzip fmu file
-  // First, try to open the file to make sure we have read permission
-  printfDebug("Testing read access to FMU at: %s\n", fmuFilNam);
-  fmuFil = fopen (fmuFilNam, "r");
-  if (fmuFil == NULL){
-    printfError("Cannot open file \"%s\"\n", fmuFilNam);
-    return -1;
-  }
-  // Close fmu file
-  fclose(fmuFil);
-
-  // Call the zip program
-  printfDebug("Extracting zip file %s\n", fmuFilNam);
-  printfDebug("            to path %s\n", tmpPat);
-
-  cmd = (char *) calloc(sizeof(char), strlen(fmuFilNam) + strlen(tmpPat)+18);
-  if (cmd == NULL){
-    printfError("Failed to allocate memory for cmd\n", fmuFilNam);
-    return -1;  
-  }
-  
-
-
-
-
-
-  // Unzip has bug for some zip file
-  //sprintf(cmd, "unzip -qq -u %s -d %s", fmuFilNam, tmpPat); 
-  // Use 7z instead of unzip, automatically overwrite the existing files and write the technical infor to null
-  sprintf(cmd, "7z e -aoa -o%s %s > null", tmpPat, fmuFilNam); 
-
-  printfDebug("Generated cmd: %s\n", cmd);
-  if ( system(cmd) != 0 ){
-    printError("Failed to extract the zip file");
-    return -1;
-  }
-  printDebug("Successfully extracted zip file");
-  return 0;
-}
 

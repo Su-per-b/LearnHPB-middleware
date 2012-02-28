@@ -83,8 +83,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="fmuStruct.h" />
     <ClInclude Include="MainFMUwrapper.h" />
-    <ClInclude Include="FMUtester.h" />
     <ClInclude Include="fmiFunctions.h" />
     <ClInclude Include="fmiModelFunctions.h" />
     <ClInclude Include="fmiModelTypes.h" />
@@ -106,14 +106,9 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="MainFMUwrapper.cpp" />
-    <ClCompile Include="FMUtester.cpp" />
     <ClCompile Include="stack.c" />
     <ClCompile Include="util.c" />
     <ClCompile Include="xml_parser_cosim.c" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="mainHelper.c" />
   </ItemGroup>
   <ItemGroup>

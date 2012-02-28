@@ -5,7 +5,7 @@
 
 #include "JNIinterface.h"	
 #include "MainFMUwrapper.h"
-#include "FMUtester.h"
+
 
 #define JNI_FALSE  0 
 #define JNI_TRUE   1 
@@ -78,11 +78,7 @@ JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_sayH
 JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_test1
   (JNIEnv * env, jobject) {
 
-	Straylight::FMUtester::test1();
 
-	Straylight::FMUtester::test3(
-		"DoubleInputDoubleOutput.fmu"
-	);
 
 	jstring jstrBuf = env->NewStringUTF("Testing 1!");
 

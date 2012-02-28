@@ -9,19 +9,19 @@
 
 // Use windows.h only for Windows 
 #ifdef _MSC_VER
-#define WINDOWS 1
+	#define WINDOWS 1
 #endif
 
-#include <windows.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 
-#include "..\expat-2.0.1\lib\expat.h"
-#include "util.h"
+
+#include "fmuStruct.h"
 
 #include "fmiModelFunctions.h"
 #include "xml_parser_cosim.h"	// Zuo: parser for co-simulation
+
+#include "..\expat-2.0.1\lib\expat.h"
+#include "util.h"
+#include <stdio.h>
 
 
 //typedef const char* (*fGetModelTypesPlatform)();	// Zuo: definition in model-ex V1.0
@@ -66,6 +66,7 @@ typedef fmiStatus (*fGetString) (fmiComponent c, const fmiValueReference vr[], s
 typedef fmiStatus (*fDoStep) (fmiComponent c, fmiReal currentCommunicationPoint, fmiReal communicationStepSize, fmiBoolean newStep); // Zuo: add for co-sim
 
 
+
 typedef struct {
     ModelDescription* modelDescription;
     HINSTANCE dllHandle;
@@ -107,15 +108,11 @@ typedef struct {
 
 
 
-//int doall(const char* fmuFilNam);
-
-int simulate(FMU* fmu, double tEnd, double h, fmiBoolean loggingOn, char separator);
-
-
-
 void fmuLogger(fmiComponent c, fmiString instanceName, fmiStatus status,
                fmiString category, fmiString message, ...);
+
 
 void outputRow(FMU *fmu, fmiComponent c, double time, FILE* file, char separator);
 
 void* getAdr(FMU *, const char*);
+
