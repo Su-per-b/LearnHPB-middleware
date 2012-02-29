@@ -52,7 +52,7 @@
  */
 
 #include "mainHelper.h"
-
+#include "fmi_cs.h"
 
 #define BUFSIZE 4096
 #define XML_FILE  "modelDescription.xml"
@@ -71,9 +71,11 @@ static FMU fmu; // the fmu to simulate
 void* getAdr(FMU *fmu, const char* funNam){
     char name[BUFSIZE];
     void* fp;
-    sprintf(name, "%s_%s", getModelIdentifier(fmu->modelDescription), funNam); // Zuo: adding the model name in front of funciton name
+    sprintf(name, "%s_%s", getModelIdentifier(fmu->modelDescription), funNam); // Zuo: adding the model name in front of function name
+
 
     fp = GetProcAddress(fmu->dllHandle, name);
+
     if (!fp) {
         printfError("Function %s not found in dll\n", name);        
     }

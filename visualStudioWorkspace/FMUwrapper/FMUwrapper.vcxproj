@@ -41,8 +41,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProjectDir)includes;C:\Program Files (x86)\Java\jdk1.7.0_02\include;C:\Program Files (x86)\Java\jdk1.7.0_02\include\win32;$(IncludePath)</IncludePath>
-    <OutDir>$(SolutionDir)bin\$(Configuration)</OutDir>
-    <IntDir>$(ProjectDir)tmp\obj\$(Configuration)</IntDir>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)tmp\obj\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -56,7 +56,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FMUWRAPPER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\SRI\straylight_repo\visualStudioWorkspace\expat-2.0.1\lib;$(ProjectDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)expat-2.0.1\lib;$(SolutionDir)FMUwrapper\include;$(SolutionDir)FMUwrapper\include\qtronic</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeaderOutputFile>$(ProjectDir)tmp\$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
@@ -87,15 +87,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="fmuStruct.h" />
+    <ClInclude Include="include\qtronic\fmi_cs.h" />
     <ClInclude Include="MainFMUwrapper.h" />
-    <ClInclude Include="fmiFunctions.h" />
-    <ClInclude Include="fmiModelFunctions.h" />
-    <ClInclude Include="fmiModelTypes.h" />
-    <ClInclude Include="fmiPlatformTypes.h" />
-    <ClInclude Include="stack.h" />
+    <ClInclude Include="include\qtronic\fmiFunctions.h" />
+    <ClInclude Include="include\qtronic\fmiModelFunctions.h" />
+    <ClInclude Include="include\qtronic\fmiModelTypes.h" />
+    <ClInclude Include="include\qtronic\fmiPlatformTypes.h" />
+    <ClInclude Include="include\qtronic\stack.h" />
+    <ClInclude Include="stdafx_c.h" />
     <ClInclude Include="util.h" />
-    <ClInclude Include="xml_parser_cosim.h" />
+    <ClInclude Include="include\qtronic\xml_parser.h" />
     <ClInclude Include="mainHelper.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -110,9 +111,9 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="MainFMUwrapper.cpp" />
-    <ClCompile Include="stack.c" />
+    <ClCompile Include="include\qtronic\stack.c" />
     <ClCompile Include="util.c" />
-    <ClCompile Include="xml_parser_cosim.c" />
+    <ClCompile Include="include\qtronic\xml_parser.c" />
     <ClCompile Include="mainHelper.c" />
   </ItemGroup>
   <ItemGroup>

@@ -25,17 +25,10 @@
 #include <sys/stat.h> // for creating dirs on Linux
 #endif
 
-//static char* getfmuPat(const char* fmuFilNam);
-//int delete(char* tmpPat);
 
 void doubleToCommaString(char* buffer, double r);
 
-char *getTmpPath(const char *nam, int length);
 void printDebug(const char* msg);
-
-void printDebugHelper(const char* msg);
-
-void printDebugHelper2(char* msg);
 
 void printfDebug(const char* str1, const char* str2);
 
@@ -45,4 +38,4 @@ void printfError(const char* str1, const char* str2);
 
 void setDebug();
 
-wchar_t * convertConstChar_LPWSTR(const char* strIn);
+

@@ -8,6 +8,7 @@
 
 
 
+
 namespace Straylight
 {
     class MainFMUwrapper
@@ -16,7 +17,7 @@ namespace Straylight
 	private:
 		const char * fmuFileName_;
 
-		char* unzipfolder_;
+		char* unzipFolderPath_;
 		char* xmlFilePath_;
 		char* dllFilePath_;
 
@@ -46,6 +47,8 @@ namespace Straylight
 		ModelDescription* modelDescription_;
 
 
+
+
 	public:
 		__declspec(dllexport) MainFMUwrapper(void);
 		__declspec(dllexport) ~MainFMUwrapper(void);
@@ -59,9 +62,11 @@ namespace Straylight
 
 		__declspec(dllexport) int simulateHelperInit();
 
-		__declspec(dllexport) void simulateHelperCleanup();
+		__declspec(dllexport) void printSummary();
 
 		__declspec(dllexport) void doOneStep();
+
+        __declspec(dllexport) void doOneStep2();
 
 		__declspec(dllexport) fmiReal getResultSnapshot();
 		
@@ -70,6 +75,7 @@ namespace Straylight
 
 	private:
 		int loadDLLhelper(const char* , FMU *);
+		ModelDescription* parseHelper(const char*);
 
     };
 

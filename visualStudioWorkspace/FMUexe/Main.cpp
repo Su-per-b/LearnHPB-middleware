@@ -18,10 +18,6 @@
 
 
 
-
-
-
-
 	void test6() {
 		Straylight::MainFMUwrapper *fmuWrapper;
 
@@ -33,27 +29,27 @@
 		
 		// enter the simulation loop
 		while (!fmuWrapper->isSimulationComplete()) {
+			
 			fmuWrapper->doOneStep();
-			fmiReal d = fmuWrapper->getResultSnapshot();
+			//fmuWrapper->doOneStep();
+			//fmiReal d = fmuWrapper->getResultSnapshot();
+
+			fmiReal d = 0;
 
 
 			std::ostringstream os;
 			os << d;
 			std::string str = os.str();
 
-			//LPWSTR sss = os.str();
-			//LPWSTR sss = s2ws2(str);
-
 			OutputDebugString(str.c_str() );
-
-		//	CString temp;
-		//	temp.Format("%f",pDoc->m_r1);
 
 
 		}
 
 
-		fmuWrapper->simulateHelperCleanup();
+		fmuWrapper->printSummary();
+
+		delete fmuWrapper;
 	}
 
 

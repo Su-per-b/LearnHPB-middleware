@@ -41,31 +41,6 @@ void doubleToCommaString(char* buffer, double r){
 
 
 
-//////////////////////////////////////////////////////////////////////////////
-/// Get temporary path
-///
-///\param nam Name to be used for temporary path
-///\param length Number of characters to be copied from \c nam.
-///\return Point of tmpPat if there is no error occurred.
-/////////////////////////////////////////////////////////////////////////////
-char *getTmpPath(const char *nam, int length)
-{
-  char *tmpPat;
-
-  tmpPat = (char * ) calloc(sizeof(char), length+2);
-  
-  // Define the temporary folder
-  if(strncpy(tmpPat, nam, length) == NULL){
-    printError("Fail to allocate memory for temp dir\n");
-    return NULL;    
-  }
-  if(WINDOWS) strcat(tmpPat, "\\");
-  else strcat(tmpPat, "/");
-
-  return tmpPat;
-}
-
-
 
 //////////////////////////////////////////////////////////////////////////////
 /// Set the mode in debug so that the debug information will be printed
@@ -75,6 +50,8 @@ void setDebug( )
 {
   debug = 1;
 }
+
+
 
 //////////////////////////////////////////////////////////////////////////////
 /// Print debug message
@@ -91,7 +68,7 @@ void printDebug(const char* msg){
 
   if (debugvs > 0)
   {
-	  printDebugHelper(msg);
+	  OutputDebugString(msg);
   }
 }
 
@@ -99,75 +76,15 @@ void printDebug(const char* msg){
 //////////////////////////////////////////////////////////////////////////////
 /// Print debug message to the console in Visual Studio
 ///
-///\param msg Message to be printed for debugging 
 //////////////////////////////////////////////////////////////////////////////
 void printfDebugHelper(const char* str1, const char* str2 ) {
 	
 	char msg[256];
-	//wchar_t * wMsg;
 
 	sprintf (msg, str1, str2);
-	//wMsg = convertConstChar_LPWSTR(msg);
-
 	OutputDebugString(msg);
-	//free(msg);
 }
 
-
-wchar_t * convertConstChar_LPWSTR(const char* strIn) {
-	wchar_t * strOut;
-	int len;
-
-	len = strlen(strIn) + 1; // I had to add an additional character I believe is
-							//an end-of-line character
-
-	strOut = (wchar_t *) calloc(sizeof(wchar_t), len);
-
-	if (strOut == NULL){
-		printfError("Failed to allocate memory for wText\n", strIn);
-		return NULL;
-	}
-
-	MultiByteToWideChar(  0, 0, strIn, -1, strOut,len);
-
-	return strOut;
-
-}
-
-
-
-//////////////////////////////////////////////////////////////////////////////
-/// Print debug message to the console in Visual Studio
-///
-///\param msg Message to be printed for debugging 
-//////////////////////////////////////////////////////////////////////////////
-void printDebugHelper(const char* msg) {
-	
-	OutputDebugString(msg);
-
-	/*
-	wchar_t * wText;
-	int len;
-	int wlen;
-
-
-	len = strlen(msg) + 1; // I had to add an additional character I believe is is
-							//an end-of-line character
-	wText = (wchar_t *) calloc(sizeof(wchar_t), len);
-
-
-	if (wText == NULL){
-		printfError("Failed to allocate memory for wText\n", msg);
-		return;
-	}
-
-	wlen = MultiByteToWideChar(  0, 0, msg, -1, wText,len);
-
-	free(wText);
-
-	*/
-
-}
 
 
 
@@ -205,7 +122,7 @@ void printError(const char* msg){
 
   if (debugvs > 0)
   {
-	  printDebugHelper("*** Error: ");
+	  OutputDebugString("*** Error: ");
 	  printfDebugHelper("%s\n", msg);
   }
 }
@@ -222,7 +139,7 @@ void printfError(const char* str1, const char* str2){
 
   if (debugvs > 0)
   {
-	  printDebugHelper("*** Error: ");
+	  OutputDebugString("*** Error: ");
 	  printfDebugHelper(str1, str2);
   }
 }

@@ -18,8 +18,10 @@
 
 extern "C"
 {
-#include "..\expat-2.0.1\lib\expat.h"
-#include "util.h"
-#include "mainHelper.h"
+	#include <expat.h>
+	#include "util.h"
+	#include "mainHelper.h"
+	#include "xml_parser.h"
+	#include "fmi_cs.h"
 }
 

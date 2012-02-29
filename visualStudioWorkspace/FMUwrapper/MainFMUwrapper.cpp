@@ -17,9 +17,10 @@
 
 namespace Straylight
 {
-		
-
-		MainFMUwrapper::MainFMUwrapper(void)
+	/*********************************************//**
+	 * Default constructor. 
+	 *********************************************/
+	MainFMUwrapper::MainFMUwrapper(void)
 		{
 			timeEnd_ = 1.0;
 			csv_separator_ = ',';
@@ -29,32 +30,49 @@ namespace Straylight
 		}
 
 
+		/*********************************************//**
+		 * Destructor. Frees memory and releases FMU DLL.
+		 *********************************************/
 		MainFMUwrapper::~MainFMUwrapper(void)
 		{
-			free(dllFilePath_);
+
+			// Cleanup
+			fclose(file);
+
+			free((void *) unzipFolderPath_);
+			free((void *) xmlFilePath_);
+			free((void *) dllFilePath_);
 			
+			// Release FMU 
+			FreeLibrary(fmu_.dllHandle);
+			freeElement(fmu_.modelDescription);
+
 		}
 
 
-		
 
-
-
+		/*********************************************//**
+		 * Constructs the path to the DLL file and stores it
+		 * in the dllFilePath_ member variable. Loads
+		 * the DLL with the "LoadLibrary" command and populates the
+		 * FMU struct.
+		 *
+		 * @return	0 for success
+		 *********************************************/
 		int MainFMUwrapper::loadDll( ) {
 
 
 			const char* modelId = getModelIdentifier(fmu_.modelDescription);
 
-			dllFilePath_ = (char *) calloc(sizeof(char), strlen(unzipfolder_) + strlen(DLL_DIR) 
+			dllFilePath_ = (char *) calloc(sizeof(char), strlen(unzipFolderPath_) + strlen(DLL_DIR) 
 					+ strlen( modelId ) +  strlen(".dll") + 1); 
 
 			sprintf(dllFilePath_,
 				"%s%s%s.dll",
-				unzipfolder_,
+				unzipFolderPath_,
 				DLL_DIR,
 				modelId
 			);
-
 
 
 			if (dllFilePath_ == NULL){
@@ -63,82 +81,61 @@ namespace Straylight
 			}
 
 
-			int result = loadDLLhelper(dllFilePath_, &fmu_);
+			//int result = loadDLLhelper(dllFilePath_, &fmu_);
 
-			if (result) exit(EXIT_FAILURE);
+			HINSTANCE h;
+			h = LoadLibrary(dllFilePath_);
+
+			if(!h) {
+				printfError("Can not load %s\n", dllFilePath_);
+				exit(EXIT_FAILURE);
+			}
+
+			fmuPointer_->dllHandle = h;
+			fmuPointer_->getVersion = (fGetVersion) getAdr(fmuPointer_, "fmiGetVersion");
+			fmuPointer_->instantiateSlave = (fInstantiateSlave) getAdr(fmuPointer_, "fmiInstantiateSlave");
+			fmuPointer_->freeSlaveInstance = (fFreeSlaveInstance) getAdr(fmuPointer_, "fmiFreeSlaveInstance");
+			fmuPointer_->setDebugLogging = (fSetDebugLogging) getAdr(fmuPointer_, "fmiSetDebugLogging");
+			fmuPointer_->setReal = (fSetReal) getAdr(fmuPointer_, "fmiSetReal");
+			fmuPointer_->setInteger = (fSetInteger) getAdr(fmuPointer_, "fmiSetInteger");
+			fmuPointer_->setBoolean = (fSetBoolean) getAdr(fmuPointer_, "fmiSetBoolean");
+			fmuPointer_->setString = (fSetString) getAdr(fmuPointer_, "fmiSetString");
+			fmuPointer_->initializeSlave = (fInitializeSlave) getAdr(fmuPointer_, "fmiInitializeSlave");
+			fmuPointer_->getReal = (fGetReal) getAdr(fmuPointer_, "fmiGetReal");
+			fmuPointer_->getInteger = (fGetInteger) getAdr(fmuPointer_, "fmiGetInteger");
+			fmuPointer_->getBoolean = (fGetBoolean) getAdr(fmuPointer_, "fmiGetBoolean");
+			fmuPointer_->getString = (fGetString) getAdr(fmuPointer_, "fmiGetString");
+			fmuPointer_->doStep = (fDoStep) getAdr(fmuPointer_, "fmiDoStep");
+
 
 			return 0;
 		}
 
-		///////////////////////////////////////////////////////////////////////////////
-		/// Load the given dll and set function pointers in fmu.
-		/// It changes the names of the standard FMI functions by adding the model identifer
-		/// and links the new functions with QTronic's FMU structure.
-		///
-		///\param dllPat Path of the dll file.
-		///\param fmu Name of FMU.
-		///\return 0 if there is no error occurred.
-		///////////////////////////////////////////////////////////////////////////////
-		int MainFMUwrapper::loadDLLhelper(const char* dllPat, FMU *fmu) {
-  
-		//wchar_t * dllPatW;
-
-
-			HINSTANCE h;
-
-		  h = LoadLibrary(dllPat);
-		  free((void *) dllPat);
-
-		  if(!h) {
-			printfError("Can not load %s\n", dllPat);
-			return 1;
-		  }
-
-		  fmu->dllHandle = h;
-		  fmu->getVersion = (fGetVersion) getAdr(fmu, "fmiGetVersion");
-		  fmu->instantiateSlave = (fInstantiateSlave) getAdr(fmu, "fmiInstantiateSlave");
-		  fmu->freeSlaveInstance = (fFreeSlaveInstance) getAdr(fmu, "fmiFreeSlaveInstance");
-		  fmu->setDebugLogging = (fSetDebugLogging) getAdr(fmu, "fmiSetDebugLogging");
-		  fmu->setReal = (fSetReal) getAdr(fmu, "fmiSetReal");
-		  fmu->setInteger = (fSetInteger) getAdr(fmu, "fmiSetInteger");
-		  fmu->setBoolean = (fSetBoolean) getAdr(fmu, "fmiSetBoolean");
-		  fmu->setString = (fSetString) getAdr(fmu, "fmiSetString");
-		  fmu->initializeSlave = (fInitializeSlave) getAdr(fmu, "fmiInitializeSlave");
-		  fmu->getReal = (fGetReal) getAdr(fmu, "fmiGetReal");
-		  fmu->getInteger = (fGetInteger) getAdr(fmu, "fmiGetInteger");
-		  fmu->getBoolean = (fGetBoolean) getAdr(fmu, "fmiGetBoolean");
-		  fmu->getString = (fGetString) getAdr(fmu, "fmiGetString");
-		  fmu->doStep = (fDoStep) getAdr(fmu, "fmiDoStep");
-
-		  return 0;
-		}
-
-
-		
-
+		/*******************************************************//**
+		 * Parses the xml file located in the FMU.  
+		 *
+		 * @param [in,out]	unzipfolder	where the FMU was unzipped to.
+		 *******************************************************/
 		void MainFMUwrapper::parseXML(char* unzipfolder) {
 			
 
-			char* xmlFilePath1;
-
+			//add the trailing slash to the path and store
+			// in member variable
 			int xmlFilePath1_len = strlen(unzipfolder) + 2;
+			unzipFolderPath_ = (char *) calloc(sizeof(char), xmlFilePath1_len);
+			sprintf(unzipFolderPath_, "%s%s", unzipfolder, "\\");
 
-			xmlFilePath1 = (char *) calloc(sizeof(char), xmlFilePath1_len);
-			sprintf(xmlFilePath1, "%s%s", unzipfolder, "\\");
 
-			unzipfolder_ = xmlFilePath1;
-
-			int xmlFilePath2_len = strlen(xmlFilePath1) + 1 + strlen(XML_FILE);
+			//construct the path to the XML file and 
+			// store as member variable
+			int xmlFilePath2_len = xmlFilePath1_len + strlen(XML_FILE);
 			xmlFilePath_ = (char *) calloc(sizeof(char), xmlFilePath2_len);
 			
-			sprintf(xmlFilePath_, "%s%s", xmlFilePath1, XML_FILE);
-
-
+			sprintf(xmlFilePath_, "%s%s", unzipFolderPath_, XML_FILE);
 
 			fmu_.modelDescription = parse(xmlFilePath_); 
 
 			// Parse only parses the model description and store in structure fmu.modelDescription
-			
 			if (!fmu_.modelDescription) exit(EXIT_FAILURE);
 
 		}
@@ -160,13 +157,9 @@ namespace Straylight
 
 			// Run the simulation
 			printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d, csv separator='%c'\n", 
-					unzipfolder_, timeEnd_, timeDelta_, loggingOn, csv_separator_);
+					unzipFolderPath_, timeEnd_, timeDelta_, loggingOn, csv_separator_);
 
 
-			//Note: User defined references
-			//Begin------------------------------------------------------------------
-
-			//End--------------------------------------------------------------------
 
 			vars = fmuPointer_->modelDescription->modelVariables;		// add it to get variables
 
@@ -188,8 +181,8 @@ namespace Straylight
 			fmiComponent_ = fmuPointer_->instantiateSlave(getModelIdentifier(md), guid, "Model1", "", 10, fmiFalse, fmiFalse, callbacks, loggingOn);
 
 			if (!fmiComponent_) {
-			printError("could not instantiate slaves\n");
-			return 1;
+				printError("could not instantiate slaves\n");
+				return 1;
 			}
 			printDebug("Instantiated slaves!\n");	
 
@@ -238,17 +231,8 @@ namespace Straylight
 		}
 
 
-		void MainFMUwrapper::simulateHelperCleanup( ) {
 
-			// Cleanup
-			fclose(file);
-			free(unzipfolder_);
-			free(xmlFilePath_);
-
-			
-			// Release FMU 
-			FreeLibrary(fmu_.dllHandle);
-			freeElement(fmu_.modelDescription);
+		void MainFMUwrapper::printSummary() {
 
 			// Print simulation summary
 			if (loggingOn) printf("Step %d to t=%.4f\n", nSteps, time_);		
@@ -287,10 +271,24 @@ namespace Straylight
 		}
 
 		
+		
+		void MainFMUwrapper::doOneStep2() {
+
+		}
+
+
 		void MainFMUwrapper::doOneStep() {
 
 
-			if (loggingOn) printf("Step %d to t=%.4f\n", nSteps, time_);		  
+			//if (loggingOn) printf(, nSteps, time_);	
+			//printfDebug
+
+			char msg[256];
+			sprintf (msg, "Step %d to t=%.4f\n", nSteps, time_);
+			OutputDebugString(msg);
+
+
+
 			int kCounter_;							// add a counter for variables
 
 			///////////////////////////////////////////////////////////////////////////

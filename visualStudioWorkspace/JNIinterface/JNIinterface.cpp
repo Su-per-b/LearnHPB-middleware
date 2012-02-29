@@ -199,7 +199,8 @@ JNIEXPORT jboolean JNICALL Java_com_sri_straylight_socketserver_JNIinterface_sim
 {
 
 
-	fmuWrapper->simulateHelperCleanup();
+	fmuWrapper->printSummary();
+	delete fmuWrapper;
 
 	return JNI_TRUE;
 }
