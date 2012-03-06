@@ -94,12 +94,14 @@
     <ClInclude Include="include\qtronic\fmiModelTypes.h" />
     <ClInclude Include="include\qtronic\fmiPlatformTypes.h" />
     <ClInclude Include="include\qtronic\stack.h" />
+    <ClInclude Include="ResultItem.h" />
+    <ClInclude Include="ResultPrimitive.h" />
+    <ClInclude Include="ResultSet.h" />
     <ClInclude Include="stdafx_c.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="include\qtronic\xml_parser.h" />
     <ClInclude Include="mainHelper.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -112,6 +114,9 @@
     </ClCompile>
     <ClCompile Include="MainFMUwrapper.cpp" />
     <ClCompile Include="include\qtronic\stack.c" />
+    <ClCompile Include="ResultItem.cpp" />
+    <ClCompile Include="ResultPrimitive.cpp" />
+    <ClCompile Include="ResultSet.cpp" />
     <ClCompile Include="util.c" />
     <ClCompile Include="include\qtronic\xml_parser.c" />
     <ClCompile Include="mainHelper.c" />

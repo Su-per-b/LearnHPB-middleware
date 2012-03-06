@@ -23,6 +23,8 @@
 #include <windows.h> 
 #include <stdarg.h>
 
+
+
 int debug = 0;  // Control for debug information
 int debugvs = 1;  // Control for debug information to Output window in Visual Studio
 

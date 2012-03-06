@@ -25,5 +25,6 @@ void fmuLogger(fmiComponent c, fmiString instanceName, fmiStatus status,
 
 void outputRow(FMU *fmu, fmiComponent c, double time, FILE* file, char separator);
 
+
 void* getAdr(FMU *, const char*);
 

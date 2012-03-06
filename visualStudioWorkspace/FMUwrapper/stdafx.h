@@ -5,7 +5,17 @@
 
 #pragma once
 
-#include "targetver.h"
+#define DllExport   __declspec( dllexport )
+
+// Including SDKDDKVer.h defines the highest available Windows platform.
+
+// If you wish to build your application for a previous Windows platform, include WinSDKVer.h and
+// set the _WIN32_WINNT macro to the platform you wish to support before including SDKDDKVer.h.
+
+#include <SDKDDKVer.h>
+
+
+
 
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 
@@ -18,10 +28,10 @@
 
 extern "C"
 {
-	#include <expat.h>
-	#include "util.h"
-	#include "mainHelper.h"
-	#include "xml_parser.h"
-	#include "fmi_cs.h"
+#include <expat.h>
+#include "util.h"
+#include "mainHelper.h"
+#include "xml_parser.h"
+#include "fmi_cs.h"
 }
 

@@ -1,19 +1,22 @@
 
 
+
 #include "stdafx.h"
+#include "ResultSet.h"
+#include "ResultItem.h"
+
 
 #include <sstream>
 
 
-
-
-
-
 namespace Straylight
 {
-    class MainFMUwrapper
-    {
-    
+
+
+	class MainFMUwrapper
+	{
+
+
 	private:
 		const char * fmuFileName_;
 
@@ -47,37 +50,43 @@ namespace Straylight
 		ModelDescription* modelDescription_;
 
 
-
-
 	public:
-		__declspec(dllexport) MainFMUwrapper(void);
-		__declspec(dllexport) ~MainFMUwrapper(void);
-        __declspec(dllexport) void doAll(const char * fileName);
-		__declspec(dllexport) void unzip();
+		DllExport MainFMUwrapper(void);
+		DllExport ~MainFMUwrapper(void);
+		DllExport void doAll(const char * fileName);
+		DllExport void unzip();
 
-		__declspec(dllexport) void parseXML(char* unzipfolder);
-		__declspec(dllexport) void parseXML2();
+		DllExport void parseXML(char* unzipfolder);
+		DllExport void parseXML2();
 
-		__declspec(dllexport) int isSimulationComplete();
+		DllExport int isSimulationComplete();
 
-		__declspec(dllexport) int simulateHelperInit();
+		DllExport int simulateHelperInit();
 
-		__declspec(dllexport) void printSummary();
+		DllExport void printSummary();
 
-		__declspec(dllexport) void doOneStep();
+		DllExport void doOneStep();
 
-        __declspec(dllexport) void doOneStep2();
+		DllExport fmiReal getResultSnapshot();
 
-		__declspec(dllexport) fmiReal getResultSnapshot();
-		
-		__declspec(dllexport) int loadDll();
+		DllExport int loadDll();
+
+		DllExport ResultItem * getResultItem();
+
+		//	ResultSet* resultSet_;
+
+		ResultItem* resultItem_;
+
 
 
 	private:
 		int loadDLLhelper(const char* , FMU *);
 		ModelDescription* parseHelper(const char*);
 
-    };
+		//	void outputRow2(FMU *, fmiComponent, double, FILE*, char);
+
+
+	};
 
 
 
