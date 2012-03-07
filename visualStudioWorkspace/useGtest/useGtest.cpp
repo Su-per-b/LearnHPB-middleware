@@ -5,11 +5,23 @@
 #include <iostream>
 
 #include "gtest/gtest.h"
+#include <MainFMUwrapper.h>
 
 TEST(sample_test_case, sample_test)
 {
     EXPECT_EQ(1, 1);
 }
+
+TEST(FMUwrapper, connect)
+{
+	Straylight::MainFMUwrapper *fmuWrapper;
+
+	fmuWrapper = new Straylight::MainFMUwrapper();
+
+
+    EXPECT_TRUE(fmuWrapper != NULL);
+}
+
 
 
 int _tmain(int argc, _TCHAR* argv[])
