@@ -56,7 +56,11 @@ JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_load
     char * unzipfolder_wchar = JavaToSZ(env, unzipfolder);
 
 	fmuWrapper = new Straylight::MainFMUwrapper();
-	fmuWrapper->parseXML(unzipfolder_wchar);
+	int result = fmuWrapper->parseXML(unzipfolder_wchar);
+
+	if (result != 0) {
+		exit(EXIT_FAILURE);
+	}
 
 	jstring jstrBuf = env->NewStringUTF("load");
 	return jstrBuf;

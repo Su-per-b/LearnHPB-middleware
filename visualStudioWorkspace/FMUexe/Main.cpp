@@ -2,12 +2,9 @@
 //
 
 
-#include "stdafx.h"
+
 #include "Main.h"
 
-#include <sstream>
-#include <string>
-#include <ResultPrimitive.h>
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -22,11 +19,18 @@ void test6() {
 	Straylight::MainFMUwrapper *fmuWrapper;
 
 	fmuWrapper = new Straylight::MainFMUwrapper();
-	fmuWrapper->parseXML("C:\\Temp\\DoubleInputDoubleOutput.fmu_unzipped");
+
+	int result = fmuWrapper->parseXML("C:\\Temp\\DoubleInputDoubleOutput.fmu_unzipped");
+
+	if (result != 0) {
+		exit(EXIT_FAILURE);
+	}
+
+
 	fmuWrapper->loadDll();
 	fmuWrapper->simulateHelperInit();
 
-	Straylight::ResultItem * ri; // = new Straylight::ResultItem();
+	Straylight::ResultItem * ri;
 
 	// enter the simulation loop
 	while (!fmuWrapper->isSimulationComplete()) {

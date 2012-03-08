@@ -18,10 +18,11 @@ namespace Straylight
 
 
 	private:
-		const char * fmuFileName_;
 
 		char* unzipFolderPath_;
+
 		char* xmlFilePath_;
+
 		char* dllFilePath_;
 
 		double timeEnd_;
@@ -41,7 +42,7 @@ namespace Straylight
 		int nSteps;
 		fmiValueReference vr;			// add it to get value reference for variables
 		fmiReal t0;                  // start time
-		FILE* file;
+	//	FILE* file;
 		fmiComponent fmiComponent_;                  // instance of the fmu 
 		ScalarVariable** vars;
 
@@ -56,8 +57,7 @@ namespace Straylight
 		DllExport void doAll(const char * fileName);
 		DllExport void unzip();
 
-		DllExport void parseXML(char* unzipfolder);
-		DllExport void parseXML2();
+		DllExport int parseXML(char* unzipfolder);
 
 		DllExport int isSimulationComplete();
 
@@ -77,6 +77,10 @@ namespace Straylight
 
 		ResultItem* resultItem_;
 
+		char* getXmlFilePath()
+		{
+			return xmlFilePath_;
+		}
 
 
 	private:

@@ -37,6 +37,7 @@ namespace Straylight
 		{
 			
 			output.append(",");
+			rp = (*it);
 			str = rp->getString();
 			output.append(str);
 

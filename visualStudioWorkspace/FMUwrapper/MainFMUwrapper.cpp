@@ -37,7 +37,7 @@ namespace Straylight
 	{
 
 		// Cleanup
-		fclose(file);
+		//fclose(file);
 
 		free((void *) unzipFolderPath_);
 		free((void *) xmlFilePath_);
@@ -116,7 +116,7 @@ namespace Straylight
 															 *
 															 * @param [in,out]	unzipfolder	where the FMU was unzipped to.
 															 *******************************************************/
-	void MainFMUwrapper::parseXML(char* unzipfolder) {
+	int MainFMUwrapper::parseXML(char* unzipfolder) {
 
 
 		//add the trailing slash to the path and store
@@ -136,7 +136,12 @@ namespace Straylight
 		fmu_.modelDescription = parse(xmlFilePath_); 
 
 		// Parse only parses the model description and store in structure fmu.modelDescription
-		if (!fmu_.modelDescription) exit(EXIT_FAILURE);
+		if (fmu_.modelDescription) {
+			return 0;
+		} else {
+			return 1;
+		}
+
 
 	}
 
@@ -186,14 +191,7 @@ namespace Straylight
 
 		printDebug("Instantiated slaves!\n");	
 
-		// Open result file
-		if (!(file=fopen(RESULT_FILE, "w"))) {
-			printfError("could not write %s because:\n", RESULT_FILE);
-			printfError("    %s\n", strerror(errno));
-			return 1;
-		}
 
-		printDebug("Open results file!\n");    
 
 		// Set the start time and initialize
 		time_ = t0;
@@ -207,7 +205,7 @@ namespace Straylight
 		}
 
 		// Output solution for time t0 
-		outputRow(fmuPointer_, fmiComponent_, t0, file, csv_separator_); // output initla value of fmu 
+	//	outputRow(fmuPointer_, fmiComponent_, t0, file, csv_separator_); // output initla value of fmu 
 
 
 		///////////////////////////////////////////////////////////////////////////// 
@@ -363,7 +361,7 @@ namespace Straylight
 				fmuPointer_->setInteger(fmiComponent_, &vr, 1, &ix);  
 				break;
 			case elm_Boolean:
-				fmuPointer_->setBoolean(fmiComponent_, &vr, 1, &bx);
+				fmuPointer_->setBoolean(fmiComponent_, &vr,1, &bx);
 				break;
 			case elm_String:
 				fmuPointer_->setString(fmiComponent_, &vr, 1, &sx);
@@ -374,11 +372,9 @@ namespace Straylight
 
 		// Advance to next time step
 		status = fmuPointer_->doStep(fmiComponent_, time_, timeDelta_, fmiTrue);  
-		// Terminate this row
-		fprintf(file, "\n");      
+
 
 		time_ = min(time_+timeDelta_, timeEnd_);
-		outputRow(fmuPointer_, fmiComponent_, time_, file, csv_separator_); // output values for this step
 
 		resultItem_ = new ResultItem();
 		resultItem_->setTime(t0);
