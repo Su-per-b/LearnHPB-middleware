@@ -30,20 +30,33 @@ wchar_t * JavaToWSZ(JNIEnv* env, jstring string)
     return wsz;
 }
 
-char * JavaToSZ(JNIEnv* env, jstring string)
+char * JavaToSZ(JNIEnv* env, jstring str)
 {
-    if (string == NULL)
+
+
+
+    if (str == NULL)
         return NULL;
-    int len = env->GetStringLength(string);
-    const jchar* raw = env->GetStringChars(string, NULL);
+
+    int len = env->GetStringLength(str);
+	char chString[33];
+
+	//convert to string
+	itoa(len, chString, 10);
+
+	printf("JavaToSZ string length '%s'\n", chString);
+    const jchar* raw = env->GetStringChars(str, NULL);
+
     if (raw == NULL)
         return NULL;
+
+	printf("JavaToSZ jchar '%s'\n", raw);
 
     char* sz = new char[len+1];
     memcpy(sz, raw, len);
     sz[len] = 0;
 
-    env->ReleaseStringChars(string, raw);
+    env->ReleaseStringChars(str, raw);
 
     return sz;
 }
@@ -53,10 +66,12 @@ char * JavaToSZ(JNIEnv* env, jstring string)
 JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_load
   (JNIEnv *env, jobject thisobject, jstring unzipfolder) {
 
-    char * unzipfolder_wchar = JavaToSZ(env, unzipfolder);
+
+    char * unzipfolder_char = JavaToSZ(env, unzipfolder);
+	printf("JNIinterface_load '%s'\n", unzipfolder_char);
 
 	fmuWrapper = new Straylight::MainFMUwrapper();
-	int result = fmuWrapper->parseXML(unzipfolder_wchar);
+	int result = fmuWrapper->parseXML(unzipfolder_char);
 
 	if (result != 0) {
 		exit(EXIT_FAILURE);

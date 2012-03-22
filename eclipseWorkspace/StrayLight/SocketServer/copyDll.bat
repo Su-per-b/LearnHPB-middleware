@@ -1,2 +1,5 @@
-copy E:\SRI\straylight_repo\visualStudioWorkspace\Debug\FMUwrapper.dll E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\SocketServer\FMUwrapper.dll
-copy E:\SRI\straylight_repo\visualStudioWorkspace\Debug\JNIinterface.dll E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\SocketServer\JNIinterface.dll
+copy ..\..\..\visualStudioWorkspace\bin\Debug\FMUwrapper.dll .\FMUwrapper.dll
+copy ..\..\..\visualStudioWorkspace\bin\Debug\JNIinterface.dll .\JNIinterface.dll
+copy ..\..\..\visualStudioWorkspace\bin\Debug\expat.dll .\expat.dll
+
+

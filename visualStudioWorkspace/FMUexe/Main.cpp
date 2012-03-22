@@ -20,7 +20,7 @@ void test6() {
 
 	fmuWrapper = new Straylight::MainFMUwrapper();
 
-	int result = fmuWrapper->parseXML("C:\\Temp\\DoubleInputDoubleOutput.fmu_unzipped");
+	int result = fmuWrapper->parseXML("\\FMUs\\LearnGB_VAVReheat_ClosedLoopXP");
 
 	if (result != 0) {
 		exit(EXIT_FAILURE);

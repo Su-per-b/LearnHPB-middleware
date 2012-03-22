@@ -7,8 +7,8 @@
 #include "MainFMUwrapper.h"
 
 #define BUFSIZE 4096
-#define XML_FILE  "modelDescription.xml"
-#define DLL_DIR   "binaries\\win32\\"
+#define XML_FILE_STR  "\\modelDescription.xml"
+#define DLL_DIR_STR   "\\binaries\\win32\\"
 #define RESULT_FILE "result.csv"
 #define ZLIB_WINAPI
 
@@ -64,13 +64,13 @@ namespace Straylight
 
 		const char* modelId = getModelIdentifier(fmu_.modelDescription);
 
-		dllFilePath_ = (char *) calloc(sizeof(char), strlen(unzipFolderPath_) + strlen(DLL_DIR) 
+		dllFilePath_ = (char *) calloc(sizeof(char), strlen(unzipFolderPath_) + strlen(DLL_DIR_STR) 
 			+ strlen( modelId ) +  strlen(".dll") + 1); 
 
 		sprintf(dllFilePath_,
 			"%s%s%s.dll",
 			unzipFolderPath_,
-			DLL_DIR,
+			DLL_DIR_STR,
 			modelId
 			);
 
@@ -118,20 +118,32 @@ namespace Straylight
 															 *******************************************************/
 	int MainFMUwrapper::parseXML(char* unzipfolder) {
 
+		//unzipFolderPath_ = unzipfolder;
 
 		//add the trailing slash to the path and store
 		// in member variable
-		int xmlFilePath1_len = strlen(unzipfolder) + 2;
-		unzipFolderPath_ = (char *) calloc(sizeof(char), xmlFilePath1_len);
-		sprintf(unzipFolderPath_, "%s%s", unzipfolder, "\\");
+		//char* unzipFolderPathLocal;
+
+
+		int len1 = strlen(unzipfolder) + 1;
+
+		//unzipFolderPathLocal = (char *) calloc(sizeof(char), xmlFilePath1_len + 1);
+
+
+		unzipFolderPath_ = (char *) calloc(sizeof(char), len1 + 1);
+		//sprintf(xmlFilePath_, "%s%s", unzipfolder, XML_FILE_STR);
+
+
+		lstrcpy(unzipFolderPath_, unzipfolder);
 
 
 		//construct the path to the XML file and 
 		// store as member variable
-		int xmlFilePath2_len = xmlFilePath1_len + strlen(XML_FILE);
-		xmlFilePath_ = (char *) calloc(sizeof(char), xmlFilePath2_len);
+		int len2 = len1 + 1 + strlen(XML_FILE_STR);
+		xmlFilePath_ = (char *) calloc(sizeof(char), len2 + 1);
 
-		sprintf(xmlFilePath_, "%s%s", unzipFolderPath_, XML_FILE);
+		//sprintf(xmlFilePath_, "%s%s", unzipfolder, "\\");
+		sprintf(xmlFilePath_, "%s%s", unzipfolder, XML_FILE_STR);
 
 		fmu_.modelDescription = parse(xmlFilePath_); 
 
@@ -149,7 +161,17 @@ namespace Straylight
 
 	int MainFMUwrapper::simulateHelperInit() {
 
-		loggingOn = 0;
+
+		_TCHAR currentDirectory[MAX_PATH] =  _T("");
+		_TCHAR exeDirectory[MAX_PATH] =  _T("");
+
+		GetCurrentDirectory(MAX_PATH, currentDirectory);
+		this->getModuleFolderPath(exeDirectory);
+		bool success = SetCurrentDirectory(unzipFolderPath_);
+		GetCurrentDirectory(MAX_PATH, currentDirectory);
+
+
+		loggingOn = 1;
 		ModelDescription* md;            // handle to the parsed XML file        
 		const char* guid;                // global unique id of the fmu
 		fmiCallbackFunctions callbacks;  // called by the model during simulation
@@ -196,6 +218,11 @@ namespace Straylight
 		// Set the start time and initialize
 		time_ = t0;
 
+
+
+
+
+
 		printDebug("start to initialize fmu!\n");	   
 		fmiFlag =  fmuPointer_->initializeSlave(fmiComponent_, t0, fmiTrue, timeEnd_);	
 		printDebug("Initialized fmu!\n");
@@ -212,10 +239,11 @@ namespace Straylight
 		// Get value references for input and output varibles
 		// Note: User needs to specify the name of variables for their own fmus
 		//Begin------------------------------------------------------------------
-		vru_[0] = getValueReference(getVariableByName(md, "u1"));
-		vru_[1] = getValueReference(getVariableByName(md, "u2"));
-		vry_[0] = getValueReference(getVariableByName(md, "y1"));
-		vry_[1] = getValueReference(getVariableByName(md, "y2"));
+
+		 // vru_[0] = getValueReference(getVariableByName(md, "Toa"));
+		  vry_[0] = getValueReference(getVariableByName(md, "TrmSou"));
+
+
 		//End--------------------------------------------------------------------
 
 		printDebug("Enter in simulation loop\n");	
@@ -285,7 +313,7 @@ namespace Straylight
 
 		//if (loggingOn) printf(, nSteps, time_);	
 		//printfDebug
-
+		/*
 		char msg[256];
 		sprintf (msg, "Step %d to t=%.4f\n", nSteps, time_);
 		OutputDebugString(msg);
@@ -304,7 +332,7 @@ namespace Straylight
 
 			switch (sv->typeSpec->type){
 			case elm_Real:
-				fmuPointer_->getReal(fmiComponent_, &vr, 1, &ry); 
+				fmuPointer_->getReal(fmiComponent_, &vr, 1, &ry);
 				break;
 			case elm_Integer:
 				fmuPointer_->getInteger(fmiComponent_, &vr, 1, &iy);  
@@ -321,38 +349,35 @@ namespace Straylight
 			// Allocate values to cooresponding varibles on master program
 			// Note: User needs to specify the output variables for their own fmu 
 			//Begin------------------------------------------------------------------
-			if (vr == vry_[0]) ry1 = ry;
-			else if(vr == vry_[1]) ry2 = ry;
+			if (vr == vry_[0]) 
+				ry1 = ry;
+
 			//End--------------------------------------------------------------------
 		} 
+		*/
 
 		///////////////////////////////////////////////////////////////////////////
 		// Step 2: compute on master side 
 		// Note: User can adjust the computing schemes of mater program
 		//Begin------------------------------------------------------------------
-		ru1 = ry2 + 3.0; 
-		ru2 = ry1 + 0.5;
+		//ru1 = 293;
+		//ru2 = ry1 + 0.5;
 		//End--------------------------------------------------------------------
 
-		//////////////////////////////////////////////////////////////////////////
-		// Step 3: set input variables back to slaves
+
+		/*
 		for (kCounter_=0; vars[kCounter_]; kCounter_++) {
 			ScalarVariable* sv = vars[kCounter_];
 			if (getAlias(sv)!=enu_noAlias) continue;
 			if (getCausality(sv) != enu_input) continue; // only set input variable
 			vr = getValueReference(sv);
-			// Note: User can adjust the settings for input variables
-			//Begin------------------------------------------------------------------
+
 			switch (sv->typeSpec->type){
 			case elm_Real:
 
 				if(vr == vru_[0]) {
 					fmuPointer_->setReal(fmiComponent_, &vr, 1, &ru1); 				
 					printDebug("Set u1\n");
-				}
-				else if (vr == vru_[1]) {
-					fmuPointer_->setReal(fmiComponent_, &vr, 1, &ru2);
-					printDebug("Set u2\n");
 				}
 				else
 					printf("Warning: no data given for input variable\n");
@@ -369,6 +394,9 @@ namespace Straylight
 			}
 			//End--------------------------------------------------------------------        
 		} 
+		*/
+
+
 
 		// Advance to next time step
 		status = fmuPointer_->doStep(fmiComponent_, time_, timeDelta_, fmiTrue);  
@@ -390,6 +418,21 @@ namespace Straylight
 
 
 
+	void MainFMUwrapper::getModuleFolderPath(_TCHAR * szDir) {
+
+		//allocate string buffers using character independant data type.
+		_TCHAR exePath[MAX_PATH] =  _T("");
+		GetModuleFileName(NULL, exePath, MAX_PATH);
+
+		char    ch = '\\';   
+		_TCHAR * slashAndFileName = _tcsrchr(exePath, ch);
+		size_t theSize = slashAndFileName - exePath;
+
+		// Extract directory
+		_tcsnccpy(szDir, exePath, theSize);
+		szDir[theSize] = '\0';
+
+	}
 
 
 }

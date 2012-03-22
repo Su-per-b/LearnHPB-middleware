@@ -96,7 +96,7 @@ namespace Straylight
 
 			//rp->type = ResultPrimitive::VALUETYPE_STRING;
 			rp->type = 3;
-			rp->scalarString = i;
+			rp->scalarString = s;
 
 			break;
 		}
@@ -121,12 +121,10 @@ namespace Straylight
 		for (k=0; vars[k]; k++) {
 			ScalarVariable* sv = vars[k];
 			if (getAlias(sv)!=enu_noAlias) continue;
+			if (getCausality(sv) != enu_output) continue; // only get output variable
 
 			this->addValue(sv);
 
-
-
-			int x = 0;
 		}
 
 

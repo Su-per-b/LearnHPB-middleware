@@ -1467,9 +1467,13 @@ XML_Parse(XML_Parser parser, const char *s, int len, int isFinal)
         return XML_STATUS_OK;
       }
     }
+
+
     eventEndPtr = eventPtr;
     processor = errorProcessor;
     return XML_STATUS_ERROR;
+
+
   }
 #ifndef XML_CONTEXT_BYTES
   else if (bufferPtr == bufferEnd) {

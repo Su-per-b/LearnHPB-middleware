@@ -1,6 +1,6 @@
 
 
-
+#include <tchar.h>
 #include "stdafx.h"
 #include "ResultSet.h"
 #include "ResultItem.h"
@@ -31,10 +31,10 @@ namespace Straylight
 
 
 		double time_;
-		fmiValueReference vru_[2], vry_[2]; // value references for two input and two output variables 
+		fmiValueReference vru_[1], vry_[1]; // value references for two input and two output variables 
 		char csv_separator_; 
 
-		fmiReal ru1, ru2, ry, ry1, ry2;	// add real variables for input and output
+		fmiReal ru1, ry, ry1;	// add real variables for input and output
 		fmiInteger ix, iy;				// add integer variables for input and output
 		fmiBoolean bx, by;				// add boolean variables for input and output
 		fmiString sx, sy;				// Zuo: add string variables for input and output
@@ -72,6 +72,10 @@ namespace Straylight
 		DllExport int loadDll();
 
 		DllExport ResultItem * getResultItem();
+
+		void getModuleFolderPath(_TCHAR * szDir);
+
+
 
 		//	ResultSet* resultSet_;
 

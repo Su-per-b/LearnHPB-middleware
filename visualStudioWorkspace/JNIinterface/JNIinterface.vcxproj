@@ -85,9 +85,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="DoubleInputDoubleOutput.fmu" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="JNIinterface.h" />
     <ClInclude Include="JNIutils.h" />
     <ClInclude Include="stdafx.h" />
@@ -113,6 +110,9 @@
     <ProjectReference Include="..\FMUwrapper\FMUwrapper.vcxproj">
       <Project>{96472430-757f-4d3f-b45e-31b1804bb83e}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FMUs\LearnGB_VAVReheat_ClosedLoop.fmu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

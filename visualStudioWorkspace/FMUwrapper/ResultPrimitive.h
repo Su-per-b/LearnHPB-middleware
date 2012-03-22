@@ -16,9 +16,9 @@ public:
 public:
 
 	double scalarReal;
-	double scalarInt;
-	double scalarBool;
-	double scalarString;
+	int scalarInt;
+	bool scalarBool;
+	std::string scalarString;
 	int type;
 
 

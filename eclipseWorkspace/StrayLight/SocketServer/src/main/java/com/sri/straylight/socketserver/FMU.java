@@ -11,12 +11,13 @@ public class FMU {
 	
 	private String unzipfolder_;
 	private String dllPath_;
-	private JNIinterface jniInterface;
+	private JNIinterface jniInterface_;
 	
 	
 	public FMU(String fmuFileName) {
 		
 		fmuFilePath_ = fmuFileName;
+		jniInterface_ = new JNIinterface();
 	}
 	
 	public void unzip() {
@@ -26,13 +27,12 @@ public class FMU {
 		
 		name = name.substring(0, name.length()-4); 
 		
-		dllPath_ = unzipfolder_ + File.pathSeparator + 
-				"binaries" + File.pathSeparator + "win32" + 
-				File.pathSeparator + name + ".dll";
+		//dllPath_ = unzipfolder_ + File.separator   + 
+			//	"binaries" + File.separator + "win32" + 
+			//	File.separator + name + ".dll";
  				
 		
-		String unzipfolder_ = Main.config.unzipFolderBase + 
-				File.pathSeparator + name  + "_unzipped";
+		unzipfolder_ = Main.config.unzipFolderBase + File.separator + name;
 		
 		
 		Unzip.unzip(fmuFilePath_, unzipfolder_);
@@ -44,7 +44,9 @@ public class FMU {
 		//dllPath_ = unzipfolder_ + File.pathSeparator + 
 				//"binaries" + File.pathSeparator + "win32";
 		
-		jniInterface.load(unzipfolder_);
+		String res = jniInterface_.load(unzipfolder_);
+		
+		
 	}
 	
 	

@@ -7,7 +7,7 @@
 	<fmuResultsFolder>C:\ProgramFiles\JModelica.org-1.6\fmuResults</fmuResultsFolder>
 	
 	<unzipFolderBase>C:\Temp</unzipFolderBase>
-	<testFmuFile>C:\ProgramFiles\JModelica.org-1.6\fmus\DoubleInputDoubleOutput.fmu</testFmuFile>
+	<testFmuFile>E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\SocketServer\LearnGB_VAVReheat_ClosedLoop.fmu</testFmuFile>
 	
 	
 	

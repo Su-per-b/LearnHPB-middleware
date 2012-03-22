@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="DoubleInputDoubleOutput.fmu" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -44,5 +41,8 @@
     <ClCompile Include="JNIutils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FMUs\LearnGB_VAVReheat_ClosedLoop.fmu" />
   </ItemGroup>
 </Project>

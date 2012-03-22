@@ -3,9 +3,4 @@
 #include "stdafx.h"
 
 
-
-char * getResultItemAsString();
-
-
-
-
+void init(_TCHAR * fmuSubPath);
