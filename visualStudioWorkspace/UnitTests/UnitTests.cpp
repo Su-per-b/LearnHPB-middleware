@@ -45,7 +45,6 @@ void init(_TCHAR * fmuSubPath) {
 
 	fmuWrapper = new Straylight::MainFMUwrapper();
 
-
 	_TCHAR *fmuUnzippedFolder=new TCHAR[MAX_PATH+1];
 
 	getModuleFolderPath(fmuUnzippedFolder);

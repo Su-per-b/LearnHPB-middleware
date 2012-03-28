@@ -13,6 +13,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gtest", "gtest\msvc\gtest.v
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTests", "UnitTests\UnitTests.vcxproj", "{E80D77AB-C4E2-4E05-920F-5FD7CFB57BA4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JNIexe", "JNIexe\JNIexe.vcxproj", "{59682C79-6A6C-477E-A4CC-C1015FDC2E08}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fmutest", "fmutest\fmutest.vcxproj", "{71AB9D35-56B9-4CA4-8C9A-D8D7784E21C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -69,6 +73,22 @@ Global
 		{E80D77AB-C4E2-4E05-920F-5FD7CFB57BA4}.Static Release|Win32.Build.0 = Release|Win32
 		{E80D77AB-C4E2-4E05-920F-5FD7CFB57BA4}.Template|Win32.ActiveCfg = Release|Win32
 		{E80D77AB-C4E2-4E05-920F-5FD7CFB57BA4}.Template|Win32.Build.0 = Release|Win32
+		{59682C79-6A6C-477E-A4CC-C1015FDC2E08}.Debug|Win32.ActiveCfg = Debug|Win32
+		{59682C79-6A6C-477E-A4CC-C1015FDC2E08}.Debug|Win32.Build.0 = Debug|Win32
+		{59682C79-6A6C-477E-A4CC-C1015FDC2E08}.Release|Win32.ActiveCfg = Release|Win32
+		{59682C79-6A6C-477E-A4CC-C1015FDC2E08}.Release|Win32.Build.0 = Release|Win32
+		{59682C79-6A6C-477E-A4CC-C1015FDC2E08}.Static Release|Win32.ActiveCfg = Release|Win32
+		{59682C79-6A6C-477E-A4CC-C1015FDC2E08}.Static Release|Win32.Build.0 = Release|Win32
+		{59682C79-6A6C-477E-A4CC-C1015FDC2E08}.Template|Win32.ActiveCfg = Release|Win32
+		{59682C79-6A6C-477E-A4CC-C1015FDC2E08}.Template|Win32.Build.0 = Release|Win32
+		{71AB9D35-56B9-4CA4-8C9A-D8D7784E21C1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{71AB9D35-56B9-4CA4-8C9A-D8D7784E21C1}.Debug|Win32.Build.0 = Debug|Win32
+		{71AB9D35-56B9-4CA4-8C9A-D8D7784E21C1}.Release|Win32.ActiveCfg = Release|Win32
+		{71AB9D35-56B9-4CA4-8C9A-D8D7784E21C1}.Release|Win32.Build.0 = Release|Win32
+		{71AB9D35-56B9-4CA4-8C9A-D8D7784E21C1}.Static Release|Win32.ActiveCfg = Release|Win32
+		{71AB9D35-56B9-4CA4-8C9A-D8D7784E21C1}.Static Release|Win32.Build.0 = Release|Win32
+		{71AB9D35-56B9-4CA4-8C9A-D8D7784E21C1}.Template|Win32.ActiveCfg = Release|Win32
+		{71AB9D35-56B9-4CA4-8C9A-D8D7784E21C1}.Template|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

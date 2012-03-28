@@ -9,6 +9,12 @@
 #include <sstream>
 
 
+char * wstrdup(_TCHAR * );
+
+int wstrlen(_TCHAR * );
+
+void init(_TCHAR * );
+
 namespace Straylight
 {
 
@@ -50,7 +56,6 @@ namespace Straylight
 		double timeDelta_;
 		ModelDescription* modelDescription_;
 
-
 	public:
 		DllExport MainFMUwrapper(void);
 		DllExport ~MainFMUwrapper(void);
@@ -67,6 +72,8 @@ namespace Straylight
 
 		DllExport void doOneStep();
 
+		DllExport void test1();
+
 		DllExport fmiReal getResultSnapshot();
 
 		DllExport int loadDll();
@@ -74,6 +81,7 @@ namespace Straylight
 		DllExport ResultItem * getResultItem();
 
 		void getModuleFolderPath(_TCHAR * szDir);
+
 
 
 
@@ -92,6 +100,7 @@ namespace Straylight
 		ModelDescription* parseHelper(const char*);
 
 		//	void outputRow2(FMU *, fmiComponent, double, FILE*, char);
+
 
 
 	};

@@ -133,10 +133,10 @@ Functions for FMI for Co-Simulation
      typedef void  (*fmiStepFinished)          (fmiComponent c, fmiStatus status);
 
      typedef struct {
-     fmiCallbackLogger         logger;
-     fmiCallbackAllocateMemory allocateMemory;
-     fmiCallbackFreeMemory     freeMemory;
-     fmiStepFinished           stepFinished;
+		 fmiCallbackLogger         logger;
+		 fmiCallbackAllocateMemory allocateMemory;
+		 fmiCallbackFreeMemory     freeMemory;
+		 fmiStepFinished           stepFinished;
      } fmiCallbackFunctions;
 
    typedef struct {

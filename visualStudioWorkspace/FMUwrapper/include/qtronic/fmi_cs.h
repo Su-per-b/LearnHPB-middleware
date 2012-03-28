@@ -28,6 +28,7 @@ typedef fmiStatus (*fGetString) (fmiComponent c, const fmiValueReference vr[], s
 typedef fmiComponent (*fInstantiateSlave)  (fmiString  instanceName, fmiString  fmuGUID, fmiString  fmuLocation, 
         fmiString  mimeType, fmiReal timeout, fmiBoolean visible, fmiBoolean interactive, 
         fmiCallbackFunctions functions, fmiBoolean loggingOn);
+
 typedef fmiStatus (*fInitializeSlave)(fmiComponent c, fmiReal tStart, fmiBoolean StopTimeDefined, fmiReal tStop);
 typedef fmiStatus (*fTerminateSlave)   (fmiComponent c);
 typedef fmiStatus (*fResetSlave)       (fmiComponent c);

@@ -40,13 +40,30 @@ public class FMU {
 	}
 
 	public void load() {
-		// TODO Auto-generated method stub
-		//dllPath_ = unzipfolder_ + File.pathSeparator + 
-				//"binaries" + File.pathSeparator + "win32";
-		
+
 		String res = jniInterface_.load(unzipfolder_);
 		
 		
+	}
+	
+	public boolean isSimulationComplete() {
+
+		
+		return  jniInterface_.isSimulationComplete();
+		
+		
+	}
+	
+	
+	public void init() {
+
+		
+		String res = jniInterface_.initAll();
+		
+    	String  str = jniInterface_.getResultItemAsString();
+    	
+    	System.out.println( "str: " + str);
+    	
 	}
 	
 	

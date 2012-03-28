@@ -4,13 +4,16 @@
 #include "stdafx.h"
 
 #include "JNIinterface.h"	
-#include "MainFMUwrapper.h"
+
 
 
 #define JNI_FALSE  0 
 #define JNI_TRUE   1 
 
-Straylight::MainFMUwrapper * fmuWrapper;
+using namespace std;
+using namespace Straylight;
+
+MainFMUwrapper * fmuWrapper;
 
 wchar_t * JavaToWSZ(JNIEnv* env, jstring string)
 {
@@ -30,35 +33,30 @@ wchar_t * JavaToWSZ(JNIEnv* env, jstring string)
     return wsz;
 }
 
-char * JavaToSZ(JNIEnv* env, jstring str)
+ char * JavaToSZ(JNIEnv* env, jstring str)
 {
 
 
-
     if (str == NULL)
-        return NULL;
+       return NULL;
 
     int len = env->GetStringLength(str);
-	char chString[33];
+	char chString[4];
 
 	//convert to string
 	itoa(len, chString, 10);
+	//printf("JavaToSZ len  '%s'\n", chString);
 
-	printf("JavaToSZ string length '%s'\n", chString);
-    const jchar* raw = env->GetStringChars(str, NULL);
+	const char* ansiString = env->GetStringUTFChars(str, 0);
+	//printf("ansiString  '%s'\n", ansiString);
 
-    if (raw == NULL)
-        return NULL;
+	char *outStr = new char[len + 1];
+	std::strcpy ( outStr, ansiString );
 
-	printf("JavaToSZ jchar '%s'\n", raw);
+	printf("JavaToSZ outStr '%s'\n", outStr);
 
-    char* sz = new char[len+1];
-    memcpy(sz, raw, len);
-    sz[len] = 0;
 
-    env->ReleaseStringChars(str, raw);
-
-    return sz;
+    return outStr;
 }
 
 
@@ -67,22 +65,49 @@ JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_load
   (JNIEnv *env, jobject thisobject, jstring unzipfolder) {
 
 
-    char * unzipfolder_char = JavaToSZ(env, unzipfolder);
-	printf("JNIinterface_load '%s'\n", unzipfolder_char);
+	printf("Java_com_sri_straylight_socketserver_JNIinterface_load:\n");
 
-	fmuWrapper = new Straylight::MainFMUwrapper();
-	int result = fmuWrapper->parseXML(unzipfolder_char);
+    char * unzipfolder_char = JavaToSZ(env, unzipfolder);
+
+	char * wfmuUnzippedFolder = wstrdup (_T("C:\\Temp\\LearnGB_VAVReheat_ClosedLoop"));
+
+	fmuWrapper = new MainFMUwrapper();
+	int result = fmuWrapper->parseXML(wfmuUnzippedFolder);
 
 	if (result != 0) {
 		exit(EXIT_FAILURE);
 	}
 
+
+
 	jstring jstrBuf = env->NewStringUTF("load");
 	return jstrBuf;
+
+
 }
 
+char * wstrdup(_TCHAR * wSrc)
+{
+    int l_idx=0;
+    int l_len = wstrlen(wSrc);
+    char * l_nstr = (char*)malloc(l_len);
+    if (l_nstr) {
+        do {
+           l_nstr[l_idx] = (char)wSrc[l_idx];
+           l_idx++;
+        } while ((char)wSrc[l_idx]!=0);
+    }
+    l_nstr[l_idx] = 0;
+    return l_nstr;
+}
 
-
+// returns number of TCHARs in string
+int wstrlen(_TCHAR * wstr)
+{
+    int l_idx = 0;
+    while (((char*)wstr)[l_idx]!=0) l_idx+=2;
+    return l_idx;
+} 
 
 JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_sayHello
   (JNIEnv *env, jobject thisobject, jstring js)
@@ -95,13 +120,37 @@ JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_sayH
 
 
 JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_test1
-  (JNIEnv * env, jobject) {
+  (JNIEnv * env) {
 
 
+	printf("JNIinterface_test1:\n");
 
-	jstring jstrBuf = env->NewStringUTF("Testing 1!");
 
-	return jstrBuf;
+  //  char * unzipfolder_char = JavaToSZ(env, unzipfolder);
+
+	char * wfmuUnzippedFolder = wstrdup (_T("C:\\Temp\\LearnGB_VAVReheat_ClosedLoop"));
+
+	fmuWrapper = new MainFMUwrapper();
+	int result = fmuWrapper->parseXML(wfmuUnzippedFolder);
+
+	if (result != 0) {
+		exit(EXIT_FAILURE);
+	}
+
+
+	printf("fmuWrapper->loadDll:\n");
+	fmuWrapper->loadDll();
+
+	printf("fmuWrapper->simulateHelperInit:\n");
+	fmuWrapper->simulateHelperInit();
+
+
+	//jstring jstrBuf = env->NewStringUTF("load");
+
+
+	//jstring jstrBuf = env->NewStringUTF("Testing 1!");
+
+	return NULL;
 }
 
 /*
@@ -112,12 +161,27 @@ JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_test
 JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_initAll
   (JNIEnv * env, jobject) 
 {
-	fmuWrapper = new Straylight::MainFMUwrapper();
-	//fmuWrapper->initAll();
+	jstring jstrBuf = env->NewStringUTF("JNIinterface_initAll");
 
-	jstring jstrBuf = env->NewStringUTF("Java_com_sri_straylight_socketserver_JNIinterface_initAll");
+	Java_com_sri_straylight_socketserver_JNIinterface_test1(env);
+
+
 
 	return jstrBuf;
+
+
+	printf("fmuWrapper->loadDll:\n");
+
+
+	fmuWrapper->loadDll();
+
+	printf("fmuWrapper->simulateHelperInit:\n");
+
+
+	fmuWrapper->simulateHelperInit();
+
+
+
 
 }
 
@@ -197,7 +261,7 @@ JNIEXPORT jboolean JNICALL Java_com_sri_straylight_socketserver_JNIinterface_isS
  * Signature: ()D
  */
 JNIEXPORT jdouble JNICALL Java_com_sri_straylight_socketserver_JNIinterface_getResultSnapshot
-  (JNIEnv *, jobject) 
+  (JNIEnv * env, jobject) 
 {
 
 	double result = fmuWrapper->getResultSnapshot();
@@ -206,6 +270,36 @@ JNIEXPORT jdouble JNICALL Java_com_sri_straylight_socketserver_JNIinterface_getR
 	return result;
 
 }
+
+
+
+/*
+ * Class:     JNIinterface
+ * Method:    getResultSnapshot
+ * Signature: ()D
+ */
+JNIEXPORT jstring JNICALL Java_com_sri_straylight_socketserver_JNIinterface_getResultItemAsString
+  (JNIEnv * env, jobject) 
+{
+
+	Straylight::ResultItem * ri;
+
+	fmuWrapper->doOneStep();
+	ri = fmuWrapper->getResultItem();
+	char* str = ri->getString();
+
+	jstring jstrBuf = env->NewStringUTF(str);
+	return jstrBuf;
+
+
+}
+
+
+
+
+
+
+
 
 
 /*

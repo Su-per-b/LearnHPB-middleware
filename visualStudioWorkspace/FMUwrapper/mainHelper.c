@@ -202,6 +202,9 @@ static void replaceRefsInMessage(const char* msg, char* buffer, int nBuffer, FMU
 ///////////////////////////////////////////////////////////////////////////////
 void fmuLogger(fmiComponent c, fmiString instanceName, fmiStatus status,
 	fmiString category, fmiString message, ...) {
+
+		//printf("fmuLogger\n", 1);
+
 		char msg[MAX_MSG_SIZE];
 		char* copy;
 		va_list argp;
@@ -218,7 +221,7 @@ void fmuLogger(fmiComponent c, fmiString instanceName, fmiStatus status,
 		// Print the final message
 		if (!instanceName) instanceName = "?";
 		if (!category) category = "?";
-		printf("%s %s (%s): %s\n", fmiStatusToString(status), instanceName, category, msg);
+		printf("fmuLogger - status:%s - instanceName:%s - category:%s - msg:%s\n", fmiStatusToString(status), instanceName, category, msg);
 }
 
 

@@ -40,7 +40,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Program Files (x86)\Java\jdk1.7.0_02\include\win32;C:\Program Files (x86)\Java\jdk1.7.0_02\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files (x86)\Java\jdk1.7.0_03\include\win32;C:\Program Files (x86)\Java\jdk1.7.0_02\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)tmp\obj\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -52,7 +52,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;JNIINTERFACE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>

@@ -15,6 +15,72 @@
 
 
 
+
+extern "C" __declspec(dllexport) 
+int add (int x, int y)
+{
+    return x + y;
+}
+
+extern "C" __declspec(dllexport) 
+void testFMU ()
+{
+	init(_T("C:\\Temp\\LearnGB_VAVReheat_ClosedLoop"));
+
+	//MainFMUwrapper::test1
+}
+
+
+void init(_TCHAR * fmuSubPath) {
+//
+	Straylight::MainFMUwrapper *  fmuWrapper = new Straylight::MainFMUwrapper();
+
+	//fmuWrapper->test1();
+
+
+	//_TCHAR *fmuUnzippedFolder=new TCHAR[MAX_PATH+1];
+
+	//fmuWrapper->getModuleFolderPath(fmuUnzippedFolder);
+	//_tcscat(fmuUnzippedFolder, fmuSubPath);
+
+	//fmuUnzippedFolder[lstrlen(fmuUnzippedFolder)] = '\0';
+
+	char * wfmuUnzippedFolder = wstrdup (fmuSubPath);
+
+	int result = fmuWrapper->parseXML(wfmuUnzippedFolder);
+	int result2 = fmuWrapper->loadDll();
+	fmuWrapper->simulateHelperInit();
+
+
+
+}
+
+
+	char * wstrdup(_TCHAR * wSrc)
+	{
+		int l_idx=0;
+		int l_len = wstrlen(wSrc);
+		char * l_nstr = (char*)malloc(l_len);
+		if (l_nstr) {
+			do {
+			   l_nstr[l_idx] = (char)wSrc[l_idx];
+			   l_idx++;
+			} while ((char)wSrc[l_idx]!=0);
+		}
+		l_nstr[l_idx] = 0;
+		return l_nstr;
+	}
+
+
+// returns number of TCHARs in string
+int wstrlen(_TCHAR * wstr)
+{
+    int l_idx = 0;
+    while (((char*)wstr)[l_idx]!=0) l_idx+=2;
+    return l_idx;
+}
+
+
 namespace Straylight
 {
 	/*********************************************//**
@@ -58,9 +124,10 @@ namespace Straylight
 												   * FMU struct.
 												   *
 												   * @return	0 for success
-												   *********************************************/
+																							   *	   *********************************************/
 	int MainFMUwrapper::loadDll( ) {
 
+		printf ("MainFMUwrapper::loadDll unzipFolderPath_: %s\n", unzipFolderPath_);
 
 		const char* modelId = getModelIdentifier(fmu_.modelDescription);
 
@@ -79,6 +146,9 @@ namespace Straylight
 			printfError("Failed to allocate memory for wText\n", dllFilePath_);
 			return 1;
 		}
+
+
+		printf ("dllFilePath_: %s \n", dllFilePath_);
 
 
 		//int result = loadDLLhelper(dllFilePath_, &fmu_);
@@ -109,7 +179,7 @@ namespace Straylight
 
 
 		return 0;
-	}
+	} 
 
 	/*******************************************************//**
 															 * Parses the xml file located in the FMU.  
@@ -123,6 +193,7 @@ namespace Straylight
 		//add the trailing slash to the path and store
 		// in member variable
 		//char* unzipFolderPathLocal;
+		printf("MainFMUwrapper::parseXML unzipfolder %s\n", unzipfolder);	
 
 
 		int len1 = strlen(unzipfolder) + 1;
@@ -136,6 +207,7 @@ namespace Straylight
 
 		lstrcpy(unzipFolderPath_, unzipfolder);
 
+		printf("MainFMUwrapper::parseXML unzipFolderPath_ %s\n", unzipFolderPath_);	
 
 		//construct the path to the XML file and 
 		// store as member variable
@@ -146,6 +218,8 @@ namespace Straylight
 		sprintf(xmlFilePath_, "%s%s", unzipfolder, XML_FILE_STR);
 
 		fmu_.modelDescription = parse(xmlFilePath_); 
+
+		printf("MainFMUwrapper::parseXML xmlFilePath_ %s\n", xmlFilePath_);	
 
 		// Parse only parses the model description and store in structure fmu.modelDescription
 		if (fmu_.modelDescription) {
@@ -158,8 +232,15 @@ namespace Straylight
 	}
 
 
+	void MainFMUwrapper::test1() {
+		printf("MainFMUwrapper::test1\n");	
+	}
+
+
 
 	int MainFMUwrapper::simulateHelperInit() {
+
+		printf("MainFMUwrapper::simulateHelperInit\n");	
 
 
 		_TCHAR currentDirectory[MAX_PATH] =  _T("");
@@ -167,13 +248,25 @@ namespace Straylight
 
 		GetCurrentDirectory(MAX_PATH, currentDirectory);
 		this->getModuleFolderPath(exeDirectory);
-		bool success = SetCurrentDirectory(unzipFolderPath_);
+
+		printf("exeDirectory: %s\n", exeDirectory);	
+
+
+		//bool success = SetCurrentDirectory(unzipFolderPath_);
 		GetCurrentDirectory(MAX_PATH, currentDirectory);
 
+
+		printf("currentDirectory: %s\n", currentDirectory);	
+
+
+		
 
 		loggingOn = 1;
 		ModelDescription* md;            // handle to the parsed XML file        
 		const char* guid;                // global unique id of the fmu
+		const char* modelId;                //
+
+
 		fmiCallbackFunctions callbacks;  // called by the model during simulation
 
 		fmiStatus fmiFlag;               // return code of the fmu functions
@@ -181,55 +274,67 @@ namespace Straylight
 		fmiBoolean toleranceControlled = fmiFalse;
 		nSteps = 0;
 
-
-		//resultSet_ = new ResultSet();
-
 		// Run the simulation
-		printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d, csv separator='%c'\n", 
-			unzipFolderPath_, timeEnd_, timeDelta_, loggingOn, csv_separator_);
+		printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d'\n", 
+			unzipFolderPath_, timeEnd_, timeDelta_, loggingOn);
+
+
+
 
 
 		vars = fmuPointer_->modelDescription->modelVariables;		// add it to get variables
-		printDebug("Instantiate the fmu\n");
-
+		printf("Instantiate the fmu\n");
+		fflush(stdout);		
 		// instantiate the fmu
 		md = fmuPointer_->modelDescription;
 		guid = getString(md, att_guid);
-		printfDebug("Got GUID = %s!\n", guid);	
+		printf("Got GUID = %s!\n", guid);
+		fflush(stdout);		
 		callbacks.logger = fmuLogger;
-
 		callbacks.allocateMemory = calloc;
 		callbacks.freeMemory = free;
-		printDebug("Got callbacks!\n");
-		printfDebug("Model Identifer is %s\n", getModelIdentifier(md));
 
-		fmiComponent_ = fmuPointer_->instantiateSlave(getModelIdentifier(md), guid, "Model1", "", 10, fmiFalse, fmiFalse, callbacks, loggingOn);
+		printf("Got callbacks!\n");
+
+		modelId =  getModelIdentifier(md);
+
+
+		printf("Model Identifer is %s\n", modelId);
+
+
+
+		fmiComponent_ = fmuPointer_->instantiateSlave(modelId, guid, "Model1", "", 100, fmiFalse, fmiFalse, callbacks, loggingOn);
 
 		if (!fmiComponent_) {
-			printError("could not instantiate slaves\n");
+			printf("could not instantiate slaves\n");
 			return 1;
 		}
 
+		printf("Instantiated slaves!\n");	
 
-		printDebug("Instantiated slaves!\n");	
+
 
 
 
 		// Set the start time and initialize
 		time_ = t0;
 
+		printf("start to initialize fmu!\n");
+		fflush(stdout);			
+		
+		fmiFlag =  fmuPointer_->initializeSlave(fmiComponent_, t0, fmiTrue, timeEnd_);
+
+		
+		printf("!!Initialized fmu!\n");
+		fflush(stdout);		
 
 
-
-
-
-		printDebug("start to initialize fmu!\n");	   
-		fmiFlag =  fmuPointer_->initializeSlave(fmiComponent_, t0, fmiTrue, timeEnd_);	
-		printDebug("Initialized fmu!\n");
 		if (fmiFlag > fmiWarning) {
-			printError("could not initialize model");
+			printf("could not initialize model");
 			return 1;																
 		}
+
+
 
 		// Output solution for time t0 
 	//	outputRow(fmuPointer_, fmiComponent_, t0, file, csv_separator_); // output initla value of fmu 
@@ -246,9 +351,10 @@ namespace Straylight
 
 		//End--------------------------------------------------------------------
 
-		printDebug("Enter in simulation loop\n");	
-
-		return 1;
+		//printf("Enter in simulation loop\n");	
+			
+	
+		return 0;
 	}
 
 

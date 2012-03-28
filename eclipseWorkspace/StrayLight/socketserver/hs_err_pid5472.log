@@ -1,0 +1,222 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x575a1887, pid=5472, tid=7292
+#
+# JRE version: 7.0_03-b05
+# Java VM: Java HotSpot(TM) Client VM (22.1-b02 mixed mode windows-x86 )
+# Problematic frame:
+# C  [FMUwrapper.dll+0x11887]
+#
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.sun.com/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x01e1cc00):  JavaThread "main" [_thread_in_native, id=7292, stack(0x01d80000,0x01dd0000)]
+
+siginfo: ExceptionCode=0xc0000005, reading address 0x00000004
+
+Registers:
+EAX=0x00000000, EBX=0x00000000, ECX=0x00000000, EDX=0x5760a560
+ESP=0x01dcedec, EBP=0x01dceedc, ESI=0x01dcf0c8, EDI=0x01dceedc
+EIP=0x575a1887, EFLAGS=0x00010202
+
+Top of Stack: (sp=0x01dcedec)
+0x01dcedec:   01dcefc4 01dcf0c8 00000000 cccccccc
+0x01dcedfc:   cccccccc cccccccc cccccccc cccccccc
+0x01dcee0c:   cccccccc cccccccc cccccccc cccccccc
+0x01dcee1c:   cccccccc cccccccc cccccccc cccccccc
+0x01dcee2c:   cccccccc cccccccc cccccccc cccccccc
+0x01dcee3c:   cccccccc cccccccc cccccccc cccccccc
+0x01dcee4c:   cccccccc cccccccc cccccccc cccccccc
+0x01dcee5c:   cccccccc cccccccc cccccccc cccccccc 
+
+Instructions: (pc=0x575a1887)
+0x575a1867:   00 00 53 56 57 8d bd 1c ff ff ff b9 39 00 00 00
+0x575a1877:   b8 cc cc cc cc f3 ab 8b 45 08 89 45 f8 8b 45 f8
+0x575a1887:   8b 48 04 89 4d ec c7 45 e0 00 00 00 00 eb 09 8b
+0x575a1897:   45 e0 83 c0 02 89 45 e0 8b 45 f8 8b 4d e0 3b 48 
+
+
+Register to memory mapping:
+
+EAX=0x00000000 is an unknown value
+EBX=0x00000000 is an unknown value
+ECX=0x00000000 is an unknown value
+EDX=0x5760a560 is an unknown value
+ESP=0x01dcedec is pointing into the stack for thread: 0x01e1cc00
+EBP=0x01dceedc is pointing into the stack for thread: 0x01e1cc00
+ESI=0x01dcf0c8 is pointing into the stack for thread: 0x01e1cc00
+EDI=0x01dceedc is pointing into the stack for thread: 0x01e1cc00
+
+
+Stack: [0x01d80000,0x01dd0000],  sp=0x01dcedec,  free space=315k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [FMUwrapper.dll+0x11887]  getString+0x27
+C  [FMUwrapper.dll+0x11cc9]  getModelIdentifier+0x29
+C  [FMUwrapper.dll+0x1602]  Straylight::MainFMUwrapper::loadDll+0x42
+C  [FMUwrapper.dll+0x13a9]  init+0x119
+C  [FMUwrapper.dll+0x1278]  testFMU+0x28
+C  [jna8063174274604514774.dll+0xd277]  Java_com_sun_jna_Native_initialize_1ffi_1type+0x3927
+C  [jna8063174274604514774.dll+0xce92]  Java_com_sun_jna_Native_initialize_1ffi_1type+0x3542
+C  [jna8063174274604514774.dll+0x2dde]
+C  [jna8063174274604514774.dll+0x53ae]  Java_com_sun_jna_Native_invokeVoid+0x2e
+j  com.sun.jna.Native.invokeVoid(JI[Ljava/lang/Object;)V+0
+j  com.sun.jna.Function.invoke([Ljava/lang/Object;Ljava/lang/Class;Z)Ljava/lang/Object;+48
+j  com.sun.jna.Function.invoke(Ljava/lang/Class;[Ljava/lang/Object;Ljava/util/Map;)Ljava/lang/Object;+214
+j  com.sun.jna.Library$Handler.invoke(Ljava/lang/Object;Ljava/lang/reflect/Method;[Ljava/lang/Object;)Ljava/lang/Object;+341
+j  $Proxy0.testFMU()V+9
+j  com.sri.straylight.socketserver.Main.testFMU()V+20
+j  com.sri.straylight.socketserver.Main.main([Ljava/lang/String;)V+6
+v  ~StubRoutines::call_stub
+V  [jvm.dll+0x123c0a]
+V  [jvm.dll+0x1c9e8e]
+V  [jvm.dll+0x123c8d]
+V  [jvm.dll+0xa92d4]
+V  [jvm.dll+0xb3657]
+C  [javaw.exe+0x1fe5]
+C  [javaw.exe+0xa0cb]
+C  [javaw.exe+0xa155]
+C  [kernel32.dll+0x1339a]  BaseThreadInitThunk+0x12
+C  [ntdll.dll+0x39ef2]  RtlInitializeExceptionChain+0x63
+C  [ntdll.dll+0x39ec5]  RtlInitializeExceptionChain+0x36
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  com.sun.jna.Native.invokeVoid(JI[Ljava/lang/Object;)V+0
+j  com.sun.jna.Function.invoke([Ljava/lang/Object;Ljava/lang/Class;Z)Ljava/lang/Object;+48
+j  com.sun.jna.Function.invoke(Ljava/lang/Class;[Ljava/lang/Object;Ljava/util/Map;)Ljava/lang/Object;+214
+j  com.sun.jna.Library$Handler.invoke(Ljava/lang/Object;Ljava/lang/reflect/Method;[Ljava/lang/Object;)Ljava/lang/Object;+341
+j  $Proxy0.testFMU()V+9
+j  com.sri.straylight.socketserver.Main.testFMU()V+20
+j  com.sri.straylight.socketserver.Main.main([Ljava/lang/String;)V+6
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x1838dc00 JavaThread "Service Thread" daemon [_thread_blocked, id=2704, stack(0x19240000,0x19290000)]
+  0x1838b400 JavaThread "C1 CompilerThread0" daemon [_thread_blocked, id=7560, stack(0x192b0000,0x19300000)]
+  0x18379400 JavaThread "JDWP Command Reader" daemon [_thread_in_native, id=5208, stack(0x18ff0000,0x19040000)]
+  0x18374800 JavaThread "JDWP Event Helper Thread" daemon [_thread_blocked, id=8740, stack(0x18780000,0x187d0000)]
+  0x1836b400 JavaThread "JDWP Transport Listener: dt_socket" daemon [_thread_blocked, id=3316, stack(0x19090000,0x190e0000)]
+  0x18363800 JavaThread "Attach Listener" daemon [_thread_blocked, id=7140, stack(0x18aa0000,0x18af0000)]
+  0x18360400 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=8480, stack(0x189d0000,0x18a20000)]
+  0x18307c00 JavaThread "Finalizer" daemon [_thread_blocked, id=6332, stack(0x01e50000,0x01ea0000)]
+  0x18302400 JavaThread "Reference Handler" daemon [_thread_blocked, id=6088, stack(0x18720000,0x18770000)]
+=>0x01e1cc00 JavaThread "main" [_thread_in_native, id=7292, stack(0x01d80000,0x01dd0000)]
+
+Other Threads:
+  0x182fec00 VMThread [stack: 0x18510000,0x18560000] [id=7200]
+  0x1839f800 WatcherThread [stack: 0x19460000,0x194b0000] [id=6140]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ def new generation   total 4928K, used 3754K [0x042e0000, 0x04830000, 0x09830000)
+  eden space 4416K,  73% used [0x042e0000, 0x0460ac38, 0x04730000)
+  from space 512K,  99% used [0x04730000, 0x047aff98, 0x047b0000)
+  to   space 512K,   0% used [0x047b0000, 0x047b0000, 0x04830000)
+ tenured generation   total 10944K, used 954K [0x09830000, 0x0a2e0000, 0x142e0000)
+   the space 10944K,   8% used [0x09830000, 0x0991ea68, 0x0991ec00, 0x0a2e0000)
+ compacting perm gen  total 12288K, used 4434K [0x142e0000, 0x14ee0000, 0x182e0000)
+   the space 12288K,  36% used [0x142e0000, 0x147348d8, 0x14734a00, 0x14ee0000)
+No shared spaces configured.
+
+Code Cache  [0x022e0000, 0x023b0000, 0x042e0000)
+ total_blobs=284 nmethods=130 adapters=98 free_code_cache=31938Kb largest_free_block=32704768
+
+Dynamic libraries:
+0x00010000 - 0x0003f000 	C:\Program Files (x86)\Java\jdk1.7.0_03\bin\javaw.exe
+0x77460000 - 0x775e0000 	C:\Windows\SysWOW64\ntdll.dll
+0x75380000 - 0x75490000 	C:\Windows\syswow64\kernel32.dll
+0x76970000 - 0x769b6000 	C:\Windows\syswow64\KERNELBASE.dll
+0x76f30000 - 0x76fd0000 	C:\Windows\syswow64\ADVAPI32.dll
+0x758a0000 - 0x7594c000 	C:\Windows\syswow64\msvcrt.dll
+0x75360000 - 0x75379000 	C:\Windows\SysWOW64\sechost.dll
+0x75720000 - 0x75810000 	C:\Windows\syswow64\RPCRT4.dll
+0x74fc0000 - 0x75020000 	C:\Windows\syswow64\SspiCli.dll
+0x74fb0000 - 0x74fbc000 	C:\Windows\syswow64\CRYPTBASE.dll
+0x76a60000 - 0x76b60000 	C:\Windows\syswow64\USER32.dll
+0x76fd0000 - 0x77060000 	C:\Windows\syswow64\GDI32.dll
+0x75350000 - 0x7535a000 	C:\Windows\syswow64\LPK.dll
+0x769c0000 - 0x76a5d000 	C:\Windows\syswow64\USP10.dll
+0x70d30000 - 0x70ece000 	C:\Windows\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.17514_none_41e6975e2bd6f2b2\COMCTL32.dll
+0x75810000 - 0x75867000 	C:\Windows\syswow64\SHLWAPI.dll
+0x76910000 - 0x76970000 	C:\Windows\system32\IMM32.DLL
+0x75990000 - 0x75a5c000 	C:\Windows\syswow64\MSCTF.dll
+0x57aa0000 - 0x57b5e000 	C:\Program Files (x86)\Java\jdk1.7.0_03\jre\bin\msvcr100.dll
+0x57770000 - 0x57a98000 	C:\Program Files (x86)\Java\jdk1.7.0_03\jre\bin\client\jvm.dll
+0x730d0000 - 0x730d7000 	C:\Windows\system32\WSOCK32.dll
+0x754d0000 - 0x75505000 	C:\Windows\syswow64\WS2_32.dll
+0x76810000 - 0x76816000 	C:\Windows\syswow64\NSI.dll
+0x72ef0000 - 0x72f22000 	C:\Windows\system32\WINMM.dll
+0x754c0000 - 0x754c5000 	C:\Windows\syswow64\PSAPI.DLL
+0x58b30000 - 0x58b3c000 	C:\Program Files (x86)\Java\jdk1.7.0_03\jre\bin\verify.dll
+0x58b10000 - 0x58b30000 	C:\Program Files (x86)\Java\jdk1.7.0_03\jre\bin\java.dll
+0x588a0000 - 0x588ca000 	C:\Program Files (x86)\Java\jdk1.7.0_03\jre\bin\jdwp.dll
+0x58b00000 - 0x58b07000 	C:\Program Files (x86)\Java\jdk1.7.0_03\jre\bin\npt.dll
+0x58880000 - 0x58893000 	C:\Program Files (x86)\Java\jdk1.7.0_03\jre\bin\zip.dll
+0x58a90000 - 0x58a98000 	C:\Program Files (x86)\Java\jdk1.7.0_03\jre\bin\dt_socket.dll
+0x729d0000 - 0x729e0000 	C:\Windows\system32\NLAapi.dll
+0x729c0000 - 0x729d0000 	C:\Windows\system32\napinsp.dll
+0x729a0000 - 0x729b2000 	C:\Windows\system32\pnrpnsp.dll
+0x72970000 - 0x72994000 	C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live\WLIDNSP.DLL
+0x72830000 - 0x72855000 	C:\Program Files (x86)\Bonjour\mdnsNSP.dll
+0x72b30000 - 0x72b4c000 	C:\Windows\system32\Iphlpapi.DLL
+0x72b20000 - 0x72b27000 	C:\Windows\system32\WINNSI.DLL
+0x72c50000 - 0x72c8c000 	C:\Windows\System32\mswsock.dll
+0x72a20000 - 0x72a64000 	C:\Windows\system32\DNSAPI.dll
+0x72820000 - 0x72828000 	C:\Windows\System32\winrnr.dll
+0x727e0000 - 0x72818000 	C:\Windows\System32\fwpuclnt.dll
+0x727d0000 - 0x727d6000 	C:\Windows\system32\rasadhlp.dll
+0x72c40000 - 0x72c45000 	C:\Windows\System32\wshtcpip.dll
+0x58860000 - 0x58874000 	C:\Program Files (x86)\Java\jdk1.7.0_03\jre\bin\net.dll
+0x72a70000 - 0x72a76000 	C:\Windows\System32\wship6.dll
+0x58850000 - 0x5885f000 	C:\Program Files (x86)\Java\jdk1.7.0_03\jre\bin\nio.dll
+0x57620000 - 0x57762000 	C:\Program Files (x86)\Java\jdk1.7.0_03\jre\bin\awt.dll
+0x751c0000 - 0x7524f000 	C:\Windows\syswow64\OLEAUT32.dll
+0x766b0000 - 0x7680c000 	C:\Windows\syswow64\ole32.dll
+0x732f0000 - 0x73306000 	C:\Windows\system32\CRYPTSP.dll
+0x73220000 - 0x7325b000 	C:\Windows\system32\rsaenh.dll
+0x730a0000 - 0x730b7000 	C:\Windows\system32\USERENV.dll
+0x73090000 - 0x7309b000 	C:\Windows\system32\profapi.dll
+0x19c40000 - 0x19cb2000 	C:\Temp\jna\jna8063174274604514774.dll
+0x57590000 - 0x57615000 	E:\SRI\straylight_repo\visualStudioWorkspace\bin\Debug\FMUwrapper.dll
+0x57510000 - 0x5758d000 	E:\SRI\straylight_repo\visualStudioWorkspace\bin\Debug\expat.dll
+
+VM Arguments:
+jvm_args: -agentlib:jdwp=transport=dt_socket,suspend=y,address=localhost:51933 -Dfile.encoding=UTF-8 
+java_command: com.sri.straylight.socketserver.Main
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files (x86)\Java\jdk1.7.0_03
+CLASSPATH=.;C:\Program Files (x86)\Java\jre6\lib\ext\QTJava.zip
+PATH=C:\Program Files (x86)\Java\jdk1.7.0_03\jre\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\TortoiseHg\;c:\ant\bin;C:\Program Files\TortoiseSVN\bin;C:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\VSShell\Common7\IDE\;C:\Program Files\Apache Software Foundation\apache-maven-3.0.3\bin;C:\Program Files (x86)\Java\jdk1.7.0_03\bin;C:\Program Files\EmEditor;C:\Program Files\TortoiseGit\bin;C:\Users\raj\AppData\Roaming\Python\Scripts;C:\python\ActiveStatePython27;C:\python\ActiveStatePython27\Scripts;C:\MinGW\bin;C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE
+USERNAME=raj
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 26 Stepping 4, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 7 , 64 bit Build 7601 Service Pack 1
+
+CPU:total 8 (4 cores per cpu, 2 threads per core) family 6 model 26 stepping 4, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, ht
+
+Memory: 4k page, physical 6282328k(1736616k free), swap 24989136k(19084068k free)
+
+vm_info: Java HotSpot(TM) Client VM (22.1-b02) for windows-x86 JRE (1.7.0_03-b05), built on Feb  3 2012 20:43:37 by "java_re" with unknown MS VC++:1600
+
+time: Wed Mar 28 15:19:05 2012
+elapsed time: 0 seconds
+
