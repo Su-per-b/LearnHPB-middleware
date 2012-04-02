@@ -27,11 +27,11 @@ public class SocketHandlerAll extends WebSocketHandler {
 	    
 	   
 	    
-	    if (pathInfo.equals("/stream")) {
+	  //  if (pathInfo.equals("/stream")) {
 	    	return new WebSocketStream();
-	    } else {
-	    	return null;
-	    }
+	  //  } else {
+	    	//return null;
+	   // }
 		
 		
 		

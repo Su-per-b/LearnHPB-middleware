@@ -70,7 +70,6 @@ var channel = {
 
 		channel.output('establishing connection to: ' + SocketServer3Url);
 
-
 		
 		if (window.MozWebSocket) {
 			this._ws = new MozWebSocket(SocketServer3Url);
@@ -78,8 +77,6 @@ var channel = {
 			this._ws = new WebSocket(SocketServer3Url);			
 		}
 			
-
-		
 		this._ws.onopen = this._onopen;
 		this._ws.onmessage = this._onmessage;
 		this._ws.onclose = this._onclose;

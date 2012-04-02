@@ -56,32 +56,19 @@ public class WebSocketStream implements WebSocket.OnTextMessage {
 		if (data.equals("start")) {
 			
 			
-			/*
-			jniInterface = new JNIinterface();
-			String result = jniInterface.initAll();
-			
-			
-	    	while(!jniInterface.isSimulationComplete()) {
+	    	JNAfmuWrapper.INSTANCE.initAll();
+	    	while(JNAfmuWrapper.INSTANCE.isSimulationComplete() == 0) {
 	    		
-	    		result = jniInterface.runStep();
-	    		double r = jniInterface.getResultSnapshot();
-	    		
-	    		String str = Double.toString(r);
-	    		System.out.println(str);
-	    		this.sendMessage(str);
-	    		
-	    		try {
-					Thread.sleep(250);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+	        	String str = JNAfmuWrapper.INSTANCE.getStringXy();
+	        //	System.out.println("getStringXy " + str);
+	        	
+	        	sendMessage (str);
 	    	}
 	    	
-	    	jniInterface.simulateHelperCleanup();
-	    	jniInterface = null;
 	    	
-	    	*/
+	    	JNAfmuWrapper.INSTANCE.end();
+			
+
 	    	
 		}
 

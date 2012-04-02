@@ -20,7 +20,10 @@ public class Main
     	config = ConfigHelper.load();
     	//testFMU3();
     	
-    	
+    	  SocketServer server = new SocketServer();
+  	    
+          server.showBanner();
+          server.start();
     
     }
     

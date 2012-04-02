@@ -20,6 +20,8 @@ public interface JNAfmuWrapper extends Library {
 	
 	void initAll();
 	
+	//void init2();
+	
 	String getStringXy();
 	
 	int isSimulationComplete();
