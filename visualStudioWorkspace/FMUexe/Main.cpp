@@ -9,23 +9,21 @@
 int _tmain(int argc, _TCHAR* argv[])
 {
 
-	test6();
+	testFMU();
 	return 0;
 }
 
 
 
 void test6() {
-	Straylight::MainFMUwrapper *fmuWrapper;
-
-	fmuWrapper = new Straylight::MainFMUwrapper();
+	Straylight::FMUwrapper *fmuWrapper;
+	fmuWrapper = new Straylight::FMUwrapper();
 
 	int result = fmuWrapper->parseXML("\\FMUs\\LearnGB_VAVReheat_ClosedLoopXP");
 
 	if (result != 0) {
 		exit(EXIT_FAILURE);
 	}
-
 
 	fmuWrapper->loadDll();
 	fmuWrapper->simulateHelperInit();
@@ -45,6 +43,16 @@ void test6() {
 	delete fmuWrapper;
 }
 
+
+
+void test7() {
+
+	//Straylight::FMUwrapper *fmuWrapper;
+
+	//fmuWrapper = new Straylight::FMUwrapper();
+//	testFMUx();
+
+}
 
 
 std::wstring s2ws(const std::string& s)

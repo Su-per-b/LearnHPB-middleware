@@ -8,7 +8,7 @@
 using namespace Straylight;
 
 
-MainFMUwrapper *fmuWrapper;
+FMUwrapper *fmuWrapper;
 
 
 TEST(sample_test_case, sample_test)
@@ -43,7 +43,7 @@ TEST(LearnGB, LearnGB_VAVReheat_ClosedLoopXP)
 void init(_TCHAR * fmuSubPath) {
 
 
-	fmuWrapper = new Straylight::MainFMUwrapper();
+	fmuWrapper = new Straylight::FMUwrapper();
 
 	_TCHAR *fmuUnzippedFolder=new TCHAR[MAX_PATH+1];
 
@@ -77,9 +77,9 @@ TEST(LearnGB, LearnGB_VAVReheat_ClosedLoop)
 
 TEST(FMUwrapper, connect)
 {
-	MainFMUwrapper *fmuWrapper;
+	FMUwrapper *fmuWrapper;
 
-	fmuWrapper = new MainFMUwrapper();
+	fmuWrapper = new FMUwrapper();
     EXPECT_TRUE(fmuWrapper != NULL);
 
 }
@@ -90,7 +90,7 @@ TEST(FMUwrapper, parseXML)
 	TCHAR *szDir=new TCHAR[MAX_PATH+1];
 
 	getUnzipFolder(szDir);
-	fmuWrapper = new Straylight::MainFMUwrapper();
+	fmuWrapper = new Straylight::FMUwrapper();
 
 	char * dir = wstrdup (szDir);
 	int result = fmuWrapper->parseXML(dir);
@@ -111,7 +111,7 @@ TEST(FMUwrapper, parseXML)
 TEST(FMUwrapper, runSimulation)
 {
 
-	fmuWrapper = new Straylight::MainFMUwrapper();
+	fmuWrapper = new Straylight::FMUwrapper();
 
 	TCHAR *szDir=new TCHAR[MAX_PATH+1];
 	getUnzipFolder(szDir);

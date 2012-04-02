@@ -5,7 +5,7 @@ void getUnzipFolder(TCHAR * szDir);
 
 void getUnzipFolder2(TCHAR * szDir);
 
-char * getResultItemAsString(MainFMUwrapper *);
+char * getResultItemAsString(FMUwrapper *);
 
 char * wstrdup(_TCHAR * wSrc);
 

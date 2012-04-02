@@ -44,7 +44,7 @@ void getUnzipFolder2(TCHAR * szDir) {
 
 
 
-char * getResultItemAsString(MainFMUwrapper * fmuWrapper) {
+char * getResultItemAsString(FMUwrapper * fmuWrapper) {
 	Straylight::ResultItem * ri;
 
 	fmuWrapper->doOneStep();

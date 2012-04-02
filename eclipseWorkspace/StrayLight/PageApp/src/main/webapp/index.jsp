@@ -1,22 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 
 
-<jsp:useBean id="uploadObj" class="com.sri.straylight.webapp.Upload" scope="page">
-	
-</jsp:useBean>
-
-
-
 <%
-
-
-uploadObj.checkForUpload(pageContext, request);
-
-
+	uploadObj.checkForUpload(pageContext, request);
 %>
-
 
 <html>
 <head>
@@ -30,11 +18,7 @@ uploadObj.checkForUpload(pageContext, request);
 	<div>
 		<div>
 			simulation:&nbsp;
-			<select id="simulationSelect">
-			   <c:forEach var="item" items="${uploadObj.FMUList}">
-			   <option>${item}</option></c:forEach>
-			   
-			</select>
+
 		
 			<input id="submitButton" disabled="disabled" class="button" type="submit" name="submitButton" value="Submit" />
 			<input id="clearButton" class="button" type="button" name="submitButton" value="Clear" />	

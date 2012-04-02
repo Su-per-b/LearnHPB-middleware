@@ -40,7 +40,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)includes;C:\Program Files (x86)\Java\jdk1.7.0_02\include;C:\Program Files (x86)\Java\jdk1.7.0_02\include\win32;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)includes;C:\Program Files (x86)\Java\jdk1.7.0_03\include;C:\Program Files (x86)\Java\jdk1.7.0_03\include\win32;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)tmp\obj\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -88,7 +88,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\qtronic\fmi_cs.h" />
-    <ClInclude Include="MainFMUwrapper.h" />
+    <ClInclude Include="JNAfunctions.h" />
+    <ClInclude Include="FMUwrapper.h" />
     <ClInclude Include="include\qtronic\fmiFunctions.h" />
     <ClInclude Include="include\qtronic\fmiModelFunctions.h" />
     <ClInclude Include="include\qtronic\fmiModelTypes.h" />
@@ -112,7 +113,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MainFMUwrapper.cpp" />
+    <ClCompile Include="JNAfunctions.cpp" />
+    <ClCompile Include="FMUwrapper.cpp" />
     <ClCompile Include="include\qtronic\stack.c" />
     <ClCompile Include="ResultItem.cpp" />
     <ClCompile Include="ResultPrimitive.cpp" />

@@ -57,7 +57,7 @@
 #define BUFSIZE 4096
 #define XML_FILE  "modelDescription.xml"
 #define DLL_DIR   ""
-#define RESULT_FILE "result.csv"
+
 
 static FMU fmu; // the fmu to simulate
 

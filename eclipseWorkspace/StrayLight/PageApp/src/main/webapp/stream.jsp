@@ -3,9 +3,6 @@
 
 
 
-
-
-
 <html>
 <head>
 	<title>WebSocket Test</title>
@@ -18,19 +15,11 @@
 	<div>
 		<div>
 			simulation:&nbsp;
-
-		
 			<input id="submitButton" disabled="disabled"class="button" type="submit" name="submitButton" value="Submit" />
 			<input id="clearButton" class="button" type="button" name="submitButton" value="Clear" />	
-				
-
 		</div>
-		
 	</div>
-	
 		<br />
 	<div id="messageBox"></div>
-	
-		
 </body>
 </html>
