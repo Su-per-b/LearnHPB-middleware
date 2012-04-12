@@ -8,15 +8,13 @@
 Straylight::FMUwrapper *  fmuWrapper;
 
 
-
-void testFMU ()
+void testFMU (char * unzipFolder)
 {
 
 	fmuWrapper = new Straylight::FMUwrapper();
+	//char * wfmuUnzippedFolder = wstrdup (unzipFolder);
 
-	char * wfmuUnzippedFolder = wstrdup (_T("C:\\Temp\\LearnGB_VAVReheat_ClosedLoop"));
-
-	int result = fmuWrapper->parseXML(wfmuUnzippedFolder);
+	int result = fmuWrapper->parseXML(unzipFolder);
 	int result2 = fmuWrapper->loadDll();
 	fmuWrapper->simulateHelperInit();
 
@@ -26,6 +24,8 @@ void testFMU ()
 	while (!fmuWrapper->isSimulationComplete()) {
 		fmuWrapper->doOneStep();
 		ri = fmuWrapper->getResultItem();
+
+		printf ("result: %s \n", ri->getString());
 	}
 
 	fmuWrapper->printSummary();
@@ -33,24 +33,25 @@ void testFMU ()
 
 }
 
+
+
+
 int isSimulationComplete () {
-
 	return fmuWrapper->isSimulationComplete();
-
 }
 
 
-void initAll ()
+void initAll (char * unzipFolder)
 {
 
 	fmuWrapper = new Straylight::FMUwrapper();
-	char * wfmuUnzippedFolder = wstrdup (_T("C:\\Temp\\LearnGB_VAVReheat_ClosedLoop"));
+	//char * wfmuUnzippedFolder = wstrdup (_T("C:\\Temp\\LearnGB_VAVReheat_ClosedLoop"));
 
-	int result = fmuWrapper->parseXML(wfmuUnzippedFolder);
+	int result = fmuWrapper->parseXML(unzipFolder);
 	int result2 = fmuWrapper->loadDll();
 	fmuWrapper->simulateHelperInit();
 
-	Straylight::ResultItem * ri;
+	//Straylight::ResultItem * ri;
 
 }
 

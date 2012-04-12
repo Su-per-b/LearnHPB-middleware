@@ -9,4 +9,8 @@
 #include <string>
 #include <ResultPrimitive.h>
 
-void test6();
+void test1();
+
+void test2();
+
+void test3();

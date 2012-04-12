@@ -8,18 +8,16 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-
-	testFMU();
+	test3();
 	return 0;
 }
 
+void test1() {
 
-
-void test6() {
 	Straylight::FMUwrapper *fmuWrapper;
 	fmuWrapper = new Straylight::FMUwrapper();
 
-	int result = fmuWrapper->parseXML("\\FMUs\\LearnGB_VAVReheat_ClosedLoopXP");
+	int result = fmuWrapper->parseXML(_T("C:\\Temp\\LearnGB_VAVReheat_ClosedLoop"));
 
 	if (result != 0) {
 		exit(EXIT_FAILURE);
@@ -44,29 +42,24 @@ void test6() {
 }
 
 
-
-void test7() {
-
-	//Straylight::FMUwrapper *fmuWrapper;
-
-	//fmuWrapper = new Straylight::FMUwrapper();
-//	testFMUx();
-
+void test2() {
+	testFMU(_T("C:\\Temp\\LearnGB_VAVReheat_ClosedLoop"));
 }
 
 
-std::wstring s2ws(const std::string& s)
-{
-	int len;
-	int slength = (int)s.length() + 1;
-	len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0); 
-	wchar_t* buf = new wchar_t[len];
-	MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
-	std::wstring r(buf);
-	delete[] buf;
-	return r;
-}
 
+void test3() {
+
+	initAll(_T("C:\\Temp\\LearnGB_VAVReheat_ClosedLoop"));
+
+    while(isSimulationComplete() == 0) {
+        char * str = getStringXy();
+		printf ("result: %s \n", str);
+    }
+
+	end();
+
+}
 
 
 

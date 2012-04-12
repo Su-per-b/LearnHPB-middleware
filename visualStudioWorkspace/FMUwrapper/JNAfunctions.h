@@ -6,10 +6,9 @@
 
 #include <sstream>
 
+extern "C" DllExport void testFMU(char *);
 
-extern "C" DllExport void testFMU();
-
-extern "C" DllExport void initAll();
+extern "C" DllExport void initAll(char *);
 
 extern "C" DllExport char * getStringXy();
 
