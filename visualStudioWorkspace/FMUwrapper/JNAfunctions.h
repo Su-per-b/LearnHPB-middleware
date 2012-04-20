@@ -9,13 +9,18 @@
 
 extern "C" DllExport void end();
 
-extern "C" DllExport int * getaDataList();
+extern "C" DllExport int * getDataList();
 
-extern "C" DllExport int * getaDataList2();
+extern "C" DllExport int * getDataList2();
 
-extern "C" DllExport int * getaDataList3();
+extern "C" DllExport int * getDataList3();
 
-extern "C" DllExport void getaDataList4(void * buf);
+extern "C" DllExport void getDataList4(void * buf);
+
+extern "C" DllExport void getDataList5(void * buf);
+
+extern "C" DllExport struct ScalarVariableMeta * getDataList6();
+
 
 extern "C" DllExport char * getResultFromOneStep();
 
@@ -36,7 +41,7 @@ extern "C" DllExport int isSimulationComplete();
 extern "C" DllExport void testFMU(char *);
 
 
-
+extern "C" DllExport  struct ScalarVariableMeta *  getDataList6( );
 
 
 

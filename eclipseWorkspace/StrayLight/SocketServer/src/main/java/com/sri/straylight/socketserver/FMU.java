@@ -69,28 +69,24 @@ public class FMU implements ResultEventListener{
 		//int[] list2 = new int[size];
 		
 		
-		Pointer ptr  = jnaFMUWrapper_.getaDataList3();
+		//Pointer ptr  = jnaFMUWrapper_.getaDataList3();
 		
 		
-		//ByteBuffer foo = ByteBuffer.allocateDirect(1000000);
 		int sizeOfInt = 4;
 		Memory ptr2 = new Memory(count * sizeOfInt);
-		
-		
-		jnaFMUWrapper_.getaDataList4(ptr2);
-		
+		jnaFMUWrapper_.getDataList4(ptr2);
 		
 		
 		int[] ary = ptr2.getIntArray(0, count);
 		
-		//PointerTo
-	//	int val = list2[4];
 		
+		ScalarVariableMeta[] vars = new ScalarVariableMeta[count];
 		
-		//int[] list = jnaFMUWrapper_.getaDataList2();
+		ScalarVariableMeta svMeta = jnaFMUWrapper_.getDataList6();
 		
-		//System.out.println("list2[4]" +list2[4]);
+		ScalarVariableMeta[] svMetaAry = (ScalarVariableMeta[]) svMeta.toArray(count);
 		
+
 		
 	}
 	

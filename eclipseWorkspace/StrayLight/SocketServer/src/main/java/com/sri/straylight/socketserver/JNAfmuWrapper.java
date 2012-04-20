@@ -27,11 +27,13 @@ public interface JNAfmuWrapper extends Library {
 	
 	int getVariableCount();
 	
-	int[] getaDataList2();
+	int[] getDataList2();
 	
-	Pointer getaDataList3();
+	Pointer getDataList3();
 	
-	Pointer getaDataList4(Memory buf);
+	void getDataList4(Memory buf);
+	
+	ScalarVariableMeta getDataList6();
 	
 	String getVariableDescription(int idx);
 	

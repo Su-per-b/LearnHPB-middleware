@@ -239,7 +239,9 @@ namespace Straylight
 		//std::list<ScalarVariableMeta> myList;
 
 		int i;
+
 		if (md->modelVariables)
+
 		for (i=0; md->modelVariables[i]; i++){
 			ScalarVariable* sv = (ScalarVariable*)md->modelVariables[i];
 			
@@ -284,7 +286,7 @@ namespace Straylight
 	}
 	
 	
-	std::list<int> FMUwrapper::getaDataList() {
+	std::list<int> FMUwrapper::getDataList() {
 		return metaDataListTest;
 	}
 	

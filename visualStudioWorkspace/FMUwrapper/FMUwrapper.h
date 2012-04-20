@@ -64,12 +64,9 @@ namespace Straylight
 	public:
 		DllExport FMUwrapper(void);
 		DllExport ~FMUwrapper(void);
-
 		DllExport void doAll(const char * fileName);
-
 		DllExport void doOneStep();
-
-		DllExport std::list<int> getaDataList();
+		DllExport std::list<int> getDataList();
 
 		DllExport ResultItem * getResultItem();
 		DllExport fmiReal getResultSnapshot();
@@ -87,10 +84,7 @@ namespace Straylight
 		DllExport void test1();
 		DllExport void unzip();
 
-
-
 		std::list<ScalarVariableMeta> metaDataList;
-
 		std::list<int> metaDataListTest;
 
 	//public functions which are not exported

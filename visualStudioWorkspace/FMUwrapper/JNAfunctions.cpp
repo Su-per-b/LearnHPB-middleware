@@ -34,11 +34,11 @@ void testFMU (char * unzipFolder)
 
 }
 
-int * getaDataList2() {
+int * getDataList2() {
 
 	//void * ptr;
 
-	std::list<int> lst =  fmuWrapper->getaDataList();
+	std::list<int> lst =  fmuWrapper->getDataList();
 
 	int size = lst.size();
 
@@ -52,7 +52,7 @@ int * getaDataList2() {
 
 }
 
-int * getaDataList3( ) {
+int * getDataList3( ) {
 
 	int* arrPointer = (int*) malloc(3 * sizeof(int));
 
@@ -67,19 +67,82 @@ int * getaDataList3( ) {
 	return arrPointer;
 }
 
-void getaDataList4(void * buf ) {
+void getDataList4(void * buf ) {
+	int * buf2 = (int *) buf;
+
+    std::list<int> lst =  fmuWrapper->getDataList();
+	int *arrPointer = new int[lst.size()];
+	copy(lst.begin(),lst.end(),buf2);
+}
+
+
+void getDataList5(void * buf ) {
 
 
 	int * buf2 = (int *) buf;
 
-    std::list<int> lst =  fmuWrapper->getaDataList();
+    std::list<int> lst =  fmuWrapper->getDataList();
+
 	int *arrPointer = new int[lst.size()];
 	copy(lst.begin(),lst.end(),buf2);
 
 }
 
+struct ScalarVariableMeta *  getDataList6() {
+	int count = getVariableCount();
+
+	ScalarVariableMeta *ptr = new ScalarVariableMeta[count];
+
+	int i;
+	i = 0;
+
+//
+	//const char * name = getVariableName(i);
+	//const char * description = getVariableDescription(i);
+	//int c = getVariableCausality(i);
+
+	for(std::list<ScalarVariableMeta>::iterator list_iter = fmuWrapper->metaDataList.begin(); 
+		list_iter != fmuWrapper->metaDataList.end(); list_iter++)
+	{
+
+		ScalarVariableMeta svm = * list_iter;
+		ptr[i]  = * list_iter;
+
+
+		i++;
+	}
+
+
+	//ScalarVariableMeta * svm2 = fmuWrapper->metaDataList.
+
+//	ScalarVariableMeta svm = fmuWrapper->metaDataList[i];
+
+
+	//ScalarVariableMeta * svm = fmuWrapper->metaDataList[i];
+
+
+	//ptr[i] = fmuWrapper->metaDataList[i];
+
+	//int x = 0;
+
+	
+
+
+	return ptr;
+}
+
+
+
+void freeDataList6(struct ScalarVariableMeta * arrayOfMeta ) {
+
+
+	//ScalarVariableMeta
+}
+
+
+
   int * getDataList() {
-	 std::list<int> lst =  fmuWrapper->getaDataList();
+	 std::list<int> lst =  fmuWrapper->getDataList();
 
 	int *arrPointer = new int[lst.size()];
 
@@ -117,9 +180,6 @@ void getaDataList4(void * buf ) {
  }
 
   Elm getVariableType(int idx) {
-
-
-
 	 return fmuWrapper->getVariableType(idx);
  }
 

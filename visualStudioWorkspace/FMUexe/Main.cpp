@@ -20,10 +20,25 @@ void test5() {
 	//const char * str = testcpp();
 
 	initAll(_T("C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop"));
+	//int * ptr = getDataList2();
 
-	int * ptr = getaDataList2();
+	int sizeOfInt = 4;
+	int count = getVariableCount();
+	void * buf= malloc(count * sizeOfInt);
+	getDataList5 (buf);
 
-	int val = ptr[4];
+
+
+	ScalarVariableMeta * svmAry  = getDataList6();
+
+
+	ScalarVariableMeta svm = svmAry[1];
+
+	//struct ScalarVariableMeta * arrayMeta;
+//	arrayMeta = getDataList6();
+
+
+	//arrayMeta = 
 
 
 
