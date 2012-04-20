@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include "FMUwrapper.h"
 
+
 #define BUFSIZE 4096
 #define XML_FILE_STR  "\\modelDescription.xml"
 #define DLL_DIR_STR   "\\binaries\\win32\\"
@@ -15,6 +16,9 @@
 
 namespace Straylight
 {
+
+
+
 
 	/*********************************************//**
 	* Default constructor. 
@@ -227,18 +231,122 @@ namespace Straylight
 			return 1;																
 		}
 
-		vry_[0] = getValueReference(getVariableByName(md, "TrmSou"));
+		//vry_[0] = getValueReference(getVariableByName(md, "TrmSou"));
+
+
+		printf("OUTPUT: \n");
+
+		//std::list<ScalarVariableMeta> myList;
+
+		int i;
+		if (md->modelVariables)
+		for (i=0; md->modelVariables[i]; i++){
+			ScalarVariable* sv = (ScalarVariable*)md->modelVariables[i];
+			
+
+			Enu causality;  // input, output, internal or none
+			causality = getCausality(sv);
+			
+
+			ScalarVariableMeta meta;
+			
+			meta.idx = i;
+			meta.name = getName( sv );
+
+
+			metaDataList.push_back(meta);
+
+			metaDataListTest.push_back(i);
+
+
+
+			//if (enu_output == causality) {
+			//	printf("OUTPUT variable name: %s\n", getName( sv ));
+			//	printf("                desc: %s\n", getDescription(md, sv));
+
+
+				//list.push_front (2);
+
+			//	printf("                ausality: %s\n", getCausality( sv));
+
+				
+			//}
+		}
+
 
 		return 0;
 	}
 
 
 
-
 	int FMUwrapper::isSimulationComplete() {
 		return !(time_ < timeEnd_) ;
 	}
+	
+	
+	std::list<int> FMUwrapper::getaDataList() {
+		return metaDataListTest;
+	}
+	
 
+
+	const char* FMUwrapper::getVariableName(int idx) {
+		ScalarVariable* sv = (ScalarVariable*)fmuPointer_->modelDescription->modelVariables[idx];
+
+		return getName( sv );
+	}
+
+	Elm FMUwrapper::getVariableType(int idx) {
+
+
+		ScalarVariable* sv = (ScalarVariable*)fmuPointer_->modelDescription->modelVariables[idx];
+		Elm elmType = sv->typeSpec->type;
+
+		return elmType;
+
+
+	}
+	
+
+
+
+
+	const char* FMUwrapper::getVariableDescription(int idx) {
+		ScalarVariable* sv = (ScalarVariable*)fmuPointer_->modelDescription->modelVariables[idx];
+
+		return getDescription(fmuPointer_->modelDescription,  sv );
+	}
+
+	Enu FMUwrapper::getVariableCausality(int idx) {
+		ScalarVariable* sv = (ScalarVariable*)fmuPointer_->modelDescription->modelVariables[idx];
+
+
+		Enu causality;  // input, output, internal or none
+		causality = getCausality(sv);
+
+		return causality;
+	}
+
+
+	int FMUwrapper::getVariableCount() {
+
+		//int len = sizeof (fmuPointer_->modelDescription->modelVariables);
+
+
+		int i;
+		int len;
+		len = 0;
+
+		ModelDescription* md = fmuPointer_->modelDescription;  
+
+		for (i=0; md->modelVariables[i]; i++){
+			len++;
+		}
+
+		return len;
+
+	}
+	
 
 
 	void FMUwrapper::printSummary() {
@@ -285,10 +393,11 @@ namespace Straylight
 	}
 
 
+
+
 	void FMUwrapper::doOneStep() {
 
 
-		// printf ("doOneStep: %s\n", nSteps);
 
 		// Advance to next time step
 		status = fmuPointer_->doStep(fmiComponent_, time_, timeDelta_, fmiTrue);  
@@ -320,6 +429,11 @@ namespace Straylight
 		_tcsnccpy(szDir, exePath, theSize);
 		szDir[theSize] = '\0';
 
+	}
+
+	char* FMUwrapper::getXmlFilePath()
+	{
+		return xmlFilePath_;
 	}
 
 

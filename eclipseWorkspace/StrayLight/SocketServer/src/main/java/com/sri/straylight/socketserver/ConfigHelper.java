@@ -54,25 +54,17 @@ public class ConfigHelper {
 	public static void make() {
 		Config config = new Config();
 		
-		config.pythonPath = "thepp path";
 		XStream xStream = new XStream();
 		xStream.alias("config", com.sri.straylight.socketserver.Config.class);
 		
 		//serialize
 		String xmlStr = xStream.toXML(config);
-		
 		URL configFileUrl = ConfigHelper.class.getClassLoader().getResource(configFile);
-		
 		String filePath = configFileUrl.getFile();
 		
-		
        	int idx = filePath.lastIndexOf(".");
-       	
        	String newfilePath = filePath.substring(0, idx) ;
-       	
        	newfilePath += "_out.xml";
-
-       	
        	
 		
 		try {

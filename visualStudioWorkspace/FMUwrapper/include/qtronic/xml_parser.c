@@ -10,7 +10,7 @@
  * - check for correct sequence of elements
  * - check that all decalaredType values reference an existing Type
  * Validation to be performed by this parser
- * - check for each attribute value that it is of the expected type 
+ * - check for each attribute value that it is of the expected type
  * - check that required attributes are present  
  * - check that dependencies are only declared for outputs and
  *   refer only to inputs

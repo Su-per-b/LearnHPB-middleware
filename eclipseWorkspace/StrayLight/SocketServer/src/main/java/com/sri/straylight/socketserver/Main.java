@@ -1,11 +1,17 @@
 package com.sri.straylight.socketserver;
 
 
+import com.sun.jna.DefaultTypeMapper;
 import com.sun.jna.Library; 
 import com.sun.jna.Native;
 import com.sun.jna.Platform;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.sri.straylight.fmu.*;
 
 
 public class Main 
@@ -13,26 +19,41 @@ public class Main
 	
 	public static Config config;
 	public static FMU fmu_;
+	//private JNAfmuWrapper  JNAfmuWrapper_;
+	public static JNAfmuWrapper jnaFMUWrapper_;
 	
+	public static String unzipFolder = "C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop";
 	
     public static void main( String[] args )
     {
-    	config = ConfigHelper.load();
-    	//testFMU3();
     	
-    	  SocketServer server = new SocketServer();
-  	    
-          server.showBanner();
-          server.start();
-    
+		config = ConfigHelper.load();
+		System.setProperty("jna.library.path", config.dllFolder);
+		
+		
+    ///	String str = JNA2.INSTANCE.testcpp();
+    	
+
+			
+		fmu_ = new FMU(config.testFmuFile);
+		fmu_.init(unzipFolder);
+	    
+		ArrayList<FMUvariable> inList = fmu_.getInputs();
+		ArrayList<FMUvariable> outList = fmu_.getOutputs();
+		
+		
+		fmu_.test();
+		fmu_.run();
+		
+		//int x = 0;
+
     }
     
     public static void test( ) {
     	
     	fmu_ = new FMU(config.testFmuFile);
     	fmu_.unzip();
-    //	fmu_.load();
-    	fmu_.init();
+    	fmu_.init(unzipFolder);
     	
     }
     
@@ -40,37 +61,21 @@ public class Main
         
     	fmu_ = new FMU(config.testFmuFile);
     	fmu_.unzip();
-    	fmu_.init();
-    	
-    	//ResultEventListener listener = new ResultEventListener();
-    	//ResultEventDispatacher disp = new ResultEventDispatacher();
-    //	ResultEventListener list = new ResultEventListener();
-    	//disp.addListener(list);
-
+    	fmu_.init(unzipFolder);
     	fmu_.run();
-    	
-    	
-   }
-    
-    
-    public static void testFMU( )  {
-    
-    	JNAfmuWrapper.INSTANCE.testFMU();
-   }
-    
-    public static void testFMU2( )  {
-        
 
-    	JNAfmuWrapper.INSTANCE.initAll();
-    	while(JNAfmuWrapper.INSTANCE.isSimulationComplete() == 0) {
-    		
-        	String str = JNAfmuWrapper.INSTANCE.getStringXy();
-        	System.out.println("getStringXy " + str);
-    	}
+   }
+    
+    public static void testFMU6( )  {
+    	TestEnum tt = TestEnum.FILE;
+    	//tt.
     	
-    	
-    	JNAfmuWrapper.INSTANCE.end();
+    	fmu_ = new FMU(config.testFmuFile);
+    	fmu_.init(unzipFolder);
     	
    }
+    
+
+
     
 }

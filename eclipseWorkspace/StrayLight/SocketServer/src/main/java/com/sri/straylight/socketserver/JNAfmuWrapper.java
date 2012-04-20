@@ -3,30 +3,51 @@
 package com.sri.straylight.socketserver;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.sun.jna.DefaultTypeMapper;
 import com.sun.jna.Library;
+import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.Platform;
-
+import com.sun.jna.Pointer;
+import com.sri.straylight.fmu.*;
 
 
 public interface JNAfmuWrapper extends Library {
 	
-	String result = System.setProperty("jna.library.path", "E:\\SRI\\straylight_repo\\visualStudioWorkspace\\bin\\Debug");
-	JNAfmuWrapper  INSTANCE = (JNAfmuWrapper ) Native.loadLibrary("FMUwrapper", JNAfmuWrapper.class);
+
 	
-	void testFMU();
+	void end();
 	
-	int testFMU2();
+	String getResultFromOneStep();
 	
-	void initAll();
+	Enu getVariableCausality(int idx);
 	
-	//void init2();
+	int getVariableCount();
 	
-	String getStringXy();
+	int[] getaDataList2();
+	
+	Pointer getaDataList3();
+	
+	Pointer getaDataList4(Memory buf);
+	
+	String getVariableDescription(int idx);
+	
+	String getVariableName(int idx);
+	
+	Elm getVariableType(int idx);
+	
+	void initAll(String unzipPath);
 	
 	int isSimulationComplete();
 	
-	void end();
+	void testFMU(String unzipPath);
+	
+	//static String testcpp();
+	
+	//EnumEnu getVariableCausality(int idx);
 	
 	
 }

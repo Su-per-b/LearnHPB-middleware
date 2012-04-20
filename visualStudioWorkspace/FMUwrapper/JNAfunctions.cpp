@@ -8,6 +8,7 @@
 Straylight::FMUwrapper *  fmuWrapper;
 
 
+
 void testFMU (char * unzipFolder)
 {
 
@@ -33,6 +34,99 @@ void testFMU (char * unzipFolder)
 
 }
 
+int * getaDataList2() {
+
+	//void * ptr;
+
+	std::list<int> lst =  fmuWrapper->getaDataList();
+
+	int size = lst.size();
+
+	int *arrPointer = new int[size];
+	copy(lst.begin(),lst.end(),arrPointer);
+
+
+	int test = arrPointer[2];
+
+	return arrPointer;
+
+}
+
+int * getaDataList3( ) {
+
+	int* arrPointer = (int*) malloc(3 * sizeof(int));
+
+	//int *arrPointer = new int[3];
+
+	arrPointer[0] = 0;
+	arrPointer[1] = 10;
+	arrPointer[2] = 22;
+
+	//int billy [] = { 16, 2, 77, 40, 12071 }
+
+	return arrPointer;
+}
+
+void getaDataList4(void * buf ) {
+
+
+	int * buf2 = (int *) buf;
+
+    std::list<int> lst =  fmuWrapper->getaDataList();
+	int *arrPointer = new int[lst.size()];
+	copy(lst.begin(),lst.end(),buf2);
+
+}
+
+  int * getDataList() {
+	 std::list<int> lst =  fmuWrapper->getaDataList();
+
+	int *arrPointer = new int[lst.size()];
+
+
+	copy(lst.begin(),lst.end(),arrPointer);
+
+
+	// new int[lst.size()];
+
+	//int my_array[] = {1,23,17,4,-5,100};
+	//void *ptr;
+
+	//ptr = my_array;
+
+
+	//int * x;
+
+	return arrPointer;
+
+ }
+
+
+	
+
+ const char * getVariableName(int idx) {
+	 return fmuWrapper->getVariableName(idx);
+ }
+
+ const char * getVariableDescription(int idx) {
+	 return fmuWrapper->getVariableDescription(idx);
+ }
+
+ Enu getVariableCausality(int idx) {
+	 return fmuWrapper->getVariableCausality(idx);
+ }
+
+  Elm getVariableType(int idx) {
+
+
+
+	 return fmuWrapper->getVariableType(idx);
+ }
+
+
+ int getVariableCount() {
+	 return fmuWrapper->getVariableCount();
+ }
 
 
 
@@ -63,7 +157,7 @@ void end() {
 }
 
 
-char * getStringXy ()
+char * getResultFromOneStep ()
 {
 
 	Straylight::ResultItem * ri;

@@ -35,6 +35,19 @@ typedef enum {
     elm_Implementation,elm_CoSimulation_StandAlone,elm_CoSimulation_Tool,elm_Model,elm_File,elm_Capabilities
 } Elm;
 
+
+
+typedef enum
+{
+        HL_STREAM_NONE = 0,
+        HL_STREAM_FILE,
+        HL_STREAM_GCF,
+        HL_STREAM_MAPPING,
+        HL_STREAM_MEMORY,
+        HL_STREAM_PROC,
+        HL_STREAM_NULL
+} StreamType;
+
 // Attributes
 typedef enum { 
   att_fmiVersion,att_displayUnit,att_gain,att_offset,att_unit,att_name,att_description,att_quantity,att_relativeQuantity,

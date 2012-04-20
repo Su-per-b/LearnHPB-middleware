@@ -56,17 +56,17 @@ public class WebSocketStream implements WebSocket.OnTextMessage {
 		if (data.equals("start")) {
 			
 			
-	    	JNAfmuWrapper.INSTANCE.initAll();
-	    	while(JNAfmuWrapper.INSTANCE.isSimulationComplete() == 0) {
+	    	//JNAfmuWrapper.INSTANCE.initAll("C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop");
+	    	//while(JNAfmuWrapper.INSTANCE.isSimulationComplete() == 0) {
 	    		
-	        	String str = JNAfmuWrapper.INSTANCE.getStringXy();
+	        	//String str = JNAfmuWrapper.INSTANCE.getVariableName(1);
 	        //	System.out.println("getStringXy " + str);
 	        	
-	        	sendMessage (str);
-	    	}
+	        	//sendMessage (str);
+	    	//}
 	    	
 	    	
-	    	JNAfmuWrapper.INSTANCE.end();
+	    //	JNAfmuWrapper.INSTANCE.end();
 			
 
 	    	
