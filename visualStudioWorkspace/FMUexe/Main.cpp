@@ -29,10 +29,10 @@ void test5() {
 
 
 
-	ScalarVariableMeta * svmAry  = getDataList6();
+	struct ScalarVariableMeta * svmAry  = getSVmetaData();
 
 
-	ScalarVariableMeta svm = svmAry[1];
+	//struct ScalarVariableMeta svm = svmAry[1];
 
 	//struct ScalarVariableMeta * arrayMeta;
 //	arrayMeta = getDataList6();
@@ -66,35 +66,6 @@ void test5() {
 }
 
 
-
-void test1() {
-
-	Straylight::FMUwrapper *fmuWrapper;
-	fmuWrapper = new Straylight::FMUwrapper();
-
-	int result = fmuWrapper->parseXML(_T("C:\\Temp\\LearnGB_VAVReheat_ClosedLoop"));
-
-	if (result != 0) {
-		exit(EXIT_FAILURE);
-	}
-
-	fmuWrapper->loadDll();
-	fmuWrapper->simulateHelperInit();
-
-	Straylight::ResultItem * ri;
-
-	// enter the simulation loop
-	while (!fmuWrapper->isSimulationComplete()) {
-		fmuWrapper->doOneStep();
-		ri = fmuWrapper->getResultItem();
-
-		char *  str2 = ri->getString();
-		OutputDebugString(str2);
-	}
-
-	fmuWrapper->printSummary();
-	delete fmuWrapper;
-}
 
 
 void test2() {

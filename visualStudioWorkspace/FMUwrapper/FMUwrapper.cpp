@@ -149,9 +149,7 @@ namespace Straylight
 	}
 
 
-	void FMUwrapper::test1() {
-		printf("FMUwrapper::test1\n");	
-	}
+
 
 
 
@@ -254,10 +252,9 @@ namespace Straylight
 			
 			meta.idx = i;
 			meta.name = getName( sv );
-
+			meta.causality = getVariableCausality(i);
 
 			metaDataList.push_back(meta);
-
 			metaDataListTest.push_back(i);
 
 

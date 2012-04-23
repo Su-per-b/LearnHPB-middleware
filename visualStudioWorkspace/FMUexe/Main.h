@@ -1,7 +1,7 @@
 #pragma once
 
 #include "stdafx.h"
-#include <FMUwrapper.h>
+#include <JNAfunctions.h>
 #include <ResultItem.h>
 #include <ResultPrimitive.h>
 

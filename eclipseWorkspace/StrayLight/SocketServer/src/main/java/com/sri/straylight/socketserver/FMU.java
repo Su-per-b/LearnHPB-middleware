@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 
+
+
 public class FMU implements ResultEventListener{
 
 	private String fmuFilePath_;
@@ -27,10 +29,10 @@ public class FMU implements ResultEventListener{
 	private String dllPath_;
 	private int variableCount_;
 	private JNAfmuWrapper jnaFMUWrapper_;
-	private ArrayList<FMUvariable> variableList_;
-	private ArrayList<FMUvariable> variableListInputs_;
-	private ArrayList<FMUvariable> variableListOutputs_;
-	
+	private ArrayList<ScalarVariableMeta> variableListOther_;
+	private ArrayList<ScalarVariableMeta> variableListInputs_;
+	private ArrayList<ScalarVariableMeta> variableListOutputs_;
+	private ScalarVariableMeta[] svMetaArray_;
 	
    public int getVariableCount()
    {
@@ -42,49 +44,118 @@ public class FMU implements ResultEventListener{
 		
 	public FMU(String fmuFileName) {
 		
-		Map<String, Object> options = new HashMap<String, Object>();
-		HlTypeMapper mp = new HlTypeMapper();
-		options.put(Library.OPTION_TYPE_MAPPER, mp);
-		jnaFMUWrapper_ = (JNAfmuWrapper ) Native.loadLibrary("FMUwrapper", JNAfmuWrapper.class, options);
-		
-		
 		fmuFilePath_ = fmuFileName;
+		
+		loadLibrary();
+		
+		//add event listener
 		disp = new ResultEventDispatacher();
-    	
     	disp.addListener(this);
     	
-    	variableList_ =  new ArrayList<FMUvariable>();
-    	variableListInputs_ =  new ArrayList<FMUvariable>();
-    	variableListOutputs_ =  new ArrayList<FMUvariable>();
+    	//initialize lists
+    	variableListOther_ =  new ArrayList<ScalarVariableMeta>();
+    	variableListInputs_ =  new ArrayList<ScalarVariableMeta>();
+    	variableListOutputs_ =  new ArrayList<ScalarVariableMeta>();
+    	
+
+    	
+	}
+	
+
+	
+	
+	public void init(String unzippedFolder) {
+		jnaFMUWrapper_.initAll(unzippedFolder);
+
+		
+		Enu c = jnaFMUWrapper_.getVariableCausality(0);
+    	variableCount_ = jnaFMUWrapper_.getVariableCount();  
+
+    	
+		ScalarVariableMeta svMetaArchtype = jnaFMUWrapper_.getSVmetaData();
+		svMetaArray_ = (ScalarVariableMeta[]) svMetaArchtype.toArray(variableCount_);
+
+		
+    	for (int i = 0; i < variableCount_; i++) {
+
+    		ScalarVariableMeta sv = svMetaArray_[i];
+    		Enu causality = sv.getCausalityEnum();
+    		
+    		switch (causality) {
+    			case enu_input: 
+    				variableListInputs_.add(sv);
+    				break;
+    			case enu_output: 
+    				variableListOutputs_.add(sv);
+    				break;
+    			default:
+    				variableListOther_.add(sv);
+    				
+    		}
+    		
+		}
+    	
+    //	int x = 0;
+    	
+    	/*
+    	for (int i = 0; i < variableCount_; i++) {
+    		FMUvariable vr = new FMUvariable();
+    		
+    		vr.name = jnaFMUWrapper_.getVariableName(i);
+    		vr.description = jnaFMUWrapper_.getVariableDescription(i);
+    		vr.causality = jnaFMUWrapper_.getVariableCausality(i); 
+    		vr.type = jnaFMUWrapper_.getVariableType(i);
+    		
+    		
+    		
+    		variableList_.add(vr);
+    		
+    		if (vr.causality == Enu.enu_input) {
+    			variableListInputs_.add(vr);
+    		}
+    		
+    		if (vr.causality == Enu.enu_output) {
+    			variableListOutputs_.add(vr);
+    		}
+
+    		
+		}
+    	*/
+    	
 
 	}
 	
 	
+	public void loadLibrary() {
+		
+		Map<String, Object> options = new HashMap<String, Object>();
+		HlTypeMapper mp = new HlTypeMapper();
+		
+		options.put(Library.OPTION_TYPE_MAPPER, mp);
+		jnaFMUWrapper_ = (JNAfmuWrapper ) Native.loadLibrary("FMUwrapper", JNAfmuWrapper.class, options);
+		
+	}
+	
+	
+
+	
+	
 	public void test() {
 		
-	//	jnaFMUWrapper_.getaDataList2();
-		
-		int count = jnaFMUWrapper_.getVariableCount();
-		
-		//int[] list2 = new int[size];
-		
-		
-		//Pointer ptr  = jnaFMUWrapper_.getaDataList3();
-		
-		
+
 		int sizeOfInt = 4;
-		Memory ptr2 = new Memory(count * sizeOfInt);
+		Memory ptr2 = new Memory(variableCount_ * sizeOfInt);
 		jnaFMUWrapper_.getDataList4(ptr2);
 		
 		
-		int[] ary = ptr2.getIntArray(0, count);
+		int[] ary = ptr2.getIntArray(0, variableCount_);
 		
 		
-		ScalarVariableMeta[] vars = new ScalarVariableMeta[count];
+		ScalarVariableMeta[] vars = new ScalarVariableMeta[variableCount_];
 		
-		ScalarVariableMeta svMeta = jnaFMUWrapper_.getDataList6();
+		//ScalarVariableMeta svMeta = jnaFMUWrapper_.getDataList6();
 		
-		ScalarVariableMeta[] svMetaAry = (ScalarVariableMeta[]) svMeta.toArray(count);
+		//ScalarVariableMeta[] svMetaAry = (ScalarVariableMeta[]) svMeta.toArray(variableCount_);
 		
 
 		
@@ -106,46 +177,16 @@ public class FMU implements ResultEventListener{
 	}
 
 	
-	public void init(String unzippedFolder) {
-		jnaFMUWrapper_.initAll(unzippedFolder);
-    	variableCount_ = jnaFMUWrapper_.getVariableCount();
-    	
-    	
-    	
-    	for (int i = 0; i < variableCount_; i++) {
-    		FMUvariable vr = new FMUvariable();
-    		
-    		vr.name = jnaFMUWrapper_.getVariableName(i);
-    		vr.description = jnaFMUWrapper_.getVariableDescription(i);
-    		vr.causality = jnaFMUWrapper_.getVariableCausality(i); 
-    		vr.type = jnaFMUWrapper_.getVariableType(i);
-    		
-    		
-    		
-    		variableList_.add(vr);
-    		
-    		if (vr.causality == Enu.enu_input) {
-    			variableListInputs_.add(vr);
-    		}
-    		
-    		if (vr.causality == Enu.enu_output) {
-    			variableListOutputs_.add(vr);
-    		}
-    		
-    		
-    		
-		}
 
-	}
 	
 	
-	public ArrayList<FMUvariable> getInputs() {
+	public ArrayList<ScalarVariableMeta> getInputs() {
 		
 		return variableListInputs_;
 	
 	}
 	
-	public ArrayList<FMUvariable> getOutputs() {
+	public ArrayList<ScalarVariableMeta> getOutputs() {
 		
 		return variableListOutputs_;
 	

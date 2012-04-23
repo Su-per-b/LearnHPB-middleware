@@ -33,7 +33,7 @@ public interface JNAfmuWrapper extends Library {
 	
 	void getDataList4(Memory buf);
 	
-	ScalarVariableMeta getDataList6();
+	ScalarVariableMeta getSVmetaData();
 	
 	String getVariableDescription(int idx);
 	
@@ -47,7 +47,13 @@ public interface JNAfmuWrapper extends Library {
 	
 	void testFMU(String unzipPath);
 	
-	//static String testcpp();
+	
+	ScalarVariableMeta test_a();
+	
+	
+	void test_b(ScalarVariableMeta3 sv);
+	
+	//static String test1();
 	
 	//EnumEnu getVariableCausality(int idx);
 	

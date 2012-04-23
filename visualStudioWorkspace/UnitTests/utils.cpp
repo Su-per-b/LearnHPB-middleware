@@ -43,7 +43,7 @@ void getUnzipFolder2(TCHAR * szDir) {
 
 
 
-
+/*
 char * getResultItemAsString(FMUwrapper * fmuWrapper) {
 	Straylight::ResultItem * ri;
 
@@ -53,6 +53,7 @@ char * getResultItemAsString(FMUwrapper * fmuWrapper) {
 	return ri->getString();
 }
 
+*/
 
 
 char * wstrdup(_TCHAR * wSrc)

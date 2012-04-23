@@ -8,15 +8,15 @@
 using namespace Straylight;
 
 
+
+
+
+/*
 FMUwrapper *fmuWrapper;
-
-
 TEST(sample_test_case, sample_test)
 {
     EXPECT_EQ(1, 1);
 }
-
-
 
 TEST(LearnGB, LearnGB_VAVReheat_ClosedLoopXP)
 {
@@ -60,6 +60,8 @@ void init(_TCHAR * fmuSubPath) {
 
 }
 
+
+*/
 
 
 

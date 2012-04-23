@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "ResultSet.h"
 #include "ResultItem.h"
-#include "JNAfunctions.h"
+
 
 #include <sstream>
 #include <list>
@@ -17,11 +17,25 @@ int wstrlen(_TCHAR * );
 void init(_TCHAR * );
 
 
+ 
 struct ScalarVariableMeta {
+	  const char * name;
+	  int idx;
+	  Enu causality;
+
+} ;
+
+struct ScalarVariableMeta2 {
   const char * name;
   int idx;
+  //Enu causality;
 };
 
+ struct ScalarVariableMeta3 {
+  const char * name;
+  int idx;
+  Enu causality;
+} ;
 
 
 namespace Straylight
@@ -55,40 +69,37 @@ namespace Straylight
 		fmiBoolean loggingOn;
 		double timeDelta_;
 		ModelDescription* modelDescription_;
-        char* getXmlFilePath();
+		char* getXmlFilePath();
 
 
 
 
-	//exported public functions
+	// public functions
 	public:
-		DllExport FMUwrapper(void);
-		DllExport ~FMUwrapper(void);
-		DllExport void doAll(const char * fileName);
-		DllExport void doOneStep();
-		DllExport std::list<int> getDataList();
+		FMUwrapper(void);
+		~FMUwrapper(void);
+		void doAll(const char * fileName);
+		void doOneStep();
+		std::list<int> getDataList();
 
-		DllExport ResultItem * getResultItem();
-		DllExport fmiReal getResultSnapshot();
-		DllExport Enu getVariableCausality(int idx);
-		DllExport int getVariableCount();
-		DllExport const char * getVariableDescription(int idx);
-		DllExport const char * getVariableName(int idx);
-		DllExport Elm getVariableType(int idx);
+		ResultItem * getResultItem();
+		fmiReal getResultSnapshot();
+		Enu getVariableCausality(int idx);
+		int getVariableCount();
+		const char * getVariableDescription(int idx);
+		const char * getVariableName(int idx);
+		Elm getVariableType(int idx);
 
-		DllExport int isSimulationComplete();
-		DllExport int loadDll();
-		DllExport int parseXML(char* unzipfolder);
-		DllExport void printSummary();
-		DllExport int simulateHelperInit();
-		DllExport void test1();
-		DllExport void unzip();
+		int isSimulationComplete();
+		int loadDll();
+		int parseXML(char* unzipfolder);
+		void printSummary();
+		int simulateHelperInit();
+		void unzip();
 
 		std::list<ScalarVariableMeta> metaDataList;
 		std::list<int> metaDataListTest;
 
-	//public functions which are not exported
-	public:	
 		void getModuleFolderPath(_TCHAR * szDir);
 		ResultItem* resultItem_;
 

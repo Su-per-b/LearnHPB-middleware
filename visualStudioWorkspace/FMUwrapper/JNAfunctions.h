@@ -7,6 +7,7 @@
 
 
 
+
 extern "C" DllExport void end();
 
 extern "C" DllExport int * getDataList();
@@ -19,8 +20,7 @@ extern "C" DllExport void getDataList4(void * buf);
 
 extern "C" DllExport void getDataList5(void * buf);
 
-extern "C" DllExport struct ScalarVariableMeta * getDataList6();
-
+extern "C" DllExport struct ScalarVariableMeta * getSVmetaData();
 
 extern "C" DllExport char * getResultFromOneStep();
 
@@ -40,8 +40,12 @@ extern "C" DllExport int isSimulationComplete();
 
 extern "C" DllExport void testFMU(char *);
 
+extern "C" DllExport struct ScalarVariableMeta * test_a();
 
-extern "C" DllExport  struct ScalarVariableMeta *  getDataList6( );
+extern "C" DllExport void test_b(struct ScalarVariableMeta3 * svm);
+
+
+extern "C" DllExport ScalarVariableMeta * getDataList6( );
 
 
 

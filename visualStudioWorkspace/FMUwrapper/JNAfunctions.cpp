@@ -88,44 +88,21 @@ void getDataList5(void * buf ) {
 
 }
 
-struct ScalarVariableMeta *  getDataList6() {
+struct ScalarVariableMeta *  getSVmetaData() {
 	int count = getVariableCount();
 
-	ScalarVariableMeta *ptr = new ScalarVariableMeta[count];
+	struct ScalarVariableMeta *ptr = new ScalarVariableMeta[count];
 
 	int i;
 	i = 0;
 
-//
-	//const char * name = getVariableName(i);
-	//const char * description = getVariableDescription(i);
-	//int c = getVariableCausality(i);
-
 	for(std::list<ScalarVariableMeta>::iterator list_iter = fmuWrapper->metaDataList.begin(); 
 		list_iter != fmuWrapper->metaDataList.end(); list_iter++)
 	{
-
 		ScalarVariableMeta svm = * list_iter;
 		ptr[i]  = * list_iter;
-
-
 		i++;
 	}
-
-
-	//ScalarVariableMeta * svm2 = fmuWrapper->metaDataList.
-
-//	ScalarVariableMeta svm = fmuWrapper->metaDataList[i];
-
-
-	//ScalarVariableMeta * svm = fmuWrapper->metaDataList[i];
-
-
-	//ptr[i] = fmuWrapper->metaDataList[i];
-
-	//int x = 0;
-
-	
 
 
 	return ptr;
@@ -133,11 +110,40 @@ struct ScalarVariableMeta *  getDataList6() {
 
 
 
-void freeDataList6(struct ScalarVariableMeta * arrayOfMeta ) {
+void freeDataList6(ScalarVariableMeta * arrayOfMeta ) {
 
 
 	//ScalarVariableMeta
 }
+
+ struct ScalarVariableMeta * test_a() {
+
+	ScalarVariableMeta * svm2 = new ScalarVariableMeta;
+
+	svm2->idx = 11;
+	svm2->name = getVariableName( 11 );
+
+	//svm2->causality = fmuWrapper->getVariableCausality(11);
+
+
+	return svm2;
+
+}
+
+void test_b(struct ScalarVariableMeta3 * svm) {
+
+//	struct ScalarVariableMeta * svm2 = new ScalarVariableMeta;
+
+	//ScalarVariableMeta3 svm;
+	svm->idx = 11;
+	svm->name = getVariableName( 11 );
+	svm->causality = getVariableCausality ( 11 );
+
+
+	//return svm2;
+
+}
+
 
 
 

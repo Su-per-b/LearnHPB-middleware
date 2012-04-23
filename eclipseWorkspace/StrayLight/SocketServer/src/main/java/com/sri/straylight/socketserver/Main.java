@@ -38,11 +38,11 @@ public class Main
 		fmu_ = new FMU(config.testFmuFile);
 		fmu_.init(unzipFolder);
 	    
-		ArrayList<FMUvariable> inList = fmu_.getInputs();
-		ArrayList<FMUvariable> outList = fmu_.getOutputs();
+		ArrayList<ScalarVariableMeta> inList = fmu_.getInputs();
+		ArrayList<ScalarVariableMeta> outList = fmu_.getOutputs();
 		
 		
-		fmu_.test();
+		//fmu_.test();
 		fmu_.run();
 		
 		//int x = 0;
