@@ -30,22 +30,15 @@ public class Main
 		config = ConfigHelper.load();
 		System.setProperty("jna.library.path", config.dllFolder);
 		
+		SocketServer ss = new SocketServer();
 		
-    ///	String str = JNA2.INSTANCE.testcpp();
-    	
-
+		ss.showBanner();
+		ss.start();
+		
+	//	run();
 			
-		fmu_ = new FMU(config.testFmuFile);
-		fmu_.init(unzipFolder);
-	    
-		ArrayList<ScalarVariableMeta> inList = fmu_.getInputs();
-		ArrayList<ScalarVariableMeta> outList = fmu_.getOutputs();
-		
-		
-		//fmu_.test();
-		fmu_.run();
-		
-		//int x = 0;
+
+
 
     }
     
@@ -57,7 +50,19 @@ public class Main
     	
     }
     
-
+    public static void run( ) {
+    	
+		fmu_ = new FMU(config.testFmuFile);
+		fmu_.init(unzipFolder);
+	    
+		//ArrayList<ScalarVariableMeta> inList = fmu_.getInputs();
+		//ArrayList<ScalarVariableMeta> outList = fmu_.getOutputs();
+		
+		
+		//fmu_.test();
+		fmu_.run();
+    	
+    }
     
 
 

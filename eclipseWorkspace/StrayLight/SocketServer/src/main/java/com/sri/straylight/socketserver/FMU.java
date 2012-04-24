@@ -20,7 +20,7 @@ import java.util.Map;
 
 
 
-public class FMU implements ResultEventListener{
+public class FMU implements ResultEventListener {
 
 	private String fmuFilePath_;
 	private String fmuFileName_;
@@ -42,7 +42,7 @@ public class FMU implements ResultEventListener{
      return variableCount_;
    }
 	   
-	private ResultEventDispatacher disp;
+	public ResultEventDispatacher disp;
 	
 		
 	public FMU(String fmuFileName) {
@@ -132,24 +132,7 @@ public class FMU implements ResultEventListener{
 	
 	public void eventUpdate(ResultEvent re) {
 		
-		String result = "eventUpdate: \n" + 
-						"     time: " + Double.toString(re.resultItemStruct.time) + " \n";
-						
-		int len = re.resultItemStruct.primitiveCount;
-		ResultItemPrimitiveStruct[] ary = re.resultItemStruct.getPrimitives();
-		
-		for (int i = 0; i < len; i++) {
-			int idx = ary[i].idx;
-			
-			ScalarVariableMeta svm = (ScalarVariableMeta) variableListAll_.get(new Integer (i));  
-			
-			
-			result += "      " +  svm.name + " : " +  ary[i].string + " \n";
-			
-		}
-		
-				
-    	System.out.println(result);
+
     	
     	
 	}
@@ -163,6 +146,35 @@ public class FMU implements ResultEventListener{
 		return variableListOutputs_;
 	}
 	
+	private void fireEvent(ResultItemStruct resultItemStruct) {
+		
+		String result = "Result Update:  <br />\n" + 
+				"     time: " + Double.toString(resultItemStruct.time) + "  <br />\n";
+				
+		int len = resultItemStruct.primitiveCount;
+		
+		ResultItemPrimitiveStruct[] ary = resultItemStruct.getPrimitives();
+		
+		for (int i = 0; i < len; i++) {
+			int idx = ary[i].idx;
+			
+			ScalarVariableMeta svm = (ScalarVariableMeta) variableListAll_.get(new Integer (i));  
+			
+			result += "      " +  svm.name + " : " +  ary[i].string + " <br /> \n";
+	
+		}
+
+		result +=  "<br /> \n";
+		System.out.println(result);
+	
+		
+		ResultEvent re = new ResultEvent(this);
+    	re.resultString = result;
+    	re.resultItemStruct = resultItemStruct;
+    	
+    	disp.fireEvent(re);
+	}
+	
 	
 	
 	public void run() {
@@ -173,15 +185,13 @@ public class FMU implements ResultEventListener{
     	while(jnaFMUWrapper_.isSimulationComplete() == 0) {
 
     		String str = jnaFMUWrapper_.getResultFromOneStep();
+    		
     		ResultItemStruct riStruct;
     		riStruct = jnaFMUWrapper_.getResultStruct();
-    		ResultItemPrimitiveStruct[] ary2 = riStruct.getPrimitives();
+
         	
-    		ResultEvent re = new ResultEvent(this);
-        	re.resultString = str;
-        	re.resultItemStruct = riStruct;
+        	fireEvent(riStruct);
         	
-        	disp.fireEvent(re);
 
     	}
     	

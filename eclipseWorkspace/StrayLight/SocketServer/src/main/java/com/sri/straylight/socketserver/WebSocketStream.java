@@ -7,13 +7,16 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocket.Connection;
 
+import com.sri.straylight.fmu.ResultItemPrimitiveStruct;
+import com.sri.straylight.fmu.ScalarVariableMeta;
 
 
-public class WebSocketStream implements WebSocket.OnTextMessage {
+
+public class WebSocketStream implements WebSocket.OnTextMessage,  ResultEventListener {
 
 	private Connection connection;
 	//private JNIinterface jniInterface;
-	
+	public static FMU fmu_;
 	
 	private final Set<WebSocketStream> webSockets = new CopyOnWriteArraySet<WebSocketStream>();
 	
@@ -55,25 +58,25 @@ public class WebSocketStream implements WebSocket.OnTextMessage {
 
 		if (data.equals("start")) {
 			
-			
-	    	//JNAfmuWrapper.INSTANCE.initAll("C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop");
-	    	//while(JNAfmuWrapper.INSTANCE.isSimulationComplete() == 0) {
-	    		
-	        	//String str = JNAfmuWrapper.INSTANCE.getVariableName(1);
-	        //	System.out.println("getStringXy " + str);
-	        	
-	        	//sendMessage (str);
-	    	//}
 	    	
-	    	
-	    //	JNAfmuWrapper.INSTANCE.end();
+			fmu_ = new FMU(Main.config.testFmuFile);
+			fmu_.disp.addListener(this);
 			
-
+			fmu_.init(Main.unzipFolder);
+			fmu_.run();
 	    	
 		}
 
 	}
 
+	
+	public void eventUpdate(ResultEvent re) {
+		
+    	sendMessage (re.resultString);
+    	
+	}
+	
+	
 	public void onClose(int closeCode, String message) {
 		// Remove ChatWebSocket in the global list of ChatWebSocket
 		// instance.
