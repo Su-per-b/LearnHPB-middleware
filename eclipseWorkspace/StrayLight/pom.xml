@@ -69,6 +69,7 @@
   	<module>PageApp</module>
   	<module>SocketServer</module>
   	<module>Common</module>
+  	<module>FMUwrapper</module>
   </modules>
   
 
