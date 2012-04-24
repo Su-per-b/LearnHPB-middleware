@@ -6,6 +6,6 @@
 	<unzipFolderBase>C:\Temp</unzipFolderBase>
 	<testFmuFile>E:\SRI\modelica-projects\fmus\no_licence_needed\LearnGB_VAVReheat_ClosedLoop.fmu</testFmuFile>
 	
-	<dllFolder>E:\SRI\straylight_repo\visualStudioWorkspace\bin\Debug</dllFolder>
+	<dllFolder>.\</dllFolder>
 	
 </config>
