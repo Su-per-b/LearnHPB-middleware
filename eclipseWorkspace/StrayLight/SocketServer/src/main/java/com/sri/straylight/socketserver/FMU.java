@@ -32,6 +32,9 @@ public class FMU implements ResultEventListener{
 	private ArrayList<ScalarVariableMeta> variableListOther_;
 	private ArrayList<ScalarVariableMeta> variableListInputs_;
 	private ArrayList<ScalarVariableMeta> variableListOutputs_;
+	
+	private HashMap variableListAll_;
+	
 	private ScalarVariableMeta[] svMetaArray_;
 	
    public int getVariableCount()
@@ -56,6 +59,9 @@ public class FMU implements ResultEventListener{
     	variableListOther_ =  new ArrayList<ScalarVariableMeta>();
     	variableListInputs_ =  new ArrayList<ScalarVariableMeta>();
     	variableListOutputs_ =  new ArrayList<ScalarVariableMeta>();
+    	variableListAll_ = new HashMap();
+    	//
+    	//Map<Integer, Integer> m = new HashMap<String, Integer>();
     	
 	}
 	
@@ -73,18 +79,23 @@ public class FMU implements ResultEventListener{
 		
     	for (int i = 0; i < variableCount_; i++) {
 
-    		ScalarVariableMeta sv = svMetaArray_[i];
-    		Enu causality = sv.getCausalityEnum();
+    		ScalarVariableMeta svm = svMetaArray_[i];
+    		Enu causality = svm.getCausalityEnum();
+    		
+    		
+    		variableListAll_.put(new Integer(svm.idx), svm);
+    		
+
     		
     		switch (causality) {
     			case enu_input: 
-    				variableListInputs_.add(sv);
+    				variableListInputs_.add(svm);
     				break;
     			case enu_output: 
-    				variableListOutputs_.add(sv);
+    				variableListOutputs_.add(svm);
     				break;
     			default:
-    				variableListOther_.add(sv);
+    				variableListOther_.add(svm);
     				
     		}
     		
@@ -107,29 +118,7 @@ public class FMU implements ResultEventListener{
 
 	
 	
-	public void test() {
-		
-		
-		
-		
-		int sizeOfInt = 4;
-		Memory ptr2 = new Memory(variableCount_ * sizeOfInt);
-		//jnaFMUWrapper_.getDataList4(ptr2);
-		
-		
-		int[] ary = ptr2.getIntArray(0, variableCount_);
-		
-		
-		ScalarVariableMeta[] vars = new ScalarVariableMeta[variableCount_];
-		
-		//ScalarVariableMeta svMeta = jnaFMUWrapper_.getDataList6();
-		
-		//ScalarVariableMeta[] svMetaAry = (ScalarVariableMeta[]) svMeta.toArray(variableCount_);
-		
 
-		
-	}
-	
 	public void unzip() {
 		
 		String name = new File(fmuFilePath_).getName();
@@ -142,23 +131,36 @@ public class FMU implements ResultEventListener{
 	
 	
 	public void eventUpdate(ResultEvent re) {
-    	System.out.println("eventUpdate - " + re.resultString);
+		
+		String result = "eventUpdate: \n" + 
+						"     time: " + Double.toString(re.resultItemStruct.time) + " \n";
+						
+		int len = re.resultItemStruct.primitiveCount;
+		ResultItemPrimitiveStruct[] ary = re.resultItemStruct.getPrimitives();
+		
+		for (int i = 0; i < len; i++) {
+			int idx = ary[i].idx;
+			
+			ScalarVariableMeta svm = (ScalarVariableMeta) variableListAll_.get(new Integer (i));  
+			
+			
+			result += "      " +  svm.name + " : " +  ary[i].string + " \n";
+			
+		}
+		
+				
+    	System.out.println(result);
+    	
+    	
 	}
 
 	
-
-	
-	
 	public ArrayList<ScalarVariableMeta> getInputs() {
-		
 		return variableListInputs_;
-	
 	}
 	
 	public ArrayList<ScalarVariableMeta> getOutputs() {
-		
 		return variableListOutputs_;
-	
 	}
 	
 	
@@ -171,14 +173,13 @@ public class FMU implements ResultEventListener{
     	while(jnaFMUWrapper_.isSimulationComplete() == 0) {
 
     		String str = jnaFMUWrapper_.getResultFromOneStep();
-    		
     		ResultItemStruct riStruct;
     		riStruct = jnaFMUWrapper_.getResultStruct();
-    		
     		ResultItemPrimitiveStruct[] ary2 = riStruct.getPrimitives();
-
-        	ResultEvent re = new ResultEvent(this);
+        	
+    		ResultEvent re = new ResultEvent(this);
         	re.resultString = str;
+        	re.resultItemStruct = riStruct;
         	
         	disp.fireEvent(re);
 

@@ -57,23 +57,7 @@ public class Main
     	
     }
     
-    public static void testFMU3( )  {
-        
-    	fmu_ = new FMU(config.testFmuFile);
-    	fmu_.unzip();
-    	fmu_.init(unzipFolder);
-    	fmu_.run();
 
-   }
-    
-    public static void testFMU6( )  {
-    	TestEnum tt = TestEnum.FILE;
-    	//tt.
-    	
-    	fmu_ = new FMU(config.testFmuFile);
-    	fmu_.init(unzipFolder);
-    	
-   }
     
 
 
