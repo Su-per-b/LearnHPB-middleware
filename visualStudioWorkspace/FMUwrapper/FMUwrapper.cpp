@@ -252,26 +252,18 @@ namespace Straylight
 			
 			meta.idx = i;
 			meta.name = getName( sv );
-			meta.causality = getVariableCausality(i);
+			meta.causality =  getCausality(sv);
+			//meta.description = getDescription(fmuPointer_->modelDescription,  sv );
 
 			metaDataList.push_back(meta);
-			metaDataListTest.push_back(i);
+
+			if (meta.causality == enu_output) {
+				metaDataListOuput.push_back(meta);
+			}
 
 
-
-			//if (enu_output == causality) {
-			//	printf("OUTPUT variable name: %s\n", getName( sv ));
-			//	printf("                desc: %s\n", getDescription(md, sv));
-
-
-				//list.push_front (2);
-
-			//	printf("                ausality: %s\n", getCausality( sv));
-
-				
-			//}
 		}
-
+		variableCount_ = i;
 
 		return 0;
 	}
@@ -283,29 +275,11 @@ namespace Straylight
 	}
 	
 	
-	std::list<int> FMUwrapper::getDataList() {
-		return metaDataListTest;
-	}
-	
 
 
-	const char* FMUwrapper::getVariableName(int idx) {
-		ScalarVariable* sv = (ScalarVariable*)fmuPointer_->modelDescription->modelVariables[idx];
-
-		return getName( sv );
-	}
-
-	Elm FMUwrapper::getVariableType(int idx) {
 
 
-		ScalarVariable* sv = (ScalarVariable*)fmuPointer_->modelDescription->modelVariables[idx];
-		Elm elmType = sv->typeSpec->type;
 
-		return elmType;
-
-
-	}
-	
 
 
 
@@ -316,34 +290,11 @@ namespace Straylight
 		return getDescription(fmuPointer_->modelDescription,  sv );
 	}
 
-	Enu FMUwrapper::getVariableCausality(int idx) {
-		ScalarVariable* sv = (ScalarVariable*)fmuPointer_->modelDescription->modelVariables[idx];
 
-
-		Enu causality;  // input, output, internal or none
-		causality = getCausality(sv);
-
-		return causality;
-	}
 
 
 	int FMUwrapper::getVariableCount() {
-
-		//int len = sizeof (fmuPointer_->modelDescription->modelVariables);
-
-
-		int i;
-		int len;
-		len = 0;
-
-		ModelDescription* md = fmuPointer_->modelDescription;  
-
-		for (i=0; md->modelVariables[i]; i++){
-			len++;
-		}
-
-		return len;
-
+		return variableCount_;
 	}
 	
 
@@ -397,16 +348,30 @@ namespace Straylight
 	void FMUwrapper::doOneStep() {
 
 
-
 		// Advance to next time step
 		status = fmuPointer_->doStep(fmiComponent_, time_, timeDelta_, fmiTrue);  
 
-
 		time_ = min(time_+timeDelta_, timeEnd_);
 
-		resultItem_ = new ResultItem();
+		resultItem_ = new ResultItem(fmuPointer_,  fmiComponent_);
 		resultItem_->setTime(time_);
-		resultItem_->addModelVariables(fmuPointer_ , fmiComponent_); //fmuPointer_->modelDescription->modelVariables);
+
+		for(std::list<ScalarVariableMeta>::iterator list_iter = metaDataListOuput.begin(); 
+			list_iter != metaDataListOuput.end(); list_iter++)
+		{
+				ScalarVariableMeta svm =  * list_iter;
+				ScalarVariable* sv = (ScalarVariable*)fmuPointer_->modelDescription->modelVariables[svm.idx];
+				if (getAlias(sv)!=enu_noAlias) continue;
+				
+				Enu  causality =  getCausality(sv);
+
+				resultItem_->addValue(sv, svm.idx);
+		}
+
+
+
+
+		
 
 		nSteps++;
 

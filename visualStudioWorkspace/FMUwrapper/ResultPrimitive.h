@@ -6,10 +6,10 @@
 
 namespace Straylight
 {  
-class DllExport ResultPrimitive
+class  ResultPrimitive
 {
 public:
-	ResultPrimitive(void);
+	ResultPrimitive(int idx_local);
 	~ResultPrimitive(void);
 	std::string  getString();
 
@@ -21,7 +21,7 @@ public:
 	std::string scalarString;
 	int type;
 
-
+	int idx;
 
 };
 

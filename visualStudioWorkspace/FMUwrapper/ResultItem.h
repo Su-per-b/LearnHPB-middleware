@@ -1,7 +1,7 @@
 #pragma once
 
 #include "stdafx.h"
-#include <list>
+#include <vector>
 #include "ResultPrimitive.h"
 
 extern "C"
@@ -12,7 +12,7 @@ extern "C"
 
 namespace Straylight
 {
-	class DllExport ResultItem
+	class  ResultItem
 	{
 
 	private:
@@ -21,23 +21,30 @@ namespace Straylight
 		fmiComponent fmiComp_;
 
 
+
+
+
 	public:
+
+		std::vector<ResultPrimitive *> resultPrimitiveList;
+
 		double time_;
 
-		std::list<ResultPrimitive *> resultPrimitiveList;
 
 
 	public:
-		ResultItem(void);
+		ResultItem(FMU* fmuPointer, fmiComponent fmiComp);
 
 		~ResultItem(void);
 
 		void setTime(double time);
 
-		void addValue(ScalarVariable*);
+		void addValue(ScalarVariable*, int idx);
 
 		void addModelVariables( FMU * fmuPointer, fmiComponent fmiComp);
 
+		void init( FMU * fmuPointer, fmiComponent fmiComp);
+		
 	    char *  getString();
 
 	};

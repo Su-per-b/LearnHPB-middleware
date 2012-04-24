@@ -57,8 +57,6 @@ public class FMU implements ResultEventListener{
     	variableListInputs_ =  new ArrayList<ScalarVariableMeta>();
     	variableListOutputs_ =  new ArrayList<ScalarVariableMeta>();
     	
-
-    	
 	}
 	
 
@@ -67,11 +65,8 @@ public class FMU implements ResultEventListener{
 	public void init(String unzippedFolder) {
 		jnaFMUWrapper_.initAll(unzippedFolder);
 
-		
-		Enu c = jnaFMUWrapper_.getVariableCausality(0);
     	variableCount_ = jnaFMUWrapper_.getVariableCount();  
 
-    	
 		ScalarVariableMeta svMetaArchtype = jnaFMUWrapper_.getSVmetaData();
 		svMetaArray_ = (ScalarVariableMeta[]) svMetaArchtype.toArray(variableCount_);
 
@@ -95,34 +90,6 @@ public class FMU implements ResultEventListener{
     		
 		}
     	
-    //	int x = 0;
-    	
-    	/*
-    	for (int i = 0; i < variableCount_; i++) {
-    		FMUvariable vr = new FMUvariable();
-    		
-    		vr.name = jnaFMUWrapper_.getVariableName(i);
-    		vr.description = jnaFMUWrapper_.getVariableDescription(i);
-    		vr.causality = jnaFMUWrapper_.getVariableCausality(i); 
-    		vr.type = jnaFMUWrapper_.getVariableType(i);
-    		
-    		
-    		
-    		variableList_.add(vr);
-    		
-    		if (vr.causality == Enu.enu_input) {
-    			variableListInputs_.add(vr);
-    		}
-    		
-    		if (vr.causality == Enu.enu_output) {
-    			variableListOutputs_.add(vr);
-    		}
-
-    		
-		}
-    	*/
-    	
-
 	}
 	
 	
@@ -142,10 +109,12 @@ public class FMU implements ResultEventListener{
 	
 	public void test() {
 		
-
+		
+		
+		
 		int sizeOfInt = 4;
 		Memory ptr2 = new Memory(variableCount_ * sizeOfInt);
-		jnaFMUWrapper_.getDataList4(ptr2);
+		//jnaFMUWrapper_.getDataList4(ptr2);
 		
 		
 		int[] ary = ptr2.getIntArray(0, variableCount_);
@@ -195,15 +164,19 @@ public class FMU implements ResultEventListener{
 	
 	
 	public void run() {
-
+		
+		ResultItemStruct r = jnaFMUWrapper_.testResultItemStruct();
+		ResultItemPrimitiveStruct[] ary = r.getPrimitives();
+		
     	while(jnaFMUWrapper_.isSimulationComplete() == 0) {
-    	//	
-        	//String str = jnaFMUWrapper_.getVariableName(1);
 
     		String str = jnaFMUWrapper_.getResultFromOneStep();
     		
+    		ResultItemStruct riStruct;
+    		riStruct = jnaFMUWrapper_.getResultStruct();
     		
-    		
+    		ResultItemPrimitiveStruct[] ary2 = riStruct.getPrimitives();
+
         	ResultEvent re = new ResultEvent(this);
         	re.resultString = str;
         	

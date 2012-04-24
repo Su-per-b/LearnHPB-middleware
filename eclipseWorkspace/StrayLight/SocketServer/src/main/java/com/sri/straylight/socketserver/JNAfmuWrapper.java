@@ -18,7 +18,6 @@ import com.sri.straylight.fmu.*;
 public interface JNAfmuWrapper extends Library {
 	
 
-	
 	void end();
 	
 	String getResultFromOneStep();
@@ -27,19 +26,7 @@ public interface JNAfmuWrapper extends Library {
 	
 	int getVariableCount();
 	
-	int[] getDataList2();
-	
-	Pointer getDataList3();
-	
-	void getDataList4(Memory buf);
-	
 	ScalarVariableMeta getSVmetaData();
-	
-	String getVariableDescription(int idx);
-	
-	String getVariableName(int idx);
-	
-	Elm getVariableType(int idx);
 	
 	void initAll(String unzipPath);
 	
@@ -47,15 +34,13 @@ public interface JNAfmuWrapper extends Library {
 	
 	void testFMU(String unzipPath);
 	
+	ResultItemStruct getResultStruct();
 	
-	ScalarVariableMeta test_a();
 	
+	ResultItemPrimitiveStruct testPrimitive();
 	
-	void test_b(ScalarVariableMeta3 sv);
+	ResultItemPrimitiveStruct testPrimitiveArray();
 	
-	//static String test1();
-	
-	//EnumEnu getVariableCausality(int idx);
-	
+	ResultItemStruct testResultItemStruct();
 	
 }

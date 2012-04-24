@@ -3,8 +3,10 @@
 
 namespace Straylight
 {
-	ResultPrimitive::ResultPrimitive(void)
+	ResultPrimitive::ResultPrimitive(int idx_local)
 	{
+
+		idx = idx_local;
 	}
 
 
@@ -32,7 +34,7 @@ namespace Straylight
 		// 
 		std::stringstream ss;
 		std::string str;
-		const char* cstr2;
+		//const char* cstr2;
 
 
 		switch (this->type) {

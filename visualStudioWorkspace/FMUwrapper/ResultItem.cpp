@@ -4,8 +4,12 @@
 namespace Straylight
 {
 
-	ResultItem::ResultItem(void)
+	ResultItem::ResultItem(FMU* fmuPointer, fmiComponent fmiComp )
 	{
+
+		fmuPointer_ = fmuPointer;
+		fmiComp_ = fmiComp;
+
 	}
 
 
@@ -22,10 +26,11 @@ namespace Straylight
  char * ResultItem::getString()
 	{
 		char * cstr;
-		std::list<ResultPrimitive*>::iterator it = resultPrimitiveList.begin();
+		std::vector<ResultPrimitive*>::iterator it = resultPrimitiveList.begin();
 
 		std::string str;
 		std::string output = "";
+
 		ResultPrimitive * rp;
 		rp = (*it);
 		str = rp->getString();
@@ -53,7 +58,7 @@ namespace Straylight
 
 
 
-	void ResultItem::addValue(ScalarVariable * sv)
+	void ResultItem::addValue(ScalarVariable * sv, int idx)
 	{
 		fmiValueReference vr;	
 		fmiReal r;
@@ -63,7 +68,7 @@ namespace Straylight
 
 		vr = getValueReference(sv);
 
-		ResultPrimitive * rp = new ResultPrimitive();
+		ResultPrimitive * rp = new ResultPrimitive(idx);
 
 
 		switch (sv->typeSpec->type) {
@@ -102,10 +107,14 @@ namespace Straylight
 		}
 
 
-		resultPrimitiveList.push_front(rp);
+		resultPrimitiveList.push_back(rp);
 
 	}
 
+
+
+
+	/*
 	void ResultItem::addModelVariables(FMU* fmuPointer, fmiComponent fmiComp)
 	{
 		int k;
@@ -126,12 +135,8 @@ namespace Straylight
 			this->addValue(sv);
 
 		}
-
-
-
-
-
-
 	}
+
+	*/
 
 }

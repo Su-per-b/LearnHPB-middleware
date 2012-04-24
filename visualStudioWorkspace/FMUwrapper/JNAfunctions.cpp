@@ -1,7 +1,7 @@
 
 
 #include "JNAfunctions.h"
-#include "FMUwrapper.h"
+
 
 
 
@@ -34,59 +34,9 @@ void testFMU (char * unzipFolder)
 
 }
 
-int * getDataList2() {
-
-	//void * ptr;
-
-	std::list<int> lst =  fmuWrapper->getDataList();
-
-	int size = lst.size();
-
-	int *arrPointer = new int[size];
-	copy(lst.begin(),lst.end(),arrPointer);
 
 
-	int test = arrPointer[2];
 
-	return arrPointer;
-
-}
-
-int * getDataList3( ) {
-
-	int* arrPointer = (int*) malloc(3 * sizeof(int));
-
-	//int *arrPointer = new int[3];
-
-	arrPointer[0] = 0;
-	arrPointer[1] = 10;
-	arrPointer[2] = 22;
-
-	//int billy [] = { 16, 2, 77, 40, 12071 }
-
-	return arrPointer;
-}
-
-void getDataList4(void * buf ) {
-	int * buf2 = (int *) buf;
-
-    std::list<int> lst =  fmuWrapper->getDataList();
-	int *arrPointer = new int[lst.size()];
-	copy(lst.begin(),lst.end(),buf2);
-}
-
-
-void getDataList5(void * buf ) {
-
-
-	int * buf2 = (int *) buf;
-
-    std::list<int> lst =  fmuWrapper->getDataList();
-
-	int *arrPointer = new int[lst.size()];
-	copy(lst.begin(),lst.end(),buf2);
-
-}
 
 struct ScalarVariableMeta *  getSVmetaData() {
 	int count = getVariableCount();
@@ -110,84 +60,7 @@ struct ScalarVariableMeta *  getSVmetaData() {
 
 
 
-void freeDataList6(ScalarVariableMeta * arrayOfMeta ) {
 
-
-	//ScalarVariableMeta
-}
-
- struct ScalarVariableMeta * test_a() {
-
-	ScalarVariableMeta * svm2 = new ScalarVariableMeta;
-
-	svm2->idx = 11;
-	svm2->name = getVariableName( 11 );
-
-	//svm2->causality = fmuWrapper->getVariableCausality(11);
-
-
-	return svm2;
-
-}
-
-void test_b(struct ScalarVariableMeta3 * svm) {
-
-//	struct ScalarVariableMeta * svm2 = new ScalarVariableMeta;
-
-	//ScalarVariableMeta3 svm;
-	svm->idx = 11;
-	svm->name = getVariableName( 11 );
-	svm->causality = getVariableCausality ( 11 );
-
-
-	//return svm2;
-
-}
-
-
-
-
-  int * getDataList() {
-	 std::list<int> lst =  fmuWrapper->getDataList();
-
-	int *arrPointer = new int[lst.size()];
-
-
-	copy(lst.begin(),lst.end(),arrPointer);
-
-
-	// new int[lst.size()];
-
-	//int my_array[] = {1,23,17,4,-5,100};
-	//void *ptr;
-
-	//ptr = my_array;
-
-
-	//int * x;
-
-	return arrPointer;
-
- }
-
-
-	
-
- const char * getVariableName(int idx) {
-	 return fmuWrapper->getVariableName(idx);
- }
-
- const char * getVariableDescription(int idx) {
-	 return fmuWrapper->getVariableDescription(idx);
- }
-
- Enu getVariableCausality(int idx) {
-	 return fmuWrapper->getVariableCausality(idx);
- }
-
-  Elm getVariableType(int idx) {
-	 return fmuWrapper->getVariableType(idx);
- }
 
 
  int getVariableCount() {
@@ -203,15 +76,11 @@ int isSimulationComplete () {
 
 void initAll (char * unzipFolder)
 {
-
 	fmuWrapper = new Straylight::FMUwrapper();
-	//char * wfmuUnzippedFolder = wstrdup (_T("C:\\Temp\\LearnGB_VAVReheat_ClosedLoop"));
 
 	int result = fmuWrapper->parseXML(unzipFolder);
 	int result2 = fmuWrapper->loadDll();
 	fmuWrapper->simulateHelperInit();
-
-	//Straylight::ResultItem * ri;
 
 }
 
@@ -236,6 +105,101 @@ char * getResultFromOneStep ()
 
 }
 
+ResultItemPrimitiveStruct * testPrimitive() {
+	ResultItemPrimitiveStruct * ps = new ResultItemPrimitiveStruct;
+
+	ps->idx = 1;
+	ps->string = _T("test xxx");
+
+	return ps;
+
+}
+
+ResultItemPrimitiveStruct * testPrimitiveArray() {
+	ResultItemPrimitiveStruct * ps = new ResultItemPrimitiveStruct[2];
+
+	ps[0].idx = 0;
+	ps[0].string = _T("test xxx");
+
+	ps[1].idx = 1;
+	ps[1].string = _T("test yyy");
+
+	return ps;
+
+}
+
+
+
+ResultItemStruct * testResultItemStruct() {
+	ResultItemPrimitiveStruct * ps = new ResultItemPrimitiveStruct[2];
+
+	ps[0].idx = 0;
+	ps[0].string = _T("test xx1");
+
+	ps[1].idx = 1;
+	ps[1].string = _T("test yyy");
+
+
+	ResultItemStruct * riStruct = new ResultItemStruct;
+
+
+	riStruct->time = 1.000;
+	riStruct->string = _T("test zzz");
+	riStruct->primitive =   ps;
+	riStruct->primitiveCount = 2;
+
+	return riStruct;
+
+}
+
+
+ ResultItemStruct * getResultStruct ()
+{
+
+	Straylight::ResultItem * ri;
+	ri = fmuWrapper->getResultItem();
+
+	ResultItemStruct *riStruct = new ResultItemStruct;
+
+	int len = ri->resultPrimitiveList.size();
+	ResultItemPrimitiveStruct * primitiveArry = new ResultItemPrimitiveStruct[len];
+
+	ResultItemPrimitiveStruct * primitiveStruct;
+
+	for (int i = 0; i < len; i++)
+	{
+		Straylight::ResultPrimitive * rp  = ri->resultPrimitiveList[i];
+
+		//primitiveArry[i] = new ResultItemPrimitiveStruct;
+
+
+		primitiveArry[i].idx = rp->idx;
+
+		std::string str = rp->getString();
+		//const char * cstr = str.c_str();
+
+
+		char * cstr = new char [str.size()+1];
+        strcpy (cstr, str.c_str());
+
+		primitiveArry[i].string = cstr;
+
+		//primitiveArry[i] = * primitiveStruct;
+
+
+
+	}
+
+	
+
+	riStruct->time = ri->time_;
+	riStruct->string = ri->getString();
+	riStruct->primitive =  primitiveArry;
+	riStruct->primitiveCount = len;
+
+	return riStruct;
+
+}
 
 
 

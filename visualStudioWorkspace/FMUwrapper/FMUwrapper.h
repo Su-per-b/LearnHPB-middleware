@@ -11,9 +11,7 @@
 
 
 char * wstrdup(_TCHAR * );
-
 int wstrlen(_TCHAR * );
-
 void init(_TCHAR * );
 
 
@@ -22,20 +20,25 @@ struct ScalarVariableMeta {
 	  const char * name;
 	  int idx;
 	  Enu causality;
-
-} ;
-
-struct ScalarVariableMeta2 {
-  const char * name;
-  int idx;
-  //Enu causality;
 };
 
- struct ScalarVariableMeta3 {
-  const char * name;
-  int idx;
-  Enu causality;
-} ;
+typedef struct ResultItemPrimitiveStruct_ {
+	  int idx;
+	  const char * string;
+} ResultItemPrimitiveStruct;
+
+
+typedef struct ResultItemStruct_ {
+	  double time;
+	  const char * string;
+	  int primitiveCount;
+	  ResultItemPrimitiveStruct * primitive;
+} ResultItemStruct;
+
+
+
+
+
 
 
 namespace Straylight
@@ -98,7 +101,7 @@ namespace Straylight
 		void unzip();
 
 		std::list<ScalarVariableMeta> metaDataList;
-		std::list<int> metaDataListTest;
+		std::list<ScalarVariableMeta> metaDataListOuput;
 
 		void getModuleFolderPath(_TCHAR * szDir);
 		ResultItem* resultItem_;
@@ -108,6 +111,7 @@ namespace Straylight
 	private:
 		int loadDLLhelper(const char* , FMU *);
 		ModelDescription* parseHelper(const char*);
+		int variableCount_;
 
 
 	};

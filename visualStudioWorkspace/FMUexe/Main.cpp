@@ -17,47 +17,25 @@ void test5() {
 
 	int size =sizeof(int);
 
-	//const char * str = testcpp();
-
 	initAll(_T("C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop"));
-	//int * ptr = getDataList2();
-
-	int sizeOfInt = 4;
-	int count = getVariableCount();
-	void * buf= malloc(count * sizeOfInt);
-	getDataList5 (buf);
-
-
-
 	struct ScalarVariableMeta * svmAry  = getSVmetaData();
 
-
-	//struct ScalarVariableMeta svm = svmAry[1];
-
-	//struct ScalarVariableMeta * arrayMeta;
-//	arrayMeta = getDataList6();
-
-
-	//arrayMeta = 
-
-
-
 	int len = getVariableCount();
-	int i;
-
-	for (i=0; i<len; i++){
-
-		const char * name = getVariableName(i);
-		const char * description = getVariableDescription(i);
-		int c = getVariableCausality(i);
-
-		int x = 0;
-
-	}
-
 
     while(isSimulationComplete() == 0) {
         char * str = getResultFromOneStep();
+
+
+
+		ResultItemStruct * ri = testResultItemStruct();
+
+
+		ResultItemStruct * riStruct;
+		riStruct = getResultStruct();
+
+		//int pLen = 
+
+
 		printf ("result: %s \n", str);
     }
 
