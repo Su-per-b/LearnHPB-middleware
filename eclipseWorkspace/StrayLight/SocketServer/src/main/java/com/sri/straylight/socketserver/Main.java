@@ -1,17 +1,7 @@
 package com.sri.straylight.socketserver;
 
+import com.sri.straylight.fmuWrapper.*;
 
-import com.sun.jna.DefaultTypeMapper;
-import com.sun.jna.Library; 
-import com.sun.jna.Native;
-import com.sun.jna.Platform;
-
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.sri.straylight.fmu.*;
 
 
 public class Main 
@@ -30,12 +20,12 @@ public class Main
 		config = ConfigHelper.load();
 		System.setProperty("jna.library.path", config.dllFolder);
 		
-		SocketServer ss = new SocketServer();
+		//SocketServer ss = new SocketServer();
 		
-		ss.showBanner();
-		ss.start();
+		//ss.showBanner();
+		//ss.start();
 		
-	//	run();
+		test2();
 			
 
 
@@ -44,13 +34,16 @@ public class Main
     
     public static void test( ) {
     	
+    	
+    	
+    	
     	fmu_ = new FMU(config.testFmuFile);
     	fmu_.unzip();
     	fmu_.init(unzipFolder);
     	
     }
     
-    public static void run( ) {
+    public static void test2( ) {
     	
 		fmu_ = new FMU(config.testFmuFile);
 		fmu_.init(unzipFolder);

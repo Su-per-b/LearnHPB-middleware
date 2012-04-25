@@ -7,8 +7,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocket.Connection;
 
-import com.sri.straylight.fmu.ResultItemPrimitiveStruct;
-import com.sri.straylight.fmu.ScalarVariableMeta;
+
+import com.sri.straylight.fmuWrapper.*;
 
 
 

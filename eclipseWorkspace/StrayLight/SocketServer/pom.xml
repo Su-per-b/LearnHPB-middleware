@@ -25,7 +25,13 @@
 			<artifactId>Common</artifactId>
 			<version>0.0.2</version>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>com.sri</groupId>
+			<artifactId>FMUwrapper</artifactId>
+			<version>0.0.2</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
