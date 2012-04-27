@@ -8,6 +8,11 @@
 
 
 
+//void* callback(char *)
+
+Straylight::FMUwrapper *  fmuWrapper;
+
+
 extern "C" DllExport void end();
 
 extern "C" DllExport struct ScalarVariableMeta * getSVmetaData();
@@ -26,17 +31,10 @@ extern "C" DllExport void testFMU(char *);
 
 extern "C" DllExport ResultItemStruct * getResultStruct();
 
-
-
 extern "C" DllExport  ResultItemPrimitiveStruct * testPrimitive();
 
 extern "C" DllExport  ResultItemPrimitiveStruct * testPrimitiveArray();
 
 extern "C" DllExport  ResultItemStruct * testResultItemStruct();
 
-
-
-
-
-
-
+extern "C" DllExport int registerCallback(void* callback(char *));

@@ -12,10 +12,23 @@ int _tmain(int argc, _TCHAR* argv[])
 	return 0;
 }
 
+void callback(char * msg) {
+	printf ("Main.exe callback: %s \n", msg);
+}
 
 void test5() {
 
 	int size =sizeof(int);
+
+    void *(*foo)(char *);
+  //  foo = callback;
+
+
+
+	//void * (*callbackFn)(char *) = &callback;
+
+	//registerCallback(foo);
+
 
 	initAll(_T("C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop"));
 	struct ScalarVariableMeta * svmAry  = getSVmetaData();

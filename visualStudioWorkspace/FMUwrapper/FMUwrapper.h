@@ -37,6 +37,11 @@ typedef struct ResultItemStruct_ {
 
 
 
+typedef struct Functions_ {
+	  int (*open)(const char*,int);
+	  int (*close)(int);
+} Functions;
+
 
 
 
@@ -73,7 +78,7 @@ namespace Straylight
 		double timeDelta_;
 		ModelDescription* modelDescription_;
 		char* getXmlFilePath();
-
+		//void (*callbackFn)(char *);
 
 
 
@@ -106,6 +111,7 @@ namespace Straylight
 		void getModuleFolderPath(_TCHAR * szDir);
 		ResultItem* resultItem_;
 
+		int registerCallback(void (*callback)(char *));
 
 	//private functions
 	private:

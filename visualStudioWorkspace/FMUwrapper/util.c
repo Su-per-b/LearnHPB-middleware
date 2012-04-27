@@ -28,6 +28,17 @@
 int debug = 0;  // Control for debug information
 int debugvs = 1;  // Control for debug information to Output window in Visual Studio
 
+
+
+
+
+
+void utilRegisterCallback(void* callback(char *))
+{
+	utilCallbackFn = callback;
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 /// Translate the double variable to string variable.
 ///
@@ -84,7 +95,14 @@ void printfDebugHelper(const char* str1, const char* str2 ) {
 	char msg[256];
 
 	sprintf (msg, str1, str2);
+
+	//if (utilCallbackFn != NULL) {
+		utilCallbackFn(msg);
+	//}
+
 	OutputDebugString(msg);
+
+
 }
 
 
@@ -106,8 +124,6 @@ void printfDebug(const char* str1, const char* str2){
 
   if (debugvs > 0)
   {
-
-
 	  printfDebugHelper(str1, str2);
   }
 

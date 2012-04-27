@@ -5,9 +5,16 @@
 
 
 
-Straylight::FMUwrapper *  fmuWrapper;
+int registerCallback(void* callback(char *))
+{
 
+	//utilCallbackFn = callback;
+	//callbackFn2 = &callback;
 
+    //utilCallbackFn(_T("in Start called from Java"));
+
+   return 0;
+}
 
 void testFMU (char * unzipFolder)
 {
@@ -78,7 +85,12 @@ void initAll (char * unzipFolder)
 {
 	fmuWrapper = new Straylight::FMUwrapper();
 
+
+	//fmuWrapper->registerCallback(callbackFn);
+
 	int result = fmuWrapper->parseXML(unzipFolder);
+
+
 	int result2 = fmuWrapper->loadDll();
 	fmuWrapper->simulateHelperInit();
 

@@ -51,6 +51,32 @@ namespace Straylight
 	}
 
 
+	int FMUwrapper::registerCallback(void (*callback)(char *))
+	{
+
+		::callbackFn = callback;
+
+		if (callbackFn != NULL) {
+			callbackFn(_T("FMUwrapper::registerCallback"));
+			//utilRegisterCallback (callbackFn);
+		}
+	   return 0;
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////////
+	/// Print formatted debug message
+	///
+	///\param str1 Message to be printed for debugging 
+	///\param str2 String variable to be printed for debugging
+	//////////////////////////////////////////////////////////////////////////////
+	void printfDebug(const char* str1, const char* str2){
+		
+		printf (str1, str2);
+
+	}
+
 
 	/*********************************************//**
 	/* 
@@ -63,7 +89,11 @@ namespace Straylight
 	 *********************************************/
 	int FMUwrapper::loadDll( ) {
 
-		printf ("FMUwrapper::loadDll unzipFolderPath_: %s\n", unzipFolderPath_);
+		printfDebug ("FMUwrapper::loadDll unzipFolderPath_: %s\n", unzipFolderPath_);
+
+
+		callbackFn(_T("FMUwrapper::loadDll unzipFolderPath_:"));
+
 
 		const char* modelId = getModelIdentifier(fmu_.modelDescription);
 
@@ -221,7 +251,7 @@ namespace Straylight
 		fmiFlag =  fmuPointer_->initializeSlave(fmiComponent_, t0, fmiTrue, timeEnd_);
 
 		
-		printf("!!Initialized fmu!\n");
+		printf("Initialized fmu!\n");
 		fflush(stdout);		
 
 		if (fmiFlag > fmiWarning) {

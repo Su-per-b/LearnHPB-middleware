@@ -2,6 +2,7 @@ package com.sri.straylight.fmuWrapper;
 
 
 import com.sri.straylight.common.Unzip;
+import com.sun.jna.Callback;
 import com.sun.jna.DefaultTypeMapper;
 import com.sun.jna.Library;
 import com.sun.jna.Memory;
@@ -19,18 +20,19 @@ import java.util.Map;
 
 
 
-public class FMU implements ResultEventListener {
+public class FMU  {
 
 	private String fmuFilePath_;
 	private String fmuFileName_;
+	private String nativeLibFolder_;
 	
 	private String unzipfolder_;
 	private String dllPath_;
 	private int variableCount_;
 	private JNAfmuWrapper jnaFMUWrapper_;
-	private ArrayList<ScalarVariableMeta> variableListOther_;
-	private ArrayList<ScalarVariableMeta> variableListInputs_;
-	private ArrayList<ScalarVariableMeta> variableListOutputs_;
+	public ArrayList<ScalarVariableMeta> variableListOther_;
+	public ArrayList<ScalarVariableMeta> variableListInputs_;
+	public ArrayList<ScalarVariableMeta> variableListOutputs_;
 	
 	private HashMap variableListAll_;
 	
@@ -44,15 +46,16 @@ public class FMU implements ResultEventListener {
 	public ResultEventDispatacher disp;
 	
 		
-	public FMU(String fmuFileName) {
+	public FMU(String fmuFilePath, String nativeLibFolder) {
 		
-		fmuFilePath_ = fmuFileName;
+		nativeLibFolder_ = nativeLibFolder;
+		fmuFilePath_ = fmuFilePath;
 		
 		loadLibrary();
 		
 		//add event listener
 		disp = new ResultEventDispatacher();
-    	disp.addListener(this);
+    	//disp.addListener(this);
     	
     	//initialize lists
     	variableListOther_ =  new ArrayList<ScalarVariableMeta>();
@@ -103,20 +106,33 @@ public class FMU implements ResultEventListener {
 	}
 	
 	
+	
+	
 	public void loadLibrary() {
 		
+    	System.setProperty("jna.library.path", nativeLibFolder_);
+    	
 		Map<String, Object> options = new HashMap<String, Object>();
 		HlTypeMapper mp = new HlTypeMapper();
 		
 		options.put(Library.OPTION_TYPE_MAPPER, mp);
 		jnaFMUWrapper_ = (JNAfmuWrapper ) Native.loadLibrary("FMUwrapper", JNAfmuWrapper.class, options);
 		
+		
+		JNAfmuWrapper.MyCallback fnc = new JNAfmuWrapper.MyCallback() {
+			
+		      public boolean callback(String msg) {
+		          System.out.println(msg);
+		           return true;                  
+		       }
+		 };
+		 
+		
+		jnaFMUWrapper_.registerCallback(fnc);
+		
 	}
 	
-	
 
-	
-	
 
 	public void unzip() {
 		
@@ -129,12 +145,7 @@ public class FMU implements ResultEventListener {
 	}
 	
 	
-	public void eventUpdate(ResultEvent re) {
-		
 
-    	
-    	
-	}
 
 	
 	public ArrayList<ScalarVariableMeta> getInputs() {

@@ -1,9 +1,5 @@
 package com.sri.straylight.fmuWrapper;
 
-import com.sun.jna.FromNativeContext;
-import com.sun.jna.NativeMapped;
-import com.sun.jna.ToNativeContext;
-
 
 public enum Enu implements JnaEnum<Enu>  {
 	
@@ -21,7 +17,7 @@ public enum Enu implements JnaEnum<Enu>  {
 	
 	
 	public Enu getForValue(int i) {
-	    for (Enu o : this.values()) {
+	    for (Enu o : Enu.values()) {
 	        if (o.getIntValue() == i) {
 	            return o;
 	        }

@@ -25,6 +25,10 @@
 #include <sys/stat.h> // for creating dirs on Linux
 #endif
 
+void * (*utilCallbackFn)(char *);
+
+
+void utilRegisterCallback(void* callback(char *));
 
 void doubleToCommaString(char* buffer, double r);
 
