@@ -20,7 +20,6 @@ public:
 	bool scalarBool;
 	std::string scalarString;
 	int type;
-
 	int idx;
 
 };

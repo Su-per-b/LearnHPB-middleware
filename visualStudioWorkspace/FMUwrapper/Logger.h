@@ -1,3 +1,5 @@
+#pragma once
+
 #ifdef _MSC_VER
 #include <windows.h>
 #define WINDOWS 1
@@ -10,7 +12,6 @@
 
 #include <tchar.h>
 #include "stdafx.h"
-#include "ResultSet.h"
 #include "ResultItem.h"
 #include <sstream>
 #include <list>
@@ -36,6 +37,10 @@ namespace Straylight
 		void doubleToCommaString(char* buffer, double r);
 		void printDebug(const char* msg);
 		void printDebug2(const char* str1, const char* str2);
+
+		void printDebug5(const char* str1, const char* str2,
+			const char* str3, const char* str4, const char* str5);
+	
 		void printDebugHelper(const char* str1, const char* str2 );
 		void printError(const char* msg);
 		void printfError(const char* str1, const char* str2);

@@ -21,9 +21,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx_c.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\qtronic\fmiPlatformTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -45,9 +42,6 @@
     <ClInclude Include="include\qtronic\stack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ResultSet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ResultItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -66,6 +60,9 @@
     <ClInclude Include="FMUlogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Structs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -75,9 +72,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="include\qtronic\stack.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ResultSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ResultItem.cpp">

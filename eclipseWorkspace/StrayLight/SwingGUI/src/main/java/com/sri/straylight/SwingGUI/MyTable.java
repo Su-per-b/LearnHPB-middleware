@@ -81,7 +81,7 @@ import com.sri.straylight.fmuWrapper.*;
 public class MyTable extends JPanel implements ResultEventListener  {
 	
 	
-    private boolean DEBUG = false;
+    private boolean DEBUG = true;
     
     
     private final JPanel topPanel = new JPanel();

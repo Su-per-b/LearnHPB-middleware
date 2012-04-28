@@ -9,6 +9,8 @@ namespace Straylight
 
 	FMU FMUlogger::fmu;
 
+	Logger* FMUlogger::logger; 
+
 
 	/*********************************************//**
 	* Default constructor. 
@@ -164,7 +166,10 @@ namespace Straylight
 		// Print the final message
 		if (!instanceName) instanceName = "?";
 		if (!category) category = "?";
-		printf("fmuLogger - status:%s - instanceName:%s - category:%s - msg:%s\n", fmiStatusToString(status), instanceName, category, msg);
+
+		logger->printDebug5("fmuLogger - status:%s - instanceName:%s - category:%s - msg:%s\n", fmiStatusToString(status), instanceName, category, msg);
+
+		//printf();
 	}
 
 

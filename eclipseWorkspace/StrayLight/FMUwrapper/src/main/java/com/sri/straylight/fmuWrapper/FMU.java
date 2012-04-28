@@ -23,18 +23,16 @@ import java.util.Map;
 public class FMU  {
 
 	private String fmuFilePath_;
-	private String fmuFileName_;
 	private String nativeLibFolder_;
 	
 	private String unzipfolder_;
-	private String dllPath_;
 	private int variableCount_;
 	private JNAfmuWrapper jnaFMUWrapper_;
 	public ArrayList<ScalarVariableMeta> variableListOther_;
 	public ArrayList<ScalarVariableMeta> variableListInputs_;
 	public ArrayList<ScalarVariableMeta> variableListOutputs_;
 	
-	private HashMap variableListAll_;
+	private HashMap<Integer, ScalarVariableMeta> variableListAll_;
 	
 	private ScalarVariableMeta[] svMetaArray_;
 	
@@ -53,26 +51,21 @@ public class FMU  {
 		disp = new ResultEventDispatacher();
 		
 		loadLibrary();
-		
-		//add event listener
-
-    	//disp.addListener(this);
     	
     	//initialize lists
     	variableListOther_ =  new ArrayList<ScalarVariableMeta>();
     	variableListInputs_ =  new ArrayList<ScalarVariableMeta>();
     	variableListOutputs_ =  new ArrayList<ScalarVariableMeta>();
-    	variableListAll_ = new HashMap();
-    	//
-    	//Map<Integer, Integer> m = new HashMap<String, Integer>();
-    	
+    	variableListAll_ = new HashMap<Integer, ScalarVariableMeta>();
+
 	}
 	
 
 	
 	
 	public void init(String unzippedFolder) {
-		jnaFMUWrapper_.initAll(unzippedFolder);
+		
+		jnaFMUWrapper_.init(unzippedFolder);
 
     	variableCount_ = jnaFMUWrapper_.getVariableCount();  
 
@@ -84,11 +77,8 @@ public class FMU  {
 
     		ScalarVariableMeta svm = svMetaArray_[i];
     		Enu causality = svm.getCausalityEnum();
-    		
-    		
-    		variableListAll_.put(new Integer(svm.idx), svm);
-    		
 
+    		variableListAll_.put(new Integer(svm.idx), svm);
     		
     		switch (causality) {
     			case enu_input: 
@@ -174,16 +164,12 @@ public class FMU  {
 		ResultItemPrimitiveStruct[] ary = resultItemStruct.getPrimitives();
 		
 		for (int i = 0; i < len; i++) {
-			int idx = ary[i].idx;
-			
 			ScalarVariableMeta svm = (ScalarVariableMeta) variableListAll_.get(new Integer (i));  
-			
 			result += "      " +  svm.name + " : " +  ary[i].string + " <br /> \n";
-	
 		}
 
 		result +=  "<br /> \n";
-		System.out.println(result);
+		//System.out.println(result);
 	
 		
 		ResultEvent re = new ResultEvent(this);
@@ -202,15 +188,11 @@ public class FMU  {
 		
     	while(jnaFMUWrapper_.isSimulationComplete() == 0) {
 
-    		String str = jnaFMUWrapper_.getResultFromOneStep();
-    		
-    		ResultItemStruct riStruct;
-    		riStruct = jnaFMUWrapper_.getResultStruct();
+    		int result = jnaFMUWrapper_.doOneStep();
+    		ResultItemStruct riStruct = jnaFMUWrapper_.getResultStruct();
 
-        	
         	fireEvent(riStruct);
         	
-
     	}
     	
     	jnaFMUWrapper_.end();

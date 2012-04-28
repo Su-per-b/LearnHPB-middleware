@@ -17,24 +17,25 @@ import com.sun.jna.Pointer;
 
 public interface JNAfmuWrapper extends Library {
 	
-
+	
+	int doOneStep();
+	
 	void end();
 	
-	String getResultFromOneStep();
-	
-	Enu getVariableCausality(int idx);
+	ResultItemStruct getResultStruct();
 	
 	int getVariableCount();
 	
 	ScalarVariableMeta getSVmetaData();
 	
-	void initAll(String unzipPath);
+	void init(String unzipPath);
 	
 	int isSimulationComplete();
 	
-	void testFMU(String unzipPath);
+	public int registerCallback (MyCallback callback);
 	
-	ResultItemStruct getResultStruct();
+	//**Tests**//
+	void testFMU(String unzipPath);
 	
 	ResultItemPrimitiveStruct testPrimitive();
 	
@@ -44,6 +45,7 @@ public interface JNAfmuWrapper extends Library {
 	
 
 	
+	
 	public interface MyCallback extends Callback {
 		
 		public boolean callback(String msg);
@@ -51,7 +53,7 @@ public interface JNAfmuWrapper extends Library {
 	 }
 	
 	
-	public int registerCallback (MyCallback callback);
+	
 	
 	
 }

@@ -31,7 +31,7 @@ namespace Straylight
 
 		logger_ = new Logger();
 		FMUlogger::fmu = fmu_;
-
+		FMUlogger::logger = logger_;
 	}
 
 
@@ -208,7 +208,7 @@ namespace Straylight
 
 		//bool success = SetCurrentDirectory(unzipFolderPath_);
 		GetCurrentDirectory(MAX_PATH, currentDirectory);
-		printf("currentDirectory: %s\n", currentDirectory);	
+		logger_->printDebug2("currentDirectory: %s\n", currentDirectory);	
 
 		loggingOn = 1;
 		ModelDescription* md;            // handle to the parsed XML file        
@@ -224,22 +224,29 @@ namespace Straylight
 		nSteps = 0;
 
 		// Run the simulation
+
+		std::string s;
+
+		// convert double b to string s
+		{ std::ostringstream ss;
+			ss << timeEnd_;
+			s = ss.str();
+		}
+
 		printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d'\n", 
-			unzipFolderPath_, timeEnd_, timeDelta_, loggingOn);
+			unzipFolderPath_, s.c_str(), timeDelta_, loggingOn);
+
 
 		vars = fmuPointer_->modelDescription->modelVariables;		// add it to get variables
-		printf("Instantiate the fmu\n");
+		logger_->printDebug2("Instantiate the fmu%s\n", "");
+
 		fflush(stdout);		
 		// instantiate the fmu
 		md = fmuPointer_->modelDescription;
 		guid = getString(md, att_guid);
-		printf("Got GUID = %s!\n", guid);
+
+		logger_->printDebug2("Got GUID = %s!\n", guid);
 		fflush(stdout);		
-
-	//	int (FMUlogger::log)(fmiComponent c, fmiString instanceName, fmiStatus status,
-       //        fmiString category, fmiString message, ...) = fmuLogger_->log;
-
-		//double (FMUlogger::funcPtr)( long ) = FMUlogger::log;
 
 		callbacks.logger = FMUlogger::log;
 		callbacks.allocateMemory = calloc;
@@ -274,13 +281,7 @@ namespace Straylight
 			return 1;																
 		}
 
-		//vry_[0] = getValueReference(getVariableByName(md, "TrmSou"));
-
-
 		logger_->printDebug("OUTPUT: \n");
-
-		//std::list<ScalarVariableMeta> myList;
-
 		int i;
 
 		if (md->modelVariables)
@@ -288,11 +289,9 @@ namespace Straylight
 		for (i=0; md->modelVariables[i]; i++){
 			ScalarVariable* sv = (ScalarVariable*)md->modelVariables[i];
 			
-
 			Enu causality;  // input, output, internal or none
 			causality = getCausality(sv);
 			
-
 			ScalarVariableMeta meta;
 			
 			meta.idx = i;
@@ -384,7 +383,6 @@ namespace Straylight
 
 	void FMUwrapper::doOneStep() {
 
-
 		// Advance to next time step
 		status = fmuPointer_->doStep(fmiComponent_, time_, timeDelta_, fmiTrue);  
 
@@ -404,11 +402,6 @@ namespace Straylight
 
 				resultItem_->addValue(sv, svm.idx);
 		}
-
-
-
-
-		
 
 		nSteps++;
 

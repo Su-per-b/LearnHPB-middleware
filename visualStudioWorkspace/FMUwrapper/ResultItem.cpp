@@ -114,29 +114,4 @@ namespace Straylight
 
 
 
-	/*
-	void ResultItem::addModelVariables(FMU* fmuPointer, fmiComponent fmiComp)
-	{
-		int k;
-
-
-
-		fmuPointer_ = fmuPointer;
-		fmiComp_ = fmiComp;
-
-		ScalarVariable** vars = fmuPointer->modelDescription->modelVariables;
-
-
-		for (k=0; vars[k]; k++) {
-			ScalarVariable* sv = vars[k];
-			if (getAlias(sv)!=enu_noAlias) continue;
-			if (getCausality(sv) != enu_output) continue; // only get output variable
-
-			this->addValue(sv);
-
-		}
-	}
-
-	*/
-
 }

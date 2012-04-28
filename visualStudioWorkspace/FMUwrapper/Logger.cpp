@@ -108,6 +108,27 @@ namespace Straylight
 
 	}
 
+	void Logger::printDebug5(const char* str1, const char* str2, const char* str3,
+		const char* str4, const char* str5) {
+
+
+		if (debug == 1)
+		{
+			fprintf(stdout, "Debug: ");
+			fprintf(stdout, str1, str2, str3, str4, str5);
+		}
+
+		if (debugvs > 0)
+		{
+			char msg[256];
+
+			sprintf (msg, str1, str2, str3, str4, str5);
+			printDebugHelper("%s\n", msg);
+
+		}
+
+	}
+
 
 	//////////////////////////////////////////////////////////////////////////////
 	/// Print debug message to the console in Visual Studio

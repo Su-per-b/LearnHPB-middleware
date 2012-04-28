@@ -1,7 +1,9 @@
+#pragma once
 
 #include <tchar.h>
 #include "stdafx.h"
 
+#include "Logger.h"
 
 
 namespace Straylight
@@ -22,8 +24,10 @@ namespace Straylight
 
 		static void log(fmiComponent c, fmiString instanceName, fmiStatus status,
 						fmiString category, fmiString message, ...);
+
 		static FMU fmu; // the fmu to simulate
 
+		static Logger* logger; 
 
 	//private functions
 	private:

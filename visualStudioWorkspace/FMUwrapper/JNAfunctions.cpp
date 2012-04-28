@@ -1,26 +1,34 @@
-
-
 #include "JNAfunctions.h"
 
 
 
-
-int registerCallback(void (*callbackPtrArg)(char *))
+int doOneStep()
 {
-
-	callbackPtr = callbackPtrArg;
-
-
-    callbackPtr(_T("in Start called from Java"));
+   fmuWrapper->doOneStep();
 
    return 0;
 }
 
+
+void end() {
+
+	fmuWrapper->printSummary();
+	delete fmuWrapper;
+}
+
+
+int registerCallback(void (*callbackPtrArg)(char *))
+{
+	callbackPtr = callbackPtrArg;
+    callbackPtr(_T("JNAfuntions: registerCallback"));
+
+   return 0;
+}
+
+
 void testFMU (char * unzipFolder)
 {
-
 	fmuWrapper = new Straylight::FMUwrapper();
-	//char * wfmuUnzippedFolder = wstrdup (unzipFolder);
 
 	int result = fmuWrapper->parseXML(unzipFolder);
 	int result2 = fmuWrapper->loadDll();
@@ -40,7 +48,6 @@ void testFMU (char * unzipFolder)
 	delete fmuWrapper;
 
 }
-
 
 
 
@@ -67,9 +74,6 @@ struct ScalarVariableMeta *  getSVmetaData() {
 
 
 
-
-
-
  int getVariableCount() {
 	 return fmuWrapper->getVariableCount();
  }
@@ -81,41 +85,17 @@ int isSimulationComplete () {
 }
 
 
-void initAll (char * unzipFolder)
+void init (char * unzipFolder)
 {
 	fmuWrapper = new Straylight::FMUwrapper();
-
-
 	fmuWrapper->registerCallback(callbackPtr);
 
 	int result = fmuWrapper->parseXML(unzipFolder);
-
-
 	int result2 = fmuWrapper->loadDll();
 	fmuWrapper->simulateHelperInit();
 
 }
 
-
-void end() {
-
-	fmuWrapper->printSummary();
-	delete fmuWrapper;
-}
-
-
-char * getResultFromOneStep ()
-{
-
-	Straylight::ResultItem * ri;
-
-	fmuWrapper->doOneStep();
-	ri = fmuWrapper->getResultItem();
-	char * str = ri->getString();
-
-	return str;
-
-}
 
 ResultItemPrimitiveStruct * testPrimitive() {
 	ResultItemPrimitiveStruct * ps = new ResultItemPrimitiveStruct;
@@ -167,10 +147,8 @@ ResultItemStruct * testResultItemStruct() {
 
  ResultItemStruct * getResultStruct ()
 {
-
 	Straylight::ResultItem * ri;
 	ri = fmuWrapper->getResultItem();
-
 	ResultItemStruct *riStruct = new ResultItemStruct;
 
 	int len = ri->resultPrimitiveList.size();
@@ -182,27 +160,13 @@ ResultItemStruct * testResultItemStruct() {
 	{
 		Straylight::ResultPrimitive * rp  = ri->resultPrimitiveList[i];
 
-		//primitiveArry[i] = new ResultItemPrimitiveStruct;
-
-
 		primitiveArry[i].idx = rp->idx;
-
 		std::string str = rp->getString();
-		//const char * cstr = str.c_str();
-
 
 		char * cstr = new char [str.size()+1];
         strcpy (cstr, str.c_str());
-
 		primitiveArry[i].string = cstr;
-
-		//primitiveArry[i] = * primitiveStruct;
-
-
-
 	}
-
-	
 
 	riStruct->time = ri->time_;
 	riStruct->string = ri->getString();
@@ -215,38 +179,3 @@ ResultItemStruct * testResultItemStruct() {
 
 
 
-void init(_TCHAR * fmuSubPath) {
-
-	fmuWrapper = new Straylight::FMUwrapper();
-	char * wfmuUnzippedFolder = wstrdup (fmuSubPath);
-
-	int result = fmuWrapper->parseXML(wfmuUnzippedFolder);
-	int result2 = fmuWrapper->loadDll();
-	fmuWrapper->simulateHelperInit();
-
-}
-
-
-char * wstrdup(_TCHAR * wSrc)
-{
-	int l_idx=0;
-	int l_len = wstrlen(wSrc);
-	char * l_nstr = (char*)malloc(l_len);
-	if (l_nstr) {
-		do {
-			l_nstr[l_idx] = (char)wSrc[l_idx];
-			l_idx++;
-		} while ((char)wSrc[l_idx]!=0);
-	}
-	l_nstr[l_idx] = 0;
-	return l_nstr;
-}
-
-
-// returns number of TCHARs in string
-int wstrlen(_TCHAR * wstr)
-{
-    int l_idx = 0;
-    while (((char*)wstr)[l_idx]!=0) l_idx+=2;
-    return l_idx;
-}
