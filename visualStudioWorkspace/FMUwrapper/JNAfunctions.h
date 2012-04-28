@@ -8,7 +8,8 @@
 
 
 
-//void* callback(char *)
+
+void (*callbackPtr)(char *);
 
 Straylight::FMUwrapper *  fmuWrapper;
 
@@ -37,4 +38,4 @@ extern "C" DllExport  ResultItemPrimitiveStruct * testPrimitiveArray();
 
 extern "C" DllExport  ResultItemStruct * testResultItemStruct();
 
-extern "C" DllExport int registerCallback(void* callback(char *));
+extern "C" DllExport int registerCallback(void (*callbackPtr)(char *));

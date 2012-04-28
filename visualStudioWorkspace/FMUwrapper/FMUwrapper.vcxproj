@@ -87,6 +87,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="FMUlogger.h" />
     <ClInclude Include="include\qtronic\fmi_cs.h" />
     <ClInclude Include="JNAfunctions.h" />
     <ClInclude Include="FMUwrapper.h" />
@@ -95,13 +96,12 @@
     <ClInclude Include="include\qtronic\fmiModelTypes.h" />
     <ClInclude Include="include\qtronic\fmiPlatformTypes.h" />
     <ClInclude Include="include\qtronic\stack.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="ResultItem.h" />
     <ClInclude Include="ResultPrimitive.h" />
     <ClInclude Include="ResultSet.h" />
     <ClInclude Include="stdafx_c.h" />
-    <ClInclude Include="util.h" />
     <ClInclude Include="include\qtronic\xml_parser.h" />
-    <ClInclude Include="mainHelper.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -113,15 +113,15 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="FMUlogger.cpp" />
     <ClCompile Include="JNAfunctions.cpp" />
     <ClCompile Include="FMUwrapper.cpp" />
     <ClCompile Include="include\qtronic\stack.c" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="ResultItem.cpp" />
     <ClCompile Include="ResultPrimitive.cpp" />
     <ClCompile Include="ResultSet.cpp" />
-    <ClCompile Include="util.c" />
     <ClCompile Include="include\qtronic\xml_parser.c" />
-    <ClCompile Include="mainHelper.c" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\expat-2.0.1\lib\expat.vcxproj">

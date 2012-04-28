@@ -50,11 +50,12 @@ public class FMU  {
 		
 		nativeLibFolder_ = nativeLibFolder;
 		fmuFilePath_ = fmuFilePath;
+		disp = new ResultEventDispatacher();
 		
 		loadLibrary();
 		
 		//add event listener
-		disp = new ResultEventDispatacher();
+
     	//disp.addListener(this);
     	
     	//initialize lists
@@ -122,7 +123,14 @@ public class FMU  {
 		JNAfmuWrapper.MyCallback fnc = new JNAfmuWrapper.MyCallback() {
 			
 		      public boolean callback(String msg) {
-		          System.out.println(msg);
+		          //System.out.println(msg);
+		    	  
+		  		ResultEvent re = new ResultEvent(this);
+		    	re.resultString = msg;
+		    	re.resultType = ResultType.resultType_debug_message;
+		    	
+		    	disp.fireEvent(re);
+		    	
 		           return true;                  
 		       }
 		 };

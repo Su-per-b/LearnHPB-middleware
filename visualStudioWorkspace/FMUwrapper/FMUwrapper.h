@@ -4,10 +4,11 @@
 #include "stdafx.h"
 #include "ResultSet.h"
 #include "ResultItem.h"
-
+#include "Logger.h"
 
 #include <sstream>
 #include <list>
+#include "FMUlogger.h"
 
 
 char * wstrdup(_TCHAR * );
@@ -79,6 +80,9 @@ namespace Straylight
 		ModelDescription* modelDescription_;
 		char* getXmlFilePath();
 		//void (*callbackFn)(char *);
+		Logger* logger_;
+		FMUlogger fmuLogger_;
+		void* getAdr(const char*);
 
 
 
@@ -111,7 +115,9 @@ namespace Straylight
 		void getModuleFolderPath(_TCHAR * szDir);
 		ResultItem* resultItem_;
 
-		int registerCallback(void (*callback)(char *));
+		int registerCallback(void (*callbackPtrArg)(char *));
+
+
 
 	//private functions
 	private:

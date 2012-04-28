@@ -5,13 +5,13 @@
 
 
 
-int registerCallback(void* callback(char *))
+int registerCallback(void (*callbackPtrArg)(char *))
 {
 
-	//utilCallbackFn = callback;
-	//callbackFn2 = &callback;
+	callbackPtr = callbackPtrArg;
 
-    //utilCallbackFn(_T("in Start called from Java"));
+
+    callbackPtr(_T("in Start called from Java"));
 
    return 0;
 }
@@ -86,7 +86,7 @@ void initAll (char * unzipFolder)
 	fmuWrapper = new Straylight::FMUwrapper();
 
 
-	//fmuWrapper->registerCallback(callbackFn);
+	fmuWrapper->registerCallback(callbackPtr);
 
 	int result = fmuWrapper->parseXML(unzipFolder);
 

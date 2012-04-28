@@ -5,6 +5,5 @@
 
 
 #include <expat.h>
-#include "util.h"
 #include <stdio.h>
 #include "fmi_cs.h"

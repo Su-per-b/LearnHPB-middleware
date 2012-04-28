@@ -33,3 +33,5 @@ __pycache__
 /eclipseWorkspace/Maven Debug/bin
 /visualStudioWorkspace/Release
 /visualStudioWorkspace/_ReSharper.straylight
+*.log
+dsres.mat

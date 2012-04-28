@@ -14,20 +14,18 @@ int _tmain(int argc, _TCHAR* argv[])
 
 void callback(char * msg) {
 	printf ("Main.exe callback: %s \n", msg);
+	fflush(stdout);
 }
+
+
 
 void test5() {
 
 	int size =sizeof(int);
 
-    void *(*foo)(char *);
-  //  foo = callback;
 
-
-
-	//void * (*callbackFn)(char *) = &callback;
-
-	//registerCallback(foo);
+	void (*callbackPtr)(char *) = &callback;
+	registerCallback(callbackPtr);
 
 
 	initAll(_T("C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop"));
@@ -55,6 +53,8 @@ void test5() {
 	end();
 
 }
+
+
 
 
 

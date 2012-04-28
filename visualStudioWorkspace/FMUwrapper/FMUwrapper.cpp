@@ -18,8 +18,6 @@ namespace Straylight
 {
 
 
-
-
 	/*********************************************//**
 	* Default constructor. 
 	*********************************************/
@@ -30,6 +28,10 @@ namespace Straylight
 		t0 = 0;
 		timeDelta_=0.1;
 		fmuPointer_ = &fmu_;
+
+		logger_ = new Logger();
+		FMUlogger::fmu = fmu_;
+
 	}
 
 
@@ -51,31 +53,21 @@ namespace Straylight
 	}
 
 
-	int FMUwrapper::registerCallback(void (*callback)(char *))
+	int FMUwrapper::registerCallback(void (*callbackPtrArg)(char *))
 	{
 
-		::callbackFn = callback;
+		//::callbackFn = callback;
 
-		if (callbackFn != NULL) {
-			callbackFn(_T("FMUwrapper::registerCallback"));
-			//utilRegisterCallback (callbackFn);
+		if (callbackPtrArg != NULL) {
+			callbackPtrArg(_T("FMUwrapper::registerCallback"));
+
+			logger_->registerCallback(callbackPtrArg);
+
 		}
 	   return 0;
 	}
 
 
-
-	//////////////////////////////////////////////////////////////////////////////
-	/// Print formatted debug message
-	///
-	///\param str1 Message to be printed for debugging 
-	///\param str2 String variable to be printed for debugging
-	//////////////////////////////////////////////////////////////////////////////
-	void printfDebug(const char* str1, const char* str2){
-		
-		printf (str1, str2);
-
-	}
 
 
 	/*********************************************//**
@@ -89,12 +81,7 @@ namespace Straylight
 	 *********************************************/
 	int FMUwrapper::loadDll( ) {
 
-		printfDebug ("FMUwrapper::loadDll unzipFolderPath_: %s\n", unzipFolderPath_);
-
-
-		callbackFn(_T("FMUwrapper::loadDll unzipFolderPath_:"));
-
-
+		logger_->printDebug2 ("FMUwrapper::loadDll unzipFolderPath_: %s\n", unzipFolderPath_);
 		const char* modelId = getModelIdentifier(fmu_.modelDescription);
 
 		dllFilePath_ = (char *) calloc(sizeof(char), strlen(unzipFolderPath_) + strlen(DLL_DIR_STR) 
@@ -109,41 +96,63 @@ namespace Straylight
 
 
 		if (dllFilePath_ == NULL){
-			printfError("Failed to allocate memory for wText\n", dllFilePath_);
+			logger_->printfError("Failed to allocate memory for wText\n", dllFilePath_);
 			return 1;
 		}
 
 
-		printf ("dllFilePath_: %s \n", dllFilePath_);
+		logger_->printDebug2 ("dllFilePath_: %s \n", dllFilePath_);
 
 
 		HINSTANCE h;
 		h = LoadLibrary(dllFilePath_);
 
 		if(!h) {
-			printfError("Can not load %s\n", dllFilePath_);
+			logger_->printfError("Can not load %s\n", dllFilePath_);
 			exit(EXIT_FAILURE);
 		}
 
 		fmuPointer_->dllHandle = h;
-		fmuPointer_->getVersion = (fGetVersion) getAdr(fmuPointer_, "fmiGetVersion");
-		fmuPointer_->instantiateSlave = (fInstantiateSlave) getAdr(fmuPointer_, "fmiInstantiateSlave");
-		fmuPointer_->freeSlaveInstance = (fFreeSlaveInstance) getAdr(fmuPointer_, "fmiFreeSlaveInstance");
-		fmuPointer_->setDebugLogging = (fSetDebugLogging) getAdr(fmuPointer_, "fmiSetDebugLogging");
-		fmuPointer_->setReal = (fSetReal) getAdr(fmuPointer_, "fmiSetReal");
-		fmuPointer_->setInteger = (fSetInteger) getAdr(fmuPointer_, "fmiSetInteger");
-		fmuPointer_->setBoolean = (fSetBoolean) getAdr(fmuPointer_, "fmiSetBoolean");
-		fmuPointer_->setString = (fSetString) getAdr(fmuPointer_, "fmiSetString");
-		fmuPointer_->initializeSlave = (fInitializeSlave) getAdr(fmuPointer_, "fmiInitializeSlave");
-		fmuPointer_->getReal = (fGetReal) getAdr(fmuPointer_, "fmiGetReal");
-		fmuPointer_->getInteger = (fGetInteger) getAdr(fmuPointer_, "fmiGetInteger");
-		fmuPointer_->getBoolean = (fGetBoolean) getAdr(fmuPointer_, "fmiGetBoolean");
-		fmuPointer_->getString = (fGetString) getAdr(fmuPointer_, "fmiGetString");
-		fmuPointer_->doStep = (fDoStep) getAdr(fmuPointer_, "fmiDoStep");
+		fmuPointer_->getVersion = (fGetVersion) getAdr("fmiGetVersion");
+		fmuPointer_->instantiateSlave = (fInstantiateSlave) getAdr("fmiInstantiateSlave");
+		fmuPointer_->freeSlaveInstance = (fFreeSlaveInstance) getAdr( "fmiFreeSlaveInstance");
+		fmuPointer_->setDebugLogging = (fSetDebugLogging) getAdr( "fmiSetDebugLogging");
+		fmuPointer_->setReal = (fSetReal) getAdr( "fmiSetReal");
+		fmuPointer_->setInteger = (fSetInteger) getAdr( "fmiSetInteger");
+		fmuPointer_->setBoolean = (fSetBoolean) getAdr( "fmiSetBoolean");
+		fmuPointer_->setString = (fSetString) getAdr( "fmiSetString");
+		fmuPointer_->initializeSlave = (fInitializeSlave) getAdr("fmiInitializeSlave");
+		fmuPointer_->getReal = (fGetReal) getAdr( "fmiGetReal");
+		fmuPointer_->getInteger = (fGetInteger) getAdr( "fmiGetInteger");
+		fmuPointer_->getBoolean = (fGetBoolean) getAdr("fmiGetBoolean");
+		fmuPointer_->getString = (fGetString) getAdr( "fmiGetString");
+		fmuPointer_->doStep = (fDoStep) getAdr("fmiDoStep");
 
 
 		return 0;
 	} 
+
+	///////////////////////////////////////////////////////////////////////////////
+	/// Get address of specific function from specific dll
+	///
+	///\param fmu Name of dll file.
+	///\param funnam Function name .
+	///\return Address of the specific function.
+	//////////////////////////////////////////////////////////////////////////////
+	void* FMUwrapper::getAdr(const char* funNam){
+		char name[BUFSIZE];
+		void* fp;
+		sprintf(name, "%s_%s", getModelIdentifier(fmuPointer_->modelDescription), funNam); // Zuo: adding the model name in front of function name
+
+
+		fp = GetProcAddress(fmuPointer_->dllHandle, name);
+
+		if (!fp) {
+			logger_->printfError("Function %s not found in dll\n", name);        
+		}
+		return fp;
+	}
+
 
 
 	/*******************************************************//**
@@ -153,12 +162,12 @@ namespace Straylight
 	*******************************************************/
 	int FMUwrapper::parseXML(char* unzipfolder) {
 
-		printf("FMUwrapper::parseXML unzipfolder %s\n", unzipfolder);	
+		logger_->printDebug2("FMUwrapper::parseXML unzipfolder %s\n", unzipfolder);	
 		int len1 = strlen(unzipfolder) + 1;
 
 		unzipFolderPath_ = (char *) calloc(sizeof(char), len1 + 1);
 		lstrcpy(unzipFolderPath_, unzipfolder);
-		printf("FMUwrapper::parseXML unzipFolderPath_ %s\n", unzipFolderPath_);	
+		logger_->printDebug2("FMUwrapper::parseXML unzipFolderPath_ %s\n", unzipFolderPath_);	
 
 		//construct the path to the XML file and 
 		// store as member variable
@@ -167,7 +176,7 @@ namespace Straylight
 
 		sprintf(xmlFilePath_, "%s%s", unzipfolder, XML_FILE_STR);
 		fmu_.modelDescription = parse(xmlFilePath_); 
-		printf("FMUwrapper::parseXML xmlFilePath_ %s\n", xmlFilePath_);	
+		logger_->printDebug2("FMUwrapper::parseXML xmlFilePath_ %s\n", xmlFilePath_);	
 
 		// Parse only parses the model description and store in structure fmu.modelDescription
 		if (fmu_.modelDescription) {
@@ -185,7 +194,7 @@ namespace Straylight
 
 	int FMUwrapper::simulateHelperInit() {
 
-		printf("FMUwrapper::simulateHelperInit\n");	
+		logger_->printDebug("FMUwrapper::simulateHelperInit\n");	
 
 
 		_TCHAR currentDirectory[MAX_PATH] =  _T("");
@@ -194,7 +203,7 @@ namespace Straylight
 		GetCurrentDirectory(MAX_PATH, currentDirectory);
 		this->getModuleFolderPath(exeDirectory);
 
-		printf("exeDirectory: %s\n", exeDirectory);	
+		logger_->printDebug2("exeDirectory: %s\n", exeDirectory);	
 
 
 		//bool success = SetCurrentDirectory(unzipFolderPath_);
@@ -226,13 +235,19 @@ namespace Straylight
 		guid = getString(md, att_guid);
 		printf("Got GUID = %s!\n", guid);
 		fflush(stdout);		
-		callbacks.logger = fmuLogger;
+
+	//	int (FMUlogger::log)(fmiComponent c, fmiString instanceName, fmiStatus status,
+       //        fmiString category, fmiString message, ...) = fmuLogger_->log;
+
+		//double (FMUlogger::funcPtr)( long ) = FMUlogger::log;
+
+		callbacks.logger = FMUlogger::log;
 		callbacks.allocateMemory = calloc;
 		callbacks.freeMemory = free;
 
-		printf("Got callbacks!\n");
+		logger_->printDebug("Got callbacks!\n");
 		modelId =  getModelIdentifier(md);
-		printf("Model Identifer is %s\n", modelId);
+		logger_->printDebug2("Model Identifer is %s\n", modelId);
 
 		fmiComponent_ = fmuPointer_->instantiateSlave(modelId, guid, "Model1", "", 100, fmiFalse, fmiFalse, callbacks, loggingOn);
 
@@ -241,17 +256,17 @@ namespace Straylight
 			return 1;
 		}
 
-		printf("Instantiated slaves!\n");	
+		logger_->printDebug("Instantiated slaves!\n");	
 		// Set the start time and initialize
 		time_ = t0;
 
-		printf("start to initialize fmu!\n");
+		logger_->printDebug("start to initialize fmu!\n");
 		fflush(stdout);			
 		
 		fmiFlag =  fmuPointer_->initializeSlave(fmiComponent_, t0, fmiTrue, timeEnd_);
 
 		
-		printf("Initialized fmu!\n");
+		logger_->printDebug("Initialized fmu!\n");
 		fflush(stdout);		
 
 		if (fmiFlag > fmiWarning) {
@@ -262,7 +277,7 @@ namespace Straylight
 		//vry_[0] = getValueReference(getVariableByName(md, "TrmSou"));
 
 
-		printf("OUTPUT: \n");
+		logger_->printDebug("OUTPUT: \n");
 
 		//std::list<ScalarVariableMeta> myList;
 
@@ -305,14 +320,6 @@ namespace Straylight
 	}
 	
 	
-
-
-
-
-
-
-
-
 
 	const char* FMUwrapper::getVariableDescription(int idx) {
 		ScalarVariable* sv = (ScalarVariable*)fmuPointer_->modelDescription->modelVariables[idx];
