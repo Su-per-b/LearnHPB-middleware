@@ -11,6 +11,11 @@ void (*messageCallbackPtr_)(MessageStruct *);
 
 void (*resultCallbackPtr_)(ResultItemStruct *);
 
+void (*stateChangeCallbackPtr_)(State );
+
+
+
+
 Straylight::FMUwrapper *  fmuWrapper;
 
 
@@ -24,21 +29,20 @@ extern "C" DllExport int getVariableCount();
 
 extern "C" DllExport struct ScalarVariableMeta * getSVmetaData();
 
-extern "C" DllExport void init(char *);
+extern "C" DllExport void init(char * unzipFolder);
 
 extern "C" DllExport int isSimulationComplete();
-
-extern "C" DllExport int registerMessageCallback(void (*callbackPtr)(MessageStruct *));
-
-extern "C" DllExport int registerResultCallback(void (*callbackPtr)(ResultItemStruct *));
 
 extern "C" DllExport int isSimulationComplete();
 
 extern "C" DllExport int run();
 
+extern "C" DllExport void init_1(
+	void (*messageCallbackPtr)(MessageStruct *), 
+	void (*resultCallbackPtr)(ResultItemStruct *),
+    void (*stateChangeCallbackPtr)(State)
+	);
 
-//**Tests**//
-extern "C" DllExport void testFMU(char * unzipFolder);
+extern "C" DllExport void init_2(char *);
 
-
-
+extern "C" DllExport void init_3();

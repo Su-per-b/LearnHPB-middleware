@@ -17,28 +17,8 @@ void end() {
 
 
 
-int registerMessageCallback(void (*callbackPtrArg)(MessageStruct *))
-{
-	MessageStruct * messageStruct = new MessageStruct;
-	messageStruct->msgText = _T("!!JNAfuntions: registerMessageCallback");
-	messageStruct->messageType = messageType_info;
-	messageCallbackPtr_ = callbackPtrArg;
-    messageCallbackPtr_(messageStruct);
-
-   return 0;
-}
-
-
-int registerResultCallback(void (*callbackPtrArg)(ResultItemStruct *))
-{
-   resultCallbackPtr_ = callbackPtrArg;
-   return 0;
-}
-
-
 int run()
 {
-
 	// enter the simulation loop
 	while (!fmuWrapper->isSimulationComplete()) {
 		fmuWrapper->doOneStep();
@@ -48,38 +28,10 @@ int run()
 		if(resultCallbackPtr_) {
 			resultCallbackPtr_(resultItemStruct);
 		}
-
 	}
 
    return 0;
 }
-
-
-
-
-void testFMU (char * unzipFolder)
-{
-	fmuWrapper = new Straylight::FMUwrapper();
-
-	int result = fmuWrapper->parseXML(unzipFolder);
-	int result2 = fmuWrapper->loadDll();
-	fmuWrapper->simulateHelperInit();
-
-	Straylight::ResultItem * ri;
-
-	// enter the simulation loop
-	while (!fmuWrapper->isSimulationComplete()) {
-		fmuWrapper->doOneStep();
-		ri = fmuWrapper->getResultItem();
-
-		printf ("result: %s \n", ri->getString());
-	}
-
-	fmuWrapper->printSummary();
-	delete fmuWrapper;
-
-}
-
 
 
 
@@ -104,11 +56,9 @@ struct ScalarVariableMeta *  getSVmetaData() {
 }
 
 
-
  int getVariableCount() {
 	 return fmuWrapper->getVariableCount();
  }
-
 
 
 int isSimulationComplete () {
@@ -116,15 +66,52 @@ int isSimulationComplete () {
 }
 
 
-void init (char * unzipFolder)
-{
-	fmuWrapper = new Straylight::FMUwrapper();
-	fmuWrapper->registerMessageCallback(messageCallbackPtr_);
+
+void init_1 (
+	void (*messageCallbackPtr)(MessageStruct *), 
+	void (*resultCallbackPtr)(ResultItemStruct *),
+	void (*stateChangeCallbackPtr)(State )
 	
+	)
+{	
+	 messageCallbackPtr_ = messageCallbackPtr;
+	 resultCallbackPtr_ = resultCallbackPtr;
+	 stateChangeCallbackPtr_ = stateChangeCallbackPtr;
+
+
+	// stateChangeCallbackPtr_(fmuState_level_0_uninitialized);
+
+	 fmuWrapper = new Straylight::FMUwrapper( messageCallbackPtr_, stateChangeCallbackPtr_);
+
+//	fmuWrapper->registerMessageCallback(messageCallbackPtr_);
+
+}
+
+void init_2 (char * unzipFolder)
+{
 	int result = fmuWrapper->parseXML(unzipFolder);
+}
+
+
+void init_3 ()
+{
 	int result2 = fmuWrapper->loadDll();
 	fmuWrapper->simulateHelperInit();
+}
 
+
+
+void init (char * unzipFolder)
+{
+	fmuWrapper = new Straylight::FMUwrapper(messageCallbackPtr_, stateChangeCallbackPtr_);
+	//fmuWrapper->registerMessageCallback(messageCallbackPtr_);
+	//fmuWrapper->registerStateChangeCallback(stateChangeCallbackPtr_);
+
+
+	int result = fmuWrapper->parseXML(unzipFolder);
+
+	int result2 = fmuWrapper->loadDll();
+	fmuWrapper->simulateHelperInit();
 }
 
 
@@ -134,9 +121,7 @@ void init (char * unzipFolder)
 
  ResultItemStruct * getResultStruct ()
 {
-
 	return fmuWrapper->getResultStruct();
-
 }
 
 

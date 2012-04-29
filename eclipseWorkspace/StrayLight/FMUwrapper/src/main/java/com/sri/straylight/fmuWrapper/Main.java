@@ -15,24 +15,14 @@ public class Main
     {
     	
 		config = ConfigHelper.load();
-		//System.setProperty("jna.library.path", config.dllFolder);
 		
-			
-		fmu_ = new FMU(config.testFmuFile, config.dllFolder);
-		fmu_.init(unzipFolder);
-	    
-		ArrayList<ScalarVariableMeta> inList = fmu_.getInputs();
-		ArrayList<ScalarVariableMeta> outList = fmu_.getOutputs();
 
-		fmu_.run();
 
     }
     
     public static void test( ) {
     	
-    	fmu_ = new FMU(config.testFmuFile , config.dllFolder);
-    	fmu_.unzip();
-    	fmu_.init(unzipFolder);
+
     	
     }
     

@@ -1,4 +1,4 @@
-﻿Build started 4/28/2012 2:33:23 AM.
+﻿Build started 4/29/2012 12:20:07 PM.
      1>Project "E:\SRI\straylight_repo\visualStudioWorkspace\gtest\msvc\gtest.vcxproj" on node 3 (build target(s)).
      1>InitializeBuildStatus:
          Creating "straylight/Debug\gtest\gtest.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -17,4 +17,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.52
+Time Elapsed 00:00:02.90

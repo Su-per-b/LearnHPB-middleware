@@ -51,8 +51,12 @@ import javax.swing.SwingUtilities;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowListener;
+
 import javax.swing.JButton;
 import java.awt.Component;
 import java.awt.BorderLayout;
@@ -69,10 +73,10 @@ import com.sri.straylight.fmuWrapper.*;
 
 
 
-public class MainGui extends JPanel implements ResultEventListener, MessageEventListener   {
+public class MainGui extends JPanel implements FMUeventListener   {
 	
 	
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
@@ -91,8 +95,10 @@ public class MainGui extends JPanel implements ResultEventListener, MessageEvent
     private Document  doc;
     private String newline = "\n";
     private FmuConnectLocal fmuConnectLocal;
+    long startTime;
     
     public MainGui() {
+    	
     	
 
     	setPreferredSize(new Dimension(704, 800));
@@ -128,7 +134,7 @@ public class MainGui extends JPanel implements ResultEventListener, MessageEvent
         add(topPanel, BorderLayout.NORTH);
         topPanel.setAlignmentY(Component.TOP_ALIGNMENT);
         
-        
+     /*   
         btnRun.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -136,14 +142,24 @@ public class MainGui extends JPanel implements ResultEventListener, MessageEvent
             }
         });
         
+     */
+        btnRun.setEnabled(false);
         
-        btnClear.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
+        btnRun.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+            	runSimulation();
+             }
+           }
+        );
+        
+        btnClear.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
             	clear();
-            }
-        });
+             }
+           }
+        ); 
         
+
         
         btnClear.setHorizontalAlignment(SwingConstants.LEFT);
         btnRun.setHorizontalAlignment(SwingConstants.LEFT);
@@ -193,10 +209,22 @@ public class MainGui extends JPanel implements ResultEventListener, MessageEvent
         }
         
         
-        fmuConnectLocal = new FmuConnectLocal();
-        fmuConnectLocal.resultEventDispatacher.addListener(this);
-        fmuConnectLocal.messageEventDispatacher.addListener(this);
+    	
     }
+    
+    
+
+    
+    
+    public void init() {
+    	
+        fmuConnectLocal = new FmuConnectLocal();
+        fmuConnectLocal.fmuEventDispatacher.addListener(this);
+        
+        fmuConnectLocal.init();
+        
+    }
+    
     
     public void clear()  {
     	textPane.setText("");
@@ -209,7 +237,11 @@ public class MainGui extends JPanel implements ResultEventListener, MessageEvent
      
      public void  outputText(String txt) {
     	 
-
+    	 long elapsedTimeMillis = System.currentTimeMillis()-startTime;
+    	 Long lObj = new Long(elapsedTimeMillis);
+    	 
+    	 txt = lObj.toString() + " : " + txt;
+    	 
 	    String initString[] = {txt};
 	    
 	    int len = initString.length;
@@ -243,24 +275,26 @@ public class MainGui extends JPanel implements ResultEventListener, MessageEvent
 
 	
     private void runSimulation() {
+    	startTime = System.currentTimeMillis();
     	fmuConnectLocal.run();
     }
     
     
 	public void onResultEvent(ResultEvent event) {
-		
-
-			outputText (event.resultString);
-		
+		outputText (event.resultString);
 	}
 	
     public void onMessageEvent(MessageEvent event) {
-    	
-    	//System.out.println(re.resultString);
     	outputText (event.messageStruct.msgText);
     }
     
-    
+    public void onFMUstateEvent(FMUstateEvent event) {
+    	//fmuEventDispatacher.fireStateEvent(event);
+    	outputText ("State Change: "+ event.fmuState.toString());
+    	
+
+    	 btnRun.setEnabled(event.fmuState == State.fmuState_level_5_initializedFMU);
+    }
 
     private void printDebugData(JTable table) {
         int numRows = table.getRowCount();
@@ -296,6 +330,8 @@ public class MainGui extends JPanel implements ResultEventListener, MessageEvent
         //Display the window.
         frame.pack();
         frame.setVisible(true);
+        
+        newContentPane.init();
     }
 
     public static void main(String[] args) {
@@ -304,6 +340,8 @@ public class MainGui extends JPanel implements ResultEventListener, MessageEvent
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGUI();
+                
+                
             }
         });
     }

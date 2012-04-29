@@ -11,11 +11,10 @@ class HlTypeMapper extends DefaultTypeMapper {
     	
     	CustomEnumConverter converter = new CustomEnumConverter();
 
-    	addTypeConverter(StreamType.class, converter);
     	addTypeConverter(Enu.class, converter);
     	addTypeConverter(Elm.class, converter);
     	addTypeConverter(MessageType.class, converter);
-    	
+    	addTypeConverter(State.class, converter);
     	
     }
 }

@@ -77,17 +77,7 @@ namespace Straylight
 	///\param msg Message to be printed for debugging 
 	//////////////////////////////////////////////////////////////////////////////
 	void Logger::printDebug(const char* msg){
-
-	  if (debug > 0)
-	  {
-		  fprintf(stdout, "Debug: ");
-		  fprintf(stdout, "%s\n", msg);
-	  }
-
-	  if (debugvs > 0)
-	  {
-		  OutputDebugString(msg);
-	  }
+		printDebugHelper( _T("%s\n"), msg);
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -146,12 +136,23 @@ namespace Straylight
 
 			MessageStruct * messageStruct = new MessageStruct;
 			messageStruct->msgText = msg;
+
+
 			messageStruct->messageType = messageType_info;
 			Logger::messageCallbackPtr_(messageStruct);
 		}
 
-		OutputDebugString(msg);
+		  if (debug > 0)
+		  {
+			  fprintf(stdout, "%s\n", msg);
+		  }
 
+		  if (debugvs > 0)
+		  {
+			  OutputDebugString(msg);
+		  }
+
+		  fflush(stdout);	
 	}
 
 

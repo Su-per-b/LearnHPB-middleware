@@ -5,7 +5,7 @@ import javax.swing.SwingWorker;
 
 import com.sri.straylight.fmuWrapper.*;
 
-public class FmuConnectLocal implements ResultEventListener, MessageEventListener  {
+public class FmuConnectLocal implements FMUeventListener {
 	
     private FMU fmu_;
     public static String unzipFolder = "C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop";
@@ -13,48 +13,70 @@ public class FmuConnectLocal implements ResultEventListener, MessageEventListene
     public static String nativeLibFolder = "E:\\SRI\\straylight_repo\\visualStudioWorkspace\\bin\\Debug";
     
     
-    public ResultEventDispatacher resultEventDispatacher;
-	public MessageEventDispatacher messageEventDispatacher;
+	public FMUeventDispatacher fmuEventDispatacher;
 	
     public FmuConnectLocal() {
-        
-    	resultEventDispatacher = new ResultEventDispatacher();
-    	messageEventDispatacher = new MessageEventDispatacher();
+    	fmuEventDispatacher = new FMUeventDispatacher();
     }
     
+    public void init() {
+		fmu_ = new FMU(testFmuFile, nativeLibFolder);
+		fmu_.fmuEventDispatacher.addListener(this);
+
+		
+		TaskInit taskInit = new TaskInit();
+		taskInit.execute();
+    }
+    
+    
+    
+
     public void run() {
         
-    	
-		fmu_ = new FMU(testFmuFile, nativeLibFolder);
-		fmu_.resultEventDispatacher.addListener(this);
-		fmu_.messageEventDispatacher.addListener(this);
-		
-		
-        Task task = new Task();
-        task.execute();
+		TaskRun taskRun = new TaskRun();
+		taskRun.execute();
     }
-    
-    
+
     public void onResultEvent(ResultEvent event) {
-    	resultEventDispatacher.fireEvent(event);
+    	fmuEventDispatacher.fireResultEvent(event);
     }
    
     public void onMessageEvent(MessageEvent event) {
-    	messageEventDispatacher.fireEvent(event);
+    	fmuEventDispatacher.fireMessageEvent(event);
     }
     
+    public void onFMUstateEvent(FMUstateEvent event) {
+    	fmuEventDispatacher.fireStateEvent(event);
+    }
     
-    private class Task extends SwingWorker<Void, Void>
+
+    
+    private class TaskInit extends SwingWorker<Void, Void>
     {
         public Void doInBackground()
         {
             	
-    		fmu_.init(unzipFolder);
+    		fmu_.init_1();
+    		fmu_.init_2(unzipFolder);
+    		fmu_.init_3();
+
+            return null;
+            
+        }
+    }
+    
+    private class TaskRun extends SwingWorker<Void, Void>
+    {
+        public Void doInBackground()
+        {
+            	
+
     		fmu_.run();
 
             return null;
             
         }
     }
+    
     
 }

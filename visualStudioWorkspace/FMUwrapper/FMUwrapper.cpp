@@ -21,7 +21,10 @@ namespace Straylight
 	/*********************************************//**
 	* Default constructor. 
 	*********************************************/
-	FMUwrapper::FMUwrapper(void)
+	FMUwrapper::FMUwrapper(
+		void (*messageCallbackPtr)(MessageStruct *), 
+		void (*stateChangeCallbackPtr)(State )
+		)
 	{
 		timeEnd_ = 1.0;
 		csv_separator_ = ',';
@@ -32,6 +35,13 @@ namespace Straylight
 		logger_ = new Logger();
 		FMUlogger::fmu = fmu_;
 		FMUlogger::logger = logger_;
+
+
+		logger_->registerMessageCallback(messageCallbackPtr);
+		stateChangeCallbackPtr_ =stateChangeCallbackPtr;
+		//FMUstate s = fmuState_level_0_uninitialized;
+
+		setState( fmuState_level_0_uninitialized );
 	}
 
 
@@ -52,20 +62,85 @@ namespace Straylight
 
 	}
 
-
-
-	int FMUwrapper::registerMessageCallback(void (*callbackPtrArg)(MessageStruct *))
-	{
-
-		if (callbackPtrArg != NULL) {
-			//callbackPtrArg(_T("FMUwrapper::registerCallback"));
-
-			logger_->registerMessageCallback(callbackPtrArg);
-
+		void FMUwrapper::setState(State newState) {
+			if (state_ != newState) {
+				state_ = newState;
+				stateChangeCallbackPtr_( state_ );
+			}
 		}
 
-	   return 0;
+
+		State FMUwrapper::getState() {
+			return state_;
+		}
+
+
+	/*******************************************************//**
+	* Parses the xml file located in the FMU.  
+	*
+	* @param [in,out]	unzipfolder	where the FMU was unzipped to.
+	*******************************************************/
+	int FMUwrapper::parseXML(char* unzipfolder) {
+
+	//	logger_->printDebug2("FMUwrapper::parseXML unzipfolder %s\n", unzipfolder);	
+		int len1 = strlen(unzipfolder) + 1;
+
+		unzipFolderPath_ = (char *) calloc(sizeof(char), len1 + 1);
+		lstrcpy(unzipFolderPath_, unzipfolder);
+		logger_->printDebug2("FMUwrapper::parseXML unzipFolderPath_ %s\n", unzipFolderPath_);	
+
+		//construct the path to the XML file and 
+		// store as member variable
+		int len2 = len1 + 1 + strlen(XML_FILE_STR);
+		xmlFilePath_ = (char *) calloc(sizeof(char), len2 + 1);
+
+		sprintf(xmlFilePath_, "%s%s", unzipfolder, XML_FILE_STR);
+		fmu_.modelDescription = parse(xmlFilePath_); 
+		logger_->printDebug2("FMUwrapper::parseXML xmlFilePath_ %s\n", xmlFilePath_);	
+
+		extractVariables();
+
+		// Parse only parses the model description and store in structure fmu.modelDescription
+		if (fmu_.modelDescription) {
+			return 0;
+		} else {
+			return 1;
+		}
+
+		setState( fmuState_level_1_xmlParsed );
 	}
+
+
+
+	int FMUwrapper::extractVariables() {
+
+		int i;
+		for (i=0; fmuPointer_->modelDescription->modelVariables[i]; i++){
+			ScalarVariable* sv = (ScalarVariable*)fmuPointer_->modelDescription->modelVariables[i];
+			
+			Enu causality;  // input, output, internal or none
+			causality = getCausality(sv);
+			
+			ScalarVariableMeta meta;
+			
+			meta.idx = i;
+			meta.name = getName( sv );
+			meta.causality =  getCausality(sv);
+			//meta.description = getDescription(fmuPointer_->modelDescription,  sv );
+
+			metaDataList.push_back(meta);
+
+			if (meta.causality == enu_output) {
+				metaDataListOuput.push_back(meta);
+			}
+		}
+
+		variableCount_ = i;
+
+		return 0;
+
+	}
+
 
 	/*********************************************//**
 	/* 
@@ -125,6 +200,7 @@ namespace Straylight
 		fmuPointer_->getString = (fGetString) getAdr( "fmiGetString");
 		fmuPointer_->doStep = (fDoStep) getAdr("fmiDoStep");
 
+		setState( fmuState_level_2_dllLoaded );
 
 		return 0;
 	} 
@@ -152,37 +228,6 @@ namespace Straylight
 
 
 
-	/*******************************************************//**
-	* Parses the xml file located in the FMU.  
-	*
-	* @param [in,out]	unzipfolder	where the FMU was unzipped to.
-	*******************************************************/
-	int FMUwrapper::parseXML(char* unzipfolder) {
-
-		logger_->printDebug2("FMUwrapper::parseXML unzipfolder %s\n", unzipfolder);	
-		int len1 = strlen(unzipfolder) + 1;
-
-		unzipFolderPath_ = (char *) calloc(sizeof(char), len1 + 1);
-		lstrcpy(unzipFolderPath_, unzipfolder);
-		logger_->printDebug2("FMUwrapper::parseXML unzipFolderPath_ %s\n", unzipFolderPath_);	
-
-		//construct the path to the XML file and 
-		// store as member variable
-		int len2 = len1 + 1 + strlen(XML_FILE_STR);
-		xmlFilePath_ = (char *) calloc(sizeof(char), len2 + 1);
-
-		sprintf(xmlFilePath_, "%s%s", unzipfolder, XML_FILE_STR);
-		fmu_.modelDescription = parse(xmlFilePath_); 
-		logger_->printDebug2("FMUwrapper::parseXML xmlFilePath_ %s\n", xmlFilePath_);	
-
-		// Parse only parses the model description and store in structure fmu.modelDescription
-		if (fmu_.modelDescription) {
-			return 0;
-		} else {
-			return 1;
-		}
-
-	}
 
 
 
@@ -193,7 +238,6 @@ namespace Straylight
 
 		logger_->printDebug("FMUwrapper::simulateHelperInit\n");	
 
-
 		_TCHAR currentDirectory[MAX_PATH] =  _T("");
 		_TCHAR exeDirectory[MAX_PATH] =  _T("");
 
@@ -202,8 +246,6 @@ namespace Straylight
 
 		logger_->printDebug2("exeDirectory: %s\n", exeDirectory);	
 
-
-		//bool success = SetCurrentDirectory(unzipFolderPath_);
 		GetCurrentDirectory(MAX_PATH, currentDirectory);
 		logger_->printDebug2("currentDirectory: %s\n", currentDirectory);	
 
@@ -214,14 +256,11 @@ namespace Straylight
 
 
 		fmiCallbackFunctions callbacks;  // called by the model during simulation
-
 		fmiStatus fmiFlag;               // return code of the fmu functions
-
 		fmiBoolean toleranceControlled = fmiFalse;
 		nSteps = 0;
 
 		// Run the simulation
-
 		std::string s;
 
 		// convert double b to string s
@@ -243,7 +282,7 @@ namespace Straylight
 		guid = getString(md, att_guid);
 
 		logger_->printDebug2("Got GUID = %s!\n", guid);
-		fflush(stdout);		
+		//	
 
 		callbacks.logger = FMUlogger::log;
 		callbacks.allocateMemory = calloc;
@@ -256,57 +295,34 @@ namespace Straylight
 		fmiComponent_ = fmuPointer_->instantiateSlave(modelId, guid, "Model1", "", 100, fmiFalse, fmiFalse, callbacks, loggingOn);
 
 		if (!fmiComponent_) {
-			printf("could not instantiate slaves\n");
+			logger_->printError("could not instantiate slaves\n");
 			return 1;
 		}
 
-		logger_->printDebug("Instantiated slaves!\n");	
+
+		setState( fmuState_level_3_instantiatedSlaves );
+
+		//logger_->printDebug("Instantiated slaves!\n");	
 		// Set the start time and initialize
 		time_ = t0;
 
-		logger_->printDebug("start to initialize fmu!\n");
+		logger_->printDebug("start to initialize FMU!\n");
 		fflush(stdout);			
 		
 		fmiFlag =  fmuPointer_->initializeSlave(fmiComponent_, t0, fmiTrue, timeEnd_);
 
-		
-		logger_->printDebug("Initialized fmu!\n");
 		fflush(stdout);		
 
 		if (fmiFlag > fmiWarning) {
 			printf("could not initialize model");
+			setState( fmuState_error );
 			return 1;																
+		} else {
+			setState( fmuState_level_5_initializedFMU );
+			return 0;
 		}
 
-		logger_->printDebug("OUTPUT: \n");
-		int i;
 
-		if (md->modelVariables)
-
-		for (i=0; md->modelVariables[i]; i++){
-			ScalarVariable* sv = (ScalarVariable*)md->modelVariables[i];
-			
-			Enu causality;  // input, output, internal or none
-			causality = getCausality(sv);
-			
-			ScalarVariableMeta meta;
-			
-			meta.idx = i;
-			meta.name = getName( sv );
-			meta.causality =  getCausality(sv);
-			//meta.description = getDescription(fmuPointer_->modelDescription,  sv );
-
-			metaDataList.push_back(meta);
-
-			if (meta.causality == enu_output) {
-				metaDataListOuput.push_back(meta);
-			}
-
-
-		}
-		variableCount_ = i;
-
-		return 0;
 	}
 
 
@@ -322,8 +338,6 @@ namespace Straylight
 
 		return getDescription(fmuPointer_->modelDescription,  sv );
 	}
-
-
 
 
 	int FMUwrapper::getVariableCount() {

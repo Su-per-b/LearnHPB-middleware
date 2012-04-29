@@ -6,8 +6,8 @@
 #include "ResultItem.h"
 #include "Logger.h"
 #include "FMUlogger.h"
-#include "Structs.h"
-
+#include "structs.h"
+#include "enums.h"
 
 
 
@@ -42,17 +42,21 @@ namespace Straylight
 		fmiBoolean loggingOn;
 		double timeDelta_;
 		ModelDescription* modelDescription_;
-		char* getXmlFilePath();
-		//void (*callbackFn)(char *);
 		Logger* logger_;
 		FMUlogger fmuLogger_;
-		void* getAdr(const char*);
 
+		void (*stateChangeCallbackPtr_)(State );
+
+		State state_;
 
 
 	// public functions
 	public:
-		FMUwrapper(void);
+		FMUwrapper(
+			void (*messageCallbackPtr)(MessageStruct *), 
+			void (*stateChangeCallbackPtr)(State )
+			);
+
 		~FMUwrapper(void);
 		void doAll(const char * fileName);
 		void doOneStep();
@@ -79,7 +83,9 @@ namespace Straylight
 		void getModuleFolderPath(_TCHAR * szDir);
 		ResultItem* resultItem_;
 
-		int registerMessageCallback(void (*callbackPtrArg)(MessageStruct *));
+	//	int registerMessageCallback(void (*callbackPtrArg)(MessageStruct *));
+	//	int registerStateChangeCallback(void (*callbackPtrArg)(FMUstate ));
+
 
 		ResultItemStruct * getResultStruct();
 
@@ -88,8 +94,11 @@ namespace Straylight
 		int loadDLLhelper(const char* , FMU *);
 		ModelDescription* parseHelper(const char*);
 		int variableCount_;
-
-
+		char* getXmlFilePath();
+		void* getAdr(const char*);
+		int extractVariables();
+		void setState(State newState);
+		State getState();
 	};
 
 

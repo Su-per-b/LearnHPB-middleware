@@ -2,6 +2,8 @@ package com.sri.straylight.fmuWrapper;
 
 
 import com.sri.straylight.common.Unzip;
+import com.sri.straylight.fmuWrapper.JNAfmuWrapper.MessageCallbackInterface;
+import com.sri.straylight.fmuWrapper.JNAfmuWrapper.ResultCallbackInterface;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 
@@ -28,9 +30,9 @@ public class FMU  {
 	
 	private ScalarVariableMeta[] svMetaArray_;
 	
-	public ResultEventDispatacher resultEventDispatacher;
-	public MessageEventDispatacher messageEventDispatacher;
-	
+	//public ResultEventDispatacher resultEventDispatacher;
+//	public MessageEventDispatacher messageEventDispatacher;
+	public FMUeventDispatacher fmuEventDispatacher;
 
 	 
 	private JNAfmuWrapper.MessageCallbackInterface messageCallbackFunc_ = 
@@ -42,8 +44,8 @@ public class FMU  {
 		    	  MessageEvent event = new MessageEvent(this);
 		    	  event.messageStruct = messageStruct;
 
-		    	  messageEventDispatacher.fireEvent(event);
-			    	
+		    	 // messageEventDispatacher.fireEvent(event);
+		    	  fmuEventDispatacher.fireMessageEvent(event);
 			         return true;                  
 			       }
 			};
@@ -61,7 +63,21 @@ public class FMU  {
 			};
 					
 	 
-	
+	private JNAfmuWrapper.StateChangeCallbackInterface stateChangeCallbackFunc_ = 
+			new JNAfmuWrapper.StateChangeCallbackInterface() {
+		
+		      public boolean stateChangeCallback(State fmuState) {
+ 
+		    	  FMUstateEvent event = new FMUstateEvent(this);
+		    	  event.fmuState = fmuState;
+		    	  
+		    	  fmuEventDispatacher.fireStateEvent(event);
+			      return true;                  
+			  }		
+			};
+			
+					
+					
 	public int getVariableCount()
 	{
 	     return variableCount_;
@@ -86,12 +102,11 @@ public class FMU  {
 		}
 
 		str +=  " \n";
-		//System.out.println(result);
-	
-		
+
 
 		event.resultString = str;
-    	resultEventDispatacher.fireEvent(event);
+    //	resultEventDispatacher.fireEvent(event);
+    	fmuEventDispatacher.fireResultEvent(event);
 	}
 
 	
@@ -100,8 +115,9 @@ public class FMU  {
 		
 		nativeLibFolder_ = nativeLibFolder;
 		fmuFilePath_ = fmuFilePath;
-		resultEventDispatacher = new ResultEventDispatacher();
-		messageEventDispatacher = new MessageEventDispatacher();
+	//	resultEventDispatacher = new ResultEventDispatacher();
+		//messageEventDispatacher = new MessageEventDispatacher();
+		fmuEventDispatacher = new FMUeventDispatacher();
 		
 		loadLibrary();
     	
@@ -113,7 +129,49 @@ public class FMU  {
 
 	}
 	
+	public void init_1() {
+		
+		jnaFMUWrapper_.init_1(
+				messageCallbackFunc_, 
+				resultCallbackFunc_,
+				stateChangeCallbackFunc_
+				);
+	}
+	
+	public void init_2(String unzippedFolder) {
+		jnaFMUWrapper_.init_2(unzippedFolder);
+		
+    	variableCount_ = jnaFMUWrapper_.getVariableCount();  
 
+		ScalarVariableMeta svMetaArchtype = jnaFMUWrapper_.getSVmetaData();
+		svMetaArray_ = (ScalarVariableMeta[]) svMetaArchtype.toArray(variableCount_);
+
+		
+    	for (int i = 0; i < variableCount_; i++) {
+
+    		ScalarVariableMeta svm = svMetaArray_[i];
+    		Enu causality = svm.getCausalityEnum();
+    		variableListAll_.put(new Integer(svm.idx), svm);
+    		
+    		switch (causality) {
+    			case enu_input: 
+    				variableListInputs_.add(svm);
+    				break;
+    			case enu_output: 
+    				variableListOutputs_.add(svm);
+    				break;
+    			default:
+    				variableListOther_.add(svm);
+    				
+    		}
+    		
+		}
+	}
+	
+	public void init_3() {
+		jnaFMUWrapper_.init_3();
+	}
+	
 	
 	public void init(String unzippedFolder) {
 		
@@ -159,8 +217,8 @@ public class FMU  {
 		options.put(Library.OPTION_TYPE_MAPPER, mp);
 		jnaFMUWrapper_ = (JNAfmuWrapper ) Native.loadLibrary("FMUwrapper", JNAfmuWrapper.class, options);
 		
-		jnaFMUWrapper_.registerMessageCallback(messageCallbackFunc_);
-		jnaFMUWrapper_.registerResultCallback(resultCallbackFunc_);
+		//jnaFMUWrapper_.registerMessageCallback(messageCallbackFunc_);
+		//jnaFMUWrapper_.registerResultCallback(resultCallbackFunc_);
 		
 	}
 	
