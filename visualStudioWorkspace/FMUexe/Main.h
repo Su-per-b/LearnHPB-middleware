@@ -5,10 +5,6 @@
 #include <ResultItem.h>
 #include <ResultPrimitive.h>
 
-#include <sstream>
-#include <string>
-#include <ResultPrimitive.h>
-#include <list>
 
 
 void test1();
@@ -21,6 +17,6 @@ void test4();
 
 void test5();
 
-void callback(char * msg);
+void resultCallback(ResultItemStruct * resultItemStruct);
 
-
+void messageCallback(MessageStruct * messageStruct);

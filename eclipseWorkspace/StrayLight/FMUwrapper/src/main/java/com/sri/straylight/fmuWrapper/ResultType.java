@@ -24,9 +24,6 @@ public enum ResultType implements JnaEnum<ResultType>  {
 	    }
 	    return null;
 	}
-	
-	
 
-	
 }
 

@@ -13,12 +13,12 @@
 namespace Straylight
 {
 
-
 	/*********************************************//**
 	* Default constructor. 
 	*********************************************/
 	Logger::Logger(void)
 	{
+		messageCallbackPtr_ = NULL;
 		debug = 0;  // Control for debug information
 		debugvs = 1;  // Control for debug information to Output window in Visual Studio
 	}
@@ -33,12 +33,14 @@ namespace Straylight
 
 	}
 
-	void Logger::registerCallback(void (*callbackPtrArg)(char *))
-	{
-		void (*utilCallbackPtr2)(char *);
 
-		utilCallbackPtr = callbackPtrArg;
+	void Logger::registerMessageCallback(void (*callbackPtrArg)(MessageStruct *))
+	{
+		messageCallbackPtr_ = callbackPtrArg;
 	}
+
+
+
 
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -140,8 +142,12 @@ namespace Straylight
 
 		sprintf (msg, str1, str2);
 
-		if (utilCallbackPtr != NULL) {
-			utilCallbackPtr(msg);
+		if (messageCallbackPtr_ != NULL) {
+
+			MessageStruct * messageStruct = new MessageStruct;
+			messageStruct->msgText = msg;
+			messageStruct->messageType = messageType_info;
+			Logger::messageCallbackPtr_(messageStruct);
 		}
 
 		OutputDebugString(msg);

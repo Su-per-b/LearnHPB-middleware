@@ -1,6 +1,6 @@
 package com.sri.straylight.fmuWrapper;
 
-import com.sun.jna.Pointer;
+
 import com.sun.jna.Structure;
 
 public class ScalarVariableMeta extends Structure {

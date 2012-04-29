@@ -3,16 +3,9 @@
 package com.sri.straylight.fmuWrapper;
 
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.sun.jna.Callback;
-import com.sun.jna.DefaultTypeMapper;
 import com.sun.jna.Library;
-import com.sun.jna.Memory;
-import com.sun.jna.Native;
-import com.sun.jna.Platform;
-import com.sun.jna.Pointer;
+
 
 
 public interface JNAfmuWrapper extends Library {
@@ -32,29 +25,28 @@ public interface JNAfmuWrapper extends Library {
 	
 	int isSimulationComplete();
 	
-	public int registerCallback (MyCallback callback);
 	
-	//**Tests**//
-	void testFMU(String unzipPath);
+	public int registerMessageCallback (MessageCallbackInterface messageCallback);
 	
-	ResultItemPrimitiveStruct testPrimitive();
+	public int registerResultCallback (ResultCallbackInterface resultCallback);
 	
-	ResultItemPrimitiveStruct testPrimitiveArray();
+	public int run(); 
 	
-	ResultItemStruct testResultItemStruct();
+	
 	
 
 	
+
 	
-	public interface MyCallback extends Callback {
-		
-		public boolean callback(String msg);
+	public interface MessageCallbackInterface extends Callback {
+		public boolean messageCallback(MessageStruct messageStruct);
 	    
 	 }
 	
-	
-	
-	
+	public interface ResultCallbackInterface extends Callback {
+		public boolean resultCallback(ResultItemStruct resultItemStruct);
+	    
+	 }
 	
 }
 

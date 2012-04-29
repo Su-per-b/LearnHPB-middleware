@@ -5,18 +5,15 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.eclipse.jetty.websocket.WebSocket;
-import org.eclipse.jetty.websocket.WebSocket.Connection;
-
-
-import com.sri.straylight.fmuWrapper.*;
 
 
 
-public class WebSocketStream implements WebSocket.OnTextMessage,  ResultEventListener {
+
+public class WebSocketStream implements WebSocket.OnTextMessage {
 
 	private Connection connection;
 	//private JNIinterface jniInterface;
-	public static FMU fmu_;
+	//public static FMU fmu_;
 	
 	private final Set<WebSocketStream> webSockets = new CopyOnWriteArraySet<WebSocketStream>();
 	
@@ -59,22 +56,22 @@ public class WebSocketStream implements WebSocket.OnTextMessage,  ResultEventLis
 		if (data.equals("start")) {
 			
 	    	
-			fmu_ = new FMU(Main.config.testFmuFile);
-			fmu_.disp.addListener(this);
+			//fmu_ = new FMU(Main.config.testFmuFile);
+			//fmu_.disp.addListener(this);
 			
-			fmu_.init(Main.unzipFolder);
-			fmu_.run();
+			//fmu_.init(Main.unzipFolder);
+		//	fmu_.run();
 	    	
 		}
 
 	}
 
 	
-	public void eventUpdate(ResultEvent re) {
+	//public void eventUpdate(ResultEvent re) {
 		
-    	sendMessage (re.resultString);
+    	//sendMessage (re.resultString);
     	
-	}
+	//}
 	
 	
 	public void onClose(int closeCode, String message) {

@@ -8,7 +8,7 @@ public interface ResultEventListener extends EventListener
 
 {
 
-	public void eventUpdate(ResultEvent re);
+	public void onResultEvent(ResultEvent re);
 
 
     

@@ -1,20 +1,10 @@
 #pragma once
 
-#ifdef _MSC_VER
-#include <windows.h>
-#define WINDOWS 1
-#else
-#define WINDOWS 0
-#define HANDLE void *
-/* See http://www.yolinux.com/TUTORIALS/LibraryArchives-StaticAndDynamic.html */
-#include <sys/stat.h> // for creating dirs on Linux
-#endif
 
-#include <tchar.h>
 #include "stdafx.h"
 #include "ResultItem.h"
-#include <sstream>
-#include <list>
+#include "structs.h"
+#include "enums.h"
 
 namespace Straylight
 {
@@ -24,7 +14,10 @@ namespace Straylight
 
 	//private member variables
 	private:
-        void (*utilCallbackPtr)(char *);
+
+        void (*messageCallbackPtr_)(MessageStruct *);
+
+
 		int debug;  // Control for debug information
 		int debugvs;  // Control for debug information to Output window in Visual Studio
 
@@ -33,6 +26,10 @@ namespace Straylight
 	public:
 		Logger(void);
 		~Logger(void);
+
+
+
+		void registerMessageCallback(void (*callbackPtrArg)(MessageStruct *));
 		void registerCallback(void (*callbackPtrArg)(char *));
 		void doubleToCommaString(char* buffer, double r);
 		void printDebug(const char* msg);

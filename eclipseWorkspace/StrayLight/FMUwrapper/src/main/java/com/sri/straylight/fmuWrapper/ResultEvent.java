@@ -1,15 +1,15 @@
 package com.sri.straylight.fmuWrapper;
 
-import java.util.EventListener;
+import java.util.EventObject;
 
 
 
-public class ResultEvent extends java.util.EventObject {
+public class ResultEvent extends EventObject {
 
 	
 	public String resultString;
 	public ResultItemStruct resultItemStruct;
-	public ResultType resultType = ResultType.resultType_newResults;
+	//public ResultType resultType = ResultType.resultType_newResults;
 	
 	
     //here's the constructor

@@ -53,22 +53,19 @@ namespace Straylight
 	}
 
 
-	int FMUwrapper::registerCallback(void (*callbackPtrArg)(char *))
+
+	int FMUwrapper::registerMessageCallback(void (*callbackPtrArg)(MessageStruct *))
 	{
 
-		//::callbackFn = callback;
-
 		if (callbackPtrArg != NULL) {
-			callbackPtrArg(_T("FMUwrapper::registerCallback"));
+			//callbackPtrArg(_T("FMUwrapper::registerCallback"));
 
-			logger_->registerCallback(callbackPtrArg);
+			logger_->registerMessageCallback(callbackPtrArg);
 
 		}
+
 	   return 0;
 	}
-
-
-
 
 	/*********************************************//**
 	/* 
@@ -378,6 +375,10 @@ namespace Straylight
 		return resultItem_;
 	}
 
+
+	ResultItemStruct * FMUwrapper::getResultStruct() {
+		return resultItem_->toStruct();
+	}
 
 
 

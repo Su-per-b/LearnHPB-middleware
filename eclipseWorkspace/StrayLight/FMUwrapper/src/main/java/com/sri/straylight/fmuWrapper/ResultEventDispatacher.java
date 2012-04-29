@@ -4,7 +4,7 @@ import java.util.*;
 public class ResultEventDispatacher {
 
 	
-	final Collection listeners = new ArrayList();
+	final Collection<EventListener> listeners = new ArrayList<EventListener>();
 	
 	
 	  public synchronized void 
@@ -20,15 +20,15 @@ public class ResultEventDispatacher {
 
 	  
 	  public void fireEvent(ResultEvent e) {
-	    for(Iterator i = copyListeners(); i.hasNext();) {
+	    for(Iterator<EventListener> i = copyListeners(); i.hasNext();) {
 	    	ResultEventListener l = (ResultEventListener) i.next();
-	        l.eventUpdate(e);
+	        l.onResultEvent(e);
 	      }
 	  }
 
 	  
-	  private synchronized Iterator copyListeners() {
-	    return new ArrayList(listeners).iterator();
+	  private synchronized Iterator<EventListener> copyListeners() {
+	    return new ArrayList<EventListener>(listeners).iterator();
 	  }    
 	
 }

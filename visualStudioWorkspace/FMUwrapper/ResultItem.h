@@ -1,8 +1,9 @@
 #pragma once
 
 #include "stdafx.h"
-#include <vector>
 #include "ResultPrimitive.h"
+#include "structs.h"
+#include "enums.h"
 
 extern "C"
 {
@@ -33,6 +34,7 @@ namespace Straylight
 		void addModelVariables( FMU * fmuPointer, fmiComponent fmiComp);
 		void init( FMU * fmuPointer, fmiComponent fmiComp);
 	    char *  getString();
+		ResultItemStruct* toStruct();
 
 	};
 

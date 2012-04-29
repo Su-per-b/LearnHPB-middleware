@@ -26,7 +26,7 @@ typedef struct ResultItemStruct_ {
 
 
 
-typedef struct Functions_ {
-	  int (*open)(const char*,int);
-	  int (*close)(int);
-} Functions;
+typedef struct MessageStruct_ {
+	  const char * msgText;
+	  int messageType;
+} MessageStruct;

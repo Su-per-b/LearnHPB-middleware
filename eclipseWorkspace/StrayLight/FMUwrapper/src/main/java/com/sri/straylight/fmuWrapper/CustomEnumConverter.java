@@ -2,19 +2,18 @@ package com.sri.straylight.fmuWrapper;
 
 
 
-import org.eclipse.jetty.util.log.Log;
+//import org.eclipse.jetty.util.log.Log;
 
 
 import com.sun.jna.FromNativeContext;
 import com.sun.jna.ToNativeContext;
 import com.sun.jna.TypeConverter;
-import org.eclipse.jetty.util.log.Log;
-import org.eclipse.jetty.util.log.Logger;
+//import org.eclipse.jetty.util.log.Logger;
 
 
 class CustomEnumConverter implements TypeConverter {
 	 
-	private static final Logger logger = Log.getLogger(CustomEnumConverter.class);
+	//private static final Logger logger = Log.getLogger(CustomEnumConverter.class);
 	
     //private static final Logger logger = LoggerFactory.getLogger(EnumConverter.class);
  

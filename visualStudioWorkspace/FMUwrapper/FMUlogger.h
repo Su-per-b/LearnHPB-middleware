@@ -1,6 +1,5 @@
 #pragma once
 
-#include <tchar.h>
 #include "stdafx.h"
 
 #include "Logger.h"

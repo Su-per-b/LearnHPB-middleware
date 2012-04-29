@@ -1,14 +1,15 @@
 #pragma once
 
-#include <tchar.h>
+
 #include "stdafx.h"
-#include <sstream>
-#include <list>
 #include "FMUwrapper.h"
-#include "Structs.h"
+#include "structs.h"
+#include "enums.h"
 
 
-void (*callbackPtr)(char *);
+void (*messageCallbackPtr_)(MessageStruct *);
+
+void (*resultCallbackPtr_)(ResultItemStruct *);
 
 Straylight::FMUwrapper *  fmuWrapper;
 
@@ -27,14 +28,17 @@ extern "C" DllExport void init(char *);
 
 extern "C" DllExport int isSimulationComplete();
 
-extern "C" DllExport int registerCallback(void (*callbackPtr)(char *));
+extern "C" DllExport int registerMessageCallback(void (*callbackPtr)(MessageStruct *));
+
+extern "C" DllExport int registerResultCallback(void (*callbackPtr)(ResultItemStruct *));
+
+extern "C" DllExport int isSimulationComplete();
+
+extern "C" DllExport int run();
+
 
 //**Tests**//
-extern "C" DllExport void testFMU(char *);
+extern "C" DllExport void testFMU(char * unzipFolder);
 
-extern "C" DllExport  ResultItemPrimitiveStruct * testPrimitive();
 
-extern "C" DllExport  ResultItemPrimitiveStruct * testPrimitiveArray();
-
-extern "C" DllExport  ResultItemStruct * testResultItemStruct();
 

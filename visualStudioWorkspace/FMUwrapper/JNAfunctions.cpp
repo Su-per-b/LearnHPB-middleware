@@ -5,7 +5,6 @@
 int doOneStep()
 {
    fmuWrapper->doOneStep();
-
    return 0;
 }
 
@@ -17,13 +16,45 @@ void end() {
 }
 
 
-int registerCallback(void (*callbackPtrArg)(char *))
+
+int registerMessageCallback(void (*callbackPtrArg)(MessageStruct *))
 {
-	callbackPtr = callbackPtrArg;
-    callbackPtr(_T("JNAfuntions: registerCallback"));
+	MessageStruct * messageStruct = new MessageStruct;
+	messageStruct->msgText = _T("!!JNAfuntions: registerMessageCallback");
+	messageStruct->messageType = messageType_info;
+	messageCallbackPtr_ = callbackPtrArg;
+    messageCallbackPtr_(messageStruct);
 
    return 0;
 }
+
+
+int registerResultCallback(void (*callbackPtrArg)(ResultItemStruct *))
+{
+   resultCallbackPtr_ = callbackPtrArg;
+   return 0;
+}
+
+
+int run()
+{
+
+	// enter the simulation loop
+	while (!fmuWrapper->isSimulationComplete()) {
+		fmuWrapper->doOneStep();
+
+		ResultItemStruct *  resultItemStruct = fmuWrapper->getResultStruct();
+
+		if(resultCallbackPtr_) {
+			resultCallbackPtr_(resultItemStruct);
+		}
+
+	}
+
+   return 0;
+}
+
+
 
 
 void testFMU (char * unzipFolder)
@@ -88,8 +119,8 @@ int isSimulationComplete () {
 void init (char * unzipFolder)
 {
 	fmuWrapper = new Straylight::FMUwrapper();
-	fmuWrapper->registerCallback(callbackPtr);
-
+	fmuWrapper->registerMessageCallback(messageCallbackPtr_);
+	
 	int result = fmuWrapper->parseXML(unzipFolder);
 	int result2 = fmuWrapper->loadDll();
 	fmuWrapper->simulateHelperInit();
@@ -97,83 +128,14 @@ void init (char * unzipFolder)
 }
 
 
-ResultItemPrimitiveStruct * testPrimitive() {
-	ResultItemPrimitiveStruct * ps = new ResultItemPrimitiveStruct;
-
-	ps->idx = 1;
-	ps->string = _T("test xxx");
-
-	return ps;
-
-}
-
-ResultItemPrimitiveStruct * testPrimitiveArray() {
-	ResultItemPrimitiveStruct * ps = new ResultItemPrimitiveStruct[2];
-
-	ps[0].idx = 0;
-	ps[0].string = _T("test xxx");
-
-	ps[1].idx = 1;
-	ps[1].string = _T("test yyy");
-
-	return ps;
-
-}
 
 
-
-ResultItemStruct * testResultItemStruct() {
-	ResultItemPrimitiveStruct * ps = new ResultItemPrimitiveStruct[2];
-
-	ps[0].idx = 0;
-	ps[0].string = _T("test xx1");
-
-	ps[1].idx = 1;
-	ps[1].string = _T("test yyy");
-
-
-	ResultItemStruct * riStruct = new ResultItemStruct;
-
-
-	riStruct->time = 1.000;
-	riStruct->string = _T("test zzz");
-	riStruct->primitive =   ps;
-	riStruct->primitiveCount = 2;
-
-	return riStruct;
-
-}
 
 
  ResultItemStruct * getResultStruct ()
 {
-	Straylight::ResultItem * ri;
-	ri = fmuWrapper->getResultItem();
-	ResultItemStruct *riStruct = new ResultItemStruct;
 
-	int len = ri->resultPrimitiveList.size();
-	ResultItemPrimitiveStruct * primitiveArry = new ResultItemPrimitiveStruct[len];
-
-	ResultItemPrimitiveStruct * primitiveStruct;
-
-	for (int i = 0; i < len; i++)
-	{
-		Straylight::ResultPrimitive * rp  = ri->resultPrimitiveList[i];
-
-		primitiveArry[i].idx = rp->idx;
-		std::string str = rp->getString();
-
-		char * cstr = new char [str.size()+1];
-        strcpy (cstr, str.c_str());
-		primitiveArry[i].string = cstr;
-	}
-
-	riStruct->time = ri->time_;
-	riStruct->string = ri->getString();
-	riStruct->primitive =  primitiveArry;
-	riStruct->primitiveCount = len;
-
-	return riStruct;
+	return fmuWrapper->getResultStruct();
 
 }
 

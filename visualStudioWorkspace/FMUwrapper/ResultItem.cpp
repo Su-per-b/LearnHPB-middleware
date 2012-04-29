@@ -114,4 +114,35 @@ namespace Straylight
 
 
 
+	 ResultItemStruct * ResultItem::toStruct ()
+	{
+
+
+		ResultItemStruct *riStruct = new ResultItemStruct;
+
+		int len = resultPrimitiveList.size();
+		ResultItemPrimitiveStruct * primitiveArry = new ResultItemPrimitiveStruct[len];
+
+
+		for (int i = 0; i < len; i++)
+		{
+			Straylight::ResultPrimitive * rp  = resultPrimitiveList[i];
+
+			primitiveArry[i].idx = rp->idx;
+			std::string str = rp->getString();
+
+			char * cstr = new char [str.size()+1];
+			strcpy (cstr, str.c_str());
+			primitiveArry[i].string = cstr;
+		}
+
+		riStruct->time = time_;
+		riStruct->string = getString();
+		riStruct->primitive =  primitiveArry;
+		riStruct->primitiveCount = len;
+
+		return riStruct;
+
+	}
+
 }

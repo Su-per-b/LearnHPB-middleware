@@ -24,7 +24,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
+#include <sstream>
+#include <list>
+#include <tchar.h>
+#include <vector>
 
 extern "C"
 {

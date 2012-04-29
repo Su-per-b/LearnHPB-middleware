@@ -2,8 +2,7 @@ package com.sri.straylight.fmuWrapper;
 
 
 import com.sun.jna.DefaultTypeMapper;
-import com.sun.jna.TypeConverter;
-import com.thoughtworks.xstream.converters.enums.EnumConverter;
+
 
 
 class HlTypeMapper extends DefaultTypeMapper {
@@ -15,7 +14,9 @@ class HlTypeMapper extends DefaultTypeMapper {
     	addTypeConverter(StreamType.class, converter);
     	addTypeConverter(Enu.class, converter);
     	addTypeConverter(Elm.class, converter);
-
+    	addTypeConverter(MessageType.class, converter);
+    	
+    	
     }
 }
 

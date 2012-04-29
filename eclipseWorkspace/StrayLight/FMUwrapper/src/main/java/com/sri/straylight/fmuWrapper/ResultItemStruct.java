@@ -21,7 +21,5 @@ public class ResultItemStruct extends Structure {
 		
 	}
 	
-
-
 	
 }

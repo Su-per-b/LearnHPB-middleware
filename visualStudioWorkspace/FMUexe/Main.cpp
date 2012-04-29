@@ -12,34 +12,25 @@ int _tmain(int argc, _TCHAR* argv[])
 	return 0;
 }
 
-void callback(char * msg) {
-	printf ("Main.exe callback: %s \n", msg);
-	fflush(stdout);
+
+
+void resultCallback(ResultItemStruct * resultItemStruct) {
+	printf ("Main.exe resultCallback: %s \n", resultItemStruct->string);
 }
 
-
+void messageCallback(MessageStruct * messageStruct) {
+	printf ("Main.exe messageCallback: %s \n", messageStruct->msgText);
+}
 
 void test5() {
 
-	int size =sizeof(int);
-
-
-	void (*callbackPtr)(char *) = &callback;
-	registerCallback(callbackPtr);
-
+	//void (*callbackPtr)(ResultItemStruct *) = &resultCallback;
+	registerResultCallback(&resultCallback);
+	registerMessageCallback(&messageCallback);
 
 	init(_T("C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop"));
-	struct ScalarVariableMeta * svmAry  = getSVmetaData();
 
-	int len = getVariableCount();
-
-    while(isSimulationComplete() == 0) {
-
-		doOneStep();
-		ResultItemStruct * riStruct = getResultStruct();
-		printf ("result: %s \n", riStruct->string);
-    }
-
+	run();
 	end();
 
 }

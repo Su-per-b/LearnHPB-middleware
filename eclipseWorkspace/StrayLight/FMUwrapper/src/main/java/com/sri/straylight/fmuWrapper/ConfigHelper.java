@@ -3,7 +3,6 @@ package com.sri.straylight.fmuWrapper;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
@@ -15,7 +14,6 @@ import com.thoughtworks.xstream.XStream;
 public class ConfigHelper {
 
 	private static final String configFile = "config.xml";
-	private static final String configOutFile = "config_out.xml";
 	
 
 	

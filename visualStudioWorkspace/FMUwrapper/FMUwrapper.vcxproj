@@ -87,6 +87,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="enums.h" />
     <ClInclude Include="FMUlogger.h" />
     <ClInclude Include="include\qtronic\fmi_cs.h" />
     <ClInclude Include="JNAfunctions.h" />
@@ -101,7 +102,7 @@
     <ClInclude Include="ResultPrimitive.h" />
     <ClInclude Include="include\qtronic\xml_parser.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Structs.h" />
+    <ClInclude Include="structs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

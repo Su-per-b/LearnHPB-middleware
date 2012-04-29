@@ -1,11 +1,10 @@
 #pragma once
 
-#include <tchar.h>
+
 #include "stdafx.h"
+
 #include "ResultItem.h"
 #include "Logger.h"
-#include <sstream>
-#include <list>
 #include "FMUlogger.h"
 #include "Structs.h"
 
@@ -80,9 +79,9 @@ namespace Straylight
 		void getModuleFolderPath(_TCHAR * szDir);
 		ResultItem* resultItem_;
 
-		int registerCallback(void (*callbackPtrArg)(char *));
+		int registerMessageCallback(void (*callbackPtrArg)(MessageStruct *));
 
-
+		ResultItemStruct * getResultStruct();
 
 	//private functions
 	private:
