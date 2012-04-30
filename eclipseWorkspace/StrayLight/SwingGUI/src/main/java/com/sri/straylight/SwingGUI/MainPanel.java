@@ -68,6 +68,8 @@ import javax.swing.event.*;
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
 import java.awt.Color;
+import java.util.Vector;
+
 import javax.swing.UIManager;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
@@ -83,12 +85,12 @@ public class MainPanel extends JPanel implements FMUeventListener   {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final boolean DEBUG_TABLE = false;
+	private final boolean DEBUG_TABLE = true;
     
 	//components
     private final JPanel topPanel_ = new JPanel();
-    private final JButton btnRun_ = new JButton("Run");
-    private final JButton btnClear_ = new JButton("Clear");
+    private final JButton btnRun_ = new JButton("Run Simulation");
+    private final JButton btnClear_ = new JButton("Clear Debug Console");
     private final JTextPane textPane_ = new JTextPane();;
     private final JTabbedPane tabbedPane_ = new JTabbedPane(JTabbedPane.TOP);
     private final JPanel panelText_ = new JPanel();;
@@ -99,15 +101,14 @@ public class MainPanel extends JPanel implements FMUeventListener   {
     private final String newline_ = "\n";
     private FmuConnectLocal fmuConnectLocal_;
     private long startTime_ = 0;
-    private DefaultTableModel tableModel_;
+    
+    private DefaultTableModel resultsTableModel_;
+    private SimpleTableModel simpleTableModel_;
     
     public MainPanel() {
-
     	initMainLayout_();
-    	
         initTopPanel_();
         initDebugConsole_();
-	   // initTable2_();
     }
     
     
@@ -131,7 +132,7 @@ public class MainPanel extends JPanel implements FMUeventListener   {
 	    panelText_.add(scrollPaneText);
 	    scrollPaneText.setViewportView(textPane_);
 	    
-	    tabbedPane_.addTab("Debug Text", null, panelText_, null);
+	    tabbedPane_.addTab("Debug Console", null, panelText_, null);
     }
     
     
@@ -175,31 +176,16 @@ public class MainPanel extends JPanel implements FMUeventListener   {
 	    panelTable.setLayout(new GridLayout(1, 1, 0, 0));
 	    
 
+		String columnNames[] = fmuConnectLocal_.getOutputVariableNames();
+		Object[][] data = {{}};
 		
-		String data2[][] = {{"Vinod","programmer","5000"},
-		   {"Deepak","Writer","20000"},
-		   {"Noor","Writer","30000"},
-		   {"Rinku","programar","25000"}};
-		
-		
-		String columnNames3[] = fmuConnectLocal_.getOutputVariableNames();
-		
-		String columnNames2[] = {"Emp_name","Emp_depart","Emp_sal"};
-		
-		
-		
-		
-		
-		tableModel_ = new DefaultTableModel(data2, columnNames3);
-		
-	    resultsTable_ = new JTable(tableModel_);
 	    
-	   // resultsTable_
-	    
+		resultsTableModel_ = new DefaultTableModel(data,columnNames);
+		
+	    resultsTable_ = new JTable(resultsTableModel_);
 	    resultsTable_.setPreferredScrollableViewportSize(new Dimension(700, 600));
 	    resultsTable_.setFillsViewportHeight(true);
 		
-	    
         if (DEBUG_TABLE) {
         	resultsTable_.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
@@ -269,23 +255,7 @@ public class MainPanel extends JPanel implements FMUeventListener   {
         
     }
     
-    
-    private void makeColumnHeadings() {
-    	
-        String[] columnNames = {"FFFF",
-                "Last Name",
-                "Sport",
-                "# of Years",
-                "Vegetarian"};
-        
-        
-       /// resultsTable_ = new JTable();
-        
-      //  TableColumnModel tm = new TableColumnModel();
-        
-     //  resultsTable_.setColumnModel(columnModel)
-    
-    }
+
     
     public void init() {
     	
@@ -337,9 +307,7 @@ public class MainPanel extends JPanel implements FMUeventListener   {
        return attrs;
      }
      
-     
 
-	
     private void runSimulation() {
     	startTime_ = System.currentTimeMillis();
     	fmuConnectLocal_.run();
@@ -348,6 +316,9 @@ public class MainPanel extends JPanel implements FMUeventListener   {
     
 	public void onResultEvent(ResultEvent event) {
 		outputText (event.resultString);
+		Object[] newRow = event.resultItemStruct.getStrings();
+
+		resultsTableModel_.insertRow(1,newRow);
 	}
 	
     public void onMessageEvent(MessageEvent event) {
@@ -355,15 +326,12 @@ public class MainPanel extends JPanel implements FMUeventListener   {
     }
     
     public void onFMUstateEvent(FMUstateEvent event) {
-    	//fmuEventDispatacher.fireStateEvent(event);
     	outputText ("State Change: "+ event.fmuState.toString());
     	
 
     	 btnRun_.setEnabled(event.fmuState == State.fmuState_level_5_initializedFMU);
     	 
     	 if (event.fmuState == State.fmuState_level_5_initializedFMU) {
-    		 
-    		 //makeColumnHeadings();
     		 initTable2_();
     	 }
     	 

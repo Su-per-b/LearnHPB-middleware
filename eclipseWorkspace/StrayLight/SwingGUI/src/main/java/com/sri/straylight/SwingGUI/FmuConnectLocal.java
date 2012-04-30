@@ -26,14 +26,11 @@ public class FmuConnectLocal implements FMUeventListener {
 		fmu_ = new FMU(testFmuFile, nativeLibFolder);
 		fmu_.fmuEventDispatacher.addListener(this);
 
-		
 		TaskInit taskInit = new TaskInit();
 		taskInit.execute();
     }
     
     
-    
-
     public void run() {
         
 		TaskRun taskRun = new TaskRun();
@@ -60,15 +57,12 @@ public class FmuConnectLocal implements FMUeventListener {
         Iterator<ScalarVariableMeta> itr = svnList.iterator();
         
         while (itr.hasNext()) {
-        	
         	ScalarVariableMeta svm = itr.next();
         	strList.add(svm.name);
-          
         }
         
         
         String[] strAry = strList.toArray(new String[strList.size()]);
-        
         return strAry;
     	
     	
@@ -92,10 +86,7 @@ public class FmuConnectLocal implements FMUeventListener {
     {
         public Void doInBackground()
         {
-            	
-
     		fmu_.run();
-
             return null;
             
         }

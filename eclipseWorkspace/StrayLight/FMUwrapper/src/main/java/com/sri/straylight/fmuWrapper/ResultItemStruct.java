@@ -18,8 +18,25 @@ public class ResultItemStruct extends Structure {
 		ResultItemPrimitiveStruct[] ary = (ResultItemPrimitiveStruct[])ps2.toArray(primitiveCount);
 		
 		return ary;
-		
 	}
 	
+	public String[] getStrings() {
+		
+		String[] strAry = new String[primitiveCount];
+		
+		ResultItemPrimitiveStruct[] ary = getPrimitives();
+		
+		for (int i = 0; i < primitiveCount; i++) {
+			
+			ResultItemPrimitiveStruct primitiveStruct = ary[i];
+			//String str =  primitiveStruct.string;
+			
+			strAry[i] = primitiveStruct.string;
+			  
+		}
+
+		
+		return strAry;
+	}
 	
 }
