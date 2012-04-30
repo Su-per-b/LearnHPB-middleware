@@ -20,6 +20,7 @@ typedef enum {
 	fmuState_level_5_initializedFMU,
 	fmuState_runningSimulation,
 	fmuState_completedSimulation,
+	fmuState_cleanedup,
 	fmuState_error
 
 } State;

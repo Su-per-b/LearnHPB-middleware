@@ -13,12 +13,18 @@ void end() {
 
 	fmuWrapper->printSummary();
 	delete fmuWrapper;
+
+	fmuWrapper->setState(fmuState_cleanedup);
 }
 
 
 
 int run()
 {
+
+
+	fmuWrapper->setState(fmuState_runningSimulation);
+
 	// enter the simulation loop
 	while (!fmuWrapper->isSimulationComplete()) {
 		fmuWrapper->doOneStep();
@@ -29,6 +35,8 @@ int run()
 			resultCallbackPtr_(resultItemStruct);
 		}
 	}
+
+	fmuWrapper->setState(fmuState_completedSimulation);
 
    return 0;
 }
@@ -43,8 +51,12 @@ struct ScalarVariableMeta *  getSVmetaData() {
 	int i;
 	i = 0;
 
-	for(std::list<ScalarVariableMeta>::iterator list_iter = fmuWrapper->metaDataList.begin(); 
-		list_iter != fmuWrapper->metaDataList.end(); list_iter++)
+
+	std::list<ScalarVariableMeta> list = fmuWrapper->getMetaDataList();
+
+
+	for(std::list<ScalarVariableMeta>::iterator list_iter = list.begin(); 
+		list_iter != list.end(); list_iter++)
 	{
 		ScalarVariableMeta svm = * list_iter;
 		ptr[i]  = * list_iter;
@@ -95,21 +107,6 @@ void init_2 (char * unzipFolder)
 
 void init_3 ()
 {
-	int result2 = fmuWrapper->loadDll();
-	fmuWrapper->simulateHelperInit();
-}
-
-
-
-void init (char * unzipFolder)
-{
-	fmuWrapper = new Straylight::FMUwrapper(messageCallbackPtr_, stateChangeCallbackPtr_);
-	//fmuWrapper->registerMessageCallback(messageCallbackPtr_);
-	//fmuWrapper->registerStateChangeCallback(stateChangeCallbackPtr_);
-
-
-	int result = fmuWrapper->parseXML(unzipFolder);
-
 	int result2 = fmuWrapper->loadDll();
 	fmuWrapper->simulateHelperInit();
 }

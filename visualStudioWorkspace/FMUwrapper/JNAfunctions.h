@@ -29,8 +29,6 @@ extern "C" DllExport int getVariableCount();
 
 extern "C" DllExport struct ScalarVariableMeta * getSVmetaData();
 
-extern "C" DllExport void init(char * unzipFolder);
-
 extern "C" DllExport int isSimulationComplete();
 
 extern "C" DllExport int isSimulationComplete();

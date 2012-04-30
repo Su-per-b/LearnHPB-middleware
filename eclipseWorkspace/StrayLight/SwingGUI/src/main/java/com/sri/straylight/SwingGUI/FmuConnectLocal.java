@@ -1,6 +1,9 @@
 package com.sri.straylight.SwingGUI;
 
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import javax.swing.SwingWorker;
 
 import com.sri.straylight.fmuWrapper.*;
@@ -49,7 +52,27 @@ public class FmuConnectLocal implements FMUeventListener {
     	fmuEventDispatacher.fireStateEvent(event);
     }
     
-
+    public String[] getOutputVariableNames() {
+    	 
+    	ArrayList<String> strList = new ArrayList<String>();
+    	
+    	ArrayList<ScalarVariableMeta> svnList = fmu_.getScalarVariableOutputList();
+        Iterator<ScalarVariableMeta> itr = svnList.iterator();
+        
+        while (itr.hasNext()) {
+        	
+        	ScalarVariableMeta svm = itr.next();
+        	strList.add(svm.name);
+          
+        }
+        
+        
+        String[] strAry = strList.toArray(new String[strList.size()]);
+        
+        return strAry;
+    	
+    	
+    }
     
     private class TaskInit extends SwingWorker<Void, Void>
     {

@@ -27,7 +27,6 @@ namespace Straylight
 		)
 	{
 		timeEnd_ = 1.0;
-		csv_separator_ = ',';
 		t0 = 0;
 		timeDelta_=0.1;
 		fmuPointer_ = &fmu_;
@@ -39,7 +38,6 @@ namespace Straylight
 
 		logger_->registerMessageCallback(messageCallbackPtr);
 		stateChangeCallbackPtr_ =stateChangeCallbackPtr;
-		//FMUstate s = fmuState_level_0_uninitialized;
 
 		setState( fmuState_level_0_uninitialized );
 	}
@@ -72,6 +70,15 @@ namespace Straylight
 
 		State FMUwrapper::getState() {
 			return state_;
+		}
+
+		std::list<ScalarVariableMeta> FMUwrapper::getMetaDataList() {
+			return  metaDataList_;
+		}
+
+
+		std::list<ScalarVariableMeta> FMUwrapper::getMetaDataListOuput() {
+			return metaDataListOuput_;
 		}
 
 
@@ -128,10 +135,10 @@ namespace Straylight
 			meta.causality =  getCausality(sv);
 			//meta.description = getDescription(fmuPointer_->modelDescription,  sv );
 
-			metaDataList.push_back(meta);
+			metaDataList_.push_back(meta);
 
 			if (meta.causality == enu_output) {
-				metaDataListOuput.push_back(meta);
+				metaDataListOuput_.push_back(meta);
 			}
 		}
 
@@ -228,12 +235,6 @@ namespace Straylight
 
 
 
-
-
-
-
-
-
 	int FMUwrapper::simulateHelperInit() {
 
 		logger_->printDebug("FMUwrapper::simulateHelperInit\n");	
@@ -249,72 +250,75 @@ namespace Straylight
 		GetCurrentDirectory(MAX_PATH, currentDirectory);
 		logger_->printDebug2("currentDirectory: %s\n", currentDirectory);	
 
-		loggingOn = 1;
+		loggingOn_ = 1;
 		ModelDescription* md;            // handle to the parsed XML file        
 		const char* guid;                // global unique id of the fmu
 		const char* modelId;                //
-
-
 		fmiCallbackFunctions callbacks;  // called by the model during simulation
 		fmiStatus fmiFlag;               // return code of the fmu functions
 		fmiBoolean toleranceControlled = fmiFalse;
-		nSteps = 0;
+		nSteps_ = 0;
 
 		// Run the simulation
-		std::string s;
+
 
 		// convert double b to string s
+		std::string s;
 		{ std::ostringstream ss;
 			ss << timeEnd_;
 			s = ss.str();
 		}
 
 		printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d'\n", 
-			unzipFolderPath_, s.c_str(), timeDelta_, loggingOn);
+			unzipFolderPath_, s.c_str(), timeDelta_, loggingOn_);
 
-
-		vars = fmuPointer_->modelDescription->modelVariables;		// add it to get variables
 		logger_->printDebug2("Instantiate the fmu%s\n", "");
 
-		fflush(stdout);		
 		// instantiate the fmu
-		md = fmuPointer_->modelDescription;
-		guid = getString(md, att_guid);
 
-		logger_->printDebug2("Got GUID = %s!\n", guid);
-		//	
+		guid = getString(fmuPointer_->modelDescription, att_guid);
+
+		logger_->printDebug2("Set GUID = %s!\n", guid);
 
 		callbacks.logger = FMUlogger::log;
 		callbacks.allocateMemory = calloc;
 		callbacks.freeMemory = free;
 
-		logger_->printDebug("Got callbacks!\n");
-		modelId =  getModelIdentifier(md);
+		//logger_->printDebug("Set callbacks\n");
+
+		modelId =  getModelIdentifier(fmuPointer_->modelDescription);
 		logger_->printDebug2("Model Identifer is %s\n", modelId);
 
-		fmiComponent_ = fmuPointer_->instantiateSlave(modelId, guid, "Model1", "", 100, fmiFalse, fmiFalse, callbacks, loggingOn);
+
+		fmiComponent_ = fmuPointer_->instantiateSlave (
+			modelId, 
+			guid, 
+			"Model1", 
+			"", 
+			100, 
+			fmiFalse, 
+			fmiFalse, 
+			callbacks, 
+			loggingOn_
+		);
+
 
 		if (!fmiComponent_) {
 			logger_->printError("could not instantiate slaves\n");
 			return 1;
 		}
 
-
 		setState( fmuState_level_3_instantiatedSlaves );
 
-		//logger_->printDebug("Instantiated slaves!\n");	
 		// Set the start time and initialize
 		time_ = t0;
 
-		logger_->printDebug("start to initialize FMU!\n");
-		fflush(stdout);			
-		
+		logger_->printDebug("start to iinitializeSlave() \n");
 		fmiFlag =  fmuPointer_->initializeSlave(fmiComponent_, t0, fmiTrue, timeEnd_);
 
-		fflush(stdout);		
 
 		if (fmiFlag > fmiWarning) {
-			printf("could not initialize model");
+			printf("could not iinitializeSlave()");
 			setState( fmuState_error );
 			return 1;																
 		} else {
@@ -349,44 +353,10 @@ namespace Straylight
 	void FMUwrapper::printSummary() {
 
 		// Print simulation summary
-		if (loggingOn) printf("Step %d to t=%.4f\n", nSteps, time_);		
+		if (loggingOn_) printf("Step %d to t=%.4f\n", nSteps_, time_);		
 		printf("Simulation from %g to %g terminated successful\n", t0, timeEnd_);
-		printf("  steps ............ %d\n", nSteps);
+		printf("  steps ............ %d\n", nSteps_);
 		printf("  fixed step size .. %g\n", timeDelta_);
-	}
-
-
-	fmiReal FMUwrapper::getResultSnapshot() {
-
-		fmiReal r;
-
-		fmiValueReference vr;				
-		ScalarVariable** vars = fmuPointer_->modelDescription->modelVariables;
-
-
-		// Print all other columns
-		ScalarVariable* sv = vars[0];
-
-		// Output values
-		vr = getValueReference(sv);
-		switch (sv->typeSpec->type){
-		case elm_Real:
-			fmuPointer_->getReal(fmiComponent_, &vr, 1, &r);
-			return r;
-			break;
-		default:
-			return 0;
-			break;
-		}
-
-	}
-
-
-
-
-
-	ResultItem * FMUwrapper::getResultItem() {
-		return resultItem_;
 	}
 
 
@@ -399,17 +369,18 @@ namespace Straylight
 	void FMUwrapper::doOneStep() {
 
 		// Advance to next time step
-		status = fmuPointer_->doStep(fmiComponent_, time_, timeDelta_, fmiTrue);  
+		fmiStatus_ = fmuPointer_->doStep(fmiComponent_, time_, timeDelta_, fmiTrue);  
 
 		time_ = min(time_+timeDelta_, timeEnd_);
 
 		resultItem_ = new ResultItem(fmuPointer_,  fmiComponent_);
 		resultItem_->setTime(time_);
 
-		for(std::list<ScalarVariableMeta>::iterator list_iter = metaDataListOuput.begin(); 
-			list_iter != metaDataListOuput.end(); list_iter++)
+		for(std::list<ScalarVariableMeta>::iterator list_iter = metaDataListOuput_.begin(); 
+			list_iter != metaDataListOuput_.end(); list_iter++)
 		{
 				ScalarVariableMeta svm =  * list_iter;
+
 				ScalarVariable* sv = (ScalarVariable*)fmuPointer_->modelDescription->modelVariables[svm.idx];
 				if (getAlias(sv)!=enu_noAlias) continue;
 				
@@ -418,7 +389,7 @@ namespace Straylight
 				resultItem_->addValue(sv, svm.idx);
 		}
 
-		nSteps++;
+		nSteps_++;
 
 	}
 
