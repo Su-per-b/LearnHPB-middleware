@@ -20,12 +20,12 @@ public class Main
 		config = ConfigHelper.load();
 		System.setProperty("jna.library.path", config.dllFolder);
 		
-		//SocketServer ss = new SocketServer();
+		SocketServer ss = new SocketServer();
 		
-		//ss.showBanner();
-		//ss.start();
+		ss.showBanner();
+		ss.start();
 		
-		test2();
+		//test2();
 			
 
 
@@ -37,17 +37,17 @@ public class Main
     	
     	
     	
-    	fmu_ = new FMU(config.testFmuFile);
-    	fmu_.unzip();
-    	fmu_.init(unzipFolder);
+//    	fmu_ = new FMU(config.testFmuFile);
+//    	fmu_.unzip();
+//    	fmu_.init(unzipFolder);
     	
     }
     
     public static void test2( ) {
     	
-		fmu_ = new FMU(config.testFmuFile);
-		fmu_.init(unzipFolder);
-	    
+//		fmu_ = new FMU(config.testFmuFile);
+//		fmu_.init(unzipFolder);
+//	    
 		//ArrayList<ScalarVariableMeta> inList = fmu_.getInputs();
 		//ArrayList<ScalarVariableMeta> outList = fmu_.getOutputs();
 		

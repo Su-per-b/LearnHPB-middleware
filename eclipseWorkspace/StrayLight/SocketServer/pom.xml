@@ -18,6 +18,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jna.version>3.4.0</jna.version>
 	</properties>
+	
 	<dependencies>
 
 		<dependency>
@@ -31,18 +32,6 @@
 			<artifactId>FMUwrapper</artifactId>
 			<version>0.0.2</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.6.4</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.python</groupId>
-			<artifactId>jython-standalone</artifactId>
-			<version>2.5.2</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -50,48 +39,12 @@
 			<version>${jetty.version}</version>
 		</dependency>
 
-		
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
 			<version>${jetty.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-servlet</artifactId>
-			<version>${jetty.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-io</artifactId>
-			<version>${jetty.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-webapp</artifactId>
-			<version>${jetty.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>1.2.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.codehaus.mojo.jspc</groupId>
-			<artifactId>jspc-maven-plugin</artifactId>
-			<version>2.0-alpha-3</version>
-		</dependency>
 
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
@@ -99,8 +52,13 @@
 			<version>1.4.2</version>
 		</dependency>
 
-
-
+	
+	    <dependency>
+	      <groupId>com.google.code.gson</groupId>
+	      <artifactId>gson</artifactId>
+	      <version>2.1</version>
+	      <scope>compile</scope>
+	    </dependency>
 
     
 	</dependencies>

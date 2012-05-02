@@ -14,7 +14,7 @@ public class SocketHandlerAll extends WebSocketHandler {
 	public WebSocket doWebSocketConnect(HttpServletRequest request,
 			String protocol) {
 		
-	    System.out.println("doWebSocketConnect");
+	    System.out.println("WebSocket.doWebSocketConnect");
 	    
 
 	    
@@ -28,9 +28,7 @@ public class SocketHandlerAll extends WebSocketHandler {
 	  //  } else {
 	    	//return null;
 	   // }
-		
-		
-		
+
 	}
 
 	

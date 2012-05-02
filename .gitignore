@@ -35,3 +35,5 @@ __pycache__
 /visualStudioWorkspace/_ReSharper.straylight
 *.log
 dsres.mat
+.metadata
+.settings
