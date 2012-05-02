@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.sri.straylight.fmuWrapper.InitializedStruct;
 import com.sri.straylight.fmuWrapper.MessageStruct;
 import com.sri.straylight.fmuWrapper.ResultItem;
+import com.sri.straylight.fmuWrapper.ResultItemPrimitive;
 import com.sri.straylight.fmuWrapper.ResultItemPrimitiveStruct;
 import com.sri.straylight.fmuWrapper.State;
 import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
@@ -51,6 +52,7 @@ public class GsonController {
 		gb.registerTypeAdapter(FMUstateEvent.class, new FMUstateEventAdapter());
 		gb.registerTypeAdapter(InitializedStruct.class, new InitializedStructAdapter());
 		gb.registerTypeAdapter(InitializedEvent.class, new InitializedEventAdapter());
+		gb.registerTypeAdapter(ResultItemPrimitive.class, new ResultItemPrimitiveAdapter());
 		
 		
 		gson_ = gb.create();

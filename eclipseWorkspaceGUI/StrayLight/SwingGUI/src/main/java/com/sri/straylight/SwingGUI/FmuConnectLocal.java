@@ -14,9 +14,9 @@ import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
-import com.sri.straylight.fmuWrapper.test.*;
 
-public class FmuConnectLocal implements FMUeventListener, FmuConnect {
+
+public class FmuConnectLocal implements FMUeventListener, IFmuConnect {
 	
     private FMU fmu_;
     public static String unzipFolder = "C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop";
@@ -24,10 +24,10 @@ public class FmuConnectLocal implements FMUeventListener, FmuConnect {
     public static String nativeLibFolder = "E:\\SRI\\straylight_repo\\visualStudioWorkspace\\bin\\Debug";
     
     
-	public FMUeventDispatacher fmuEventDispatacher;
+	private FMUeventDispatacher fmuEventDispatacher_;
 	
     public FmuConnectLocal() {
-    	fmuEventDispatacher = new FMUeventDispatacher();
+    	fmuEventDispatacher_ = new FMUeventDispatacher();
     }
     
     public void init() {
@@ -45,20 +45,26 @@ public class FmuConnectLocal implements FMUeventListener, FmuConnect {
     }
 
     public void onResultEvent(ResultEvent event) {
-    	fmuEventDispatacher.fireResultEvent(event);
+    	fmuEventDispatacher_.fireResultEvent(event);
     }
    
     public void onMessageEvent(MessageEvent event) {
-    	fmuEventDispatacher.fireMessageEvent(event);
+    	fmuEventDispatacher_.fireMessageEvent(event);
     }
     
     public void onFMUstateEvent(FMUstateEvent event) {
-    	fmuEventDispatacher.fireStateEvent(event);
+    	fmuEventDispatacher_.fireStateEvent(event);
     }
     
     public void onInitializedEvent(InitializedEvent event) {
-    	fmuEventDispatacher.fireInitializedEvent(event);
+    	fmuEventDispatacher_.fireInitializedEvent(event);
     }
+    
+    
+    public void addListener(FMUeventListener l) {
+    	fmuEventDispatacher_.addListener(l);
+    }
+    
     
     public String[] getOutputVariableNames() {
     	 

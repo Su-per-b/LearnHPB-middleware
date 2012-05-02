@@ -5,7 +5,7 @@ public class ResultItem {
 	public double time;
 	public String string;
 	public int primitiveCount;
-	public ResultItemPrimitiveStruct[] primitiveAry;
+	public ResultItemPrimitive[] primitiveAry;
 
 	
 	
@@ -15,10 +15,21 @@ public class ResultItem {
 	
 	
 	public ResultItem(ResultItemStruct resultItemStruct) {
+		
 		this.time = resultItemStruct.time;
 		this.string = resultItemStruct.string;
 		this.primitiveCount = resultItemStruct.primitiveCount;
-		this.primitiveAry = resultItemStruct.getPrimitives();
+		
+		ResultItemPrimitiveStruct[]  structAry = resultItemStruct.getPrimitives();
+		
+		int len = structAry.length;
+		
+		primitiveAry = new ResultItemPrimitive[len];
+		
+		for (int i = 0; i < len; i++) {
+			primitiveAry[i] = new ResultItemPrimitive (structAry[i]);
+		}
+		
 		
 	}
 	
@@ -28,8 +39,7 @@ public class ResultItem {
 		
 		String[] strAry = new String[primitiveCount];
 		for (int i = 0; i < primitiveCount; i++) {
-			ResultItemPrimitiveStruct primitiveStruct = primitiveAry[i];
-			strAry[i] = primitiveStruct.string;
+			strAry[i] = primitiveAry[i].string;
 		}
 		
 		return strAry;

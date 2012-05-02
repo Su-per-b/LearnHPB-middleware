@@ -14,7 +14,8 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.sri.straylight.fmuWrapper.ResultItem;
-import com.sri.straylight.fmuWrapper.ResultItemPrimitiveStruct;
+import com.sri.straylight.fmuWrapper.ResultItemPrimitive;
+
 
 
 public class ResultItemAdapter implements 
@@ -39,8 +40,8 @@ JsonSerializer<ResultItem>, JsonDeserializer<ResultItem> {
         
         for (int j = 0; j < src.primitiveAry.length; j++) {
         		
-        	ResultItemPrimitiveStruct struct = src.primitiveAry[j];
-        	JsonElement elem = context.serialize(struct);
+        	ResultItemPrimitive primitive = src.primitiveAry[j];
+        	JsonElement elem = context.serialize(primitive);
         	jsAry.add(elem);
         	
 		}
@@ -72,13 +73,13 @@ JsonSerializer<ResultItem>, JsonDeserializer<ResultItem> {
         
         int len = jsAry.size();
         
-        ResultItemPrimitiveStruct[] primitiveAry = new ResultItemPrimitiveStruct[len];
+        ResultItemPrimitive[] primitiveAry = new ResultItemPrimitive[len];
         		
         for(int i=0; i < len; i++) {
 
         	JsonElement elem = jsAry.get(i);
-        	ResultItemPrimitiveStruct struct = context.deserialize(elem, ResultItemPrimitiveStruct.class);
-        	primitiveAry[i] = struct;;
+        	ResultItemPrimitive primitive = context.deserialize(elem, ResultItemPrimitive.class);
+        	primitiveAry[i] = primitive;
         }
         
         resultItem.primitiveAry = primitiveAry;

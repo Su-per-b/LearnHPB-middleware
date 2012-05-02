@@ -132,10 +132,14 @@ public class FMU  {
 		
 		for (int i = 0; i < len; i++) {
 			
-			ResultItemPrimitiveStruct primitiveStruct = resultItem.primitiveAry[i];
+			//ResultItemPrimitiveStruct primitiveStruct = resultItem.primitiveAry[i];
 			
-			ScalarVariableMeta svm = (ScalarVariableMeta) variableListAll_.get(new Integer (primitiveStruct.idx));  
-			str += "      " +  svm.name + " : " +  primitiveStruct.string + "  \n";
+			ResultItemPrimitive primitive = resultItem.primitiveAry[i];
+			
+			
+			ScalarVariableMeta svm = (ScalarVariableMeta) variableListAll_.get(new Integer (primitive.idx));  
+			
+			str += "      " +  svm.name + " : " +  primitive.string + "  \n";
 		}
 
 		str +=  " \n";

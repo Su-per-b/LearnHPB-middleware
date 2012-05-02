@@ -5,7 +5,6 @@ import javax.swing.JPanel;
 
 
 
-
 /*
  * Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
  *
@@ -42,7 +41,7 @@ import javax.swing.JPanel;
  * SimpleTableDemo.java requires no other files.
  */
 
-import javax.swing.JFrame;
+
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -55,22 +54,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowListener;
+
 
 import javax.swing.JButton;
 import java.awt.Component;
 import java.awt.BorderLayout;
 
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
 import javax.swing.text.*;
 import javax.swing.event.*;
-import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
-import java.awt.Color;
-import java.util.Vector;
-
-import javax.swing.UIManager;
+  
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 
@@ -81,7 +75,7 @@ import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
-import com.sri.straylight.fmuWrapper.test.*;
+
 
 
 
@@ -94,7 +88,7 @@ public class MainPanel extends JPanel implements FMUeventListener   {
 	private static final long serialVersionUID = 1L;
 	private final boolean DEBUG_TABLE = true;
     
-	private final boolean IS_REMOTE = false;
+	private final boolean IS_REMOTE = true;
 	
 	//components
     private final JPanel topPanel_ = new JPanel();
@@ -108,8 +102,9 @@ public class MainPanel extends JPanel implements FMUeventListener   {
     
     private Document  doc_;
     private final String newline_ = "\n";
-    private FmuConnectLocal fmuConnectLocal_;
-    private FmuConnectRemote fmuConnectRemote_ ;
+
+    
+    private IFmuConnect fmuConnect_;
     
     
     private long startTime_ = 0;
@@ -223,17 +218,16 @@ public class MainPanel extends JPanel implements FMUeventListener   {
 
     
     public void init() {
+    	
+
     	if (IS_REMOTE) {
-            fmuConnectRemote_ = new FmuConnectRemote();
-            fmuConnectRemote_.fmuEventDispatacher.addListener(this);
-            fmuConnectRemote_.init();
-            
+    		fmuConnect_ = new FmuConnectRemote();
     	} else {
-            fmuConnectLocal_ = new FmuConnectLocal();
-            fmuConnectLocal_.fmuEventDispatacher.addListener(this);
-            fmuConnectLocal_.init();
-            
+    		fmuConnect_ = new FmuConnectLocal();
     	}
+    	
+    	fmuConnect_.addListener(this);
+    	fmuConnect_.init();
     }
     
     
@@ -281,7 +275,7 @@ public class MainPanel extends JPanel implements FMUeventListener   {
 
     private void runSimulation() {
 
-    	fmuConnectLocal_.run();
+    	fmuConnect_.run();
     }
     
     

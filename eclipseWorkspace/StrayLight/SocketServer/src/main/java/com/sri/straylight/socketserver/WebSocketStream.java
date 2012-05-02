@@ -11,6 +11,7 @@ import com.sri.straylight.fmuWrapper.FMU;
 import com.sri.straylight.fmuWrapper.event.FMUeventDispatacher;
 import com.sri.straylight.fmuWrapper.event.FMUeventListener;
 import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
+import com.sri.straylight.fmuWrapper.event.InitializedEvent;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.serialization.GsonController;
@@ -78,29 +79,30 @@ public class WebSocketStream implements WebSocket.OnTextMessage, WebSocket.OnCon
 		System.out.println("SocketHandlerStream.onMessage " + data);
 
 
-		if (data.equals("start"))  {
-			
-			
+		if (data.equals("init"))  {
 			fmu_ = new FMU(testFmuFile, nativeLibFolder);
 			fmu_.fmuEventDispatacher.addListener(this);
 			
     		fmu_.init_1();
     		fmu_.init_2(unzipFolder);
     		fmu_.init_3();
+    		
+		} else if (data.equals("run")) {
 			
-			//fmu_ = new FMU(Main.config.testFmuFile);
-			//fmu_.disp.addListener(this);
 			
-			//fmu_.init(Main.unzipFolder);
-			//fmu_.run();
-	    	
+			
+			fmu_.run();
 		}
 
 	}
 
-	
+    
     public void onResultEvent(ResultEvent event) {
-    	String jsonString = GsonController.getInstance().getGson().toJson(event);
+    	
+    	event.resultItem.string = "";
+    	Gson gson = GsonController.getInstance().getGson();
+    	
+    	String jsonString = gson.toJson(event);
     	sendMessage(jsonString);
     }
    
@@ -114,13 +116,13 @@ public class WebSocketStream implements WebSocket.OnTextMessage, WebSocket.OnCon
     	sendMessage(jsonString);
     }
     
-    //private void serial
-	//public void eventUpdate(ResultEvent re) {
-		
-    	//sendMessage (re.resultString);
+    public void onInitializedEvent(InitializedEvent event) {
     	
-	//}
-	
+    	String jsonString = GsonController.getInstance().getGson().toJson(event);
+    	sendMessage(jsonString);
+    }
+    
+
 	
 	public void onClose(int closeCode, String message) {
 		// Remove ChatWebSocket in the global list of ChatWebSocket

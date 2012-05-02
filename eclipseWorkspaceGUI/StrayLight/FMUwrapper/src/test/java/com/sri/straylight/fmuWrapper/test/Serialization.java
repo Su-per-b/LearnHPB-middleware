@@ -5,6 +5,7 @@ import com.sri.straylight.fmuWrapper.InitializedStruct;
 import com.sri.straylight.fmuWrapper.MessageStruct;
 import com.sri.straylight.fmuWrapper.MessageType;
 import com.sri.straylight.fmuWrapper.ResultItem;
+import com.sri.straylight.fmuWrapper.ResultItemPrimitive;
 import com.sri.straylight.fmuWrapper.ResultItemPrimitiveStruct;
 import com.sri.straylight.fmuWrapper.ResultItemStruct;
 import com.sri.straylight.fmuWrapper.State;
@@ -134,25 +135,23 @@ public class Serialization
     public void testResultEvent()
     {
     	
-    	ResultItemStruct resultItemStruct1 = new ResultItemStruct();
+    	ResultItem resultItem1 = new ResultItem();
     	
-    	resultItemStruct1.time = 2.51;
-    	resultItemStruct1.string = "two point five one";
-    	resultItemStruct1.primitiveCount = 2;
+    	resultItem1.time = 2.51;
+    	resultItem1.string = "two point five one";
+    	resultItem1.primitiveCount = 2;
     	
-    	ResultItem resultItem1 = new ResultItem(resultItemStruct1);
+    	ResultItemPrimitive resultItemPrimitive1 = new ResultItemPrimitive();
+    	resultItemPrimitive1.idx =1;
+    	resultItemPrimitive1.string = "one";
     	
-    	ResultItemPrimitiveStruct resultItemPrimitiveStruct1 = new ResultItemPrimitiveStruct();
-    	resultItemPrimitiveStruct1.idx =1;
-    	resultItemPrimitiveStruct1.string = "one";
+    	ResultItemPrimitive resultItemPrimitive2 = new ResultItemPrimitive();
+    	resultItemPrimitive2.idx = 2;
+    	resultItemPrimitive2.string = "two";
     	
-    	ResultItemPrimitiveStruct resultItemPrimitiveStruct2 = new ResultItemPrimitiveStruct();
-    	resultItemPrimitiveStruct2.idx = 2;
-    	resultItemPrimitiveStruct2.string = "two";
-    	
-    	resultItem1.primitiveAry = new ResultItemPrimitiveStruct[2];
-    	resultItem1.primitiveAry[0] = resultItemPrimitiveStruct1;
-    	resultItem1.primitiveAry[1] = resultItemPrimitiveStruct2;
+    	resultItem1.primitiveAry = new ResultItemPrimitive[2];
+    	resultItem1.primitiveAry[0] = resultItemPrimitive1;
+    	resultItem1.primitiveAry[1] = resultItemPrimitive2;
     	
     	ResultEvent resultEvent1 = new ResultEvent(this);
     	resultEvent1.resultItem = resultItem1;
@@ -185,25 +184,25 @@ public class Serialization
      */
     public void testResultItem()
     {
-    	ResultItemStruct resultItemStruct1 = new ResultItemStruct();
+    	ResultItem resultItem1 = new ResultItem();
     	
-    	resultItemStruct1.time = 2.51;
-    	resultItemStruct1.string = "two point five one";
-    	resultItemStruct1.primitiveCount = 2;
+    	resultItem1.time = 2.51;
+    	resultItem1.string = "two point five one";
+    	resultItem1.primitiveCount = 2;
     	
-    	ResultItem resultItem1 = new ResultItem(resultItemStruct1);
+    	ResultItemPrimitive resultItemPrimitive1 = new ResultItemPrimitive();
+    	resultItemPrimitive1.idx =1;
+    	resultItemPrimitive1.string = "one";
     	
-    	ResultItemPrimitiveStruct resultItemPrimitiveStruct1 = new ResultItemPrimitiveStruct();
-    	resultItemPrimitiveStruct1.idx =1;
-    	resultItemPrimitiveStruct1.string = "one";
+    	ResultItemPrimitive resultItemPrimitive2 = new ResultItemPrimitive();
+    	resultItemPrimitive2.idx = 2;
+    	resultItemPrimitive2.string = "two";
     	
-    	ResultItemPrimitiveStruct resultItemPrimitiveStruct2 = new ResultItemPrimitiveStruct();
-    	resultItemPrimitiveStruct2.idx = 2;
-    	resultItemPrimitiveStruct2.string = "two";
+    	resultItem1.primitiveAry = new ResultItemPrimitive[2];
+    	resultItem1.primitiveAry[0] = resultItemPrimitive1;
+    	resultItem1.primitiveAry[1] = resultItemPrimitive2;
     	
-    	resultItem1.primitiveAry = new ResultItemPrimitiveStruct[2];
-    	resultItem1.primitiveAry[0] = resultItemPrimitiveStruct1;
-    	resultItem1.primitiveAry[1] = resultItemPrimitiveStruct2;
+
     	
     	
     	String jsonString = gson.toJson(resultItem1);

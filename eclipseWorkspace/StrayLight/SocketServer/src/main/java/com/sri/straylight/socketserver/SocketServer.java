@@ -34,25 +34,8 @@ public class SocketServer {
 			//socketHandler.setHandler(new DefaultHandler());
 			
 			server.setHandler(socketHandler);
-			
-
-			//SocketHandlerUpload theHandler2 = new SocketHandlerUpload();
-			//theHandler2.setHandler(new DefaultHandler());
-			//server.setHandler(theHandler2);
-			
-			
-			//ServletContextHandler context0 = new ServletContextHandler(ServletContextHandler.NO_SECURITY | ServletContextHandler.NO_SESSIONS);
-			//context0.setContextPath("/");
-			
-			//String className = SocketHandlerStream.class.getName();
-			//context0.addServlet(className,"/*");
-			
-			//context0.a
-			//context0.addServlet(new ServletHolder(socketHandler),"/it/*");
-			
-			//server.setHandler(context0);
-			// 2) Start the Jetty server.
 			server.start();
+			
 			// Jetty server is stopped when the Thread is interruped.
 			server.join();
 			
