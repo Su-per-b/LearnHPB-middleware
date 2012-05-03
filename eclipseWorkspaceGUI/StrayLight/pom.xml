@@ -1,86 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.sri</groupId>
-  <artifactId>StrayLight</artifactId>
-  <version>0.0.2</version>
-  <packaging>pom</packaging>
+	<groupId>com.sri</groupId>
+	<artifactId>StrayLight</artifactId>
+	<version>0.0.2</version>
+	<packaging>pom</packaging>
 
-  <name>StrayLight</name>
-  <url>http://maven.apache.org</url>
+	<name>StrayLight</name>
+	<url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-  </properties>
-  
+	</properties>
 
-    <repositories>
-    
-     <!-- maven repository 2 -->
-      <repository>
-              <id>maven-central-repo2</id>
-              <name>Maven Central Repository</name>
-              <url>http://repo2.maven.org/maven2</url>
-      </repository>
-      
-      <!-- maven repository 1 -->
-      <repository>
-              <id>maven-central-repo1</id>
-              <name>Maven Central Repository</name>
-              <url>http://repo1.maven.org/maven2</url>
-      </repository>
-      
-      <!-- Java.net repository -->
-      <repository>
-              <id>java-net-repo</id>
-              <name>Java.net Repository</name>
-              <url>http://download.java.net/maven/2</url>
-      </repository>
 
-      <!-- NetBeans repository -->
-      <repository>
-              <id>netbeans</id>
-              <name>NetBeans Repository</name>
-              <url>http://bits.netbeans.org/maven2</url>
-      </repository>
-      
-      <!-- use jWebSocket repository as final fallback
-      <repository>
-              <id>jWebSocket-repo</id>
-              <name>jWebSocket Repository</name>
-              <url>http://jwebsocket.googlecode.com/svn/repo</url>
-      </repository>
-     -->
-    
+	<repositories>
+
+		<!-- maven repository 2 -->
+		<repository>
+			<id>maven-central-repo2</id>
+			<name>Maven Central Repository</name>
+			<url>http://repo2.maven.org/maven2</url>
+		</repository>
+
+		<!-- maven repository 1 -->
+		<repository>
+			<id>maven-central-repo1</id>
+			<name>Maven Central Repository</name>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
+
+		<!-- Java.net repository -->
+		<repository>
+			<id>java-net-repo</id>
+			<name>Java.net Repository</name>
+			<url>http://download.java.net/maven/2</url>
+		</repository>
+
+		<!-- NetBeans repository -->
+		<repository>
+			<id>netbeans</id>
+			<name>NetBeans Repository</name>
+			<url>http://bits.netbeans.org/maven2</url>
+		</repository>
+
+		<!-- use jWebSocket repository as final fallback <repository> <id>jWebSocket-repo</id> 
+			<name>jWebSocket Repository</name> <url>http://jwebsocket.googlecode.com/svn/repo</url> 
+			</repository> -->
+
 	</repositories>
-	
-  <dependencies>
-  
 
-		
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-    
-	<dependency>
-		<groupId>org.slf4j</groupId>
-		<artifactId>slf4j-api</artifactId>
-		<version>1.6.4</version>
-	</dependency>
-	
+	<dependencies>
 
-	
-  </dependencies>
-  
-  <modules>
-  	<module>FMUwrapper</module>
-    <module>SwingGUI</module>
-  </modules>
-  
+
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+
+
+
+	</dependencies>
+
+
+	<build>
+
+		<plugins>
+
+
+
+
+
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-shade-plugin</artifactId>
+    <version>1.4</version>
+    <executions>
+        <execution>
+            <phase>package</phase>
+            <goals>
+                <goal>shade</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<executions>
+					<execution>
+
+						<goals>
+							<goal>exec</goal>
+							<goal>java</goal>
+						</goals>
+
+					</execution>
+				</executions>
+
+				<configuration>
+					<manifest>
+					
+			           <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+			          <addClasspath>true</addClasspath>
+			          <useUniqueVersions>false</useUniqueVersions>
+			          <mainClass>com.sri.straylight.SwingGUI.Main</mainClass>
+			          <classpathPrefix>SwingGUI/</classpathPrefix>
+			          
+					</manifest>
+				</configuration>
+
+
+			</plugin>
+
+		</plugins>
+
+	</build>
+
+
+	<modules>
+		<module>FMUwrapper</module>
+		<module>SwingGUI</module>
+	</modules>
+
 
 </project>
