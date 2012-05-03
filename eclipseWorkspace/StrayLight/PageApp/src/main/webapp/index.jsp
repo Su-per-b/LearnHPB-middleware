@@ -12,14 +12,16 @@
 
 <body onload="onLoad()" >
 	<h3>Simulation Test</h3>
-	<div>
-		<div>
-			simulation:&nbsp;
-			<input id="submitButton" disabled="disabled"class="button" type="submit" name="submitButton" value="Submit" />
-			<input id="clearButton" class="button" type="button" name="submitButton" value="Clear" />	
-		</div>
-	</div>
-		<br />
-	<div id="messageBox"></div>
+	
+<script type="text/javascript" src="http://java.com/js/deployJava.js"></script>
+
+<script type="text/javascript">
+  var url = "http://localhost/SwingGUI-local.jnlp";
+  deployJava.createWebStartLaunchButton (url, '1.6.0');
+  document.writeln ("  (FMUH Simulation User Interface)");
+</script>
+
+
+	
 </body>
-</html>
+</html>a
