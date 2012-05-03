@@ -23,6 +23,13 @@ void end() {
 }
 
 
+int forceCleanup()
+{
+	//fmuWrapper->setState(fmuState_cleanedup);
+	delete fmuWrapper;
+
+	return 0;
+}
 
 int run()
 {

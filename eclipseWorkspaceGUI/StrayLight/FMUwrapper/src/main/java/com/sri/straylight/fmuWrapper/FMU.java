@@ -33,9 +33,11 @@ public class FMU  {
 	private HashMap<Integer, ScalarVariableMeta> variableListAll_;
 	
 	private ScalarVariableMeta[] svMetaArray_;
+	private State fmuState_;
+	
 	public FMUeventDispatacher fmuEventDispatacher;
 
-	
+	private boolean cleanupWhenPossible_ = false;
 	 
 	private JNAfmuWrapper.MessageCallbackInterface messageCallbackFunc_ = 
 			new JNAfmuWrapper.MessageCallbackInterface() {
@@ -67,17 +69,25 @@ public class FMU  {
 			new JNAfmuWrapper.StateChangeCallbackInterface() {
 		
 		      public boolean stateChangeCallback(State fmuState) {
- 
+		    	  fmuState_ = fmuState;
+		    	  
+		    	  if (fmuState == State.fmuState_level_5_initializedFMU &&
+		    			  cleanupWhenPossible_) 
+		    	  {
+	    			  cleanupWhenPossible_ = false;
+	    			  jnaFMUWrapper_.forceCleanup();
+	    			  fmuState_ = State.fmuState_cleanedup;
+		    	  }
+		    	  
+		    	  
+		    	  
 		    	  FMUstateEvent event = new FMUstateEvent(this);
 		    	  event.fmuState = fmuState;
-		    	  
 		    	  fmuEventDispatacher.fireStateEvent(event);
 		    	  
 		    	  
 		    	  if (fmuState == State.fmuState_level_5_initializedFMU) {
 		    		  
-		    		  
-
 	    		    	ArrayList<String> strList = new ArrayList<String>();
 	    		    	
 	    		    	ArrayList<ScalarVariableMeta> svnList = getScalarVariableOutputList();
@@ -96,6 +106,8 @@ public class FMU  {
 	    		        event2.initializedStruct = struct;
 
 		    		  fmuEventDispatacher.fireInitializedEvent(event2);
+
+		    		  
 		    	  }
 		    	  
 		    	  if (fmuState == State.fmuState_completedSimulation) {
@@ -130,16 +142,10 @@ public class FMU  {
 				"     time: " + Double.toString(resultItemStruct.time) + " \n";
 				
 		int len = resultItem.primitiveCount;
-		
-		//ResultItemPrimitiveStruct[] ary = resultItemStruct.getPrimitives();
-		
+
 		for (int i = 0; i < len; i++) {
 			
-			//ResultItemPrimitiveStruct primitiveStruct = resultItem.primitiveAry[i];
-			
 			ResultItemPrimitive primitive = resultItem.primitiveAry[i];
-			
-			
 			ScalarVariableMeta svm = (ScalarVariableMeta) variableListAll_.get(new Integer (primitive.idx));  
 			
 			str += "      " +  svm.name + " : " +  primitive.string + "  \n";
@@ -246,10 +252,35 @@ public class FMU  {
 	
 	public void run() {
 		jnaFMUWrapper_.run();
-		//jnaFMUWrapper_.end();
 	}
 
+	public void forceCleanup() {
 
+		 if (fmuState_ == State.fmuState_level_5_initializedFMU ||
+				 fmuState_ == State.fmuState_error
+				 ) {
+			 
+			  jnaFMUWrapper_.forceCleanup();
+			  fmuState_ = State.fmuState_cleanedup;
+	    	  FMUstateEvent event = new FMUstateEvent(this);
+	    	  event.fmuState = fmuState_;
+	    	  fmuEventDispatacher.fireStateEvent(event);
+			  
+		 } else if (fmuState_ == State.fmuState_level_1_xmlParsed ||
+				 fmuState_ == State.fmuState_level_2_dllLoaded ||
+				 fmuState_ == State.fmuState_level_3_instantiatedSlaves ||
+				 fmuState_ == State.fmuState_level_4_initializedSlaves 
+				 )
+		 {
+			 cleanupWhenPossible_ = true;
+			 
+		 }
+
+	}
+	
+
+	
+	
 	
 	
 	

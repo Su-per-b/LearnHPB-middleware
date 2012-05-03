@@ -13,18 +13,11 @@ public class Main
 	
     public static void main( String[] args )
     {
-    	
 		config = ConfigHelper.load();
-		
-
 
     }
     
-    public static void test( ) {
-    	
 
-    	
-    }
     
 
     

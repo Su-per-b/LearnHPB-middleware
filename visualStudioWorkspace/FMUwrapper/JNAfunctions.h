@@ -35,6 +35,9 @@ extern "C" DllExport int isSimulationComplete();
 
 extern "C" DllExport int run();
 
+extern "C" DllExport int forceCleanup();
+
+
 extern "C" DllExport void init_1(
 	void (*messageCallbackPtr)(MessageStruct *), 
 	void (*resultCallbackPtr)(ResultItemStruct *),

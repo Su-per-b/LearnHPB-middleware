@@ -1,5 +1,8 @@
 package com.sri.straylight.SwingGUI;
 
+import java.awt.Image;
+import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 public class Main {
@@ -11,8 +14,6 @@ public class Main {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGUI();
-                
-                
             }
         });
     }
@@ -23,10 +24,18 @@ public class Main {
      * event-dispatching thread.
      */
     private static void createAndShowGUI() {
+    	
         //Create and set up the window.
-        JFrame frame = new JFrame("MyTable");
+    	JFrame.setDefaultLookAndFeelDecorated(true);
+        JFrame frame = new JFrame("Straylight Simulation Client");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        URL imageUrl = classLoader.getResource(ConfigModel.WindowIcon);
+        ImageIcon imageIcon = new ImageIcon(imageUrl);
+        Image image = imageIcon.getImage();
+        frame.setIconImage(image);
+        
         //Create and set up the content pane.
         MainPanel newContentPane = new MainPanel();
         newContentPane.setOpaque(true); //content panes must be opaque
@@ -35,8 +44,7 @@ public class Main {
         //Display the window.
         frame.pack();
         frame.setVisible(true);
-        
-       // newContentPane.init();
+
     }
 
     

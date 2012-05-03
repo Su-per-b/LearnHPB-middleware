@@ -30,8 +30,7 @@ public class SocketServer {
 			Server server = new Server(8081);
 			
 			// 2) Register ChatWebSocketHandler in the Jetty server instance.
-			SocketHandlerAll socketHandler = new SocketHandlerAll();
-			//socketHandler.setHandler(new DefaultHandler());
+			SocketHandler socketHandler = new SocketHandler();
 			
 			server.setHandler(socketHandler);
 			server.start();

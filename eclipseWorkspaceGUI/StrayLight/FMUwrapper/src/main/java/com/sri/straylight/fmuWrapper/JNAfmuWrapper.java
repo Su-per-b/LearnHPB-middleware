@@ -19,6 +19,8 @@ public interface JNAfmuWrapper extends Library {
 	
 	int getVariableCount();
 	
+	int forceCleanup();
+	
 	ScalarVariableMeta getSVmetaData();
 	
 	void init(String unzipFolder);
