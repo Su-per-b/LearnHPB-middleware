@@ -36,7 +36,7 @@ public class Main {
         frame.pack();
         frame.setVisible(true);
         
-        newContentPane.init();
+       // newContentPane.init();
     }
 
     

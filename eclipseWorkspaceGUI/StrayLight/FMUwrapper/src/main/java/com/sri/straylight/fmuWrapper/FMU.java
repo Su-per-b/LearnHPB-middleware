@@ -242,29 +242,10 @@ public class FMU  {
 
 	
 	public void run() {
-		
 		jnaFMUWrapper_.run();
-		//runManagedLoop();
+		jnaFMUWrapper_.end();
 	}
-	
-	/*
-	public void runManagedLoop() {
-		
 
-		
-    	while(jnaFMUWrapper_.isSimulationComplete() == 0) {
-
-    		jnaFMUWrapper_.doOneStep();
-    		ResultItemStruct riStruct = jnaFMUWrapper_.getResultStruct();
-
-    		fireResultEvent(riStruct);
-    	}
-    	
-    	jnaFMUWrapper_.end();
-		
-	}
-	*/
-	
 
 	
 	

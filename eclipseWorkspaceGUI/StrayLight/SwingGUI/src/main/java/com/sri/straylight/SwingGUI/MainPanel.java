@@ -42,7 +42,11 @@ import javax.swing.JPanel;
  */
 
 
+import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
@@ -62,6 +66,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.*;
+import javax.swing.border.Border;
 import javax.swing.event.*;
 import java.awt.FlowLayout;
   
@@ -69,6 +74,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 
 import com.sri.straylight.fmuWrapper.InitializedStruct;
+import com.sri.straylight.fmuWrapper.MessageType;
 import com.sri.straylight.fmuWrapper.State;
 import com.sri.straylight.fmuWrapper.event.FMUeventListener;
 import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
@@ -87,16 +93,20 @@ public class MainPanel extends JPanel implements FMUeventListener   {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final boolean DEBUG_TABLE = true;
-    
-	private final boolean IS_REMOTE = true;
 	
 	//components
     private final JPanel topPanel_ = new JPanel();
+    private final JPanel panelText_ = new JPanel();
+    private final JPanel panelConfig_ = new JPanel();
+    
+    private final JButton btnInit_ = new JButton("Init");
     private final JButton btnRun_ = new JButton("Run Simulation");
     private final JButton btnClear_ = new JButton("Clear Debug Console");
+    
     private final JTextPane textPane_ = new JTextPane();;
     private final JTabbedPane tabbedPane_ = new JTabbedPane(JTabbedPane.TOP);
-    private final JPanel panelText_ = new JPanel();;
+
+    private ConfigModel configModel = new ConfigModel();
     
     private  JTable resultsTable_;
     
@@ -116,10 +126,81 @@ public class MainPanel extends JPanel implements FMUeventListener   {
     	initMain_();
         initTopPanel_();
         initDebugConsole_();
+        initConfig_();
     }
     
     
-    private void initMain_() {
+    private void initConfig_() {
+    	FlowLayout flowLayout = new FlowLayout();
+    	flowLayout.setAlignment(FlowLayout.LEFT);
+    	
+    	panelConfig_.setLayout(flowLayout);
+    	
+    	JPanel serverSelectionPanel = new JPanel();
+    	serverSelectionPanel.setSize(100, 200);
+    	
+	    Border border = BorderFactory.createTitledBorder("Connect to:");
+	    ButtonGroup serverSelectionGroup = new ButtonGroup();
+	    
+	    
+	    JRadioButton rb_localhost = new JRadioButton("localhost");
+	    rb_localhost.addActionListener(
+    		new ActionListener() {
+    		      public void actionPerformed(ActionEvent actionEvent) {
+    		        AbstractButton aButton = (AbstractButton) actionEvent.getSource();
+    		        System.out.println("Selected: " + aButton.getText());
+    		        
+    		        configModel.connectTo = ConnectTo.connecTo_localhost;
+    		      }
+    		    }
+	    		
+	    );
+	    
+
+	    JRadioButton rb_straylightsim_com = new JRadioButton("wintermute.straylightsim.com");
+	    rb_straylightsim_com.setSelected(true);
+	    rb_straylightsim_com.addActionListener(
+	    		new ActionListener() {
+	    		      public void actionPerformed(ActionEvent actionEvent) {
+	    		        AbstractButton aButton = (AbstractButton) actionEvent.getSource();
+	    		        System.out.println("Selected: " + aButton.getText());
+	    		        configModel.connectTo = ConnectTo.connecTo_straylightsim_com;
+	    		      }
+	    		    }
+		    		
+		    );
+	    
+	    
+
+	    JRadioButton rb_fmu_file = new JRadioButton("FMU file");
+	    rb_fmu_file.addActionListener(
+	    		new ActionListener() {
+	    		      public void actionPerformed(ActionEvent actionEvent) {
+	    		        AbstractButton aButton = (AbstractButton) actionEvent.getSource();
+	    		        System.out.println("Selected: " + aButton.getText());
+	    		        configModel.connectTo = ConnectTo.connecTo_file;
+	    		      }
+	    		    }
+	    		
+		    );
+	    
+	    
+	    serverSelectionGroup.add(rb_localhost);
+	    serverSelectionGroup.add(rb_straylightsim_com);
+	    serverSelectionGroup.add(rb_fmu_file);
+	    
+	    serverSelectionPanel.setBorder(border);
+	    serverSelectionPanel.add(rb_localhost);
+	    serverSelectionPanel.add(rb_straylightsim_com);
+	    serverSelectionPanel.add(rb_fmu_file);
+	    
+	    panelConfig_.add(serverSelectionPanel);
+	    tabbedPane_.addTab("Config", null, panelConfig_, null);
+		
+	}
+
+
+	private void initMain_() {
     	
     	startTime_ = System.currentTimeMillis();
     	
@@ -155,6 +236,15 @@ public class MainPanel extends JPanel implements FMUeventListener   {
         topPanel_.setAlignmentY(Component.TOP_ALIGNMENT);
         btnRun_.setEnabled(false);
         
+        btnInit_.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+            	btnInit_.setEnabled(false);
+            	init();
+             }
+           }
+        );
+        
+        
         btnRun_.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
             	runSimulation();
@@ -169,9 +259,10 @@ public class MainPanel extends JPanel implements FMUeventListener   {
            }
         );
         
-
+        topPanel_.add(btnInit_);
         topPanel_.add(btnRun_);
         topPanel_.add(btnClear_);
+
         
         add(topPanel_, BorderLayout.NORTH);
     }
@@ -184,8 +275,6 @@ public class MainPanel extends JPanel implements FMUeventListener   {
 	    panelTable.setPreferredSize(new Dimension(704, 500));
 	    panelTable.setLayout(new GridLayout(1, 1, 0, 0));
 	    
-
-		//String columnNames[] = initializedStruct.columnNames;
 		Object[][] data = {{}};
 		
 	    
@@ -219,15 +308,24 @@ public class MainPanel extends JPanel implements FMUeventListener   {
     
     public void init() {
     	
-
-    	if (IS_REMOTE) {
-    		fmuConnect_ = new FmuConnectRemote();
-    	} else {
-    		fmuConnect_ = new FmuConnectLocal();
+    	
+    	switch (configModel.connectTo) {
+    	
+    		case connecTo_localhost :
+    			fmuConnect_ = new FmuConnectRemote("localhost");
+    			break;
+    		case connecTo_straylightsim_com :
+    			fmuConnect_ = new FmuConnectRemote("wintermute.straylightsim.com");
+    			break;
+    		case connecTo_file :
+    			fmuConnect_ = new FmuConnectLocal();
+    			break;
     	}
+
     	
     	fmuConnect_.addListener(this);
     	fmuConnect_.init();
+
     }
     
     
@@ -288,6 +386,11 @@ public class MainPanel extends JPanel implements FMUeventListener   {
 	
     public void onMessageEvent(MessageEvent event) {
     	outputText (event.messageStruct.msgText);
+    	
+    	if (event.messageStruct.getMessageTypeEnum() == MessageType.messageType_error) {
+    		btnInit_.setEnabled(true);
+    	}
+    	
     }
     
     public void onFMUstateEvent(FMUstateEvent event) {

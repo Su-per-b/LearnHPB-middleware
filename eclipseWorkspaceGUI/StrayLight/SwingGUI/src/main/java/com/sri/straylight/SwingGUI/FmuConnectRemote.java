@@ -33,12 +33,16 @@ public class FmuConnectRemote implements IFmuConnect {
 	
 
     private WebSocket websocketConnection_;
-    private final String websocketServerUrl_ = "ws://localhost:8081/";
-
+   // private final String websocketServerUrl_ = "ws://localhost:8081/";
+   // private final String websocketServerUrlRemote_ = "ws://wintermute.straylightsim.com:8081/";
 	
+    private final String urlString_;
+    
     private FMUeventDispatacher fmuEventDispatacher_;
 	
-    public FmuConnectRemote() {
+    public FmuConnectRemote(String hostName) {
+    	
+    	urlString_ = "ws://" + hostName + ":8081/";	
     	fmuEventDispatacher_ = new FMUeventDispatacher();
     }
     
@@ -51,20 +55,22 @@ public class FmuConnectRemote implements IFmuConnect {
 		try {
 
 			try {
-		        URI url = new URI(websocketServerUrl_);
-		        websocketConnection_ = new WebSocketConnection(url);
+		        URI uri = new URI(urlString_);
+		        websocketConnection_ = new WebSocketConnection(uri);
 		        
 		        // Register Event Handlers
 		        websocketConnection_.setEventHandler(new WebSocketEventHandler() {
 	                public void onOpen()
 	                {
-	                	MessageEvent event = new MessageEvent(this);
-	                	event.messageStruct = new MessageStruct();
-	                	event.messageStruct.msgText = "WebSocket Connection open";
-	                	event.messageStruct.setMessageTypeEnum(MessageType.messageType_info);
-	                	fmuEventDispatacher_.fireMessageEvent(event);
+
+	                	MessageEvent event = new MessageEvent(
+	                			this, 
+	                			"WebSocket Connection open", 
+	                			MessageType.messageType_info);
 	                	
-	                    //System.out.println("--open");
+
+	                	fmuEventDispatacher_.fireMessageEvent(event);
+
 	                }
 	                                
 	                public void onMessage(WebSocketMessage message)
@@ -103,7 +109,6 @@ public class FmuConnectRemote implements IFmuConnect {
 	                	}
 	                	catch (ClassNotFoundException ex) {
 	                		ex.printStackTrace();
-	                		ex.getMessage();
 	    			        String msg = ex.getClass().getSimpleName() + ": " + ex.getMessage();
 	    			        System.out.println(msg);
 	                	}
@@ -117,14 +122,25 @@ public class FmuConnectRemote implements IFmuConnect {
 	                                
 	                public void onClose()
 	                {
-	                	MessageEvent event = new MessageEvent(this);
-	                	event.messageStruct = new MessageStruct();
-	                	event.messageStruct.msgText = "WebSocket Connection closed";
-	                	event.messageStruct.setMessageTypeEnum(MessageType.messageType_info);
+
+	                	MessageEvent event = new MessageEvent(
+	                			this, 
+	                			"WebSocket Connection closed", 
+	                			MessageType.messageType_info);
+	                	
 	                	fmuEventDispatacher_.fireMessageEvent(event);
 	                }
 	        });
 		        
+		        
+            	MessageEvent event = new MessageEvent(
+            			this, 
+            			"Connecting to remote host at: " + urlString_, 
+            			MessageType.messageType_info);
+            	
+            	fmuEventDispatacher_.fireMessageEvent(event);
+            	
+            	
 		        // Establish WebSocket Connection
 		        websocketConnection_.connect();
 		        
@@ -135,10 +151,12 @@ public class FmuConnectRemote implements IFmuConnect {
 		        //websocket.close();
 			}
 			catch (WebSocketException wse) {
-			        wse.printStackTrace();
-			        wse.getMessage();
+			    wse.printStackTrace();
+
 				String msg = wse.getClass().getSimpleName() + ": " + wse.getMessage();
-				System.out.println(msg);
+				
+	        	MessageEvent event = new MessageEvent(this, msg, MessageType.messageType_error);
+	        	fmuEventDispatacher_.fireMessageEvent(event);
 				
 
 			        
@@ -156,10 +174,7 @@ public class FmuConnectRemote implements IFmuConnect {
 			String msg = ex.getClass().getSimpleName() + ": " + ex.getMessage();
 			System.out.println(msg);
 			
-        	MessageEvent event = new MessageEvent(this);
-        	event.messageStruct = new MessageStruct();
-        	event.messageStruct.msgText = msg;
-        	event.messageStruct.setMessageTypeEnum(MessageType.messageType_error);
+        	MessageEvent event = new MessageEvent(this, msg, MessageType.messageType_error);
         	fmuEventDispatacher_.fireMessageEvent(event);
         	
 		}  

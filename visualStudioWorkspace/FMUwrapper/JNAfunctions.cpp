@@ -90,12 +90,7 @@ void init_1 (
 	 resultCallbackPtr_ = resultCallbackPtr;
 	 stateChangeCallbackPtr_ = stateChangeCallbackPtr;
 
-
-	// stateChangeCallbackPtr_(fmuState_level_0_uninitialized);
-
 	 fmuWrapper = new Straylight::FMUwrapper( messageCallbackPtr_, stateChangeCallbackPtr_);
-
-//	fmuWrapper->registerMessageCallback(messageCallbackPtr_);
 
 }
 
