@@ -27,7 +27,8 @@ public class WebSocketStream implements WebSocket.OnTextMessage, WebSocket.OnCon
 	
     public static String unzipFolder = "C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop";
     public static String testFmuFile = "E:\\SRI\\modelica-projects\\fmus\\no_licence_needed\\LearnGB_VAVReheat_ClosedLoop.fmu";
-    public static String nativeLibFolder = "E:\\SRI\\straylight_repo\\visualStudioWorkspace\\bin\\Debug";
+//    public static String nativeLibFolder = "E:\\SRI\\straylight_repo\\visualStudioWorkspace\\bin\\Debug";
+    public static String nativeLibFolder = "C:\\SRI\\straylight_repo\\eclipseWorkspaceGUI\\StrayLight\\FMUwrapper";
     
     
 	private final Set<WebSocketStream> webSockets = new CopyOnWriteArraySet<WebSocketStream>();

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?> 
-<jnlp spec="1.0+" codebase="http://localhost/" href="SwingGUI-local.jnlp">
+<jnlp spec="1.0+" codebase="http://wintermute.straylightsim.com/" href="SwingGUI-0.0.2.jnlp">
 	<information>
-		<title>SwingGUI</title>
+		<title>Java Swing GUI Simulation Test</title>
 		<vendor>Raj Dye</vendor>
-		<homepage href="http://localhost/index.jsp" />
-		<description>Testing Testing</description>
+		<homepage href="http://wintermute.straylightsim.com/" />
+		<description>ava Swing GUI Simulation Test</description>
 	</information>
 	<security>
 		<all-permissions/>
