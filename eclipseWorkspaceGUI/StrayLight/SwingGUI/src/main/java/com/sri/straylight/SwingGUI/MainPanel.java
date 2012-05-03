@@ -121,6 +121,8 @@ public class MainPanel extends JPanel implements FMUeventListener   {
     
     private DefaultTableModel resultsTableModel_;
 
+    private int numbeOfResultsTabs = 0;
+    
     
     public MainPanel() {
     	initMain_();
@@ -298,7 +300,9 @@ public class MainPanel extends JPanel implements FMUeventListener   {
 	    scrollPaneTable.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 	    panelTable.add(scrollPaneTable);
 	    
-	    tabbedPane_.addTab("Results Table", null, panelTable, null);
+	    numbeOfResultsTabs++;
+	    
+	    tabbedPane_.addTab("Results Table " + String.valueOf(numbeOfResultsTabs), null, panelTable, null);
         
     }
  
@@ -396,13 +400,23 @@ public class MainPanel extends JPanel implements FMUeventListener   {
     public void onFMUstateEvent(FMUstateEvent event) {
     	outputText ("State Change: "+ event.fmuState.toString());
     	 btnRun_.setEnabled(event.fmuState == State.fmuState_level_5_initializedFMU);
+    	 
+    	 if (event.fmuState == State.fmuState_cleanedup) {
+    		 
+    		 btnInit_.setEnabled(true);
+    	 }
+
     }
 
     
     
     public void onInitializedEvent(InitializedEvent event) {
     	outputText ("InitializedEvent: ");
-    	initTable2_(event.initializedStruct);
+    	
+    	//if (!isTableInit) {
+        	initTable2_(event.initializedStruct);
+    	//}
+
     }
     
     private void printDebugData(JTable table) {

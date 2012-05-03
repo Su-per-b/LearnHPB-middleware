@@ -33,7 +33,7 @@ namespace Straylight
 		fmiComponent fmiComponent_;                  // instance of the fmu 
 		fmiBoolean loggingOn_;
 		double timeDelta_;
-		Logger* logger_;
+
 		FMUlogger fmuLogger_;
 		void (*stateChangeCallbackPtr_)(State );
 		State state_;
@@ -71,6 +71,8 @@ namespace Straylight
 
 		std::list<ScalarVariableMeta> getMetaDataList();
 		std::list<ScalarVariableMeta> getMetaDataListOuput();
+		Logger* logger_;
+
 
 	//private functions
 	private:

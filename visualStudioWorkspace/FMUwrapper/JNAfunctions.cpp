@@ -12,9 +12,14 @@ int doOneStep()
 void end() {
 
 	fmuWrapper->printSummary();
+
+	//Straylight::Logger * logger = fmuWrapper->logger_;
+
+	//TODO: Fix this - the event should be fired *after* the object is deleted
+	fmuWrapper->setState(fmuState_cleanedup);
 	delete fmuWrapper;
 
-	fmuWrapper->setState(fmuState_cleanedup);
+
 }
 
 

@@ -5,7 +5,7 @@
 #include "FMUwrapper.h"
 #include "structs.h"
 #include "enums.h"
-
+#include "Logger.h"
 
 void (*messageCallbackPtr_)(MessageStruct *);
 

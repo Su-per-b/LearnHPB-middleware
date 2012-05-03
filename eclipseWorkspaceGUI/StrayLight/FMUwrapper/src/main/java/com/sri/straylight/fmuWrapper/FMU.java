@@ -98,6 +98,9 @@ public class FMU  {
 		    		  fmuEventDispatacher.fireInitializedEvent(event2);
 		    	  }
 		    	  
+		    	  if (fmuState == State.fmuState_completedSimulation) {
+		    		  jnaFMUWrapper_.end();
+		    	  }
 		    	  
 			      return true;                  
 			  }		
@@ -243,7 +246,7 @@ public class FMU  {
 	
 	public void run() {
 		jnaFMUWrapper_.run();
-		jnaFMUWrapper_.end();
+		//jnaFMUWrapper_.end();
 	}
 
 

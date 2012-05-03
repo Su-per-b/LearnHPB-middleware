@@ -353,10 +353,21 @@ namespace Straylight
 	void FMUwrapper::printSummary() {
 
 		// Print simulation summary
-		if (loggingOn_) printf("Step %d to t=%.4f\n", nSteps_, time_);		
-		printf("Simulation from %g to %g terminated successful\n", t0, timeEnd_);
-		printf("  steps ............ %d\n", nSteps_);
-		printf("  fixed step size .. %g\n", timeDelta_);
+		if (loggingOn_) printf("Step %d to t=%.4f\n", nSteps_, time_);
+
+		char msg1[1024];
+		char msg2[1024];
+		char msg3[1024];
+
+		sprintf (msg1, "Simulation from %g to %g terminated successful\n", t0, timeEnd_);
+		logger_->printDebug (msg1);
+
+		sprintf (msg2, "  steps ............ %d\n",  nSteps_);
+		logger_->printDebug (msg2);
+
+		sprintf (msg3, "  fixed step size .. %g\n",  timeDelta_);
+		logger_->printDebug (msg3);
+
 	}
 
 
