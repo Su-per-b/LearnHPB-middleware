@@ -120,7 +120,7 @@ public class MainPanel extends JPanel implements FMUeventListener   {
 	    
 
 	    JRadioButton rb_straylightsim_com = new JRadioButton("wintermute.straylightsim.com");
-	    rb_straylightsim_com.setSelected(true);
+	   // rb_straylightsim_com.setSelected(true);
 	    rb_straylightsim_com.addActionListener(
 	    		new ActionListener() {
 	    		      public void actionPerformed(ActionEvent actionEvent) {
@@ -155,6 +155,11 @@ public class MainPanel extends JPanel implements FMUeventListener   {
 	    serverSelectionPanel.add(rb_localhost);
 	    serverSelectionPanel.add(rb_straylightsim_com);
 	    serverSelectionPanel.add(rb_fmu_file);
+	    
+	    rb_localhost.setSelected(configModel.connectTo == ConnectTo.connecTo_localhost);
+	    rb_straylightsim_com.setSelected(configModel.connectTo == ConnectTo.connecTo_straylightsim_com);
+	    rb_fmu_file.setSelected(configModel.connectTo == ConnectTo.connecTo_file);
+	    
 	    
 	    panelConfig_.add(serverSelectionPanel);
 	    tabbedPane_.addTab("Config", null, panelConfig_, null);
@@ -287,8 +292,8 @@ public class MainPanel extends JPanel implements FMUeventListener   {
     	}
 
     	
-    	fmuConnect_.addListener(this);
-    	fmuConnect_.init();
+    	//fmuConnect_.addListener(this);
+    	fmuConnect_.init(this);
 
     }
     
@@ -349,6 +354,9 @@ public class MainPanel extends JPanel implements FMUeventListener   {
 	}
 	
     public void onMessageEvent(MessageEvent event) {
+    	
+    	//System.out.print("MainPanel.onMessageEvent Thread: "  + Thread.currentThread().getName());
+    	
     	outputText (event.messageStruct.msgText);
     	
     	if (event.messageStruct.getMessageTypeEnum() == MessageType.messageType_error) {

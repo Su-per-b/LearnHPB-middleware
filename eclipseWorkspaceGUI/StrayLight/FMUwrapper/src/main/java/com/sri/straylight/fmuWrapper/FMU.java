@@ -55,7 +55,7 @@ public class FMU  {
 		    	  event.messageStruct = messageStruct;
 
 		    	 // messageEventDispatacher.fireEvent(event);
-		    	  fmuEventDispatacher.fireMessageEvent(event);
+		    	  fmuEventDispatacher.fireEvent(event);
 			         return true;                  
 			       }
 			};
@@ -89,7 +89,7 @@ public class FMU  {
 		    	  
 		    	  FMUstateEvent event = new FMUstateEvent(this);
 		    	  event.fmuState = fmuState;
-		    	  fmuEventDispatacher.fireStateEvent(event);
+		    	  fmuEventDispatacher.fireEvent(event);
 		    	  
 		    	  
 		    	  if (fmuState == State.fmuState_level_5_initializedFMU) {
@@ -111,7 +111,7 @@ public class FMU  {
 	    		        InitializedEvent event2  = new InitializedEvent(this);
 	    		        event2.initializedStruct = struct;
 
-		    		  fmuEventDispatacher.fireInitializedEvent(event2);
+		    		  fmuEventDispatacher.fireEvent(event2);
 
 		    		  
 		    	  }
@@ -161,7 +161,7 @@ public class FMU  {
 
 
 		event.resultString = str;
-    	fmuEventDispatacher.fireResultEvent(event);
+    	fmuEventDispatacher.fireEvent(event);
 	}
 
 	
@@ -270,7 +270,7 @@ public class FMU  {
 			  fmuState_ = State.fmuState_cleanedup;
 	    	  FMUstateEvent event = new FMUstateEvent(this);
 	    	  event.fmuState = fmuState_;
-	    	  fmuEventDispatacher.fireStateEvent(event);
+	    	  fmuEventDispatacher.fireEvent(event);
 			  
 		 } else if (fmuState_ == State.fmuState_level_1_xmlParsed ||
 				 fmuState_ == State.fmuState_level_2_dllLoaded ||

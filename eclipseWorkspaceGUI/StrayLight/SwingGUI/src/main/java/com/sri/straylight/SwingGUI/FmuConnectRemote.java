@@ -35,15 +35,15 @@ public class FmuConnectRemote implements IFmuConnect {
     public FmuConnectRemote(String hostName) {
     	
     	urlString_ = "ws://" + hostName + ":8081/";	
-    	fmuEventDispatacher_ = new FMUeventDispatacher();
     }
     
-    public void addListener(FMUeventListener l) {
-    	fmuEventDispatacher_.addListener(l);
-    }
-    
-    public void init() {
 
+
+    public void init(FMUeventListener l) {
+    	
+    	fmuEventDispatacher_ = new FMUeventDispatacher();
+    	fmuEventDispatacher_.addListener(l);
+    	
 		try {
 
 			try {
@@ -61,7 +61,7 @@ public class FmuConnectRemote implements IFmuConnect {
 	                			MessageType.messageType_info);
 	                	
 
-	                	fmuEventDispatacher_.fireMessageEvent(event);
+	                	fmuEventDispatacher_.fireEvent(event);
 
 	                }
 	                                
@@ -80,22 +80,22 @@ public class FmuConnectRemote implements IFmuConnect {
 		                	if (cl == MessageEvent.class) {
 		                		
 		                		MessageEvent event = gson.fromJson(jsonString, MessageEvent.class);
-			                	fmuEventDispatacher_.fireMessageEvent(event);
+			                	fmuEventDispatacher_.fireEvent(event);
 			                	
 		                	} else if (cl == ResultEvent.class) {
 		                		
 		                		ResultEvent event = gson.fromJson(jsonString, ResultEvent.class);
-			                	fmuEventDispatacher_.fireResultEvent(event);
+			                	fmuEventDispatacher_.fireEvent(event);
 			                	
 		                	} else if (cl == FMUstateEvent.class) {
 		                		
 		                		FMUstateEvent event = gson.fromJson(jsonString, FMUstateEvent.class);
-			                	fmuEventDispatacher_.fireStateEvent(event);
+			                	fmuEventDispatacher_.fireEvent(event);
 			                	
 		                	} else if (cl == InitializedEvent.class) {
 		                		
 		                		InitializedEvent event = gson.fromJson(jsonString, InitializedEvent.class);
-			                	fmuEventDispatacher_.fireInitializedEvent(event);
+			                	fmuEventDispatacher_.fireEvent(event);
 			                	
 		                	}
 	                	}
@@ -119,7 +119,7 @@ public class FmuConnectRemote implements IFmuConnect {
 	                			"WebSocket Connection closed", 
 	                			MessageType.messageType_info);
 	                	
-	                	fmuEventDispatacher_.fireMessageEvent(event);
+	                	fmuEventDispatacher_.fireEvent(event);
 	                }
 	        });
 		        
@@ -129,7 +129,7 @@ public class FmuConnectRemote implements IFmuConnect {
             			"Connecting to remote host at: " + urlString_, 
             			MessageType.messageType_info);
             	
-            	fmuEventDispatacher_.fireMessageEvent(event);
+            	fmuEventDispatacher_.fireEvent(event);
             	
             	
 		        // Establish WebSocket Connection
@@ -147,7 +147,7 @@ public class FmuConnectRemote implements IFmuConnect {
 				String msg = wse.getClass().getSimpleName() + ": " + wse.getMessage();
 				
 	        	MessageEvent event = new MessageEvent(this, msg, MessageType.messageType_error);
-	        	fmuEventDispatacher_.fireMessageEvent(event);
+	        	fmuEventDispatacher_.fireEvent(event);
 				
 
 			        
@@ -166,7 +166,7 @@ public class FmuConnectRemote implements IFmuConnect {
 			System.out.println(msg);
 			
         	MessageEvent event = new MessageEvent(this, msg, MessageType.messageType_error);
-        	fmuEventDispatacher_.fireMessageEvent(event);
+        	fmuEventDispatacher_.fireEvent(event);
         	
 		}  
         

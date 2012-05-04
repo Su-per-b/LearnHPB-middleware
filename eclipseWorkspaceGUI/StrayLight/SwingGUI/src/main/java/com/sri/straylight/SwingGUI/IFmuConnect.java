@@ -5,12 +5,12 @@ import com.sri.straylight.fmuWrapper.event.FMUeventListener;
 
 public interface IFmuConnect {
 
-	
-	public void init();
+
+	public void init(FMUeventListener l);
 
 	public void run();
 	
-	public void addListener(FMUeventListener l);
+
 	
 	
 	
