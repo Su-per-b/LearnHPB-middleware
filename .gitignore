@@ -36,4 +36,4 @@ __pycache__
 *.log
 dsres.mat
 .metadata
-.settings
+dsres.mat
