@@ -11,6 +11,10 @@ import com.sri.straylight.fmuWrapper.State;
 public class FMUstateEvent extends EventObject {
 
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public State fmuState;
 	
     //here's the constructor

@@ -11,9 +11,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.sri.straylight.fmuWrapper.MessageStruct;
 import com.sri.straylight.fmuWrapper.State;
-import com.sri.straylight.fmuWrapper.event.MessageEvent;
 
 public class StateAdapter implements 
 JsonSerializer<State>, JsonDeserializer<State> {

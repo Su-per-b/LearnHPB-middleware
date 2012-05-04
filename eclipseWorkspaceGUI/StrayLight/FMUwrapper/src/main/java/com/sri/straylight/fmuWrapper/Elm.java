@@ -19,7 +19,7 @@ public enum Elm implements JnaEnum<Elm> {
 	}
 	
 	public Elm getForValue(int i) {
-	    for (Elm o : this.values()) {
+	    for (Elm o : Elm.values()) {
 	        if (o.getIntValue() == i) {
 	            return o;
 	        }

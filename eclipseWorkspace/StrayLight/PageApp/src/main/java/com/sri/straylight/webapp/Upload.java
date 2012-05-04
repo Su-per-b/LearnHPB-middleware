@@ -140,15 +140,7 @@ public class Upload {
 		         // Parse the request to get file items.
 		    	  List<FileItem> fileItems = upload.parseRequest(request);
 
-		    	  
-		    	  //List<FileItem> lf = new  List<FileItem>();
-		    	  
-		    	  
-		    	  
-		    	//  List<FileItem> fileItems = 
-		    		//	  Collections.checkedList( upload.parseRequest(request), );
-		    	  
-		    	  
+
 		    	  
 		         // Process the uploaded file items
 		         Iterator<FileItem> i = fileItems.iterator();

@@ -11,14 +11,12 @@ import java.util.Properties;
 
 public class Banner  {
 	
-	private Logger logger_;
 	private URL propertiesUrl_;
 			
 	private static final String bannerPath = "banner.txt";
 	
 	public Banner(Logger logger, String moduleName, URL url) {
 		
-		this.logger_ = logger;
 		this.propertiesUrl_ = url;
 
 	}

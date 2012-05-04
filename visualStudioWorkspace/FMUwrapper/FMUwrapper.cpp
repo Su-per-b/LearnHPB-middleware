@@ -313,15 +313,16 @@ namespace Straylight
 		// Set the start time and initialize
 		time_ = t0;
 
-		logger_->printDebug("start to iinitializeSlave() \n");
+		logger_->printDebug("start to initializeSlave() \n");
 		fmiFlag =  fmuPointer_->initializeSlave(fmiComponent_, t0, fmiTrue, timeEnd_);
 
 
 		if (fmiFlag > fmiWarning) {
-			printf("could not iinitializeSlave()");
+			logger_->printError("could not initializeSlave()");
 			setState( fmuState_error );
 			return 1;																
 		} else {
+			logger_->printDebug("initializeSlave() successful\n");
 			setState( fmuState_level_5_initializedFMU );
 			return 0;
 		}

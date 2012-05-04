@@ -1,5 +1,9 @@
 package com.sri.straylight.fmuWrapper.test;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
 import com.google.gson.Gson;
 import com.sri.straylight.fmuWrapper.InitializedStruct;
 import com.sri.straylight.fmuWrapper.MessageStruct;
@@ -7,7 +11,6 @@ import com.sri.straylight.fmuWrapper.MessageType;
 import com.sri.straylight.fmuWrapper.ResultItem;
 import com.sri.straylight.fmuWrapper.ResultItemPrimitive;
 import com.sri.straylight.fmuWrapper.ResultItemPrimitiveStruct;
-import com.sri.straylight.fmuWrapper.ResultItemStruct;
 import com.sri.straylight.fmuWrapper.State;
 import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
@@ -16,12 +19,8 @@ import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.serialization.GsonController;
 import com.sri.straylight.fmuWrapper.serialization.SerializeableObject;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 /**
- * Unit test for simple App.
+ * Unit test for JSON serialization
  */
 public class Serialization 
     extends TestCase
@@ -38,7 +37,7 @@ public class Serialization
     {
         super( testName );
     }
-
+    
     /**
      * @return the suite of tests being tested
      */
@@ -162,7 +161,7 @@ public class Serialization
     	assertNotNull(jsonString);
 
     	assertEquals(
-    			"{\"type\":\"com.sri.straylight.fmuWrapper.event.ResultEvent\",\"resultString\":\"\",\"resultItem\":{\"type\":\"com.sri.straylight.fmuWrapper.ResultItem\",\"time\":2.51,\"string\":\"two point five one\",\"primitiveCount\":2,\"primitiveAry\":[{\"type\":\"com.sri.straylight.fmuWrapper.ResultItemPrimitiveStruct\",\"idx\":1,\"string\":\"one\"},{\"type\":\"com.sri.straylight.fmuWrapper.ResultItemPrimitiveStruct\",\"idx\":2,\"string\":\"two\"}]}}",
+    			"{\"type\":\"com.sri.straylight.fmuWrapper.event.ResultEvent\",\"resultString\":\"\",\"resultItem\":{\"type\":\"com.sri.straylight.fmuWrapper.ResultItem\",\"time\":2.51,\"string\":\"two point five one\",\"primitiveCount\":2,\"primitiveAry\":[{\"type\":\"com.sri.straylight.fmuWrapper.ResultItemPrimitive\",\"idx\":1,\"string\":\"one\"},{\"type\":\"com.sri.straylight.fmuWrapper.ResultItemPrimitive\",\"idx\":2,\"string\":\"two\"}]}}",
     			jsonString
     			);
     	
@@ -210,7 +209,7 @@ public class Serialization
     	assertNotNull(jsonString);
     	
     	assertEquals(
-    			"{\"type\":\"com.sri.straylight.fmuWrapper.ResultItem\",\"time\":2.51,\"string\":\"two point five one\",\"primitiveCount\":2,\"primitiveAry\":[{\"type\":\"com.sri.straylight.fmuWrapper.ResultItemPrimitiveStruct\",\"idx\":1,\"string\":\"one\"},{\"type\":\"com.sri.straylight.fmuWrapper.ResultItemPrimitiveStruct\",\"idx\":2,\"string\":\"two\"}]}",
+    			"{\"type\":\"com.sri.straylight.fmuWrapper.ResultItem\",\"time\":2.51,\"string\":\"two point five one\",\"primitiveCount\":2,\"primitiveAry\":[{\"type\":\"com.sri.straylight.fmuWrapper.ResultItemPrimitive\",\"idx\":1,\"string\":\"one\"},{\"type\":\"com.sri.straylight.fmuWrapper.ResultItemPrimitive\",\"idx\":2,\"string\":\"two\"}]}",
     			jsonString
     			);
     	

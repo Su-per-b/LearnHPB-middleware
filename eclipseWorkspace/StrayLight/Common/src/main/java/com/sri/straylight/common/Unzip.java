@@ -21,21 +21,13 @@ public class Unzip {
 
 	public static final void unzip(String filename, String unZipFolder) {
 		
-		//make new directory 
-		File ff = new File(unZipFolder);
-		boolean result = ff.mkdir();
-		
-		
 		Enumeration<ZipEntry> entries;
 		ZipFile zipFile;
 
 		//make directories
 		try {
 			
-			File f = new File(filename);
-			
-			boolean b = (f).mkdir();
-			
+
 			zipFile = new ZipFile(filename);
 			entries = (Enumeration<ZipEntry>) zipFile.entries();
 			

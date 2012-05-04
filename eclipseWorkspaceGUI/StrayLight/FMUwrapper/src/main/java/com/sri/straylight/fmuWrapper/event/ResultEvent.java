@@ -9,6 +9,10 @@ import com.sri.straylight.fmuWrapper.ResultItem;
 public class ResultEvent extends EventObject {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public ResultItem resultItem;
 	public String resultString ="";
 	

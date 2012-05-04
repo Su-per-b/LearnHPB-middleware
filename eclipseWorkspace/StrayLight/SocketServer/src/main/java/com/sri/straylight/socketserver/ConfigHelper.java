@@ -14,7 +14,6 @@ import com.thoughtworks.xstream.XStream;
 public class ConfigHelper {
 
 	private static final String configFile = "config.xml";
-	private static final String configOutFile = "config_out.xml";
 	
 
 	

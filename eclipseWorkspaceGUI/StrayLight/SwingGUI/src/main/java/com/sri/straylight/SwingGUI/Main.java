@@ -2,6 +2,7 @@ package com.sri.straylight.SwingGUI;
 
 import java.awt.Image;
 import java.net.URL;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 

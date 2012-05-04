@@ -1,3 +1,7 @@
 target
 bin
 .settings
+.metadata
+*.pyc
+__pycache__
+dsres.mat

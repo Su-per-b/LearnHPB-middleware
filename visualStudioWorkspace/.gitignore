@@ -3,3 +3,5 @@ bin
 Debug
 Rlease
 ipch
+*.opensdf
+_ReSharper*

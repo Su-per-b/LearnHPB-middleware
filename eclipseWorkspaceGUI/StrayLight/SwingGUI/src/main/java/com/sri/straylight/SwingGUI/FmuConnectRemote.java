@@ -4,15 +4,7 @@ package com.sri.straylight.SwingGUI;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-
-
-
-
-//import org.jwebsocket.client.java.ReliabilityOptions;
-
 import com.google.gson.Gson;
-import com.sri.straylight.fmuWrapper.FMU;
-import com.sri.straylight.fmuWrapper.MessageStruct;
 import com.sri.straylight.fmuWrapper.MessageType;
 import com.sri.straylight.fmuWrapper.event.FMUeventDispatacher;
 import com.sri.straylight.fmuWrapper.event.FMUeventListener;
@@ -83,7 +75,7 @@ public class FmuConnectRemote implements IFmuConnect {
 
 	                	
 	                	try {
-	                		Class cl = Class.forName(obj.type);
+	                		Class<?> cl = Class.forName(obj.type);
 	                		
 		                	if (cl == MessageEvent.class) {
 		                		
@@ -114,7 +106,6 @@ public class FmuConnectRemote implements IFmuConnect {
 	                	}
 
 	                	
-	                	int one = gson.fromJson("1", int.class);
 
 	                	System.out.println(jsonString);
 

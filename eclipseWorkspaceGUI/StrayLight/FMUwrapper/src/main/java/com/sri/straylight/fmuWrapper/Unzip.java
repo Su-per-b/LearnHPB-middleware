@@ -1,9 +1,15 @@
 package com.sri.straylight.fmuWrapper;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Enumeration;
 import java.util.regex.Pattern;
-import java.util.zip.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class Unzip {
 	
@@ -19,22 +25,17 @@ public class Unzip {
 	}
 	
 
+	@SuppressWarnings("unchecked")
 	public static final void unzip(String filename, String unZipFolder) {
 		
-		//make new directory 
-		File ff = new File(unZipFolder);
-		boolean result = ff.mkdir();
-		
-		
+
 		Enumeration<ZipEntry> entries;
 		ZipFile zipFile;
 
 		//make directories
 		try {
 			
-			File f = new File(filename);
-			
-			boolean b = (f).mkdir();
+		
 			
 			zipFile = new ZipFile(filename);
 			entries = (Enumeration<ZipEntry>) zipFile.entries();

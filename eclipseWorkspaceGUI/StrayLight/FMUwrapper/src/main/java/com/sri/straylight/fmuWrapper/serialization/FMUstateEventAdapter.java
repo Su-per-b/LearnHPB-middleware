@@ -11,10 +11,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.sri.straylight.fmuWrapper.ResultItem;
 import com.sri.straylight.fmuWrapper.State;
 import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
-import com.sri.straylight.fmuWrapper.event.ResultEvent;
 
 public class FMUstateEventAdapter implements 
 JsonSerializer<FMUstateEvent>, JsonDeserializer<FMUstateEvent> {

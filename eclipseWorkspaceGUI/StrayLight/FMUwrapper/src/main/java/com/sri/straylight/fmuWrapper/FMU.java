@@ -3,6 +3,12 @@ package com.sri.straylight.fmuWrapper;
 
 
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import com.sri.straylight.fmuWrapper.event.FMUeventDispatacher;
 import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
@@ -10,12 +16,6 @@ import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 
 
@@ -35,10 +35,16 @@ public class FMU  {
 	private ScalarVariableMeta[] svMetaArray_;
 	private State fmuState_;
 	
+	public State getFmuState() {
+		return fmuState_;
+	}
+
 	public FMUeventDispatacher fmuEventDispatacher;
 
 	private boolean cleanupWhenPossible_ = false;
 	 
+	
+	
 	private JNAfmuWrapper.MessageCallbackInterface messageCallbackFunc_ = 
 			new JNAfmuWrapper.MessageCallbackInterface() {
 		

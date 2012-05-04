@@ -3,8 +3,6 @@ package com.sri.straylight.fmuWrapper.event;
 
 import java.util.EventObject;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.sri.straylight.fmuWrapper.MessageStruct;
 import com.sri.straylight.fmuWrapper.MessageType;
 
@@ -13,6 +11,10 @@ import com.sri.straylight.fmuWrapper.MessageType;
 public class MessageEvent extends EventObject {
 
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public MessageStruct messageStruct;
 	
     //here's the constructor

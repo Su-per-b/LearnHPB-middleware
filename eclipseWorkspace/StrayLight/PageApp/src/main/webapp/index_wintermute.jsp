@@ -5,7 +5,7 @@
 
 <html>
 <head>
-	<h3>Simulation Test</title>
+	<title>Simulation Test</title>
 	<script type="text/javascript" src="js/stream.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/main.css" />
 </head>
