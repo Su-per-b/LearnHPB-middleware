@@ -114,14 +114,14 @@ namespace Straylight
 
 
 
-	 ResultItemStruct * ResultItem::toStruct ()
+	 ResultStruct * ResultItem::toStruct ()
 	{
 
 
-		ResultItemStruct *riStruct = new ResultItemStruct;
+		ResultStruct *riStruct = new ResultStruct;
 
 		int len = resultPrimitiveList.size();
-		ResultItemPrimitiveStruct * primitiveArry = new ResultItemPrimitiveStruct[len];
+		ScalarValueStruct * primitiveArry = new ScalarValueStruct[len];
 
 
 		for (int i = 0; i < len; i++)
@@ -138,8 +138,8 @@ namespace Straylight
 
 		riStruct->time = time_;
 		riStruct->string = getString();
-		riStruct->primitive =  primitiveArry;
-		riStruct->primitiveCount = len;
+		riStruct->scalarValueStruct =  primitiveArry;
+		riStruct->scalarValueCount = len;
 
 		return riStruct;
 

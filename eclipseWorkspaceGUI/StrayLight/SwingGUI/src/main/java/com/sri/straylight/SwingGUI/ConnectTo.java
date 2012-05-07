@@ -1,7 +1,7 @@
 package com.sri.straylight.SwingGUI;
 
 
-import com.sri.straylight.fmuWrapper.JnaEnum;
+import com.sri.straylight.fmuWrapper.voNative.JnaEnum;
 
 
 public enum ConnectTo implements JnaEnum<ConnectTo>  {

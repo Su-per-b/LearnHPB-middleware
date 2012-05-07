@@ -12,8 +12,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.sri.straylight.fmuWrapper.InitializedStruct;
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
+import com.sri.straylight.fmuWrapper.voManaged.InitializedInfo;
 
 public class InitializedEventAdapter implements 
 JsonSerializer<InitializedEvent>, JsonDeserializer<InitializedEvent> {
@@ -50,7 +50,7 @@ JsonSerializer<InitializedEvent>, JsonDeserializer<InitializedEvent> {
         JsonElement element = jsonObject.get("initializedStruct");
 
         InitializedEvent event = new InitializedEvent(this);
-        event.initializedStruct = context.deserialize(element,InitializedStruct.class);
+        event.initializedStruct = context.deserialize(element,InitializedInfo.class);
         
         return event;
 

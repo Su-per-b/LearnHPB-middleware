@@ -8,8 +8,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -33,14 +31,15 @@ import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
-import com.sri.straylight.fmuWrapper.InitializedStruct;
-import com.sri.straylight.fmuWrapper.MessageType;
-import com.sri.straylight.fmuWrapper.State;
+
 import com.sri.straylight.fmuWrapper.event.FMUeventListener;
 import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.voManaged.InitializedInfo;
+import com.sri.straylight.fmuWrapper.voNative.MessageType;
+import com.sri.straylight.fmuWrapper.voNative.State;
 
 
 
@@ -52,8 +51,7 @@ public class MainPanel extends JPanel implements FMUeventListener   {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final boolean DEBUG_TABLE = true;
-	
+
 	//components
     private final JPanel topPanel_ = new JPanel();
     private final JPanel panelText_ = new JPanel();
@@ -69,6 +67,11 @@ public class MainPanel extends JPanel implements FMUeventListener   {
     private ConfigModel configModel = new ConfigModel();
     
     private  JTable resultsTable_;
+    private DefaultTableModel resultsTableModel_;
+    
+    private  JTable inputTable_;
+    private DefaultTableModel inputTableModel_;
+    							
     
     private Document  doc_;
     private final String newline_ = "\n";
@@ -79,9 +82,10 @@ public class MainPanel extends JPanel implements FMUeventListener   {
     
     private long startTime_ = 0;
     
-    private DefaultTableModel resultsTableModel_;
+
 
     private int numbeOfResultsTabs = 0;
+    private int numbeOfInputTabs = 0;
     
     
     public MainPanel() {
@@ -235,7 +239,39 @@ public class MainPanel extends JPanel implements FMUeventListener   {
     }
     
     
- private void initTable2_(InitializedStruct initializedStruct) {
+    private void initInputTable_(InitializedInfo initializedStruct) {  
+    	
+	    JPanel panelTable = new JPanel();
+	    
+	    panelTable.setPreferredSize(new Dimension(704, 500));
+	    panelTable.setLayout(new GridLayout(1, 1, 0, 0));
+	    
+		inputTableModel_ = new DefaultTableModel (
+				
+				initializedStruct.getInputData(),
+				initializedStruct.getInputColumnNames()
+		);
+		
+
+		inputTable_ = new JTable(inputTableModel_);
+		inputTable_.setPreferredScrollableViewportSize(new Dimension(700, 600));
+		inputTable_.setFillsViewportHeight(true);
+		
+	    //Create the scroll pane and add the table to it.
+	    JScrollPane scrollPaneTable = new JScrollPane(inputTable_);
+	    scrollPaneTable.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+	    scrollPaneTable.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+	    panelTable.add(scrollPaneTable);
+	    
+	    numbeOfInputTabs++;
+	    
+	    tabbedPane_.addTab("Input Table " + String.valueOf(numbeOfInputTabs), null, panelTable, null);
+	    
+	    
+    }
+    
+    
+    private void initResultsTable_(InitializedInfo initializedStruct) {
     	
 	    JPanel panelTable = new JPanel();
 
@@ -251,14 +287,6 @@ public class MainPanel extends JPanel implements FMUeventListener   {
 	    resultsTable_.setPreferredScrollableViewportSize(new Dimension(700, 600));
 	    resultsTable_.setFillsViewportHeight(true);
 		
-        if (DEBUG_TABLE) {
-        	resultsTable_.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                    printDebugData(resultsTable_);
-                }
-            });
-        }
-        
 	    //Create the scroll pane and add the table to it.
 	    JScrollPane scrollPaneTable = new JScrollPane(resultsTable_);
 	    scrollPaneTable.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -382,28 +410,11 @@ public class MainPanel extends JPanel implements FMUeventListener   {
     	outputText ("InitializedEvent: ");
     	
     	//if (!isTableInit) {
-        	initTable2_(event.initializedStruct);
+        initResultsTable_(event.initializedStruct);
+        initInputTable_(event.initializedStruct);
     	//}
 
     }
-    
-    private void printDebugData(JTable table) {
-        int numRows = table.getRowCount();
-        int numCols = table.getColumnCount();
-        javax.swing.table.TableModel model = table.getModel();
-
-        System.out.println("Value of data: ");
-        for (int i=0; i < numRows; i++) {
-            System.out.print("    row " + i + ":");
-            for (int j=0; j < numCols; j++) {
-                System.out.print("  " + model.getValueAt(i, j));
-            }
-            System.out.println();
-        }
-        System.out.println("--------------------------");
-    }
-
-
 
     
     

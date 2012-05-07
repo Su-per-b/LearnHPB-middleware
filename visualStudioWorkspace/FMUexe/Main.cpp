@@ -14,8 +14,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 
 
-void resultCallback(ResultItemStruct * resultItemStruct) {
-	printf ("Main.exe resultCallback: %s \n", resultItemStruct->string);
+void resultCallback(ResultStruct * ResultStruct) {
+	printf ("Main.exe resultCallback: %s \n", ResultStruct->string);
 }
 
 void messageCallback(MessageStruct * messageStruct) {
@@ -30,7 +30,7 @@ void fmuStateCallback(State fmuState) {
 
 //void test5() {
 
-	//void (*callbackPtr)(ResultItemStruct *) = &resultCallback;
+	//void (*callbackPtr)(ResultStruct *) = &resultCallback;
 	//registerResultCallback(&resultCallback);
 	//registerMessageCallback(&messageCallback);
 
@@ -45,7 +45,7 @@ void fmuStateCallback(State fmuState) {
 
 void test5() {
 
-	//void (*callbackPtr)(ResultItemStruct *) = &resultCallback;
+	//void (*callbackPtr)(ResultStruct *) = &resultCallback;
 	//registerResultCallback(&resultCallback);
 	//registerMessageCallback(&messageCallback);
 

@@ -4,8 +4,8 @@ package com.sri.straylight.SwingGUI;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+
 import com.google.gson.Gson;
-import com.sri.straylight.fmuWrapper.MessageType;
 import com.sri.straylight.fmuWrapper.event.FMUeventDispatacher;
 import com.sri.straylight.fmuWrapper.event.FMUeventListener;
 import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
@@ -14,6 +14,7 @@ import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.serialization.GsonController;
 import com.sri.straylight.fmuWrapper.serialization.SerializeableObject;
+import com.sri.straylight.fmuWrapper.voNative.MessageType;
 
 import de.roderick.weberknecht.WebSocket;
 import de.roderick.weberknecht.WebSocketConnection;

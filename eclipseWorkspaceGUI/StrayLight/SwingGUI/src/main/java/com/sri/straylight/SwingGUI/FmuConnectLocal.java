@@ -8,14 +8,15 @@ import java.util.List;
 
 import javax.swing.SwingWorker;
 
+
 import com.sri.straylight.fmuWrapper.FMU;
-import com.sri.straylight.fmuWrapper.ScalarVariableMeta;
 import com.sri.straylight.fmuWrapper.event.FMUeventDispatacher;
 import com.sri.straylight.fmuWrapper.event.FMUeventListener;
 import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.voNative.ScalarVariableStruct;
 
 
 public class FmuConnectLocal implements  IFmuConnect {
@@ -60,11 +61,11 @@ public class FmuConnectLocal implements  IFmuConnect {
 
 		ArrayList<String> strList = new ArrayList<String>();
 
-		ArrayList<ScalarVariableMeta> svnList = fmu_.getScalarVariableOutputList();
-		Iterator<ScalarVariableMeta> itr = svnList.iterator();
+		ArrayList<ScalarVariableStruct> svnList = fmu_.getScalarVariableOutputList();
+		Iterator<ScalarVariableStruct> itr = svnList.iterator();
 
 		while (itr.hasNext()) {
-			ScalarVariableMeta svm = itr.next();
+			ScalarVariableStruct svm = itr.next();
 			strList.add(svm.name);
 		}
 

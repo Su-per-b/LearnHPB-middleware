@@ -7,17 +7,18 @@ import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import com.sri.straylight.fmuWrapper.FMU;
-import com.sri.straylight.fmuWrapper.State;
 import com.sri.straylight.fmuWrapper.event.FMUeventListener;
 import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.voNative.State;
 
 
 
@@ -35,7 +36,10 @@ extends TestCase
 
 		FMU fmu = new FMU(testFmuFile, nativeLibFolder);
 
-		assert (fmu.getFmuState() == State.fmuState_level_0_uninitialized);
+		State s = fmu.getFmuState();
+		
+		assert (s.equals(State.fmuState_level_0_uninitialized) );
+		
 		final CyclicBarrier finishBarrier = new CyclicBarrier(2);  // +1 for the main thread
 
 

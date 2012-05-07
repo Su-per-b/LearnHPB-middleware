@@ -8,6 +8,22 @@ int doOneStep()
    return 0;
 }
 
+void deleteMessageStruct(MessageStruct * messageStruct)
+{
+   //fmuWrapper->doOneStep();
+
+   //delete messageStruct;
+   
+
+}
+
+void onMessageCallbackC(MessageStruct * messageStruct)
+{
+   messageCallbackPtr_(messageStruct);
+   delete messageStruct;
+}
+
+
 
 void end() {
 
@@ -18,7 +34,6 @@ void end() {
 	//TODO: Fix this - the event should be fired *after* the object is deleted
 	fmuWrapper->setState(fmuState_cleanedup);
 	delete fmuWrapper;
-
 
 }
 
@@ -41,10 +56,10 @@ int run()
 	while (!fmuWrapper->isSimulationComplete()) {
 		fmuWrapper->doOneStep();
 
-		ResultItemStruct *  resultItemStruct = fmuWrapper->getResultStruct();
+		ResultStruct *  ResultStruct = fmuWrapper->getResultStruct();
 
 		if(resultCallbackPtr_) {
-			resultCallbackPtr_(resultItemStruct);
+			resultCallbackPtr_(ResultStruct);
 		}
 	}
 
@@ -55,22 +70,22 @@ int run()
 
 
 
-struct ScalarVariableMeta *  getSVmetaData() {
+struct ScalarVariableStruct *  getSVmetaData() {
 	int count = getVariableCount();
 
-	struct ScalarVariableMeta *ptr = new ScalarVariableMeta[count];
+	struct ScalarVariableStruct *ptr = new ScalarVariableStruct[count];
 
 	int i;
 	i = 0;
 
 
-	std::list<ScalarVariableMeta> list = fmuWrapper->getMetaDataList();
+	std::list<ScalarVariableStruct> list = fmuWrapper->getMetaDataList();
 
 
-	for(std::list<ScalarVariableMeta>::iterator list_iter = list.begin(); 
+	for(std::list<ScalarVariableStruct>::iterator list_iter = list.begin(); 
 		list_iter != list.end(); list_iter++)
 	{
-		ScalarVariableMeta svm = * list_iter;
+		ScalarVariableStruct svm = * list_iter;
 		ptr[i]  = * list_iter;
 		i++;
 	}
@@ -93,7 +108,7 @@ int isSimulationComplete () {
 
 void init_1 (
 	void (*messageCallbackPtr)(MessageStruct *), 
-	void (*resultCallbackPtr)(ResultItemStruct *),
+	void (*resultCallbackPtr)(ResultStruct *),
 	void (*stateChangeCallbackPtr)(State )
 	
 	)
@@ -102,7 +117,7 @@ void init_1 (
 	 resultCallbackPtr_ = resultCallbackPtr;
 	 stateChangeCallbackPtr_ = stateChangeCallbackPtr;
 
-	 fmuWrapper = new Straylight::FMUwrapper( messageCallbackPtr_, stateChangeCallbackPtr_);
+	 fmuWrapper = new Straylight::FMUwrapper( &onMessageCallbackC, stateChangeCallbackPtr_);
 
 }
 
@@ -123,7 +138,7 @@ void init_3 ()
 
 
 
- ResultItemStruct * getResultStruct ()
+ ResultStruct * getResultStruct ()
 {
 	return fmuWrapper->getResultStruct();
 }

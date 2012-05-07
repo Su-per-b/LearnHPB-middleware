@@ -13,7 +13,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
 	</properties>
 
 
@@ -47,6 +46,14 @@
 			<url>http://bits.netbeans.org/maven2</url>
 		</repository>
 
+		<!-- JBoss repo -->
+		<repository>
+			<id>repository.jboss.org-public</id>
+			<name>JBoss.org Maven repository</name>
+			<url>https://repository.jboss.org/nexus/content/groups/public</url>
+		</repository>
+
+
 		<!-- use jWebSocket repository as final fallback <repository> <id>jWebSocket-repo</id> 
 			<name>jWebSocket Repository</name> <url>http://jwebsocket.googlecode.com/svn/repo</url> 
 			</repository> -->
@@ -54,9 +61,6 @@
 	</repositories>
 
 	<dependencies>
-
-
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -66,30 +70,26 @@
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
+			<artifactId>slf4j-jdk14</artifactId>
 			<version>1.6.4</version>
 		</dependency>
-
-
+	
 
 	</dependencies>
 
-
 	<build>
-
 		<plugins>
-
-
-
-
-
-
-
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
 		</plugins>
-
 	</build>
-
 
 	<modules>
 		<module>FMUwrapper</module>

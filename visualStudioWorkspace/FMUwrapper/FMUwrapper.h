@@ -37,8 +37,8 @@ namespace Straylight
 		FMUlogger fmuLogger_;
 		void (*stateChangeCallbackPtr_)(State );
 		State state_;
-		std::list<ScalarVariableMeta> metaDataList_;
-		std::list<ScalarVariableMeta> metaDataListOuput_;
+		std::list<ScalarVariableStruct> metaDataList_;
+		std::list<ScalarVariableStruct> metaDataListOuput_;
 		ResultItem* resultItem_;
 		int variableCount_;
 
@@ -65,12 +65,12 @@ namespace Straylight
 
 		void getModuleFolderPath(_TCHAR * szDir);
 
-		ResultItemStruct * getResultStruct();
+		ResultStruct * getResultStruct();
 		void setState(State newState);
 		State getState();
 
-		std::list<ScalarVariableMeta> getMetaDataList();
-		std::list<ScalarVariableMeta> getMetaDataListOuput();
+		std::list<ScalarVariableStruct> getMetaDataList();
+		std::list<ScalarVariableStruct> getMetaDataListOuput();
 		Logger* logger_;
 
 

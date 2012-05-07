@@ -12,16 +12,16 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.sri.straylight.fmuWrapper.InitializedStruct;
+import com.sri.straylight.fmuWrapper.voManaged.InitializedInfo;
 
 
 
 public class InitializedStructAdapter implements 
-JsonSerializer<InitializedStruct>, JsonDeserializer<InitializedStruct> {
+JsonSerializer<InitializedInfo>, JsonDeserializer<InitializedInfo> {
 
 	@Override
     public JsonElement serialize(
-    		InitializedStruct src, 
+    		InitializedInfo src, 
     		Type typeOfSrc, 
     		JsonSerializationContext context) {
         
@@ -48,14 +48,14 @@ JsonSerializer<InitializedStruct>, JsonDeserializer<InitializedStruct> {
     
     
     @Override
-    public InitializedStruct deserialize(
+    public InitializedInfo deserialize(
     		JsonElement jsonElement, 
     		Type typeOfT, 
     		JsonDeserializationContext context)
     
         throws JsonParseException {
     	
-    	InitializedStruct struct = new InitializedStruct();
+    	InitializedInfo struct = new InitializedInfo();
     	
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         

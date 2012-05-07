@@ -3,8 +3,10 @@ package com.sri.straylight.fmuWrapper.event;
 
 import java.util.EventObject;
 
-import com.sri.straylight.fmuWrapper.MessageStruct;
-import com.sri.straylight.fmuWrapper.MessageType;
+import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
+import com.sri.straylight.fmuWrapper.voNative.MessageType;
+
+
 
 
 

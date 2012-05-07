@@ -4,7 +4,9 @@ package com.sri.straylight.fmuWrapper.event;
 
 import java.util.EventObject;
 
-import com.sri.straylight.fmuWrapper.State;
+import com.sri.straylight.fmuWrapper.voNative.State;
+
+
 
 
 

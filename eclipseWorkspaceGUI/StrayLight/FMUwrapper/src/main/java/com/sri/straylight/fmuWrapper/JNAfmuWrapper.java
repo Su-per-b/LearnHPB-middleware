@@ -3,6 +3,11 @@
 package com.sri.straylight.fmuWrapper;
 
 
+
+import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
+import com.sri.straylight.fmuWrapper.voNative.ResultStruct;
+import com.sri.straylight.fmuWrapper.voNative.ScalarVariableStruct;
+import com.sri.straylight.fmuWrapper.voNative.State;
 import com.sun.jna.Callback;
 import com.sun.jna.Library;
 
@@ -15,13 +20,13 @@ public interface JNAfmuWrapper extends Library {
 	
 	void end();
 	
-	ResultItemStruct getResultStruct();
+	ResultStruct getResultStruct();
 	
 	int getVariableCount();
 	
 	int forceCleanup();
 	
-	ScalarVariableMeta getSVmetaData();
+	ScalarVariableStruct getSVmetaData();
 	
 	void init(String unzipFolder);
 	
@@ -40,19 +45,19 @@ public interface JNAfmuWrapper extends Library {
 	
 	public int run(); 
 	
-	
-	
 	public interface MessageCallbackInterface extends Callback {
 		public boolean messageCallback(MessageStruct messageStruct);
 	 }
 	
 	public interface ResultCallbackInterface extends Callback {
-		public boolean resultCallback(ResultItemStruct resultItemStruct);
+		public boolean resultCallback(ResultStruct resultItemStruct);
 	 }
 	
 	public interface StateChangeCallbackInterface extends Callback {
 		public boolean stateChangeCallback(State fmuState);
 	 }
+
+	void deleteMessageStruct(MessageStruct messageStruct);
 }
 
 

@@ -3,26 +3,27 @@
 #include "stdafx.h"
 
 
-struct ScalarVariableMeta {
+struct ScalarVariableStruct {
 	  const char * name;
 	  int idx;
 	  Enu causality;
+	  Elm type;
 };
 
 
-typedef struct ResultItemPrimitiveStruct_ {
+typedef struct ScalarValueStruct_ {
 	  int idx;
 	  const char * string;
-} ResultItemPrimitiveStruct;
+} ScalarValueStruct;
 
 
 
-typedef struct ResultItemStruct_ {
+typedef struct ResultStruct_ {
 	  double time;
 	  const char * string;
-	  int primitiveCount;
-	  ResultItemPrimitiveStruct * primitive;
-} ResultItemStruct;
+	  int scalarValueCount;
+	  ScalarValueStruct * scalarValueStruct;
+} ResultStruct;
 
 
 

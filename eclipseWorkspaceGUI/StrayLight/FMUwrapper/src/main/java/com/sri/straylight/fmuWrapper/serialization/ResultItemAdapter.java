@@ -13,17 +13,17 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.sri.straylight.fmuWrapper.ResultItem;
-import com.sri.straylight.fmuWrapper.ResultItemPrimitive;
+import com.sri.straylight.fmuWrapper.voManaged.Result;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValue;
 
 
 
 public class ResultItemAdapter implements 
-JsonSerializer<ResultItem>, JsonDeserializer<ResultItem> {
+JsonSerializer<Result>, JsonDeserializer<Result> {
 
 	@Override
     public JsonElement serialize(
-    		ResultItem src, 
+    		Result src, 
     		Type typeOfSrc, 
     		JsonSerializationContext context) {
         
@@ -32,15 +32,15 @@ JsonSerializer<ResultItem>, JsonDeserializer<ResultItem> {
         
         result.add("time", new JsonPrimitive(src.time));
         result.add("string", new JsonPrimitive(src.string));
-        result.add("primitiveCount", new JsonPrimitive(src.primitiveCount));
+        result.add("primitiveCount", new JsonPrimitive(src.scalarValueCount));
         
 
         JsonArray jsAry = new JsonArray();
 
         
-        for (int j = 0; j < src.primitiveAry.length; j++) {
+        for (int j = 0; j < src.scalarValueAry.length; j++) {
         		
-        	ResultItemPrimitive primitive = src.primitiveAry[j];
+        	ScalarValue primitive = src.scalarValueAry[j];
         	JsonElement elem = context.serialize(primitive);
         	jsAry.add(elem);
         	
@@ -55,7 +55,7 @@ JsonSerializer<ResultItem>, JsonDeserializer<ResultItem> {
     
     
     @Override
-    public ResultItem deserialize(
+    public Result deserialize(
     		JsonElement jsonElement, 
     		Type typeOfT, 
     		JsonDeserializationContext context)
@@ -63,26 +63,26 @@ JsonSerializer<ResultItem>, JsonDeserializer<ResultItem> {
         throws JsonParseException {
     	
         JsonObject jsonObject = jsonElement.getAsJsonObject();
-        ResultItem resultItem = new ResultItem();
+        Result resultItem = new Result();
         
         resultItem.time = jsonObject.get("time").getAsDouble();
         resultItem.string = jsonObject.get("string").getAsString();
-        resultItem.primitiveCount = jsonObject.get("primitiveCount").getAsInt();
+        resultItem.scalarValueCount = jsonObject.get("primitiveCount").getAsInt();
         
         JsonArray jsAry = jsonObject.get("primitiveAry").getAsJsonArray();
         
         int len = jsAry.size();
         
-        ResultItemPrimitive[] primitiveAry = new ResultItemPrimitive[len];
+        ScalarValue[] primitiveAry = new ScalarValue[len];
         		
         for(int i=0; i < len; i++) {
 
         	JsonElement elem = jsAry.get(i);
-        	ResultItemPrimitive primitive = context.deserialize(elem, ResultItemPrimitive.class);
+        	ScalarValue primitive = context.deserialize(elem, ScalarValue.class);
         	primitiveAry[i] = primitive;
         }
         
-        resultItem.primitiveAry = primitiveAry;
+        resultItem.scalarValueAry = primitiveAry;
         
         	
         return resultItem;

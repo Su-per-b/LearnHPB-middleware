@@ -5,19 +5,19 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import com.google.gson.Gson;
-import com.sri.straylight.fmuWrapper.InitializedStruct;
-import com.sri.straylight.fmuWrapper.MessageStruct;
-import com.sri.straylight.fmuWrapper.MessageType;
-import com.sri.straylight.fmuWrapper.ResultItem;
-import com.sri.straylight.fmuWrapper.ResultItemPrimitive;
-import com.sri.straylight.fmuWrapper.ResultItemPrimitiveStruct;
-import com.sri.straylight.fmuWrapper.State;
 import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.serialization.GsonController;
 import com.sri.straylight.fmuWrapper.serialization.SerializeableObject;
+import com.sri.straylight.fmuWrapper.voManaged.InitializedInfo;
+import com.sri.straylight.fmuWrapper.voManaged.Result;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValue;
+import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
+import com.sri.straylight.fmuWrapper.voNative.MessageType;
+import com.sri.straylight.fmuWrapper.voNative.ScalarValueStruct;
+import com.sri.straylight.fmuWrapper.voNative.State;
 
 /**
  * Unit test for JSON serialization
@@ -48,7 +48,7 @@ public class Serialization
     }
     
     public void testInitializedEvent() {
-    	InitializedStruct initializedStruct1 = new InitializedStruct();
+    	InitializedInfo initializedStruct1 = new InitializedInfo();
     	initializedStruct1.columnNames = new String[2];
     	initializedStruct1.columnNames[0] = "col 1";
     	initializedStruct1.columnNames[1] = "col 2";
@@ -69,7 +69,7 @@ public class Serialization
     }
     
     public void testInitializedStruct() {
-    	InitializedStruct initializedStruct1 = new InitializedStruct();
+    	InitializedInfo initializedStruct1 = new InitializedInfo();
     	initializedStruct1.columnNames = new String[2];
     	initializedStruct1.columnNames[0] = "col 1";
     	initializedStruct1.columnNames[1] = "col 2";
@@ -80,7 +80,7 @@ public class Serialization
     	
     	assertEquals(initializedStruct1.getClass().getCanonicalName(), obj.type);
     	
-    	InitializedStruct initializedStruct2 = gson.fromJson(jsonString, InitializedStruct.class);
+    	InitializedInfo initializedStruct2 = gson.fromJson(jsonString, InitializedInfo.class);
     	
     	assertEquals(initializedStruct1.columnNames[0], initializedStruct2.columnNames[0]);
     	assertEquals(initializedStruct1.columnNames[1], initializedStruct2.columnNames[1]);
@@ -134,23 +134,23 @@ public class Serialization
     public void testResultEvent()
     {
     	
-    	ResultItem resultItem1 = new ResultItem();
+    	Result resultItem1 = new Result();
     	
     	resultItem1.time = 2.51;
     	resultItem1.string = "two point five one";
-    	resultItem1.primitiveCount = 2;
+    	resultItem1.scalarValueCount = 2;
     	
-    	ResultItemPrimitive resultItemPrimitive1 = new ResultItemPrimitive();
+    	ScalarValue resultItemPrimitive1 = new ScalarValue();
     	resultItemPrimitive1.idx =1;
     	resultItemPrimitive1.string = "one";
     	
-    	ResultItemPrimitive resultItemPrimitive2 = new ResultItemPrimitive();
+    	ScalarValue resultItemPrimitive2 = new ScalarValue();
     	resultItemPrimitive2.idx = 2;
     	resultItemPrimitive2.string = "two";
     	
-    	resultItem1.primitiveAry = new ResultItemPrimitive[2];
-    	resultItem1.primitiveAry[0] = resultItemPrimitive1;
-    	resultItem1.primitiveAry[1] = resultItemPrimitive2;
+    	resultItem1.scalarValueAry = new ScalarValue[2];
+    	resultItem1.scalarValueAry[0] = resultItemPrimitive1;
+    	resultItem1.scalarValueAry[1] = resultItemPrimitive2;
     	
     	ResultEvent resultEvent1 = new ResultEvent(this);
     	resultEvent1.resultItem = resultItem1;
@@ -183,23 +183,23 @@ public class Serialization
      */
     public void testResultItem()
     {
-    	ResultItem resultItem1 = new ResultItem();
+    	Result resultItem1 = new Result();
     	
     	resultItem1.time = 2.51;
     	resultItem1.string = "two point five one";
-    	resultItem1.primitiveCount = 2;
+    	resultItem1.scalarValueCount = 2;
     	
-    	ResultItemPrimitive resultItemPrimitive1 = new ResultItemPrimitive();
+    	ScalarValue resultItemPrimitive1 = new ScalarValue();
     	resultItemPrimitive1.idx =1;
     	resultItemPrimitive1.string = "one";
     	
-    	ResultItemPrimitive resultItemPrimitive2 = new ResultItemPrimitive();
+    	ScalarValue resultItemPrimitive2 = new ScalarValue();
     	resultItemPrimitive2.idx = 2;
     	resultItemPrimitive2.string = "two";
     	
-    	resultItem1.primitiveAry = new ResultItemPrimitive[2];
-    	resultItem1.primitiveAry[0] = resultItemPrimitive1;
-    	resultItem1.primitiveAry[1] = resultItemPrimitive2;
+    	resultItem1.scalarValueAry = new ScalarValue[2];
+    	resultItem1.scalarValueAry[0] = resultItemPrimitive1;
+    	resultItem1.scalarValueAry[1] = resultItemPrimitive2;
     	
 
     	
@@ -217,11 +217,8 @@ public class Serialization
     	SerializeableObject obj = gson.fromJson(jsonString, SerializeableObject.class);
     	assertEquals(resultItem1.getClass().getCanonicalName(), obj.type);
     	
-    	
 
-    	
-    	
-    	ResultItem resultItem2 = gson.fromJson(jsonString, ResultItem.class);
+    	Result resultItem2 = gson.fromJson(jsonString, Result.class);
     	
     	assertEquals(resultItem1.time, resultItem2.time);
     	assertEquals(resultItem1.string, resultItem2.string);
@@ -235,7 +232,7 @@ public class Serialization
      */
     public void testResultItemPrimitiveStruct()
     {
-    	ResultItemPrimitiveStruct resultItemPrimitiveStruct1 = new ResultItemPrimitiveStruct();
+    	ScalarValueStruct resultItemPrimitiveStruct1 = new ScalarValueStruct();
     	resultItemPrimitiveStruct1.idx =1;
     	resultItemPrimitiveStruct1.string = "one";
     	
@@ -252,7 +249,7 @@ public class Serialization
     			);
     	
     	
-    	ResultItemPrimitiveStruct resultItemPrimitiveStruct2 = gson.fromJson(jsonString, ResultItemPrimitiveStruct.class);
+    	ScalarValueStruct resultItemPrimitiveStruct2 = gson.fromJson(jsonString, ScalarValueStruct.class);
     	
     	assertEquals(resultItemPrimitiveStruct1.idx, resultItemPrimitiveStruct2.idx);
     	assertEquals(resultItemPrimitiveStruct1.string, resultItemPrimitiveStruct2.string);

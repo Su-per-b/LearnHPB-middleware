@@ -11,16 +11,16 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.sri.straylight.fmuWrapper.ResultItemPrimitive;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValue;
 
 
 
 public class ResultItemPrimitiveAdapter implements 
-JsonSerializer<ResultItemPrimitive>, JsonDeserializer<ResultItemPrimitive> {
+JsonSerializer<ScalarValue>, JsonDeserializer<ScalarValue> {
 
 	@Override
     public JsonElement serialize(
-    		ResultItemPrimitive src, 
+    		ScalarValue src, 
     		Type typeOfSrc, 
     		JsonSerializationContext context) {
         
@@ -36,7 +36,7 @@ JsonSerializer<ResultItemPrimitive>, JsonDeserializer<ResultItemPrimitive> {
     
     
     @Override
-    public ResultItemPrimitive deserialize(
+    public ScalarValue deserialize(
     		JsonElement jsonElement, 
     		Type typeOfT, 
     		JsonDeserializationContext context)
@@ -44,7 +44,7 @@ JsonSerializer<ResultItemPrimitive>, JsonDeserializer<ResultItemPrimitive> {
         throws JsonParseException {
     	
         JsonObject jsonObject = jsonElement.getAsJsonObject();
-        ResultItemPrimitive ri = new ResultItemPrimitive();
+        ScalarValue ri = new ScalarValue();
         
         ri.idx = jsonObject.get("idx").getAsInt();
         ri.string = jsonObject.get("string").getAsString();

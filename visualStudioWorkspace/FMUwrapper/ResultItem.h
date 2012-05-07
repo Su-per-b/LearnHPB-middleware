@@ -34,7 +34,7 @@ namespace Straylight
 		void addModelVariables( FMU * fmuPointer, fmiComponent fmiComp);
 		void init( FMU * fmuPointer, fmiComponent fmiComp);
 	    char *  getString();
-		ResultItemStruct* toStruct();
+		ResultStruct* toStruct();
 
 	};
 

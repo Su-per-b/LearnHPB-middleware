@@ -10,7 +10,7 @@
 
 void test5();
 
-void resultCallback(ResultItemStruct * resultItemStruct);
+void resultCallback(ResultStruct * ResultStruct);
 
 void messageCallback(MessageStruct * messageStruct);
 

@@ -1,17 +1,18 @@
 package com.sri.straylight.fmuWrapper.serialization;
 
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sri.straylight.fmuWrapper.InitializedStruct;
-import com.sri.straylight.fmuWrapper.MessageStruct;
-import com.sri.straylight.fmuWrapper.ResultItem;
-import com.sri.straylight.fmuWrapper.ResultItemPrimitive;
-import com.sri.straylight.fmuWrapper.ResultItemPrimitiveStruct;
-import com.sri.straylight.fmuWrapper.State;
 import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.voManaged.InitializedInfo;
+import com.sri.straylight.fmuWrapper.voManaged.Result;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValue;
+import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
+import com.sri.straylight.fmuWrapper.voNative.ScalarValueStruct;
+import com.sri.straylight.fmuWrapper.voNative.State;
 
 
 
@@ -45,14 +46,14 @@ public class GsonController {
 		
 		gb.registerTypeAdapter(MessageStruct.class, new MessageStructAdapter());
 		gb.registerTypeAdapter(MessageEvent.class, new MessageEventAdapter());
-		gb.registerTypeAdapter(ResultItemPrimitiveStruct.class, new ResultItemPrimitiveStructAdapter());
-		gb.registerTypeAdapter(ResultItem.class, new ResultItemAdapter());
+		gb.registerTypeAdapter(ScalarValueStruct.class, new ResultItemPrimitiveStructAdapter());
+		gb.registerTypeAdapter(Result.class, new ResultItemAdapter());
 		gb.registerTypeAdapter(ResultEvent.class, new ResultEventAdapter());
 		gb.registerTypeAdapter(State.class, new StateAdapter());
 		gb.registerTypeAdapter(FMUstateEvent.class, new FMUstateEventAdapter());
-		gb.registerTypeAdapter(InitializedStruct.class, new InitializedStructAdapter());
+		gb.registerTypeAdapter(InitializedInfo.class, new InitializedStructAdapter());
 		gb.registerTypeAdapter(InitializedEvent.class, new InitializedEventAdapter());
-		gb.registerTypeAdapter(ResultItemPrimitive.class, new ResultItemPrimitiveAdapter());
+		gb.registerTypeAdapter(ScalarValue.class, new ResultItemPrimitiveAdapter());
 		
 		
 		gson_ = gb.create();

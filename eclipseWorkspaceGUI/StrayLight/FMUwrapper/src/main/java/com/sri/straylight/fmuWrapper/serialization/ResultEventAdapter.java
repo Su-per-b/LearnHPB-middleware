@@ -12,8 +12,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.sri.straylight.fmuWrapper.ResultItem;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.voManaged.Result;
 
 public class ResultEventAdapter implements 
 JsonSerializer<ResultEvent>, JsonDeserializer<ResultEvent> {
@@ -56,7 +56,7 @@ JsonSerializer<ResultEvent>, JsonDeserializer<ResultEvent> {
         
         resultEvent.resultString = jsonObject.get("resultString").getAsString();
         
-        resultEvent.resultItem = context.deserialize(element,ResultItem.class);
+        resultEvent.resultItem = context.deserialize(element,Result.class);
         
         return resultEvent;
 

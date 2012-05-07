@@ -51,7 +51,7 @@ namespace Straylight
 	///////////////////////////////////////////////////////////////////////////////
 	void Logger::doubleToCommaString(char* buffer, double r){
 		char* comma;
-		sprintf(buffer, "%.16g", r);
+		sprintf(buffer, _T("%.16g"), r);
 		comma = strchr(buffer, '.');
 		if (comma) *comma = ',';
 	}
@@ -89,7 +89,7 @@ namespace Straylight
 	void Logger::printDebug2(const char* str1, const char* str2){
 		if (debug == 1)
 		{
-			fprintf(stdout, "Debug: ");
+			fprintf(stdout, _T("Debug: "));
 			fprintf(stdout, str1, str2);
 		}
 
@@ -106,7 +106,7 @@ namespace Straylight
 
 		if (debug == 1)
 		{
-			fprintf(stdout, "Debug: ");
+			fprintf(stdout, _T("Debug: "));
 			fprintf(stdout, str1, str2, str3, str4, str5);
 		}
 
@@ -115,7 +115,7 @@ namespace Straylight
 			char msg[256];
 
 			sprintf (msg, str1, str2, str3, str4, str5);
-			printDebugHelper("%s\n", msg);
+			printDebugHelper(_T("%s\n"), msg);
 
 		}
 
@@ -127,7 +127,8 @@ namespace Straylight
 	///
 	//////////////////////////////////////////////////////////////////////////////
 	void Logger::printDebugHelper(const char* str1, const char* str2 ) {
-	
+		
+
 		char msg[256];
 
 		sprintf (msg, str1, str2);
@@ -136,15 +137,14 @@ namespace Straylight
 
 			MessageStruct * messageStruct = new MessageStruct;
 			messageStruct->msgText = msg;
-
-
 			messageStruct->messageType = messageType_info;
-			Logger::messageCallbackPtr_(messageStruct);
+
+			messageCallbackPtr_(messageStruct);
 		}
 
 		  if (debug > 0)
 		  {
-			  fprintf(stdout, "%s\n", msg);
+			  fprintf(stdout, _T("%s\n"), msg);
 		  }
 
 		  if (debugvs > 0)
@@ -152,7 +152,7 @@ namespace Straylight
 			  OutputDebugString(msg);
 		  }
 
-		  fflush(stdout);	
+		 fflush(stdout);	
 	}
 
 
@@ -163,13 +163,13 @@ namespace Straylight
 	///\param msg Error message to be printed
 	//////////////////////////////////////////////////////////////////////////////
 	void Logger::printError(const char* msg){
-	  fprintf(stderr, "*** Error: ");
-	  fprintf(stderr, "%s\n", msg);
+	  fprintf(stderr, _T("*** Error: "));
+	  fprintf(stderr, _T("%s\n"), msg);
 
 	  if (debugvs > 0)
 	  {
-		  OutputDebugString("*** Error: ");
-		  printDebugHelper("%s\n", msg);
+		//  OutputDebugString("*** Error: ");
+		  printDebugHelper(_T("%s\n"), msg);
 	  }
 	}
 
@@ -181,12 +181,12 @@ namespace Straylight
 	///\param str2 String variable to be printed
 	//////////////////////////////////////////////////////////////////////////////
 	void Logger::printfError(const char* str1, const char* str2){
-	  fprintf(stderr, "*** Error: ");
+	  fprintf(stderr, _T("*** Error: "));
 	  fprintf(stderr, str1, str2);
 
 	  if (debugvs > 0)
 	  {
-		  OutputDebugString("*** Error: ");
+		  //OutputDebugString("*** Error: ");
 		  printDebugHelper(str1, str2);
 	  }
 	}

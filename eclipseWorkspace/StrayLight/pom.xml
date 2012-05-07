@@ -1,96 +1,120 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.sri</groupId>
-  <artifactId>StrayLight</artifactId>
-  <version>0.0.2</version>
-  <packaging>pom</packaging>
+	<groupId>com.sri</groupId>
+	<artifactId>StrayLight</artifactId>
+	<version>0.0.2</version>
+	<packaging>pom</packaging>
 
-  <name>StrayLight</name>
-  <url>http://maven.apache.org</url>
+	<name>StrayLight</name>
+	<url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	<jetty.version>8.0.4.v20111024</jetty.version>
-  </properties>
-  
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jetty.version>8.0.4.v20111024</jetty.version>
+	</properties>
 
-    <repositories>
-    
-     <!-- maven repository 2 -->
-      <repository>
-              <id>maven-central-repo2</id>
-              <name>Maven Central Repository</name>
-              <url>http://repo2.maven.org/maven2</url>
-      </repository>
-      
-      <!-- maven repository 1 -->
-      <repository>
-              <id>maven-central-repo1</id>
-              <name>Maven Central Repository</name>
-              <url>http://repo1.maven.org/maven2</url>
-      </repository>
-      
-      <!-- Java.net repository -->
-      <repository>
-              <id>java-net-repo</id>
-              <name>Java.net Repository</name>
-              <url>http://download.java.net/maven/2</url>
-      </repository>
 
-      <!-- NetBeans repository -->
-      <repository>
-              <id>netbeans</id>
-              <name>NetBeans Repository</name>
-              <url>http://bits.netbeans.org/maven2</url>
-      </repository>
-      
-      <!-- use jWebSocket repository as final fallback -->
-      <repository>
-              <id>jWebSocket-repo</id>
-              <name>jWebSocket Repository</name>
-              <url>http://jwebsocket.googlecode.com/svn/repo</url>
-      </repository>
-    
-    
+	<repositories>
+
+		<!-- maven repository 2 -->
+		<repository>
+			<id>maven-central-repo2</id>
+			<name>Maven Central Repository</name>
+			<url>http://repo2.maven.org/maven2</url>
+		</repository>
+
+		<!-- maven repository 1 -->
+		<repository>
+			<id>maven-central-repo1</id>
+			<name>Maven Central Repository</name>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
+
+		<!-- Java.net repository -->
+		<repository>
+			<id>java-net-repo</id>
+			<name>Java.net Repository</name>
+			<url>http://download.java.net/maven/2</url>
+		</repository>
+
+		<!-- NetBeans repository -->
+		<repository>
+			<id>netbeans</id>
+			<name>NetBeans Repository</name>
+			<url>http://bits.netbeans.org/maven2</url>
+		</repository>
+
+		<!-- use jWebSocket repository as final fallback -->
+		<repository>
+			<id>jWebSocket-repo</id>
+			<name>jWebSocket Repository</name>
+			<url>http://jwebsocket.googlecode.com/svn/repo</url>
+		</repository>
+
+
 	</repositories>
-	
-  <dependencies>
-  
-	<dependency>
-		<groupId>jstl</groupId>
-		<artifactId>jstl</artifactId>
-		<version>1.2</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>javax.servlet.jsp</groupId>
-		<artifactId>jsp-api</artifactId>
-		<version>2.2</version>
-	</dependency>
-		
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-    
-	<dependency>
-		<groupId>org.slf4j</groupId>
-		<artifactId>slf4j-api</artifactId>
-		<version>1.6.4</version>
-	</dependency>
-		
-  </dependencies>
-  
-  <modules>
-  	<module>PageServer</module>
-  	<module>PageApp</module>
-  	<module>SocketServer</module>
-  	<module>Common</module>
-  </modules>
-  
+
+	<dependencies>
+
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+
+	</dependencies>
+
+
+	<build>
+
+		<plugins>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+
+
+
+
+		</plugins>
+
+	</build>
+
+	<modules>
+		<module>PageServer</module>
+		<module>PageApp</module>
+		<module>SocketServer</module>
+		<module>Common</module>
+	</modules>
+
 
 </project>
