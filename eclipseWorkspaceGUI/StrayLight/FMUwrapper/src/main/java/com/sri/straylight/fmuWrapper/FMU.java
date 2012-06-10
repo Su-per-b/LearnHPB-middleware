@@ -46,9 +46,13 @@ public class FMU  {
 		return scalarVariableOutputList_;
 	}
 
+	private ArrayList<ScalarVariableStruct> scalarVariableInternalList_;
+	public ArrayList<ScalarVariableStruct> getScalarVariableInternalList() {
+		return scalarVariableInternalList_;
+	}
+
 
 	private HashMap<Integer, ScalarVariableStruct> variableListAll_;
-
 	private ScalarVariableStruct[] svMetaArray_;
 	private State fmuState_ = State.fmuState_level_0_uninitialized;
 
@@ -180,6 +184,9 @@ public class FMU  {
 		//initialize lists
 		scalarVariableInputList_ =  new ArrayList<ScalarVariableStruct>();
 		scalarVariableOutputList_ =  new ArrayList<ScalarVariableStruct>();
+		scalarVariableInternalList_=  new ArrayList<ScalarVariableStruct>();
+		
+		
 		variableListAll_ = new HashMap<Integer, ScalarVariableStruct>();
 
 	}
@@ -216,7 +223,7 @@ public class FMU  {
 				scalarVariableOutputList_.add(svm);
 				break;
 			default:
-				//variableListOther_.add(svm);
+				scalarVariableInternalList_.add(svm);
 
 			}
 

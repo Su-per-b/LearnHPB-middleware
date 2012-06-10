@@ -1,5 +1,5 @@
-8x $5.15
-10x $2.00
+10x $5.15
+15x $2.00
 5x $1.00
 
 10x 20 cent
@@ -17,3 +17,12 @@ If over 1/4", then it depends on if the package is uniform in thickness & flexib
 If over 1/4" and lumpy or rigid, then it is a Parcel.
 
 In any case, if it is greater than 3/4" at any point, it is a Parcel.
+
+
+
+
+
+
+
+1/2 and above
+	xxxxxxx

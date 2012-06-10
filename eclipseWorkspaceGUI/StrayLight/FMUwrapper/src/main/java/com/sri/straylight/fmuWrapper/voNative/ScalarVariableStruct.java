@@ -10,6 +10,7 @@ public class ScalarVariableStruct extends Structure {
 	public int idx;
 	public int causality;
 	public int type;
+	public String description;
 	
 	public Enu getCausalityEnum() {
 
@@ -18,4 +19,13 @@ public class ScalarVariableStruct extends Structure {
 		
 		return theEnum;
 	}
+	
+	public Elm getTypeEnum() {
+
+		Elm p = Elm.elm_Annotation;
+		Elm theEnum  = p.getForValue (type);
+		
+		return theEnum;
+	}
+	
 }

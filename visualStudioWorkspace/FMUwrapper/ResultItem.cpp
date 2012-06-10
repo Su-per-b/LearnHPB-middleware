@@ -70,6 +70,8 @@ namespace Straylight
 
 		ResultPrimitive * rp = new ResultPrimitive(idx);
 
+	//	rp->setValue();
+
 
 		switch (sv->typeSpec->type) {
 		case elm_Real:

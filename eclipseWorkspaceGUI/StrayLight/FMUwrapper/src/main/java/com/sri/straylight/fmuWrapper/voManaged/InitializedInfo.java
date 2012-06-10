@@ -12,43 +12,54 @@ public class InitializedInfo extends Structure {
 
 	public ScalarVariableStruct[] inputVars;
 	public ScalarVariableStruct[] outputVars;
+	public ScalarVariableStruct[] internalVars;
+	
+	
 
+	public String[] getColumnNames() {
 
-	public String[] getInputColumnNames() {
-
-		String[] columnNames2  = {
+		String[] columnNames  = {
 				"name",
 				"value",
 				"type",
-				"cuasality",
+				"causality",
 				"description"
 		};
 		
-		return columnNames2;
+		return columnNames;
 	}
-
-	public Object[][] getInputData() {
-
+	
+	private Object[][] getData (ScalarVariableStruct[] ary ) {
 		
-		int len = inputVars.length;
-		
+		int len = ary.length;
 		Object[][] data = new Object[len][];
 
-			
 		for (int i = 0; i < len; i++) {
+			ScalarVariableStruct sv = internalVars[i];
 			String[] row  = {
-					inputVars[i].name,
-					"unknown",
-					"unknown",
-					inputVars[i].getCausalityEnum().toString(),
-					"unknown"
+				sv.name,
+				"unknown",
+				sv.getTypeEnum().toString(),
+				sv.getCausalityEnum().toString(),
+				sv.description
 			};
 			
 			data[i] = row;
 		}
 
-		
+		return data;
+	}
+	
 
+	public Object[][] getInternalData() {
+		Object[][] data = getData(internalVars);
+		return data;
+	}
+	
+	
+	
+	public Object[][] getInputData() {
+		Object[][] data = getData(inputVars);
 		return data;
 	}
 

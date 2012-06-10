@@ -8,6 +8,8 @@ struct ScalarVariableStruct {
 	  int idx;
 	  Enu causality;
 	  Elm type;
+	  const char* description;
+	  //const char* attributes;
 };
 
 

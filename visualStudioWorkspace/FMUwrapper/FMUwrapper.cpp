@@ -26,7 +26,7 @@ namespace Straylight
 		void (*stateChangeCallbackPtr)(State )
 		)
 	{
-		timeEnd_ = 1.0;
+		timeEnd_ = 300.0;
 		t0 = 0;
 		timeDelta_=0.1;
 		fmuPointer_ = &fmu_;
@@ -35,11 +35,8 @@ namespace Straylight
 		FMUlogger::fmu = fmu_;
 		FMUlogger::logger = logger_;
 
-
 		logger_->registerMessageCallback(messageCallbackPtr);
-
 		stateChangeCallbackPtr_ =stateChangeCallbackPtr;
-
 		setState( fmuState_level_0_uninitialized );
 	}
 
@@ -127,6 +124,9 @@ namespace Straylight
 
 	int FMUwrapper::extractVariables() {
 
+		//resultItem_ = new ResultItem(fmuPointer_,  fmiComponent_);
+
+
 		int i;
 		for (i=0; fmuPointer_->modelDescription->modelVariables[i]; i++){
 			ScalarVariable* sv = (ScalarVariable*)fmuPointer_->modelDescription->modelVariables[i];
@@ -141,7 +141,26 @@ namespace Straylight
 			meta.causality =  getCausality(sv);
 			meta.type = sv->typeSpec->type;
 
-			//meta.description = getDescription(fmuPointer_->modelDescription,  sv );
+			meta.description = getDescription(fmuPointer_->modelDescription,  sv );
+			
+			//fmiValueReference vr = getValueReference(sv);
+
+			//resultItem_->addValue(sv, i);
+
+			/*
+			meta.attributes = getVariableAttributeString(
+				fmuPointer_->modelDescription,
+				vr,
+				Elm type, Att a);
+			*/
+
+
+			//ResultPrimitive * rp = new ResultPrimitive(0);
+		//	rp->
+
+			if (meta.description == NULL) {
+				meta.description = _T("{no description}");
+			}
 
 			metaDataList_.push_back(meta);
 
@@ -335,8 +354,6 @@ namespace Straylight
 			setState( fmuState_level_5_initializedFMU );
 			return 0;
 		}
-
-
 	}
 
 

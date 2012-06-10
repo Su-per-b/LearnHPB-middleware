@@ -11,10 +11,7 @@ int doOneStep()
 void deleteMessageStruct(MessageStruct * messageStruct)
 {
    //fmuWrapper->doOneStep();
-
    //delete messageStruct;
-   
-
 }
 
 void onMessageCallbackC(MessageStruct * messageStruct)

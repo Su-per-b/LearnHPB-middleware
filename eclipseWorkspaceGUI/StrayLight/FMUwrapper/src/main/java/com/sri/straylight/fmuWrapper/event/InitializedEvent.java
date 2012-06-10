@@ -43,27 +43,28 @@ public class InitializedEvent extends EventObject {
         InitializedInfo struct = new InitializedInfo();
         struct.columnNames = strList.toArray(new String[strList.size()]);
         
+        
         ArrayList<ScalarVariableStruct> listInputVars = fmu.getScalarVariableInputList();
         struct.inputVars =  listInputVars.toArray ( new ScalarVariableStruct[listInputVars.size()] );
+        
         
         ArrayList<ScalarVariableStruct> listOutputVars = fmu.getScalarVariableOutputList();
         struct.outputVars =  listOutputVars.toArray ( new ScalarVariableStruct[listOutputVars.size()] );
        
         
+        ArrayList<ScalarVariableStruct> listInternalVars = fmu.getScalarVariableInternalList();
+        struct.internalVars =  listInternalVars.toArray ( new ScalarVariableStruct[listInternalVars.size()] );
         
         
         InitializedEvent event  = new InitializedEvent(fmu);
         event.initializedStruct = struct;
         
+        
         return event;
 
     }
     
-    
-    
-    
-    
-     
+
 }
 
 
