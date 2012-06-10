@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" output="classes" path="java"/>
-	<classpathentry kind="var" path="JRE_LIB" rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
+	<classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
 	<classpathentry kind="lib" path="E:/SRI/straylight_repo/swingdemo/lib/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="E:/SRI/straylight_repo/swingdemo/lib/asm-attrs.jar"/>
 	<classpathentry kind="lib" path="E:/SRI/straylight_repo/swingdemo/lib/asm.jar"/>
@@ -22,5 +22,6 @@
 	<classpathentry kind="lib" path="E:/SRI/straylight_repo/swingdemo/lib/jta.jar"/>
 	<classpathentry kind="lib" path="E:/SRI/straylight_repo/swingdemo/lib/log4j-1.2.13.jar"/>
 	<classpathentry kind="lib" path="E:/SRI/straylight_repo/swingdemo/lib/looks-2.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-3.2.7.ga.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
