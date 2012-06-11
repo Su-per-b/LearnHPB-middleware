@@ -16,7 +16,7 @@ public class MainController   {
 	   private MainModel mainModel_;
 
 	   
-	   private FmuController fmuController;
+
 	   
 	   private TopMenuController topMenuController_;
 	   
@@ -24,7 +24,7 @@ public class MainController   {
 	    
 	    
 	   private MainController() { 
-		   AnnotationProcessor.process(this);
+
 	   }
 	   
 
@@ -41,9 +41,7 @@ public class MainController   {
 		   mainView_ = new MainView(mainModel_);
 		   
 		   topMenuController_ = new TopMenuController();
-		   
-		   
-		   fmuController = new FmuController();
+
 		   
 
 		   

@@ -194,8 +194,7 @@ public class MainPanel extends JPanel implements FMUeventListener   {
 	    numbeOfInputTabs++;
 	    
 	    tabbedPane_.addTab("Input Table " + String.valueOf(numbeOfInputTabs), null, panelTable, null);
-	    
-	    
+
     }
     
     

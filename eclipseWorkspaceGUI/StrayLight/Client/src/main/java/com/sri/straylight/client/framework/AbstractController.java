@@ -13,6 +13,7 @@ import javax.swing.AbstractButton;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.bushe.swing.event.annotation.AnnotationProcessor;
 
 /**
  * Abstract superclass for building a hierarchical controller structure (HMVC).
@@ -49,7 +50,10 @@ public abstract class AbstractController implements ActionListener, WindowListen
     /**
      * Subclass wants to control own view and is root controller.
      */
-    public AbstractController() {}
+    public AbstractController() {
+    	
+
+    }
 
     /**
      * Subclass wants to control own view and is a subcontroller.
@@ -66,6 +70,13 @@ public abstract class AbstractController implements ActionListener, WindowListen
      * @param parentController
      */
     public AbstractController(Container view, AbstractController parentController) {
+
+    	init_(view, parentController);
+    }
+    
+    protected void init_(Container view, AbstractController parentController) {
+    	AnnotationProcessor.process(this);
+    	
         this.view = view;
 
         // Check if this is a subcontroller or a root controller
@@ -73,13 +84,17 @@ public abstract class AbstractController implements ActionListener, WindowListen
             this.parentController = parentController;
             parentController.getSubControllers().add(this);
         }
+
     }
-
-
+    
     public Container getView() {
         return view;
     }
-
+    
+    protected void setView_(Container c) {
+        view = c;
+    }
+    
     public AbstractController getParentController() {
         return parentController;
     }

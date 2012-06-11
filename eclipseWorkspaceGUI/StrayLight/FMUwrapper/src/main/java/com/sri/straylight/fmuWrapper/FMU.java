@@ -52,7 +52,7 @@ public class FMU  {
 	}
 
 
-	private HashMap<Integer, ScalarVariableStruct> variableListAll_;
+	private HashMap<Integer, ScalarVariableStruct> scalarVariableAllList_;
 	private ScalarVariableStruct[] svMetaArray_;
 	private State fmuState_ = State.fmuState_level_0_uninitialized;
 
@@ -158,7 +158,7 @@ public class FMU  {
 		for (int i = 0; i < len; i++) {
 
 			ScalarValue primitive = resultItem.scalarValueAry[i];
-			ScalarVariableStruct svm = (ScalarVariableStruct) variableListAll_.get(new Integer (primitive.idx));  
+			ScalarVariableStruct svm = (ScalarVariableStruct) scalarVariableAllList_.get(new Integer (primitive.idx));  
 
 			str += "      " +  svm.name + " : " +  primitive.string + "  \n";
 		}
@@ -185,9 +185,7 @@ public class FMU  {
 		scalarVariableInputList_ =  new ArrayList<ScalarVariableStruct>();
 		scalarVariableOutputList_ =  new ArrayList<ScalarVariableStruct>();
 		scalarVariableInternalList_=  new ArrayList<ScalarVariableStruct>();
-		
-		
-		variableListAll_ = new HashMap<Integer, ScalarVariableStruct>();
+		scalarVariableAllList_ = new HashMap<Integer, ScalarVariableStruct>();
 
 	}
 
@@ -213,7 +211,7 @@ public class FMU  {
 
 			ScalarVariableStruct svm = svMetaArray_[i];
 			Enu causality = svm.getCausalityEnum();
-			variableListAll_.put(new Integer(svm.idx), svm);
+			scalarVariableAllList_.put(new Integer(svm.idx), svm);
 
 			switch (causality) {
 			case enu_input: 
@@ -222,9 +220,9 @@ public class FMU  {
 			case enu_output: 
 				scalarVariableOutputList_.add(svm);
 				break;
-			default:
+			case enu_internal:
 				scalarVariableInternalList_.add(svm);
-
+				break;
 			}
 
 		}

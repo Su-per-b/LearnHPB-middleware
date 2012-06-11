@@ -35,7 +35,7 @@ public class InitializedInfo extends Structure {
 		Object[][] data = new Object[len][];
 
 		for (int i = 0; i < len; i++) {
-			ScalarVariableStruct sv = internalVars[i];
+			ScalarVariableStruct sv = ary[i];
 			String[] row  = {
 				sv.name,
 				"unknown",

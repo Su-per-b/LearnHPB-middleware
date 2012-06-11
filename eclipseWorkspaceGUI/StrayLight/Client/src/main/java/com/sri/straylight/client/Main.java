@@ -3,6 +3,7 @@ package com.sri.straylight.client;
 import org.apache.log4j.xml.DOMConfigurator;
 
 import com.sri.straylight.client.controller.MainController;
+import com.sri.straylight.client.controller.MainController2;
 import com.sri.straylight.client.framework.AbstractController;
 
 public class Main {
@@ -18,7 +19,10 @@ public class Main {
             	
             	
             	DOMConfigurator.configure("log4j.xml");
-            	MainController.getInstance().init();
+            	
+            	//MainController.getInstance().init();
+            	
+            	applicationController = new MainController2();
             	
             	
             }

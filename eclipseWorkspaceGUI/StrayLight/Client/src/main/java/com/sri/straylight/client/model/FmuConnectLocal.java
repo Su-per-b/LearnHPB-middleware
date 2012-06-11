@@ -43,16 +43,6 @@ public class FmuConnectLocal implements  IFmuConnect {
 		taskInit.execute();
 	}
 
-	public void init2() {
-
-		//fmuEventDispatacher_ = new FMUeventDispatacher();
-		//fmuEventDispatacher_.addListener(l);
-
-		taskInit = new TaskInit();
-		taskInit.execute();
-	}
-	
-	
 
 	public void run() {
 		TaskRun taskRun = new TaskRun();

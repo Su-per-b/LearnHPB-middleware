@@ -2,10 +2,10 @@ package com.sri.straylight.client.controller;
 
 import org.bushe.swing.event.annotation.EventSubscriber;
 
+import com.sri.straylight.client.event.action.MenuEvent_About_Help;
+import com.sri.straylight.client.event.action.RequestInit;
+import com.sri.straylight.client.event.action.SelectRuntime;
 import com.sri.straylight.client.event.menu.options.SelectSimulationEngine;
-import com.sri.straylight.client.event.ui.MenuEvent_About_Help;
-import com.sri.straylight.client.event.ui.RequestInit;
-import com.sri.straylight.client.event.ui.SelectRuntime;
 import com.sri.straylight.client.model.Config;
 
 public class TopMenuController {

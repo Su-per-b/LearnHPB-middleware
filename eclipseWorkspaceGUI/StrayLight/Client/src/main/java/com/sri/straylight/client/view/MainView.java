@@ -13,9 +13,9 @@ import javax.swing.JMenuItem;
 
 import org.bushe.swing.event.EventBus;
 
+import com.sri.straylight.client.event.action.MenuEvent_About_Help;
+import com.sri.straylight.client.event.action.SelectRuntime;
 import com.sri.straylight.client.event.menu.options.SelectSimulationEngine;
-import com.sri.straylight.client.event.ui.MenuEvent_About_Help;
-import com.sri.straylight.client.event.ui.SelectRuntime;
 import com.sri.straylight.client.model.Config;
 import com.sri.straylight.client.model.MainModel;
 
