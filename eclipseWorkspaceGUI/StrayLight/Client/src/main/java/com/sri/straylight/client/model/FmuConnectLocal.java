@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.swing.SwingWorker;
 
+import org.bushe.swing.event.EventBus;
+
 import com.sri.straylight.fmuWrapper.FMU;
 import com.sri.straylight.fmuWrapper.event.FMUeventDispatacher;
 import com.sri.straylight.fmuWrapper.event.FMUeventListener;
@@ -42,8 +44,15 @@ public class FmuConnectLocal implements  IFmuConnect {
 
 		taskInit.execute();
 	}
+	
+	public void init() {
 
 
+		taskInit = new TaskInit();
+
+		taskInit.execute();
+	}
+	
 	public void run() {
 		TaskRun taskRun = new TaskRun();
 		taskRun.execute();
@@ -99,10 +108,7 @@ public class FmuConnectLocal implements  IFmuConnect {
 			//System.out.printf("TaskInit.onMessageEvent Thread:%s \n", Thread.currentThread().getName());
 		}
 		
-		public TaskInit() {
-			//fmuEventDispatacher = new FMUeventDispatacher();
 
-		}
 
 		@Override
 		protected void process(List<EventObject> eventList) {
@@ -111,7 +117,16 @@ public class FmuConnectLocal implements  IFmuConnect {
 			for (Iterator<EventObject> iterator = eventList.iterator(); iterator
 					.hasNext();) {
 				EventObject event = (EventObject) iterator.next();
-				fmuEventDispatacher_.fireEvent(event);
+				
+				
+				if (fmuEventDispatacher_ == null) {
+					EventBus.publish(event);
+				} else {
+					fmuEventDispatacher_.fireEvent(event);
+				}
+				
+				
+				
 			}
 		}
 

@@ -3,7 +3,7 @@ package com.sri.straylight.client;
 import org.apache.log4j.xml.DOMConfigurator;
 
 import com.sri.straylight.client.controller.MainController;
-import com.sri.straylight.client.controller.MainController2;
+import com.sri.straylight.client.controller.MainController;
 import com.sri.straylight.client.framework.AbstractController;
 
 public class Main {
@@ -22,7 +22,7 @@ public class Main {
             	
             	//MainController.getInstance().init();
             	
-            	applicationController = new MainController2();
+            	applicationController = new MainController();
             	
             	
             }

@@ -4,6 +4,8 @@ package com.sri.straylight.client.model;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.bushe.swing.event.EventBus;
+
 import com.google.gson.Gson;
 import com.sri.straylight.fmuWrapper.event.FMUeventDispatacher;
 import com.sri.straylight.fmuWrapper.event.FMUeventListener;
@@ -38,7 +40,135 @@ public class FmuConnectRemote implements IFmuConnect {
     }
     
 
+    public void init() {
 
+    	
+		try {
+
+			try {
+		        URI uri = new URI(urlString_);
+		        websocketConnection_ = new WebSocketConnection(uri);
+		        
+		        // Register Event Handlers
+		        websocketConnection_.setEventHandler(new WebSocketEventHandler() {
+	                public void onOpen()
+	                {
+
+	                	MessageEvent event = new MessageEvent(
+	                			this, 
+	                			"WebSocket Connection open", 
+	                			MessageType.messageType_info);
+	                	
+
+	                	EventBus.publish(event);	
+	                }
+	                                
+	                public void onMessage(WebSocketMessage message)
+	                {
+	                	Gson gson = GsonController.getInstance().getGson();
+	                	String jsonString = message.getText();
+
+	              
+	                	SerializeableObject obj = gson.fromJson(jsonString, SerializeableObject.class);
+
+	                	
+	                	try {
+	                		Class<?> cl = Class.forName(obj.type);
+	                		
+		                	if (cl == MessageEvent.class) {
+		                		
+		                		MessageEvent event = gson.fromJson(jsonString, MessageEvent.class);
+		                		EventBus.publish(event);
+			                	
+		                	} else if (cl == ResultEvent.class) {
+		                		
+		                		ResultEvent event = gson.fromJson(jsonString, ResultEvent.class);
+		                		EventBus.publish(event);
+			                	
+		                	} else if (cl == FMUstateEvent.class) {
+		                		
+		                		FMUstateEvent event = gson.fromJson(jsonString, FMUstateEvent.class);
+		                		EventBus.publish(event);
+			                	
+		                	} else if (cl == InitializedEvent.class) {
+		                		
+		                		InitializedEvent event = gson.fromJson(jsonString, InitializedEvent.class);
+		                		EventBus.publish(event);
+			                	
+		                	}
+	                	}
+	                	catch (ClassNotFoundException ex) {
+	                		ex.printStackTrace();
+	    			        String msg = ex.getClass().getSimpleName() + ": " + ex.getMessage();
+	    			        System.out.println(msg);
+	                	}
+
+	                	
+
+	                	System.out.println(jsonString);
+
+	                }
+	                                
+	                public void onClose()
+	                {
+
+	                	MessageEvent event = new MessageEvent(
+	                			this, 
+	                			"WebSocket Connection closed", 
+	                			MessageType.messageType_info);
+	                	
+	                	EventBus.publish(event);
+	                }
+	        });
+		        
+		        
+            	MessageEvent event = new MessageEvent(
+            			this, 
+            			"Connecting to remote host at: " + urlString_, 
+            			MessageType.messageType_info);
+            	
+            	EventBus.publish(event);
+            	
+            	
+		        // Establish WebSocket Connection
+		        websocketConnection_.connect();
+		        
+		        // Send UTF-8 Text
+		        websocketConnection_.send("init");
+		        
+		        // Close WebSocket Connection
+		        //websocket.close();
+			}
+			catch (WebSocketException wse) {
+			    wse.printStackTrace();
+
+				String msg = wse.getClass().getSimpleName() + ": " + wse.getMessage();
+				
+	        	MessageEvent event = new MessageEvent(this, msg, MessageType.messageType_error);
+	        	EventBus.publish(event);
+				
+
+			        
+			}
+			catch (URISyntaxException use) {
+			        use.printStackTrace();
+				String msg = use.getClass().getSimpleName() + ": " + use.getMessage();
+				System.out.println(msg);
+				
+
+			}
+			
+		} catch (Exception ex) {
+			
+			String msg = ex.getClass().getSimpleName() + ": " + ex.getMessage();
+			System.out.println(msg);
+			
+        	MessageEvent event = new MessageEvent(this, msg, MessageType.messageType_error);
+        	EventBus.publish(event);
+        	
+		}
+    	
+    }
 	
     public void init(FMUeventListener l) {
     	

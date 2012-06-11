@@ -8,6 +8,7 @@ public interface IFmuConnect {
 
 	public void init(FMUeventListener l);
 
+	public void init();
 	
 	public void run();
 	

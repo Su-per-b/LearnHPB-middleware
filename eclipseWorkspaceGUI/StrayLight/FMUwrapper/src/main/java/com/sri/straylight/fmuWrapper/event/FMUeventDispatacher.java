@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.EventObject;
 import java.util.Iterator;
 
+import org.bushe.swing.event.EventBus;
+
 
 
 
@@ -26,7 +28,9 @@ public class FMUeventDispatacher {
 	}
 
 	public void fireEvent(EventObject e) {
-
+			
+		EventBus.publish(e);
+		
 		Class c = e.getClass();
 		if (c == MessageEvent.class) {
 			fireEvent((MessageEvent) e);
@@ -42,10 +46,14 @@ public class FMUeventDispatacher {
 	}
 
 	public void fireEvent(MessageEvent e) {
+		
+		
 		for(Iterator<FMUeventListener> i = copyListeners(); i.hasNext();) {
 			FMUeventListener l = (FMUeventListener) i.next();
 			l.onMessageEvent(e);
 		} 
+		
+
 	}
 
 	public void fireEvent(ResultEvent e) {
@@ -53,6 +61,7 @@ public class FMUeventDispatacher {
 			FMUeventListener l = (FMUeventListener) i.next();
 			l.onResultEvent(e);
 		} 
+
 	}
 
 	public void fireEvent(FMUstateEvent e) {
@@ -60,6 +69,7 @@ public class FMUeventDispatacher {
 			FMUeventListener l = (FMUeventListener) i.next();
 			l.onFMUstateEvent(e);
 		} 
+		
 	}
 
 
@@ -68,7 +78,7 @@ public class FMUeventDispatacher {
 			FMUeventListener l = (FMUeventListener) i.next();
 			l.onInitializedEvent(e);
 		} 
-
+		
 	}
 
 	private synchronized Iterator<FMUeventListener> copyListeners() {

@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>com.sri</groupId>
 			<artifactId>FMUwrapper</artifactId>
-			<version>0.0.2</version>
+			<version>0.0.3</version>
 		</dependency>
 
 		<dependency>
@@ -52,11 +52,6 @@
 			<version>11.0.2</version>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.bushe</groupId>
-			<artifactId>eventbus</artifactId>
-			<version>1.4</version>
-		</dependency>
 		            
 		<dependency>
 			<groupId>org.apache.directory.studio</groupId>

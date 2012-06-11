@@ -5,8 +5,8 @@ import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.action.InitAction;
-import com.sri.straylight.client.event.action.MenuEvent_About_Help;
 import com.sri.straylight.client.event.action.RunSimulationAction;
+import com.sri.straylight.client.event.menu.About_Help;
 import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.client.model.Config;
 import com.sri.straylight.client.model.FmuConnectLocal;
@@ -22,15 +22,16 @@ import com.sri.straylight.fmuWrapper.voNative.State;
 
 
 
-public class SimulationController extends AbstractController implements FMUeventListener {
+public class SimulationController extends AbstractController  {
 
 	private IFmuConnect fmuConnect_;
 	
-    private Config configModel = new Config();
+    private Config configModel_;
     
     
-	public SimulationController (AbstractController parentController) {
+	public SimulationController (AbstractController parentController, Config configModel) {
         super(parentController);
+        configModel_ = configModel;
 	}
 	
 
@@ -45,7 +46,7 @@ public class SimulationController extends AbstractController implements FMUevent
 	@EventSubscriber(eventClass=InitAction.class)
     public void onInitAction(InitAction event) {
     	
-    	switch (configModel.connectTo) {
+    	switch (configModel_.connectTo) {
     	
 		case connecTo_localhost :
 			fmuConnect_ = new FmuConnectRemote("localhost");
@@ -59,7 +60,7 @@ public class SimulationController extends AbstractController implements FMUevent
     	}
 
 	
-    	fmuConnect_.init(this);
+    	fmuConnect_.init();
     }
     
 	@EventSubscriber(eventClass=RunSimulationAction.class)
@@ -68,24 +69,7 @@ public class SimulationController extends AbstractController implements FMUevent
 	}
 	
 	
-    
-	public void onResultEvent(ResultEvent event) {
-		EventBus.publish(event);
-	}
-	
-    public void onMessageEvent(MessageEvent event) {
-    	EventBus.publish(event);
-    }
-    
-    public void onFMUstateEvent(FMUstateEvent event) {
-    	EventBus.publish(event);
-    }
 
-    
-    
-    public void onInitializedEvent(InitializedEvent event) {
-    	EventBus.publish(event);
-    }
     
 }
     

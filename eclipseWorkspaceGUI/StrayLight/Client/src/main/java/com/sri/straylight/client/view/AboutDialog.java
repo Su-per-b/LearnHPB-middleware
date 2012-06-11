@@ -20,7 +20,6 @@ public class AboutDialog extends JDialog {
 	
 	public AboutDialog(JFrame parent, Config configModel) {
 		
-		
 		super(parent, "AboutDialog", true);
 
 		configModel_ = configModel;
@@ -39,10 +38,7 @@ public class AboutDialog extends JDialog {
 		JPanel serverSelectionPanel = new JPanel();
     	serverSelectionPanel.setSize(600, 150);
     	
-
-	    
 	    setContentPane(serverSelectionPanel);
-	    
 	}
 	
 	
