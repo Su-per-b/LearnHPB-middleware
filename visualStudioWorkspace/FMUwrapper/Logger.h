@@ -6,6 +6,7 @@
 #include "structs.h"
 #include "enums.h"
 
+
 namespace Straylight
 {
 

@@ -286,6 +286,31 @@ double getNominal(ModelDescription* md, fmiValueReference vr){
     return vs==valueDefined ? nominal : 1.0;
 }
 
+double getRealStart(ScalarVariable* scalarVariable, ValueStatus * valueStatus){
+   
+	double valueDouble = getRealAttribute(scalarVariable, valueStatus,att_start);
+
+	return valueDouble;
+}
+
+
+double getRealAttribute(ScalarVariable* scalarVariable, ValueStatus * valueStatus, Att attribute){
+   
+	double valueDouble = 0;
+
+	const char* valueChar =  getString(scalarVariable->typeSpec, attribute);
+
+	if (!valueChar) { 
+		*valueStatus = valueMissing;  
+	} else {
+		*valueStatus = (1==sscanf(valueChar, "%lf", &valueDouble)) ? valueDefined : valueIllegal;
+	}
+
+
+	return valueDouble;
+}
+
+
 // ------------------------------------------------------------------------- 
 // Various checks that log an error and stop the parser 
 

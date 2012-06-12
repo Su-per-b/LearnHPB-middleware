@@ -65,18 +65,7 @@ public class TopMenuController  extends AbstractController  {
 		menu.add(item1);
 		
 		
-		
-		JMenuItem item2 = new JMenuItem("FMU Config...");
-		
-		item2.addActionListener(
-	    		new ActionListener() {
-	    		      public void actionPerformed(ActionEvent actionEvent) {
-	    		    	  EventBus.publish(new Options_FMUconfig());
-	    		      }
-	    		    }
-				);
-		
-		menu.add(item2);
+
 		menuBar_.add(menu);
 	
 	

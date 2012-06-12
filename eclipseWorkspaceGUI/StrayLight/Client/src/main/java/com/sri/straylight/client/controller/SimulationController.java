@@ -5,7 +5,9 @@ import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.action.InitAction;
+import com.sri.straylight.client.event.action.LoadAction;
 import com.sri.straylight.client.event.action.RunSimulationAction;
+import com.sri.straylight.client.event.action.MetaDataChangeAction;
 import com.sri.straylight.client.event.menu.About_Help;
 import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.client.model.Config;
@@ -35,16 +37,10 @@ public class SimulationController extends AbstractController  {
 	}
 	
 
-    public void init() {
-    	
-    	
 
 
-    }
-    
-	
-	@EventSubscriber(eventClass=InitAction.class)
-    public void onInitAction(InitAction event) {
+	@EventSubscriber(eventClass=LoadAction.class)
+    public void onInitAction(LoadAction event) {
     	
     	switch (configModel_.connectTo) {
     	
@@ -60,14 +56,26 @@ public class SimulationController extends AbstractController  {
     	}
 
 	
+    	fmuConnect_.load();
+    }
+	
+    
+	@EventSubscriber(eventClass=InitAction.class)
+    public void onInitAction(InitAction event) {
     	fmuConnect_.init();
     }
+	
     
+	@EventSubscriber(eventClass=MetaDataChangeAction.class)
+    public void onRunSimulationAction(MetaDataChangeAction event) {
+		fmuConnect_.setMetaData(event.payload);
+	}
+	
+	
 	@EventSubscriber(eventClass=RunSimulationAction.class)
     public void onRunSimulationAction(RunSimulationAction event) {
 		fmuConnect_.run();
 	}
-	
 	
 
     

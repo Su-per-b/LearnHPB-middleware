@@ -91,7 +91,7 @@
     <ClInclude Include="FMUlogger.h" />
     <ClInclude Include="include\qtronic\fmi_cs.h" />
     <ClInclude Include="JNAfunctions.h" />
-    <ClInclude Include="FMUwrapper.h" />
+    <ClInclude Include="MainController.h" />
     <ClInclude Include="include\qtronic\fmiFunctions.h" />
     <ClInclude Include="include\qtronic\fmiModelFunctions.h" />
     <ClInclude Include="include\qtronic\fmiModelTypes.h" />
@@ -101,6 +101,7 @@
     <ClInclude Include="ResultItem.h" />
     <ClInclude Include="ResultPrimitive.h" />
     <ClInclude Include="include\qtronic\xml_parser.h" />
+    <ClInclude Include="ScalarVariableWrapper.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="structs.h" />
   </ItemGroup>
@@ -115,12 +116,13 @@
     </ClCompile>
     <ClCompile Include="FMUlogger.cpp" />
     <ClCompile Include="JNAfunctions.cpp" />
-    <ClCompile Include="FMUwrapper.cpp" />
+    <ClCompile Include="MainController.cpp" />
     <ClCompile Include="include\qtronic\stack.c" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="ResultItem.cpp" />
     <ClCompile Include="ResultPrimitive.cpp" />
     <ClCompile Include="include\qtronic\xml_parser.c" />
+    <ClCompile Include="ScalarVariableWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\expat-2.0.1\lib\expat.vcxproj">

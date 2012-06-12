@@ -1,6 +1,5 @@
-// FMUwrapper.cpp : Defines the exported functions for the DLL application.
+// MainController.cpp : Defines the exported functions for the DLL application.
 //
-#include "stdafx.h"
 #include "FMUlogger.h"
 
 

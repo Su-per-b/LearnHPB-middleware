@@ -26,7 +26,11 @@ public class MainView extends JFrame {
     
     
 	private void init() {
-    	
+		
+		setTitle ("Straylight Simulation Client");
+		
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
     	setPreferredSize(new Dimension(704, 800));
         setLayout(new BorderLayout(0, 0));
         

@@ -43,32 +43,6 @@ extends TestCase
 		final CyclicBarrier finishBarrier = new CyclicBarrier(2);  // +1 for the main thread
 
 
-		fmu.fmuEventDispatacher.addListener(
-				new FMUeventListener() {
-
-					@Override
-					public void onResultEvent(ResultEvent event) {
-					}
-
-					@Override
-					public void onMessageEvent(MessageEvent event) {
-						System.out.print(event.messageStruct.msgText);
-					}
-
-					@Override
-					public void onInitializedEvent(InitializedEvent event) {
-						awaitOnBarrier(finishBarrier, 60);
-					}
-
-					@Override
-					public void onFMUstateEvent(FMUstateEvent event) {
-						// TODO Auto-generated method stub
-
-					}
-				}
-
-			);
-		
 
 
 		InitThread task = new InitThread(fmu);
@@ -98,9 +72,9 @@ extends TestCase
 		public void run()
 		{
 			Thread.currentThread().setName("Task FMU init");
-			fmu_.init_1();
-			fmu_.init_2(unzipFolder);
-			fmu_.init_3(); 
+			fmu_.initCallbacks();
+			fmu_.initXML(unzipFolder);
+			fmu_.initSimulation(); 
 		}
 
 

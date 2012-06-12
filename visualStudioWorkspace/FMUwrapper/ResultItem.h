@@ -11,6 +11,8 @@ extern "C"
 #include "fmi_cs.h"
 }
 
+using namespace std;
+
 namespace Straylight
 {
 	class  ResultItem
@@ -22,7 +24,7 @@ namespace Straylight
 
 
 	public:
-		std::vector<ResultPrimitive *> resultPrimitiveList;
+		vector<ResultPrimitive *> resultPrimitiveList;
 		double time_;
 
 

@@ -15,6 +15,6 @@
 #include <iostream>
 #include <direct.h>
 #include "gtest/gtest.h"
-#include <FMUwrapper.h>
+#include <MainController.h>
 
 // TODO: reference additional headers your program requires here

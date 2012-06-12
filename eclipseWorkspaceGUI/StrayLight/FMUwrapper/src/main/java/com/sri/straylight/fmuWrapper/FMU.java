@@ -14,11 +14,13 @@ import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.voManaged.Result;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValue;
 import com.sri.straylight.fmuWrapper.voNative.Enu;
 import com.sri.straylight.fmuWrapper.voNative.EnumTypeMapper;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
+import com.sri.straylight.fmuWrapper.voNative.MetaDataStruct;
 import com.sri.straylight.fmuWrapper.voNative.ResultStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableStruct;
 import com.sri.straylight.fmuWrapper.voNative.State;
@@ -36,6 +38,10 @@ public class FMU  {
 	private int variableCount_;
 	private JNAfmuWrapper jnaFMUWrapper_;
 
+	
+	private MetaDataStruct metaDataStruct_;
+	
+	
 	private ArrayList<ScalarVariableStruct> scalarVariableInputList_;
 	public ArrayList<ScalarVariableStruct> getScalarVariableInputList() {
 		return scalarVariableInputList_;
@@ -66,6 +72,24 @@ public class FMU  {
 
 
 
+	
+	public FMU(String fmuFilePath, String nativeLibFolder) {
+
+		nativeLibFolder_ = nativeLibFolder;
+		fmuFilePath_ = fmuFilePath;
+		fmuEventDispatacher = new FMUeventDispatacher();
+
+		loadLibrary();
+
+		//initialize lists
+		scalarVariableInputList_ =  new ArrayList<ScalarVariableStruct>();
+		scalarVariableOutputList_ =  new ArrayList<ScalarVariableStruct>();
+		scalarVariableInternalList_=  new ArrayList<ScalarVariableStruct>();
+		scalarVariableAllList_ = new HashMap<Integer, ScalarVariableStruct>();
+		
+
+	}
+	
 	private JNAfmuWrapper.MessageCallbackInterface messageCallbackFunc_ = 
 			new JNAfmuWrapper.MessageCallbackInterface() {
 
@@ -121,8 +145,13 @@ public class FMU  {
 		event.fmuState = fmuState;
 		fmuEventDispatacher.fireEvent(event);
 
+		if (fmuState == State.fmuState_level_1_xmlParsed) {
+			
 
+		}
+		
 		if (fmuState == State.fmuState_level_5_initializedFMU) {
+			
 			InitializedEvent event2  = InitializedEvent.factoryMake(this); 
 			fmuEventDispatacher.fireEvent(event2);
 		}
@@ -134,7 +163,12 @@ public class FMU  {
 
 
 
+	public MetaDataStruct getMetaData() {
 
+		return metaDataStruct_;
+	}
+	
+	
 	public int getVariableCount()
 	{
 		return variableCount_;
@@ -172,44 +206,31 @@ public class FMU  {
 
 
 
-	public FMU(String fmuFilePath, String nativeLibFolder) {
-		super();
 
-		nativeLibFolder_ = nativeLibFolder;
-		fmuFilePath_ = fmuFilePath;
-		fmuEventDispatacher = new FMUeventDispatacher();
+	public void initCallbacks() {
 
-		loadLibrary();
-
-		//initialize lists
-		scalarVariableInputList_ =  new ArrayList<ScalarVariableStruct>();
-		scalarVariableOutputList_ =  new ArrayList<ScalarVariableStruct>();
-		scalarVariableInternalList_=  new ArrayList<ScalarVariableStruct>();
-		scalarVariableAllList_ = new HashMap<Integer, ScalarVariableStruct>();
-
-	}
-
-	public void init_1() {
-
-		jnaFMUWrapper_.init_1(
+		jnaFMUWrapper_.initCallbacks(
 				messageCallbackFunc_, 
 				resultCallbackFunc_,
 				stateChangeCallbackFunc_
 				);
+		
 	}
 
-	public void init_2(String unzippedFolder) {
-		jnaFMUWrapper_.init_2(unzippedFolder);
+	public void initXML(String unzippedFolder) {
+		jnaFMUWrapper_.initXML(unzippedFolder);
 
 		variableCount_ = jnaFMUWrapper_.getVariableCount();  
 
-		ScalarVariableStruct svMetaArchtype = jnaFMUWrapper_.getSVmetaData();
-		svMetaArray_ = (ScalarVariableStruct[]) svMetaArchtype.toArray(variableCount_);
+		ScalarVariableStruct scalarVariableStruct = jnaFMUWrapper_.getScalarVariableStructs();
+		svMetaArray_ = (ScalarVariableStruct[]) scalarVariableStruct.toArray(variableCount_);
 
 
 		for (int i = 0; i < variableCount_; i++) {
 
 			ScalarVariableStruct svm = svMetaArray_[i];
+
+			
 			Enu causality = svm.getCausalityEnum();
 			scalarVariableAllList_.put(new Integer(svm.idx), svm);
 
@@ -226,10 +247,21 @@ public class FMU  {
 			}
 
 		}
+		
+		
+		metaDataStruct_ = jnaFMUWrapper_.getMetaData();
+		 
+		
+		XMLparsedEvent event3 = XMLparsedEvent.factoryMake(this); 
+		//XMLparsedEvent event3  = new XMLparsedEvent(this);
+		event3.metaDataStruct = metaDataStruct_;
+		fmuEventDispatacher.fireEvent(event3);
+		
+		
 	}
 
-	public void init_3() {
-		jnaFMUWrapper_.init_3();
+	public void initSimulation() {
+		jnaFMUWrapper_.initSimulation();
 	}
 
 
@@ -289,6 +321,15 @@ public class FMU  {
 
 		}
 
+	}
+
+
+
+	public void setMetaData(MetaDataStruct metaDataStruct) {
+
+		metaDataStruct_ = metaDataStruct;
+		jnaFMUWrapper_.setMetaData(metaDataStruct_);
+		
 	}
 
 

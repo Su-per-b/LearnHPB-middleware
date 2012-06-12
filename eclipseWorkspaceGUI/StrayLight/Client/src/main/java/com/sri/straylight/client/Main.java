@@ -19,9 +19,6 @@ public class Main {
             	
             	
             	DOMConfigurator.configure("log4j.xml");
-            	
-            	//MainController.getInstance().init();
-            	
             	applicationController = new MainController();
             	
             	

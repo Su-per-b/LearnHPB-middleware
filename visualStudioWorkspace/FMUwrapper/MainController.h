@@ -9,13 +9,13 @@
 #include "structs.h"
 #include "enums.h"
 
-
+using namespace std;
 
 namespace Straylight
 {
 
 
-	class FMUwrapper
+	class MainController
 	{
 
 	//private member variables
@@ -23,33 +23,33 @@ namespace Straylight
 		char* unzipFolderPath_;
 		char* xmlFilePath_;
 		char* dllFilePath_;
-		double timeEnd_;
 		FMU fmu_; // the fmu to simulate
 		FMU* fmuPointer_;
 		double time_;
 		fmiStatus fmiStatus_;				// Zuo: add stauus for fmi
 		int nSteps_;
-		fmiReal t0;                  // start time
 		fmiComponent fmiComponent_;                  // instance of the fmu 
 		fmiBoolean loggingOn_;
-		double timeDelta_;
 
 		FMUlogger fmuLogger_;
 		void (*stateChangeCallbackPtr_)(State );
 		State state_;
-		std::list<ScalarVariableStruct> metaDataList_;
-		std::list<ScalarVariableStruct> metaDataListOuput_;
+
+		vector<ScalarVariableStruct*> scalarVariableStructsList_;
+		vector<ScalarVariableStruct*> scalarVariableStructsListOutput_;
+
 		ResultItem* resultItem_;
 		int variableCount_;
+		MetaDataStruct * metaDataStruct_;
 
 	// public functions
 	public:
-		FMUwrapper(
+		MainController(
 			void (*messageCallbackPtr)(MessageStruct *), 
 			void (*stateChangeCallbackPtr)(State )
 			);
 
-		~FMUwrapper(void);
+		~MainController(void);
 
 		void doOneStep();
 
@@ -69,10 +69,21 @@ namespace Straylight
 		void setState(State newState);
 		State getState();
 
-		std::list<ScalarVariableStruct> getMetaDataList();
-		std::list<ScalarVariableStruct> getMetaDataListOuput();
+		void setTimeStepDelta(double timeStepDelta);
+		void setTimeEnd(double timeEnd);
+
+		MetaDataStruct * getMetaData();
+
+		vector<ScalarVariableStruct*> getScalarVariableStructs();
 		Logger* logger_;
 
+		void setMetaData(MetaDataStruct * metaDataStruct);
+
+		double getStopTime();
+		double getStartTime();
+		double getStepDelta();
+
+		
 
 	//private functions
 	private:
@@ -81,6 +92,7 @@ namespace Straylight
 		char* getXmlFilePath();
 		void* getAdr(const char*);
 		int extractVariables();
+		void extractMetaData();
 
 	};
 

@@ -17,5 +17,7 @@ public interface FMUeventListener extends EventListener
 	public void onFMUstateEvent(FMUstateEvent event);
 	
 	public void onInitializedEvent(InitializedEvent event);
+
+	public void onXMLparsedEvent(XMLparsedEvent XMLparsedEvent);
 	
 }

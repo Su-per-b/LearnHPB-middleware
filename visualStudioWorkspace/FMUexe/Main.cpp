@@ -49,9 +49,12 @@ void test5() {
 	//registerResultCallback(&resultCallback);
 	//registerMessageCallback(&messageCallback);
 
-	init_1(&messageCallback, &resultCallback, &fmuStateCallback);
-	init_2(_T("C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop"));
-	init_3();
+	initCallbacks(&messageCallback, &resultCallback, &fmuStateCallback);
+	initXML(_T("C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop"));
+	initSimulation();
+	//ScalarVariableStruct * s = getScalarVariableStructs();
+
+	ScalarVariableStruct *ptr2= getScalarVariableStructs();
 
 	run();
 	end();

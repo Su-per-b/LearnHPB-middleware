@@ -5,6 +5,7 @@ package com.sri.straylight.fmuWrapper;
 
 
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
+import com.sri.straylight.fmuWrapper.voNative.MetaDataStruct;
 import com.sri.straylight.fmuWrapper.voNative.ResultStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableStruct;
 import com.sri.straylight.fmuWrapper.voNative.State;
@@ -16,34 +17,40 @@ import com.sun.jna.Library;
 public interface JNAfmuWrapper extends Library {
 	
 	
-	int doOneStep();
+	public int doOneStep();
 	
-	void end();
+	public void end();
 	
-	ResultStruct getResultStruct();
+	public ResultStruct getResultStruct();
 	
-	int getVariableCount();
+	public int getVariableCount();
 	
-	int forceCleanup();
+	public int forceCleanup();
 	
-	ScalarVariableStruct getSVmetaData();
+	public ScalarVariableStruct getScalarVariableStructs();
+
 	
-	void init(String unzipFolder);
+	public void init(String unzipFolder);
 	
 	
-	void init_1(
+	public void initCallbacks(
 			MessageCallbackInterface messageCallback,
 			ResultCallbackInterface resultCallback,
 			StateChangeCallbackInterface stateChangeCallback
 			);
 	
-	void init_2(String unzipFolder);
+	public void initXML(String unzipFolder);
 	
-	void init_3();
+	public void initSimulation();
 	
-	int isSimulationComplete();
+	public int isSimulationComplete();
 	
 	public int run(); 
+	
+	public void setMetaData(MetaDataStruct metaDataStruct);
+	
+	public MetaDataStruct getMetaData();
+	
 	
 	public interface MessageCallbackInterface extends Callback {
 		public boolean messageCallback(MessageStruct messageStruct);
@@ -57,7 +64,9 @@ public interface JNAfmuWrapper extends Library {
 		public boolean stateChangeCallback(State fmuState);
 	 }
 
-	void deleteMessageStruct(MessageStruct messageStruct);
+	public void deleteMessageStruct(MessageStruct messageStruct);
+
+
 }
 
 

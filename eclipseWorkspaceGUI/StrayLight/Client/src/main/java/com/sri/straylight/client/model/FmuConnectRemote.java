@@ -7,6 +7,7 @@ import java.net.URISyntaxException;
 import org.bushe.swing.event.EventBus;
 
 import com.google.gson.Gson;
+
 import com.sri.straylight.fmuWrapper.event.FMUeventDispatacher;
 import com.sri.straylight.fmuWrapper.event.FMUeventListener;
 import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
@@ -16,6 +17,7 @@ import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.serialization.GsonController;
 import com.sri.straylight.fmuWrapper.serialization.SerializeableObject;
 import com.sri.straylight.fmuWrapper.voNative.MessageType;
+import com.sri.straylight.fmuWrapper.voNative.MetaDataStruct;
 
 import de.roderick.weberknecht.WebSocket;
 import de.roderick.weberknecht.WebSocketConnection;
@@ -39,8 +41,17 @@ public class FmuConnectRemote implements IFmuConnect {
     	urlString_ = "ws://" + hostName + ":8081/";	
     }
     
+	public void setMetaData(MetaDataStruct metaDataStruct) {
+		//fmu_.setMetaData(metaDataStruct);
+	}
+	
 
-    public void init() {
+	
+	public void init() {
+
+	}
+	
+    public void load() {
 
     	
 		try {

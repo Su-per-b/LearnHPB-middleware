@@ -9,8 +9,10 @@ public class ScalarVariableStruct extends Structure {
 	public String name;
 	public int idx;
 	public int causality;
-	public int type;
 	public String description;
+	public int type;
+	public Element2.ByReference element;
+	//public ScalarValueStruct.ByReference scalarValueStruct;
 	
 	public Enu getCausalityEnum() {
 
@@ -25,7 +27,7 @@ public class ScalarVariableStruct extends Structure {
 		Elm p = Elm.elm_Annotation;
 		Elm theEnum  = p.getForValue (type);
 		
-		return theEnum;
+		return Elm.elm_Annotation;
 	}
 	
 }

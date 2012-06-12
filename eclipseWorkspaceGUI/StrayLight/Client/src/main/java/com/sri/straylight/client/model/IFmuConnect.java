@@ -1,16 +1,20 @@
 package com.sri.straylight.client.model;
 
 
-import com.sri.straylight.fmuWrapper.event.FMUeventListener;
+
+import com.sri.straylight.fmuWrapper.voNative.MetaDataStruct;
 
 public interface IFmuConnect {
 
 
-	public void init(FMUeventListener l);
 
+	public void load();
+	
 	public void init();
 	
 	public void run();
+
+	public void setMetaData(MetaDataStruct metaDataStruct);
 	
 	
 }

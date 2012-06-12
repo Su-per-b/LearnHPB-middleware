@@ -167,6 +167,8 @@ const char * getDescription(ModelDescription* md, ScalarVariable* sv);
 const char * getVariableAttributeString(ModelDescription* md, fmiValueReference vr, Elm type, Att a);
 double getVariableAttributeDouble(ModelDescription* md, fmiValueReference vr, Elm type, Att a, ValueStatus* vs);
 double getNominal(ModelDescription* md, fmiValueReference vr);
+double getRealStart(ScalarVariable* scalarVariable, ValueStatus* valueStatus);
+double getRealAttribute(ScalarVariable* scalarVariable, ValueStatus * valueStatus, Att attribute);
 
 #endif // xml_parser_h
 

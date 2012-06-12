@@ -29,7 +29,8 @@ public class FMUeventDispatacher {
 
 	public void fireEvent(EventObject e) {
 			
-		EventBus.publish(e);
+		//EventBus.publish(e);
+
 		
 		Class c = e.getClass();
 		if (c == MessageEvent.class) {
@@ -81,6 +82,16 @@ public class FMUeventDispatacher {
 		
 	}
 
+	public void fireEvent(XMLparsedEvent e) {
+		for(Iterator<FMUeventListener> i = copyListeners(); i.hasNext();) {
+			FMUeventListener l = (FMUeventListener) i.next();
+			l.onXMLparsedEvent(e);
+		} 
+		
+	}
+
+	
+	
 	private synchronized Iterator<FMUeventListener> copyListeners() {
 		return new ArrayList<FMUeventListener>(listeners).iterator();
 	}

@@ -17,6 +17,8 @@ import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
+import com.sri.straylight.fmuWrapper.voNative.MetaDataStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableStruct;
 
 
@@ -29,29 +31,25 @@ public class FmuConnectLocal implements  IFmuConnect {
 
 
 	private FMUeventDispatacher fmuEventDispatacher_;
+	private TaskLoad taskLoad;
 	private TaskInit taskInit;
 
 	public FmuConnectLocal() {
 
 	}
 
-	public void init(FMUeventListener l) {
-
-		fmuEventDispatacher_ = new FMUeventDispatacher();
-		fmuEventDispatacher_.addListener(l);
-
-		taskInit = new TaskInit();
-
-		taskInit.execute();
+	
+	public void load() {
+		taskLoad = new TaskLoad();
+		taskLoad.execute();
 	}
 	
 	public void init() {
-
-
 		taskInit = new TaskInit();
-
 		taskInit.execute();
 	}
+	
+
 	
 	public void run() {
 		TaskRun taskRun = new TaskRun();
@@ -59,7 +57,9 @@ public class FmuConnectLocal implements  IFmuConnect {
 	}
 
 
-
+	public void setMetaData(MetaDataStruct metaDataStruct) {
+		fmu_.setMetaData(metaDataStruct);
+	}
 
 
 
@@ -83,6 +83,82 @@ public class FmuConnectLocal implements  IFmuConnect {
 
 	}
 
+	private class TaskLoad extends SwingWorker<Void, EventObject> implements FMUeventListener 
+	{
+
+
+		
+		public void onResultEvent(ResultEvent event) {
+			publish(event);
+			//System.out.printf("TaskInit.onMessageEvent Thread:%s \n", Thread.currentThread().getName());
+		}
+
+		public void onMessageEvent(MessageEvent event) {
+			publish(event);
+			//System.out.printf("TaskInit.onMessageEvent Thread:%s \n", Thread.currentThread().getName());
+		}
+
+		public void onFMUstateEvent(FMUstateEvent event) {
+			publish(event);
+			System.out.printf("TaskInit.onMessageEvent Thread:%s \n", Thread.currentThread().getName());
+		}
+
+		public void onInitializedEvent(InitializedEvent event) {
+			publish(event);
+			//System.out.printf("TaskInit.onMessageEvent Thread:%s \n", Thread.currentThread().getName());
+		}
+		public void onXMLparsedEvent(XMLparsedEvent event) {
+			publish(event);
+			//System.out.printf("TaskInit.onMessageEvent Thread:%s \n", Thread.currentThread().getName());
+		}
+		
+
+		@Override
+		protected void process(List<EventObject> eventList) {
+			//System.out.printf("FmuConnectLocal.onMessageEvent Thread:%s \n", Thread.currentThread().getName());
+
+			for (Iterator<EventObject> iterator = eventList.iterator(); iterator
+					.hasNext();) {
+				
+				EventObject event = (EventObject) iterator.next();
+				
+				
+				EventBus.publish(event);
+
+			}
+		}
+
+		
+		@Override
+		protected void done() {
+		  try {
+		    super.get();
+
+		    System.out.println("done");
+		    //can call other gui update code here
+		  } catch (Throwable t) {
+		    //do something with the exception
+		  }
+		}
+
+		
+		@Override
+		public Void doInBackground()
+		{
+			fmu_ = new FMU(testFmuFile, nativeLibFolder);
+			fmu_.fmuEventDispatacher.addListener(this);
+
+			fmu_.initCallbacks();
+			fmu_.initXML(unzipFolder);
+			
+			//fmu_.fmuEventDispatacher.removeListener(this);
+
+			return null;
+
+		}
+	}
+
+	
 	private class TaskInit extends SwingWorker<Void, EventObject> implements FMUeventListener 
 	{
 
@@ -107,7 +183,10 @@ public class FmuConnectLocal implements  IFmuConnect {
 			publish(event);
 			//System.out.printf("TaskInit.onMessageEvent Thread:%s \n", Thread.currentThread().getName());
 		}
-		
+		public void onXMLparsedEvent(XMLparsedEvent event) {
+			publish(event);
+			//System.out.printf("TaskInit.onMessageEvent Thread:%s \n", Thread.currentThread().getName());
+		}
 
 
 		@Override
@@ -116,17 +195,12 @@ public class FmuConnectLocal implements  IFmuConnect {
 
 			for (Iterator<EventObject> iterator = eventList.iterator(); iterator
 					.hasNext();) {
+				
 				EventObject event = (EventObject) iterator.next();
 				
 				
-				if (fmuEventDispatacher_ == null) {
-					EventBus.publish(event);
-				} else {
-					fmuEventDispatacher_.fireEvent(event);
-				}
-				
-				
-				
+				EventBus.publish(event);
+
 			}
 		}
 
@@ -134,23 +208,61 @@ public class FmuConnectLocal implements  IFmuConnect {
 		@Override
 		public Void doInBackground()
 		{
-			fmu_ = new FMU(testFmuFile, nativeLibFolder);
-			fmu_.fmuEventDispatacher.addListener(this);
-
-			fmu_.init_1();
-			fmu_.init_2(unzipFolder);
-			fmu_.init_3();
-
+			//fmu_.fmuEventDispatacher.addListener(this);
+			fmu_.initSimulation();
+			//fmu_.fmuEventDispatacher.removeListener(this);
 			return null;
 
 		}
 	}
 
-	private class TaskRun extends SwingWorker<Void, Void>
+	
+	private class TaskRun extends SwingWorker<Void, EventObject> implements FMUeventListener 
 	{
+		
+		public void onResultEvent(ResultEvent event) {
+			publish(event);
+			//System.out.printf("TaskInit.onMessageEvent Thread:%s \n", Thread.currentThread().getName());
+		}
+
+		public void onMessageEvent(MessageEvent event) {
+			publish(event);
+			//System.out.printf("TaskInit.onMessageEvent Thread:%s \n", Thread.currentThread().getName());
+		}
+
+		public void onFMUstateEvent(FMUstateEvent event) {
+			publish(event);
+			System.out.printf("TaskInit.onMessageEvent Thread:%s \n", Thread.currentThread().getName());
+		}
+
+		public void onInitializedEvent(InitializedEvent event) {
+			publish(event);
+			//System.out.printf("TaskInit.onMessageEvent Thread:%s \n", Thread.currentThread().getName());
+		}
+		public void onXMLparsedEvent(XMLparsedEvent event) {
+			publish(event);
+			//System.out.printf("TaskInit.onMessageEvent Thread:%s \n", Thread.currentThread().getName());
+		}
+		
+		@Override
+		protected void process(List<EventObject> eventList) {
+			//System.out.printf("FmuConnectLocal.onMessageEvent Thread:%s \n", Thread.currentThread().getName());
+
+			for (Iterator<EventObject> iterator = eventList.iterator(); iterator
+					.hasNext();) {
+				
+				EventObject event = (EventObject) iterator.next();
+				EventBus.publish(event);
+
+			}
+		}
+		
 		public Void doInBackground()
 		{
+			//fmu_.fmuEventDispatacher.addListener(this);
 			fmu_.run();
+			//fmu_.fmuEventDispatacher.removeListener(this);
+			
 			return null;
 
 		}

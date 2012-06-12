@@ -64,14 +64,14 @@ void init(_TCHAR * fmuSubPath) {
 */
 
 
-
+using namespace std;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
 
     testing::InitGoogleTest(&argc, argv); 
     RUN_ALL_TESTS(); 
-    std::getchar(); // keep console window open until Return keystroke
+    getchar(); // keep console window open until Return keystroke
 
 	return 0;
 }

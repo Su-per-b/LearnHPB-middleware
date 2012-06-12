@@ -7,7 +7,7 @@ import java.util.Iterator;
 
 
 import com.sri.straylight.fmuWrapper.FMU;
-import com.sri.straylight.fmuWrapper.voManaged.InitializedInfo;
+import com.sri.straylight.fmuWrapper.voManaged.Initialized;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableStruct;
 
 
@@ -19,7 +19,9 @@ public class InitializedEvent extends EventObject {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public InitializedInfo initializedStruct;
+	public Initialized initializedStruct;
+	
+	
 	
     //here's the constructor
     public InitializedEvent(Object source) {
@@ -31,6 +33,8 @@ public class InitializedEvent extends EventObject {
     	ArrayList<String> strList = new ArrayList<String>();
     	
     	ArrayList<ScalarVariableStruct> svnList = fmu.getScalarVariableOutputList();
+    	int size = svnList.size();
+    	
         Iterator<ScalarVariableStruct> itr = svnList.iterator();
         
         strList.add("time");
@@ -40,8 +44,8 @@ public class InitializedEvent extends EventObject {
         	strList.add(svm.name);
         }
         
-        InitializedInfo struct = new InitializedInfo();
-        struct.columnNames = strList.toArray(new String[strList.size()]);
+        Initialized struct = new Initialized();
+        struct.outputVarNames = strList.toArray(new String[strList.size()]);
         
         
         ArrayList<ScalarVariableStruct> listInputVars = fmu.getScalarVariableInputList();

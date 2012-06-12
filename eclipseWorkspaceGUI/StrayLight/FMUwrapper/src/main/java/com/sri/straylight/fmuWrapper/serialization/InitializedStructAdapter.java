@@ -12,16 +12,16 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.sri.straylight.fmuWrapper.voManaged.InitializedInfo;
+import com.sri.straylight.fmuWrapper.voManaged.Initialized;
 
 
 
 public class InitializedStructAdapter implements 
-JsonSerializer<InitializedInfo>, JsonDeserializer<InitializedInfo> {
+JsonSerializer<Initialized>, JsonDeserializer<Initialized> {
 
 	@Override
     public JsonElement serialize(
-    		InitializedInfo src, 
+    		Initialized src, 
     		Type typeOfSrc, 
     		JsonSerializationContext context) {
         
@@ -30,9 +30,9 @@ JsonSerializer<InitializedInfo>, JsonDeserializer<InitializedInfo> {
 
         JsonArray jsAry = new JsonArray();
 
-        for (int j = 0; j < src.columnNames.length; j++) {
+        for (int j = 0; j < src.outputVarNames.length; j++) {
         		
-        	String columnName = src.columnNames[j];
+        	String columnName = src.outputVarNames[j];
         	
         	JsonElement elem = new JsonPrimitive(columnName);
         	jsAry.add(elem);
@@ -48,14 +48,14 @@ JsonSerializer<InitializedInfo>, JsonDeserializer<InitializedInfo> {
     
     
     @Override
-    public InitializedInfo deserialize(
+    public Initialized deserialize(
     		JsonElement jsonElement, 
     		Type typeOfT, 
     		JsonDeserializationContext context)
     
         throws JsonParseException {
     	
-    	InitializedInfo struct = new InitializedInfo();
+    	Initialized struct = new Initialized();
     	
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         
@@ -70,7 +70,7 @@ JsonSerializer<InitializedInfo>, JsonDeserializer<InitializedInfo> {
         }
         
         
-        struct.columnNames = columnNames;
+        struct.outputVarNames = columnNames;
         
         	
         return struct;

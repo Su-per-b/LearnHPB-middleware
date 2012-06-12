@@ -4,57 +4,44 @@ package com.sri.straylight.client.controller;
 
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 
-import javax.swing.*;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
+import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
 
-import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
-
-
 
 import com.sri.straylight.client.event.menu.About_Help;
 import com.sri.straylight.client.event.menu.Options_SelectSimulationEngine;
-import com.sri.straylight.client.framework.*;
+import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.client.model.Config;
 import com.sri.straylight.client.model.MainModel;
-import com.sri.straylight.client.view.AboutDialog;
 import com.sri.straylight.client.view.MainView;
 import com.sri.straylight.client.view.SimulationEngineDialog;
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
+import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 
 public class MainController extends AbstractController {
-
-	// View
-
-	//private JFrame view2;
-	//   private JFrame view_jFrame_;
+	
 	private MainModel model_;
-
 	private TopPanelController topPanelController_;
 	private SimulationController simulationController_;
 	private DebugConsoleController debugConsoleController_;
 	private InputTableController inputTableController_;
+	private InputTableController inputTableController2_;
+	
+	
 	private ResultsTableController resultsTableController_;
 	private InternalTableController internalTableController_;
 	private TopMenuController topMenuController_;
-
-
-	private JTabbedPane tabbedPane_;
-
-
-	private int numbeOfTabs = 0;
-    private Config configModel_ = new Config();
+	private MetaDataController metaDataController_;
 	
+	
+	private JTabbedPane tabbedPane_;
+    private Config configModel_ = new Config();
 	private MainView mainView_;
 	
 	public MainController() {
 		super( null);
-
 
 		mainView_ = new MainView(configModel_);
 
@@ -62,10 +49,14 @@ public class MainController extends AbstractController {
 		simulationController_ = new SimulationController(this, configModel_);
 		debugConsoleController_ = new DebugConsoleController(this);
 		inputTableController_ = new InputTableController(this);
+		inputTableController2_ = new InputTableController(this);
+		
 		resultsTableController_ = new ResultsTableController(this);
 		internalTableController_ = new InternalTableController(this);
 		topMenuController_ = new TopMenuController(this);
-
+		metaDataController_ = new MetaDataController(this);
+		
+		
 		mainView_.add(topPanelController_.getView(), BorderLayout.NORTH);
 
 		tabbedPane_ = new JTabbedPane(JTabbedPane.TOP);
@@ -91,7 +82,6 @@ public class MainController extends AbstractController {
 	@EventSubscriber(eventClass=About_Help.class)
 	public void onSelectSimulationEngine(About_Help event) {
 		  
-		//new AboutDialog((MainView) getView(), configModel_);
 		
 		JOptionPane.showMessageDialog(
 				mainView_, 
@@ -99,27 +89,35 @@ public class MainController extends AbstractController {
 				"About Straylight Simulation Client",
 				JOptionPane.INFORMATION_MESSAGE
 				);
-		
-		
 	}
 	
 	
-	@EventSubscriber(eventClass=InitializedEvent.class)
-	public void onInitializedEvent(InitializedEvent event) {
-
-		numbeOfTabs++;
+	@EventSubscriber(eventClass=XMLparsedEvent.class)
+	public void onXMLparsedEvent(XMLparsedEvent event) {
+		  
+		
+		metaDataController_.init(event.metaDataStruct);
+		
+		tabbedPane_.addTab(
+				"Configuration ",
+				null, 
+				metaDataController_.getView(), 
+				null);
+		
+		
 		inputTableController_.init(event.initializedStruct);
 
 		tabbedPane_.addTab(
-				"Input Table " + String.valueOf(numbeOfTabs),
+				"Input Table",
 				null, 
 				inputTableController_.getView(), 
 				null);
+		
 
 		resultsTableController_.init(event.initializedStruct);
 
 		tabbedPane_.addTab(
-				"Results Table " + String.valueOf(numbeOfTabs),
+				"Results Table ",
 				null, 
 				resultsTableController_.getView(), 
 				null);
@@ -128,10 +126,25 @@ public class MainController extends AbstractController {
 		internalTableController_.init(event.initializedStruct);
 
 		tabbedPane_.addTab(
-				"Internal Table " + String.valueOf(numbeOfTabs),
+				"Internal Table " ,
 				null, 
 				internalTableController_.getView(), 
 				null);
+		
+	}
+	
+	
+	
+	
+	@EventSubscriber(eventClass=InitializedEvent.class)
+	public void onInitializedEvent(InitializedEvent event) {
+
+
+
+
+
+
+		
 	}
 
 

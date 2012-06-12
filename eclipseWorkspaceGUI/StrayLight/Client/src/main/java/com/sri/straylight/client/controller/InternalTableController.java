@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 
 import com.sri.straylight.client.framework.AbstractController;
-import com.sri.straylight.fmuWrapper.voManaged.InitializedInfo;
+import com.sri.straylight.fmuWrapper.voManaged.Initialized;
 
 public class InternalTableController  extends AbstractController {
 	
@@ -22,17 +22,16 @@ public class InternalTableController  extends AbstractController {
     
     
 	public InternalTableController(AbstractController parentController) {
-		super(new JPanel(), parentController);	
+		super(parentController);	
 	}
 	
 	
-	public void init(InitializedInfo initializedStruct) {  
+	public void init(Initialized initializedStruct) {  
 		
-
-	    JPanel panelTable = (JPanel) getView();
-
-	    panelTable.setPreferredSize(new Dimension(704, 500));
-	    panelTable.setLayout(new GridLayout(1, 1, 0, 0));
+	    JPanel panel = new JPanel();
+	    
+	    panel.setPreferredSize(new Dimension(704, 500));
+	    panel.setLayout(new GridLayout(1, 1, 0, 0));
 	    
 		dataModel_ = new DefaultTableModel (
 			initializedStruct.getInternalData(),
@@ -47,9 +46,9 @@ public class InternalTableController  extends AbstractController {
 	    JScrollPane scrollPaneTable = new JScrollPane(table_);
 	    scrollPaneTable.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 	    scrollPaneTable.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-	    panelTable.add(scrollPaneTable);
+	    panel.add(scrollPaneTable);
 
-	    
+	    setView_(panel);
     }
     
 }

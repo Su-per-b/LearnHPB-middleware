@@ -15,7 +15,7 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
-import com.sri.straylight.fmuWrapper.voManaged.InitializedInfo;
+import com.sri.straylight.fmuWrapper.voManaged.Initialized;
 
 public class InputTableController extends AbstractController {
 
@@ -28,7 +28,7 @@ public class InputTableController extends AbstractController {
 	
 
 	
-	public void init(InitializedInfo initializedStruct) {  
+	public void init(Initialized initializedStruct) {  
 		
 	    JPanel panel = new JPanel();
 	    
@@ -38,7 +38,7 @@ public class InputTableController extends AbstractController {
 		tableModel_ = new DefaultTableModel (
 				
 				initializedStruct.getInputData(),
-				initializedStruct.getColumnNames()
+				initializedStruct.getInputColumnNames()
 		);
 		
 

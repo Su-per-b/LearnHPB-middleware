@@ -15,7 +15,7 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
-import com.sri.straylight.fmuWrapper.voManaged.InitializedInfo;
+import com.sri.straylight.fmuWrapper.voManaged.Initialized;
 
 
 public class ResultsTableController extends AbstractController {
@@ -28,7 +28,7 @@ public class ResultsTableController extends AbstractController {
 		super(parentController);
 	}
 	
-	public void init(InitializedInfo initializedStruct) {  
+	public void init(Initialized initializedStruct) {  
 		
 
 	    JPanel panel = new JPanel();
@@ -38,7 +38,7 @@ public class ResultsTableController extends AbstractController {
 	    
 		Object[][] data = {{}};
 		
-		dataModel_ = new DefaultTableModel(data,initializedStruct.columnNames);
+		dataModel_ = new DefaultTableModel(data,initializedStruct.outputVarNames);
 		
 		table_ = new JTable(dataModel_);
 		table_.setPreferredScrollableViewportSize(new Dimension(700, 600));

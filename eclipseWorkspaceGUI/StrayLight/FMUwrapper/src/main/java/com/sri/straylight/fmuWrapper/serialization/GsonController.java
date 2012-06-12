@@ -7,7 +7,7 @@ import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
-import com.sri.straylight.fmuWrapper.voManaged.InitializedInfo;
+import com.sri.straylight.fmuWrapper.voManaged.Initialized;
 import com.sri.straylight.fmuWrapper.voManaged.Result;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValue;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
@@ -51,7 +51,7 @@ public class GsonController {
 		gb.registerTypeAdapter(ResultEvent.class, new ResultEventAdapter());
 		gb.registerTypeAdapter(State.class, new StateAdapter());
 		gb.registerTypeAdapter(FMUstateEvent.class, new FMUstateEventAdapter());
-		gb.registerTypeAdapter(InitializedInfo.class, new InitializedStructAdapter());
+		gb.registerTypeAdapter(Initialized.class, new InitializedStructAdapter());
 		gb.registerTypeAdapter(InitializedEvent.class, new InitializedEventAdapter());
 		gb.registerTypeAdapter(ScalarValue.class, new ResultItemPrimitiveAdapter());
 		

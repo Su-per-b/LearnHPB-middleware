@@ -15,10 +15,10 @@ namespace Straylight
 
 	}
 
-	std::string ResultPrimitive::getString(void)	{
+	string ResultPrimitive::getString(void)	{
 
-		std::stringstream ss;
-		std::string str;
+		stringstream ss;
+		string str;
 
 		switch (this->type) {
 			case 0:

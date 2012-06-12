@@ -11,7 +11,7 @@ import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.serialization.GsonController;
 import com.sri.straylight.fmuWrapper.serialization.SerializeableObject;
-import com.sri.straylight.fmuWrapper.voManaged.InitializedInfo;
+import com.sri.straylight.fmuWrapper.voManaged.Initialized;
 import com.sri.straylight.fmuWrapper.voManaged.Result;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValue;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
@@ -48,10 +48,10 @@ public class Serialization
     }
     
     public void testInitializedEvent() {
-    	InitializedInfo initializedStruct1 = new InitializedInfo();
-    	initializedStruct1.columnNames = new String[2];
-    	initializedStruct1.columnNames[0] = "col 1";
-    	initializedStruct1.columnNames[1] = "col 2";
+    	Initialized initializedStruct1 = new Initialized();
+    	initializedStruct1.outputVarNames = new String[2];
+    	initializedStruct1.outputVarNames[0] = "col 1";
+    	initializedStruct1.outputVarNames[1] = "col 2";
     	
     	InitializedEvent event1 = new InitializedEvent(this);
     	event1.initializedStruct = initializedStruct1;
@@ -64,15 +64,15 @@ public class Serialization
     	
     	InitializedEvent event2 = gson.fromJson(jsonString, InitializedEvent.class);
     	
-    	assertEquals(event1.initializedStruct.columnNames[0], event2.initializedStruct.columnNames[0]);
+    	assertEquals(event1.initializedStruct.outputVarNames[0], event2.initializedStruct.outputVarNames[0]);
     	
     }
     
     public void testInitializedStruct() {
-    	InitializedInfo initializedStruct1 = new InitializedInfo();
-    	initializedStruct1.columnNames = new String[2];
-    	initializedStruct1.columnNames[0] = "col 1";
-    	initializedStruct1.columnNames[1] = "col 2";
+    	Initialized initializedStruct1 = new Initialized();
+    	initializedStruct1.outputVarNames = new String[2];
+    	initializedStruct1.outputVarNames[0] = "col 1";
+    	initializedStruct1.outputVarNames[1] = "col 2";
     	
 
     	String jsonString = gson.toJson(initializedStruct1);
@@ -80,10 +80,10 @@ public class Serialization
     	
     	assertEquals(initializedStruct1.getClass().getCanonicalName(), obj.type);
     	
-    	InitializedInfo initializedStruct2 = gson.fromJson(jsonString, InitializedInfo.class);
+    	Initialized initializedStruct2 = gson.fromJson(jsonString, Initialized.class);
     	
-    	assertEquals(initializedStruct1.columnNames[0], initializedStruct2.columnNames[0]);
-    	assertEquals(initializedStruct1.columnNames[1], initializedStruct2.columnNames[1]);
+    	assertEquals(initializedStruct1.outputVarNames[0], initializedStruct2.outputVarNames[0]);
+    	assertEquals(initializedStruct1.outputVarNames[1], initializedStruct2.outputVarNames[1]);
     	
     }
     

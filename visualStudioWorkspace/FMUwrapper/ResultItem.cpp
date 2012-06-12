@@ -26,10 +26,10 @@ namespace Straylight
  char * ResultItem::getString()
 	{
 		char * cstr;
-		std::vector<ResultPrimitive*>::iterator it = resultPrimitiveList.begin();
+		vector<ResultPrimitive*>::iterator it = resultPrimitiveList.begin();
 
-		std::string str;
-		std::string output = "";
+		string str;
+		string output = "";
 
 		ResultPrimitive * rp;
 		rp = (*it);
@@ -131,7 +131,7 @@ namespace Straylight
 			Straylight::ResultPrimitive * rp  = resultPrimitiveList[i];
 
 			primitiveArry[i].idx = rp->idx;
-			std::string str = rp->getString();
+			string str = rp->getString();
 
 			char * cstr = new char [str.size()+1];
 			strcpy (cstr, str.c_str());

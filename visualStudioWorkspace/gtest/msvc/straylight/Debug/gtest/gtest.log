@@ -1,8 +1,6 @@
-﻿Build started 5/7/2012 12:31:15 PM.
-     1>Project "E:\SRI\straylight_repo\visualStudioWorkspace\gtest\msvc\gtest.vcxproj" on node 3 (rebuild target(s)).
-     1>_PrepareForClean:
-         Deleting file "straylight/Debug\gtest\gtest.lastbuildstate".
-       InitializeBuildStatus:
+﻿Build started 6/12/2012 2:17:21 PM.
+     1>Project "E:\SRI\straylight_repo\visualStudioWorkspace\gtest\msvc\gtest.vcxproj" on node 3 (build target(s)).
+     1>InitializeBuildStatus:
          Creating "straylight/Debug\gtest\gtest.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I.. /I..\include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _LIB /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"straylight/Debug\gtest\\" /Fd"straylight/Debug\gtest\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt "..\src\gtest-all.cc"
@@ -15,8 +13,8 @@
        FinalizeBuildStatus:
          Deleting file "straylight/Debug\gtest\gtest.unsuccessfulbuild".
          Touching "straylight/Debug\gtest\gtest.lastbuildstate".
-     1>Done Building Project "E:\SRI\straylight_repo\visualStudioWorkspace\gtest\msvc\gtest.vcxproj" (rebuild target(s)).
+     1>Done Building Project "E:\SRI\straylight_repo\visualStudioWorkspace\gtest\msvc\gtest.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:03.02
+Time Elapsed 00:00:03.19

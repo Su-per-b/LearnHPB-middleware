@@ -14,7 +14,7 @@ import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.action.ClearDebugConsoleAction;
-import com.sri.straylight.client.event.action.InitAction;
+import com.sri.straylight.client.event.action.LoadAction;
 import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.client.model.FmuConnectLocal;
 import com.sri.straylight.client.model.FmuConnectRemote;
