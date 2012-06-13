@@ -45,14 +45,9 @@ void fmuStateCallback(State fmuState) {
 
 void test5() {
 
-	//void (*callbackPtr)(ResultStruct *) = &resultCallback;
-	//registerResultCallback(&resultCallback);
-	//registerMessageCallback(&messageCallback);
-
 	initCallbacks(&messageCallback, &resultCallback, &fmuStateCallback);
 	initXML(_T("C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop"));
 	initSimulation();
-	//ScalarVariableStruct * s = getScalarVariableStructs();
 
 	ScalarVariableStruct *ptr2= getScalarVariableStructs();
 

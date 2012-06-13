@@ -63,10 +63,16 @@
     <ClInclude Include="enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ScalarVariableWrapper.h">
+    <ClInclude Include="MainController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MainController.h">
+    <ClInclude Include="Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\MetaDataFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\ScalarVariableFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -95,10 +101,16 @@
     <ClCompile Include="FMUlogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScalarVariableWrapper.cpp">
+    <ClCompile Include="MainController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainController.cpp">
+    <ClCompile Include="Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\MetaDataFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\ScalarVariableFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

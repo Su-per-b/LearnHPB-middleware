@@ -37,10 +37,8 @@ public class FMU  {
 	private String unzipfolder_;
 	private int variableCount_;
 	private JNAfmuWrapper jnaFMUWrapper_;
-
 	
 	private MetaDataStruct metaDataStruct_;
-	
 	
 	private ArrayList<ScalarVariableStruct> scalarVariableInputList_;
 	public ArrayList<ScalarVariableStruct> getScalarVariableInputList() {
@@ -56,7 +54,6 @@ public class FMU  {
 	public ArrayList<ScalarVariableStruct> getScalarVariableInternalList() {
 		return scalarVariableInternalList_;
 	}
-
 
 	private HashMap<Integer, ScalarVariableStruct> scalarVariableAllList_;
 	private ScalarVariableStruct[] svMetaArray_;
@@ -86,9 +83,8 @@ public class FMU  {
 		scalarVariableOutputList_ =  new ArrayList<ScalarVariableStruct>();
 		scalarVariableInternalList_=  new ArrayList<ScalarVariableStruct>();
 		scalarVariableAllList_ = new HashMap<Integer, ScalarVariableStruct>();
-		
-
 	}
+	
 	
 	private JNAfmuWrapper.MessageCallbackInterface messageCallbackFunc_ = 
 			new JNAfmuWrapper.MessageCallbackInterface() {

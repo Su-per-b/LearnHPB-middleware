@@ -5,6 +5,8 @@
 #include "structs.h"
 #include "enums.h"
 #include "Logger.h"
+#include "ScalarVariableFactory.h"
+#include "MetaDataFactory.h"
 
 void (*messageCallbackPtr_)(MessageStruct *);
 
@@ -24,8 +26,6 @@ extern "C" void onMessageCallback(MessageStruct *);
 extern "C" DllExport void end();
 
 extern "C" DllExport int forceCleanup();
-
-extern "C" DllExport ResultStruct * getResultStruct();
 
 extern "C" DllExport int getVariableCount();
 

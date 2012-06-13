@@ -1,6 +1,7 @@
 #pragma once
 
 
+
 #include "stdafx.h"
 
 #include "ResultItem.h"
@@ -8,6 +9,9 @@
 #include "FMUlogger.h"
 #include "structs.h"
 #include "enums.h"
+#include "MetaDataFactory.h"
+#include "ScalarVariableFactory.h";
+
 
 using namespace std;
 
@@ -23,8 +27,7 @@ namespace Straylight
 		char* unzipFolderPath_;
 		char* xmlFilePath_;
 		char* dllFilePath_;
-		FMU fmu_; // the fmu to simulate
-		FMU* fmuPointer_;
+		FMU* fmuPointer_;  // the fmu to simulate
 		double time_;
 		fmiStatus fmiStatus_;				// Zuo: add stauus for fmi
 		int nSteps_;
@@ -35,8 +38,8 @@ namespace Straylight
 		void (*stateChangeCallbackPtr_)(State );
 		State state_;
 
-		vector<ScalarVariableStruct*> scalarVariableStructsList_;
-		vector<ScalarVariableStruct*> scalarVariableStructsListOutput_;
+		vector<ScalarVariableStruct*> scalarVariables_;
+		vector<ScalarVariableStruct*> scalarVariableOutput_;
 
 		ResultItem* resultItem_;
 		int variableCount_;
@@ -91,8 +94,8 @@ namespace Straylight
 		ModelDescription* parseHelper(const char*);
 		char* getXmlFilePath();
 		void* getAdr(const char*);
-		int extractVariables();
-		void extractMetaData();
+		void extractVariables();
+
 
 	};
 

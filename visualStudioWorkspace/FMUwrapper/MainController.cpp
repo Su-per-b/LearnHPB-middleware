@@ -3,12 +3,10 @@
 
 #include "MainController.h"
 
-
 #define BUFSIZE 4096
 #define XML_FILE_STR  "\\modelDescription.xml"
 #define DLL_DIR_STR   "\\binaries\\win32\\"
-#define ZLIB_WINAPI
-
+//#define ZLIB_WINAPI
 
 
 namespace Straylight
@@ -16,18 +14,17 @@ namespace Straylight
 
 
 	/*********************************************//**
-	* Default constructor. 
-	*********************************************/
+												   * Default constructor. 
+												   *********************************************/
 	MainController::MainController(
 		void (*messageCallbackPtr)(MessageStruct *), 
 		void (*stateChangeCallbackPtr)(State )
 		)
 	{
 
-		fmuPointer_ = &fmu_;
+		fmuPointer_ = new FMU();
 
 		logger_ = new Logger();
-		FMUlogger::fmu = fmu_;
 		FMUlogger::logger = logger_;
 
 		logger_->registerMessageCallback(messageCallbackPtr);
@@ -38,8 +35,8 @@ namespace Straylight
 
 
 	/*********************************************//**
-	* Destructor. Frees memory and releases FMU DLL.
-	*********************************************/
+												   * Destructor. Frees memory and releases FMU DLL.
+												   *********************************************/
 	MainController::~MainController(void)
 	{
 
@@ -52,66 +49,67 @@ namespace Straylight
 		free((void *) dllFilePath_);
 
 		// Release FMU
-		FreeLibrary(fmu_.dllHandle);
-		freeElement(fmu_.modelDescription);
+		FreeLibrary(fmuPointer_->dllHandle);
+		freeElement(fmuPointer_->modelDescription);
+		delete fmuPointer_;
 
 		delete logger_;
 
 	}
 
-		double MainController::getStopTime() {
-			return metaDataStruct_->defaultExperimentStruct->stopTime;
+	double MainController::getStopTime() {
+		return metaDataStruct_->defaultExperimentStruct->stopTime;
+	}
+	double MainController::getStartTime() {
+		return metaDataStruct_->defaultExperimentStruct->startTime;
+	}
+	double MainController::getStepDelta() {
+		return metaDataStruct_->stepDelta;
+	}
+
+
+
+
+	void MainController::setMetaData(MetaDataStruct * metaDataStruct) {
+		metaDataStruct_ = metaDataStruct;
+		//metaDataStruct_->stepDelta = 1.0;
+	}
+
+
+	MetaDataStruct * MainController::getMetaData() {
+		return metaDataStruct_;
+	}
+
+
+
+	void MainController::setState(State newState) {
+		if (state_ != newState) {
+			state_ = newState;
+			stateChangeCallbackPtr_( state_ );
 		}
-		double MainController::getStartTime() {
-			return metaDataStruct_->defaultExperimentStruct->startTime;
-		}
-		double MainController::getStepDelta() {
-			return metaDataStruct_->stepDelta;
-		}
+	}
 
 
-		
+	State MainController::getState() {
+		return state_;
+	}
 
-		void MainController::setMetaData(MetaDataStruct * metaDataStruct) {
-			metaDataStruct_ = metaDataStruct;
-			//metaDataStruct_->stepDelta = 1.0;
-		}
-
-
-		MetaDataStruct * MainController::getMetaData() {
-			return metaDataStruct_;
-		}
-
-
-
-		void MainController::setState(State newState) {
-			if (state_ != newState) {
-				state_ = newState;
-				stateChangeCallbackPtr_( state_ );
-			}
-		}
-
-
-		State MainController::getState() {
-			return state_;
-		}
-
-		vector<ScalarVariableStruct*> MainController::getScalarVariableStructs() {
-			return  scalarVariableStructsList_;
-		}
+	vector<ScalarVariableStruct*> MainController::getScalarVariableStructs() {
+		return  scalarVariables_;
+	}
 
 
 
 
 
 	/*******************************************************//**
-	* Parses the xml file located in the FMU.  
-	*
-	* @param [in,out]	unzipfolder	where the FMU was unzipped to.
-	*******************************************************/
+															 * Parses the xml file located in the FMU.  
+															 *
+															 * @param [in,out]	unzipfolder	where the FMU was unzipped to.
+															 *******************************************************/
 	int MainController::parseXML(char* unzipfolder) {
 
-	//	logger_->printDebug2("MainController::parseXML unzipfolder %s\n", unzipfolder);	
+		//	logger_->printDebug2("MainController::parseXML unzipfolder %s\n", unzipfolder);	
 		int len1 = strlen(unzipfolder) + 1;
 
 		unzipFolderPath_ = (char *) calloc(sizeof(char), len1 + 1);
@@ -124,18 +122,18 @@ namespace Straylight
 		xmlFilePath_ = (char *) calloc(sizeof(char), len2 + 1);
 
 		sprintf(xmlFilePath_, _T("%s%s"), unzipfolder, XML_FILE_STR);
-		fmu_.modelDescription = parse(xmlFilePath_); 
+		fmuPointer_->modelDescription = parse(xmlFilePath_); 
 		logger_->printDebug2(_T("MainController::parseXML xmlFilePath_ %s\n"), xmlFilePath_);	
 
 
-		extractMetaData();
+		metaDataStruct_ =  MetaDataFactory::make(fmuPointer_);
 		extractVariables();
 
 		setState( fmuState_level_1_xmlParsed );
 
 
 		// Parse only parses the model description and store in structure fmu.modelDescription
-		if (fmu_.modelDescription) {
+		if (fmuPointer_->modelDescription) {
 			return 0;
 		} else {
 			return 1;
@@ -144,102 +142,43 @@ namespace Straylight
 
 	}
 
-	void MainController::extractMetaData() {
 
 
-		metaDataStruct_ = new MetaDataStruct();
-		metaDataStruct_->defaultExperimentStruct = new DefaultExperimentStruct();
-
-		Element* de =  fmu_.modelDescription->defaultExperiment;
-
-		
-		int len = de->n;
-		for (int i=0; i<len; i+=2)  {
-
-			const char * key = de->attributes[i];
-			const char * value = de->attributes[i+1];
-
-			if(strcmp(key, "startTime") == 0) {
-				stringstream ss;
-				ss << value;
-				ss >> metaDataStruct_->defaultExperimentStruct->startTime;
-			} else if(strcmp(key, "stopTime") == 0) {
-				stringstream ss;
-				ss << value;
-				ss >> metaDataStruct_->defaultExperimentStruct->stopTime;
-			} else if(strcmp(key, "tolerance") == 0) {
-				stringstream ss;
-				ss << value;
-				ss >> metaDataStruct_->defaultExperimentStruct->tolerance;
-			}
-			
-
-
-			printf(" %s=%s", key, value);
-
-		}
-
-
-		metaDataStruct_->stepDelta = 1.0;
-
-	}
-
-	int MainController::extractVariables() {
+	void MainController::extractVariables() {
 
 
 		int i;
-		for (i=0; fmuPointer_->modelDescription->modelVariables[i]; i++){
-			ScalarVariable* scalarVariable = (ScalarVariable*)fmuPointer_->modelDescription->modelVariables[i];
-			
+		for (i=0; fmuPointer_->modelDescription->modelVariables[i]; i++) {
 
+			ScalarVariableStruct * scalarVariableStruct = 
+				ScalarVariableFactory::make(fmuPointer_, i);
 
+			scalarVariables_.push_back(scalarVariableStruct);
 
-			ScalarVariableStruct * scalarVariableStruct = new ScalarVariableStruct(); // = new ScalarVariableStruct();
-
-
-			scalarVariableStruct->idx = i;
-			scalarVariableStruct->name = getName( scalarVariable );
-			scalarVariableStruct->causality =  getCausality(scalarVariable);
-			scalarVariableStruct->type = scalarVariable->typeSpec->type;
-			scalarVariableStruct->description = getDescription(fmuPointer_->modelDescription,  scalarVariable );
-			scalarVariableStruct->element = new Element2();
-
-
-
-
-			if (scalarVariableStruct->description == NULL) {
-				scalarVariableStruct->description = _T("{no description}");
-			}
-
-			scalarVariableStructsList_.push_back(scalarVariableStruct);
-
-			
 			if (scalarVariableStruct->causality == enu_output) {
-				scalarVariableStructsListOutput_.push_back(scalarVariableStruct);
+				scalarVariableOutput_.push_back(scalarVariableStruct);
 			}
-			
+
 		}
 
 		variableCount_ = i;
-
-		return 0;
 
 	}
 
 
 	/*********************************************//**
-	/* 
-	* Constructs the path to the DLL file and stores it
-	* in the dllFilePath_ member variable. Loads
-	* the DLL with the "LoadLibrary" command and populates the
-	* FMU struct.
-	*
-	* @return	0 for success
-	 *********************************************/
+												   /* 
+												   * Constructs the path to the DLL file and stores it
+												   * in the dllFilePath_ member variable. Loads
+												   * the DLL with the "LoadLibrary" command and populates the
+												   * FMU struct.
+												   *
+												   * @return	0 for success
+												   *********************************************/
 	int MainController::loadDll( ) {
 
 		logger_->printDebug2 (_T("MainController::loadDll unzipFolderPath_: %s\n"), unzipFolderPath_);
-		const char* modelId = getModelIdentifier(fmu_.modelDescription);
+		const char* modelId = getModelIdentifier(fmuPointer_->modelDescription);
 
 		dllFilePath_ = (char *) calloc(sizeof(char), strlen(unzipFolderPath_) + strlen(DLL_DIR_STR) 
 			+ strlen( modelId ) +  strlen(_T(".dll")) + 1); 
@@ -328,8 +267,7 @@ namespace Straylight
 		GetCurrentDirectory(MAX_PATH, currentDirectory);
 		logger_->printDebug2(_T("currentDirectory: %s\n"), currentDirectory);	
 
-		loggingOn_ = 1;
-		ModelDescription* md;            // handle to the parsed XML file        
+		loggingOn_ = 1;     
 		const char* guid;                // global unique id of the fmu
 		const char* modelId;                //
 		fmiCallbackFunctions callbacks;  // called by the model during simulation
@@ -344,7 +282,7 @@ namespace Straylight
 		string s;
 		{ ostringstream ss;
 		ss << metaDataStruct_->defaultExperimentStruct->stopTime;
-			s = ss.str();
+		s = ss.str();
 		}
 
 		printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d'\n", 
@@ -378,7 +316,7 @@ namespace Straylight
 			fmiFalse, 
 			callbacks, 
 			loggingOn_
-		);
+			);
 
 
 		if (!fmiComponent_) {
@@ -412,8 +350,8 @@ namespace Straylight
 	int MainController::isSimulationComplete() {
 		return !(time_ < getStopTime()) ;
 	}
-	
-	
+
+
 
 	const char* MainController::getVariableDescription(int idx) {
 		ScalarVariable* sv = (ScalarVariable*)fmuPointer_->modelDescription->modelVariables[idx];
@@ -425,8 +363,11 @@ namespace Straylight
 	int MainController::getVariableCount() {
 		return variableCount_;
 	}
-	
 
+	ResultStruct * MainController::getResultStruct() {
+
+		return resultItem_->toStruct();
+	}
 
 	void MainController::printSummary() {
 
@@ -449,10 +390,6 @@ namespace Straylight
 	}
 
 
-	ResultStruct * MainController::getResultStruct() {
-		return resultItem_->toStruct();
-	}
-
 
 
 	void MainController::doOneStep() {
@@ -465,19 +402,15 @@ namespace Straylight
 		resultItem_ = new ResultItem(fmuPointer_,  fmiComponent_);
 		resultItem_->setTime(time_);
 
-		vector<ScalarVariableStruct*>::iterator list_iter = scalarVariableStructsListOutput_.begin();
+		vector<ScalarVariableStruct*>::iterator list_iter = scalarVariableOutput_.begin();
 
 		for(list_iter; 
-			list_iter != scalarVariableStructsListOutput_.end(); list_iter++)
+			list_iter != scalarVariableOutput_.end(); list_iter++)
 		{
-				ScalarVariableStruct * svm =  *list_iter;
-
-				ScalarVariable* sv = (ScalarVariable*)fmuPointer_->modelDescription->modelVariables[svm->idx];
-				if (getAlias(sv)!=enu_noAlias) continue;
-				
-				//Enu  causality =  getCausality(sv);
-
-				resultItem_->addValue(sv, svm->idx);
+			ScalarVariableStruct * svm =  *list_iter;
+			ScalarVariable* sv = (ScalarVariable*)fmuPointer_->modelDescription->modelVariables[svm->idx];
+			if (getAlias(sv)!=enu_noAlias) continue;
+			resultItem_->addValue(sv, svm->idx);
 		}
 
 		nSteps_++;
@@ -509,7 +442,4 @@ namespace Straylight
 
 
 }
-
-
-
 
