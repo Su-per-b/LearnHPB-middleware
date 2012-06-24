@@ -12,14 +12,14 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.sri.straylight.fmuWrapper.voNative.State;
+import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 public class StateAdapter implements 
-JsonSerializer<State>, JsonDeserializer<State> {
+JsonSerializer<SimStateNative>, JsonDeserializer<SimStateNative> {
 
 	@Override
     public JsonElement serialize(
-    		State src, 
+    		SimStateNative src, 
     		Type typeOfSrc, 
     		JsonSerializationContext context) {
         
@@ -37,7 +37,7 @@ JsonSerializer<State>, JsonDeserializer<State> {
     
     
     @Override
-    public State deserialize(
+    public SimStateNative deserialize(
     		JsonElement jsonElement, 
     		Type typeOfT, 
     		JsonDeserializationContext context)
@@ -46,7 +46,7 @@ JsonSerializer<State>, JsonDeserializer<State> {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         int asInt = jsonObject.get("asInt").getAsInt();
         
-        State state = State.fmuState_cleanedup;
+        SimStateNative state = SimStateNative.simStateNative_0_uninitialized;
         state = state.getForValue(asInt);
         
 

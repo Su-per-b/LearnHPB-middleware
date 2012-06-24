@@ -11,16 +11,14 @@ import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.menu.About_Help;
-import com.sri.straylight.client.event.menu.Options_FMUconfig;
 import com.sri.straylight.client.event.menu.Options_SelectSimulationEngine;
 import com.sri.straylight.client.framework.AbstractController;
-import com.sri.straylight.client.model.Config;
-import com.sri.straylight.client.view.SimulationEngineDialog;
+import com.sri.straylight.client.model.ConfigClient;
 
 public class TopMenuController  extends AbstractController  {
 
 
-	private Config configModel_;
+	private ConfigClient configModel_;
 	
     private JMenuBar menuBar_;
     

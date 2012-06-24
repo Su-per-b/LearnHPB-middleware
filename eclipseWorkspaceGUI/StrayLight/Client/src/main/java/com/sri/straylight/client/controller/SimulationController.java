@@ -1,25 +1,13 @@
 package com.sri.straylight.client.controller;
 
-import org.bushe.swing.event.EventBus;
-import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.event.action.InitAction;
-import com.sri.straylight.client.event.action.LoadAction;
-import com.sri.straylight.client.event.action.RunSimulationAction;
-import com.sri.straylight.client.event.action.MetaDataChangeAction;
-import com.sri.straylight.client.event.menu.About_Help;
+import com.sri.straylight.client.event.InputChangeRequest;
+import com.sri.straylight.client.event.SimStateNotify;
+import com.sri.straylight.client.event.SimStateRequest;
 import com.sri.straylight.client.framework.AbstractController;
-import com.sri.straylight.client.model.Config;
-import com.sri.straylight.client.model.FmuConnectLocal;
-import com.sri.straylight.client.model.FmuConnectRemote;
-import com.sri.straylight.client.model.IFmuConnect;
-import com.sri.straylight.fmuWrapper.event.FMUeventListener;
-import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
-import com.sri.straylight.fmuWrapper.event.InitializedEvent;
-import com.sri.straylight.fmuWrapper.event.MessageEvent;
-import com.sri.straylight.fmuWrapper.event.ResultEvent;
-import com.sri.straylight.fmuWrapper.voNative.State;
+import com.sri.straylight.client.model.ConfigClient;
+import com.sri.straylight.client.model.SimStateClient;
 
 
 
@@ -28,55 +16,88 @@ public class SimulationController extends AbstractController  {
 
 	private IFmuConnect fmuConnect_;
 	
-    private Config configModel_;
+    private ConfigClient configModel_;
+    
+    private SimStateClient simulationStateClient_ = 
+    		SimStateClient.level_0_uninitialized;
     
     
-	public SimulationController (AbstractController parentController, Config configModel) {
+	public SimulationController (AbstractController parentController, ConfigClient configModel) {
         super(parentController);
         configModel_ = configModel;
+        
 	}
 	
 
 
-
-	@EventSubscriber(eventClass=LoadAction.class)
-    public void onInitAction(LoadAction event) {
-    	
+	private void connect_() {
+		
     	switch (configModel_.connectTo) {
-    	
-		case connecTo_localhost :
-			fmuConnect_ = new FmuConnectRemote("localhost");
-			break;
-		case connecTo_straylightsim_com :
-			fmuConnect_ = new FmuConnectRemote("wintermute.straylightsim.com");
-			break;
-		case connecTo_file :
-			fmuConnect_ = new FmuConnectLocal();
-			break;
+			case connecTo_localhost :
+				fmuConnect_ = new FmuConnectRemote("localhost");
+				break;
+			case connecTo_straylightsim_com :
+				fmuConnect_ = new FmuConnectRemote("wintermute.straylightsim.com");
+				break;
+			case connecTo_file :
+				fmuConnect_ = new FmuConnectLocal();
+				break;
     	}
+    	
+    	fmuConnect_.connect();
+    }
+	
+	
+	
+	
+	@EventSubscriber(eventClass=InputChangeRequest.class)
+    public void onInputChangeRequest(InputChangeRequest event) {
+		double v = event.value;
+		fmuConnect_.changeInput(event.idx, event.value);
+	}
+	
+	
+	@EventSubscriber(eventClass=SimStateNotify.class)
+    public void onSimStateNotify(SimStateNotify event) {
+		simulationStateClient_ = event.getPayload();
+	}
+	
+	
+	@EventSubscriber(eventClass=SimStateRequest.class)
+    public void onSimStateRequest(SimStateRequest event) {
+		SimStateClient state = event.getPayload();
+		
+		if (simulationStateClient_ == state)
+			return;
+			
+		switch (state) {
+			case level_1_connect_requested :
+				connect_();
+				break;
+			case level_2_xmlParse_requested :
+				fmuConnect_.xmlParse();
+				break;
+			case level_3_init_requested :
+				fmuConnect_.init();
+				break;
+			case level_4_run_requested :
+				fmuConnect_.run();
+				break;
+			case level_5_stop_requested:
+				fmuConnect_.stop();
+				break;
+			case level_7_resume_requested:
+				fmuConnect_.resume();
+				break;
+		}
+    }
+	
+	
 
 	
-    	fmuConnect_.load();
-    }
-	
-    
-	@EventSubscriber(eventClass=InitAction.class)
-    public void onInitAction(InitAction event) {
-    	fmuConnect_.init();
-    }
-	
-    
-	@EventSubscriber(eventClass=MetaDataChangeAction.class)
-    public void onRunSimulationAction(MetaDataChangeAction event) {
-		fmuConnect_.setMetaData(event.payload);
-	}
 	
 	
-	@EventSubscriber(eventClass=RunSimulationAction.class)
-    public void onRunSimulationAction(RunSimulationAction event) {
-		fmuConnect_.run();
-	}
-	
+
 
     
 }

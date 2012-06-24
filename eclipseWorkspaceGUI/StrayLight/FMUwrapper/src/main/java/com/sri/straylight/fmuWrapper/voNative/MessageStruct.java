@@ -21,9 +21,7 @@ public class MessageStruct extends Structure {
 	}
 	
 	public void setMessageTypeEnum(MessageType theEnum) {
-		
 		messageType = theEnum.getIntValue();
-
 	}
 	
 	

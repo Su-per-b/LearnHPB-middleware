@@ -13,40 +13,40 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.sri.straylight.fmuWrapper.voManaged.Result;
+import com.sri.straylight.fmuWrapper.voManaged.ResultOfStep;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValue;
 
 
 
 public class ResultItemAdapter implements 
-JsonSerializer<Result>, JsonDeserializer<Result> {
+JsonSerializer<ResultOfStep>, JsonDeserializer<ResultOfStep> {
 
 	@Override
     public JsonElement serialize(
-    		Result src, 
+    		ResultOfStep src, 
     		Type typeOfSrc, 
     		JsonSerializationContext context) {
         
     	JsonObject result = new JsonObject();
-        result.add("type", new JsonPrimitive(src.getClass().getCanonicalName()));
-        
-        result.add("time", new JsonPrimitive(src.time));
-        result.add("string", new JsonPrimitive(src.string));
-        result.add("primitiveCount", new JsonPrimitive(src.scalarValueCount));
-        
-
-        JsonArray jsAry = new JsonArray();
-
-        
-        for (int j = 0; j < src.scalarValueAry.length; j++) {
-        		
-        	ScalarValue primitive = src.scalarValueAry[j];
-        	JsonElement elem = context.serialize(primitive);
-        	jsAry.add(elem);
-        	
-		}
-        
-        result.add("primitiveAry", jsAry);
+//        result.add("type", new JsonPrimitive(src.getClass().getCanonicalName()));
+//        
+//        result.add("time", new JsonPrimitive(src.time));
+//        result.add("string", new JsonPrimitive(src.string));
+//        result.add("primitiveCount", new JsonPrimitive(src.scalarValueCount));
+//        
+//
+//        JsonArray jsAry = new JsonArray();
+//
+//        
+//        for (int j = 0; j < src.scalarValueAry.length; j++) {
+//        		
+//        	ScalarValue primitive = src.scalarValueAry[j];
+//        	JsonElement elem = context.serialize(primitive);
+//        	jsAry.add(elem);
+//        	
+//		}
+//        
+//        result.add("primitiveAry", jsAry);
 
         
         return result;
@@ -55,7 +55,7 @@ JsonSerializer<Result>, JsonDeserializer<Result> {
     
     
     @Override
-    public Result deserialize(
+    public ResultOfStep deserialize(
     		JsonElement jsonElement, 
     		Type typeOfT, 
     		JsonDeserializationContext context)
@@ -63,26 +63,26 @@ JsonSerializer<Result>, JsonDeserializer<Result> {
         throws JsonParseException {
     	
         JsonObject jsonObject = jsonElement.getAsJsonObject();
-        Result resultItem = new Result();
+        ResultOfStep resultItem = new ResultOfStep();
         
-        resultItem.time = jsonObject.get("time").getAsDouble();
-        resultItem.string = jsonObject.get("string").getAsString();
-        resultItem.scalarValueCount = jsonObject.get("primitiveCount").getAsInt();
-        
-        JsonArray jsAry = jsonObject.get("primitiveAry").getAsJsonArray();
-        
-        int len = jsAry.size();
-        
-        ScalarValue[] primitiveAry = new ScalarValue[len];
-        		
-        for(int i=0; i < len; i++) {
-
-        	JsonElement elem = jsAry.get(i);
-        	ScalarValue primitive = context.deserialize(elem, ScalarValue.class);
-        	primitiveAry[i] = primitive;
-        }
-        
-        resultItem.scalarValueAry = primitiveAry;
+//        resultItem.time = jsonObject.get("time").getAsDouble();
+//        resultItem.string = jsonObject.get("string").getAsString();
+//        resultItem.scalarValueCount = jsonObject.get("primitiveCount").getAsInt();
+//        
+//        JsonArray jsAry = jsonObject.get("primitiveAry").getAsJsonArray();
+//        
+//        int len = jsAry.size();
+//        
+//        ScalarValue[] primitiveAry = new ScalarValue[len];
+//        		
+//        for(int i=0; i < len; i++) {
+//
+//        	JsonElement elem = jsAry.get(i);
+//        	ScalarValue primitive = context.deserialize(elem, ScalarValue.class);
+//        	primitiveAry[i] = primitive;
+//        }
+//        
+//        resultItem.scalarValueAry = primitiveAry;
         
         	
         return resultItem;

@@ -13,49 +13,51 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 import com.sri.straylight.client.event.menu.About_Help;
 import com.sri.straylight.client.event.menu.Options_SelectSimulationEngine;
 import com.sri.straylight.client.framework.AbstractController;
-import com.sri.straylight.client.model.Config;
-import com.sri.straylight.client.model.MainModel;
+import com.sri.straylight.client.model.ConfigClient;
 import com.sri.straylight.client.view.MainView;
 import com.sri.straylight.client.view.SimulationEngineDialog;
-import com.sri.straylight.fmuWrapper.event.InitializedEvent;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 
 public class MainController extends AbstractController {
 	
-	private MainModel model_;
+	//private MainModel model_;
 	private TopPanelController topPanelController_;
 	private SimulationController simulationController_;
 	private DebugConsoleController debugConsoleController_;
-	private InputTableController inputTableController_;
-	private InputTableController inputTableController2_;
+	private InputFormController inputFormController_;
+
 	
 	
 	private ResultsTableController resultsTableController_;
 	private InternalTableController internalTableController_;
+	private ResultsFormController resultsFormController_;
+	
 	private TopMenuController topMenuController_;
-	private MetaDataController metaDataController_;
+	private ConfigController configController_;
 	
 	
 	private JTabbedPane tabbedPane_;
-    private Config configModel_ = new Config();
+    private ConfigClient configModel_ = new ConfigClient();
 	private MainView mainView_;
 	
+	public static MainController instance;
+	
 	public MainController() {
-		super( null);
+		super(null);
 
 		mainView_ = new MainView(configModel_);
 
 		topPanelController_  = new TopPanelController(this);
 		simulationController_ = new SimulationController(this, configModel_);
 		debugConsoleController_ = new DebugConsoleController(this);
-		inputTableController_ = new InputTableController(this);
-		inputTableController2_ = new InputTableController(this);
-		
+		inputFormController_ = new InputFormController(this);
+
 		resultsTableController_ = new ResultsTableController(this);
+		resultsFormController_ = new ResultsFormController(this);
+		
 		internalTableController_ = new InternalTableController(this);
 		topMenuController_ = new TopMenuController(this);
-		metaDataController_ = new MetaDataController(this);
-		
+		configController_ = new ConfigController(this);
 		
 		mainView_.add(topPanelController_.getView(), BorderLayout.NORTH);
 
@@ -71,6 +73,9 @@ public class MainController extends AbstractController {
 
 		mainView_.setJMenuBar(topMenuController_.getMenuBar());
 		setView_(mainView_);
+		
+		instance = this;
+		
 	}
 	
 
@@ -85,7 +90,7 @@ public class MainController extends AbstractController {
 		
 		JOptionPane.showMessageDialog(
 				mainView_, 
-				"Version: " + Config.VERSION,
+				"Version: " + ConfigClient.VERSION,
 				"About Straylight Simulation Client",
 				JOptionPane.INFORMATION_MESSAGE
 				);
@@ -96,26 +101,34 @@ public class MainController extends AbstractController {
 	public void onXMLparsedEvent(XMLparsedEvent event) {
 		  
 		
-		metaDataController_.init(event.metaDataStruct);
+		configController_.init(event.metaDataStruct);
 		
 		tabbedPane_.addTab(
 				"Configuration ",
 				null, 
-				metaDataController_.getView(), 
+				configController_.getView(), 
 				null);
 		
 		
-		inputTableController_.init(event.initializedStruct);
-
+		inputFormController_.init(event.xmlParsed);
 		tabbedPane_.addTab(
-				"Input Table",
+				"Input Form",
 				null, 
-				inputTableController_.getView(), 
+				inputFormController_.getView(), 
+				null);
+		
+		
+
+		resultsFormController_.init(event.xmlParsed);
+		tabbedPane_.addTab(
+				"Results Form",
+				null, 
+				resultsFormController_.getView(), 
 				null);
 		
 
-		resultsTableController_.init(event.initializedStruct);
-
+		
+		resultsTableController_.init(event.xmlParsed);
 		tabbedPane_.addTab(
 				"Results Table ",
 				null, 
@@ -123,8 +136,9 @@ public class MainController extends AbstractController {
 				null);
 
 
-		internalTableController_.init(event.initializedStruct);
-
+		
+		
+		internalTableController_.init(event.xmlParsed);
 		tabbedPane_.addTab(
 				"Internal Table " ,
 				null, 
@@ -135,17 +149,6 @@ public class MainController extends AbstractController {
 	
 	
 	
-	
-	@EventSubscriber(eventClass=InitializedEvent.class)
-	public void onInitializedEvent(InitializedEvent event) {
-
-
-
-
-
-
-		
-	}
 
 
 

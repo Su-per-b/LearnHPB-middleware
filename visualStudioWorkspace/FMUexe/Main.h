@@ -2,16 +2,16 @@
 
 #include "stdafx.h"
 #include <JNAfunctions.h>
-#include <ResultItem.h>
-#include <ResultPrimitive.h>
+#include <ResultOfStep.h>
+#include <ScalarValue.h>
 
 
 
 
-void test5();
+void test1();
 
-void resultCallback(ResultStruct * ResultStruct);
+void resultCallback(ResultOfStepStruct * resultOfStepStruct);
 
 void messageCallback(MessageStruct * messageStruct);
 
-void fmuStateCallback(State fmuState);
+void fmuStateCallback(SimulationStateEnum fmuState);

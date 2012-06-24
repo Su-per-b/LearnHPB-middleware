@@ -10,16 +10,15 @@ import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
-import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.event.action.ClearDebugConsoleAction;
-import com.sri.straylight.client.event.action.LoadAction;
+import com.sri.straylight.client.event.ClearDebugConsoleAction;
+import com.sri.straylight.client.event.SimStateNotify;
+import com.sri.straylight.client.event.SimStateRequest;
 import com.sri.straylight.client.framework.AbstractController;
-import com.sri.straylight.client.model.FmuConnectLocal;
-import com.sri.straylight.client.model.FmuConnectRemote;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+
 
 public class DebugConsoleController  extends AbstractController {
 
@@ -48,9 +47,20 @@ public class DebugConsoleController  extends AbstractController {
 	}
 	
 	
+	@EventSubscriber(eventClass=SimStateRequest.class)
+	public void onSimStateRequest(SimStateRequest event) {
+		outputText ("SimStateRequest: " + event.getPayload().toString());
+	}
+	
+	@EventSubscriber(eventClass=SimStateNotify.class)
+	public void onSimStateRequest(SimStateNotify event) {
+		outputText ("SimStateNotify: " + event.getPayload().toString());
+	}
+	
+	
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
-		outputText (event.resultString);
+		outputText (event.resultOfStep.toString());
 	}
 	
 

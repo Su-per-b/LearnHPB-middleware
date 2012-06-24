@@ -8,7 +8,7 @@ namespace Straylight
 
 	FMU FMUlogger::fmu;
 
-	Logger* FMUlogger::logger; 
+	Logger* FMUlogger::logger_; 
 
 
 	/*********************************************//**
@@ -25,6 +25,12 @@ namespace Straylight
 	*********************************************/
 	FMUlogger::~FMUlogger(void)
 	{
+
+	}
+
+	 void FMUlogger::setLogger(Logger* logger) {
+
+		logger_ = logger;
 
 	}
 
@@ -166,7 +172,7 @@ namespace Straylight
 		if (!instanceName) instanceName = "?";
 		if (!category) category = "?";
 
-		logger->printDebug5("fmuLogger - status:%s - instanceName:%s - category:%s - msg:%s\n", fmiStatusToString(status), instanceName, category, msg);
+		logger_->printDebug5("fmuLogger - status:%s - instanceName:%s - category:%s - msg:%s\n", fmiStatusToString(status), instanceName, category, msg);
 
 		//printf();
 	}

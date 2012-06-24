@@ -170,5 +170,9 @@ double getNominal(ModelDescription* md, fmiValueReference vr);
 double getRealStart(ScalarVariable* scalarVariable, ValueStatus* valueStatus);
 double getRealAttribute(ScalarVariable* scalarVariable, ValueStatus * valueStatus, Att attribute);
 
+double getRealNominal(ScalarVariable* scalarVariable, ValueStatus * valueStatus);
+double getRealMin(ScalarVariable* scalarVariable, ValueStatus * valueStatus);
+double getRealMax(ScalarVariable* scalarVariable, ValueStatus * valueStatus);
+
 #endif // xml_parser_h
 

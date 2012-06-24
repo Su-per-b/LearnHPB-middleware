@@ -14,16 +14,16 @@ import javax.swing.JRadioButton;
 import javax.swing.border.Border;
 
 import com.sri.straylight.client.ConnectTo;
-import com.sri.straylight.client.model.Config;
+import com.sri.straylight.client.model.ConfigClient;
 
 
 
 
 public class SimulationEngineDialog extends JDialog  {
 
-	private Config configModel_;
+	private ConfigClient configModel_;
 	
-	public SimulationEngineDialog(JFrame parent, Config configModel) {
+	public SimulationEngineDialog(JFrame parent, ConfigClient configModel) {
 		super(parent, "Select Simulation engine", true);
 
 		configModel_ = configModel;

@@ -2,6 +2,9 @@ package com.sri.straylight.client.controller;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -9,13 +12,11 @@ import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
-import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.framework.AbstractController;
-import com.sri.straylight.fmuWrapper.event.InitializedEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
-import com.sri.straylight.fmuWrapper.voManaged.Initialized;
+import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 
 
 public class ResultsTableController extends AbstractController {
@@ -28,7 +29,7 @@ public class ResultsTableController extends AbstractController {
 		super(parentController);
 	}
 	
-	public void init(Initialized initializedStruct) {  
+	public void init(XMLparsed xmlParsed) {  
 		
 
 	    JPanel panel = new JPanel();
@@ -38,7 +39,7 @@ public class ResultsTableController extends AbstractController {
 	    
 		Object[][] data = {{}};
 		
-		dataModel_ = new DefaultTableModel(data,initializedStruct.outputVarNames);
+		dataModel_ = new DefaultTableModel(data,xmlParsed.getOutputColumnNames());
 		
 		table_ = new JTable(dataModel_);
 		table_.setPreferredScrollableViewportSize(new Dimension(700, 600));
@@ -59,9 +60,15 @@ public class ResultsTableController extends AbstractController {
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
 
-		Object[] newRow = event.resultItem.getStrings();
-
-		dataModel_.insertRow(1,newRow);
+		Vector<String> resultOuput = event.resultOfStep.getOutputList();
+		
+		double time = event.resultOfStep.getTime();
+		
+		
+		resultOuput.insertElementAt(Double.toString(time), 0);
+		
+		
+		dataModel_.addRow(resultOuput);
 	}
 	
 	

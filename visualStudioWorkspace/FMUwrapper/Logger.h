@@ -2,7 +2,7 @@
 
 
 #include "stdafx.h"
-#include "ResultItem.h"
+#include "ResultOfStep.h"
 #include "structs.h"
 #include "enums.h"
 
@@ -17,7 +17,6 @@ namespace Straylight
 	private:
 
         void (*messageCallbackPtr_)(MessageStruct *);
-
 
 		int debug;  // Control for debug information
 		int debugvs;  // Control for debug information to Output window in Visual Studio
@@ -43,7 +42,7 @@ namespace Straylight
 		void printError(const char* msg);
 		void printfError(const char* str1, const char* str2);
 		void setDebug();
-
+        void printDebugDouble(const char* key, double valueDouble);
 	};
 
 

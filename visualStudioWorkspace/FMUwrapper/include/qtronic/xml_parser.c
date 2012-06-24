@@ -287,11 +287,25 @@ double getNominal(ModelDescription* md, fmiValueReference vr){
 }
 
 double getRealStart(ScalarVariable* scalarVariable, ValueStatus * valueStatus){
-   
 	double valueDouble = getRealAttribute(scalarVariable, valueStatus,att_start);
-
 	return valueDouble;
 }
+
+double getRealNominal(ScalarVariable* scalarVariable, ValueStatus * valueStatus){
+	double valueDouble = getRealAttribute(scalarVariable, valueStatus,att_nominal);
+	return valueDouble;
+}
+
+double getRealMin(ScalarVariable* scalarVariable, ValueStatus * valueStatus){
+	double valueDouble = getRealAttribute(scalarVariable, valueStatus,att_min);
+	return valueDouble;
+}
+
+double getRealMax(ScalarVariable* scalarVariable, ValueStatus * valueStatus){
+	double valueDouble = getRealAttribute(scalarVariable, valueStatus,att_max);
+	return valueDouble;
+}
+
 
 
 double getRealAttribute(ScalarVariable* scalarVariable, ValueStatus * valueStatus, Att attribute){

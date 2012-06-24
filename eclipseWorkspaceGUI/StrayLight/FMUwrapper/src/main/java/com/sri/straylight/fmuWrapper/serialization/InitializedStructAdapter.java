@@ -12,22 +12,23 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.sri.straylight.fmuWrapper.voManaged.Initialized;
+import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 
 
 
 public class InitializedStructAdapter implements 
-JsonSerializer<Initialized>, JsonDeserializer<Initialized> {
+JsonSerializer<XMLparsed>, JsonDeserializer<XMLparsed> {
 
 	@Override
     public JsonElement serialize(
-    		Initialized src, 
+    		XMLparsed src, 
     		Type typeOfSrc, 
     		JsonSerializationContext context) {
         
     	JsonObject result = new JsonObject();
         result.add("type", new JsonPrimitive(src.getClass().getCanonicalName()));
 
+        /*
         JsonArray jsAry = new JsonArray();
 
         for (int j = 0; j < src.outputVarNames.length; j++) {
@@ -40,7 +41,7 @@ JsonSerializer<Initialized>, JsonDeserializer<Initialized> {
 		}
         
         result.add("columnNames", jsAry);
-        
+        */
         
         return result;
     }
@@ -48,20 +49,21 @@ JsonSerializer<Initialized>, JsonDeserializer<Initialized> {
     
     
     @Override
-    public Initialized deserialize(
+    public XMLparsed deserialize(
     		JsonElement jsonElement, 
     		Type typeOfT, 
     		JsonDeserializationContext context)
     
         throws JsonParseException {
     	
-    	Initialized struct = new Initialized();
+    	XMLparsed struct = new XMLparsed();
     	
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         
         JsonArray jsAry = jsonObject.get("columnNames").getAsJsonArray();
         int len = jsAry.size();
         
+        /*
         String[] columnNames = new String[len];
         		
         for(int i=0; i < len; i++) {
@@ -72,7 +74,8 @@ JsonSerializer<Initialized>, JsonDeserializer<Initialized> {
         
         struct.outputVarNames = columnNames;
         
-        	
+        	*/
+        
         return struct;
 
     }

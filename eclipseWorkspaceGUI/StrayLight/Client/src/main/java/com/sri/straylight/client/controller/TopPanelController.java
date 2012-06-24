@@ -12,13 +12,10 @@ import javax.swing.JPanel;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.event.action.ClearDebugConsoleAction;
-import com.sri.straylight.client.event.action.InitAction;
-import com.sri.straylight.client.event.action.LoadAction;
-import com.sri.straylight.client.event.action.RunSimulationAction;
+import com.sri.straylight.client.event.SimStateNotify;
+import com.sri.straylight.client.event.SimStateRequest;
 import com.sri.straylight.client.framework.AbstractController;
-import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
-import com.sri.straylight.fmuWrapper.voNative.State;
+import com.sri.straylight.client.model.SimStateClient;
 
 
 
@@ -26,13 +23,16 @@ import com.sri.straylight.fmuWrapper.voNative.State;
 public class TopPanelController extends AbstractController {
 
 	private final JButton btnClear_ = new JButton("Clear Console");
-	private final JButton btnLoad_ = new JButton("Load");
+	private final JButton btnConnect_ = new JButton("Connect");
+	private final JButton btnxmlParse_ = new JButton("XML Parse");
 	private final JButton btnInit_ = new JButton("Init");
-	private final JButton btnCancel_ = new JButton("Cancel");
+	private final JButton btnRun_ = new JButton("Run");
+	private final JButton btnStop_ = new JButton("Stop");
+	private final JButton btnResume_ = new JButton("Resume");
 
-	private final JButton btnRun_ = new JButton("Run Simulation");
 
-	private State fmuState_ = State.fmuState_level_0_uninitialized;
+
+	private SimStateClient simulationState_ = SimStateClient.level_0_uninitialized;
 	
 	public TopPanelController (AbstractController parentController) {
 
@@ -47,11 +47,12 @@ public class TopPanelController extends AbstractController {
 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panel.setAlignmentY(Component.TOP_ALIGNMENT);
 
-
-		panel.add(btnLoad_);
+		panel.add(btnConnect_);
+		panel.add(btnxmlParse_);
 		panel.add(btnInit_);
 		panel.add(btnRun_);
-		panel.add(btnCancel_);
+		panel.add(btnStop_);
+		panel.add(btnResume_);
 		panel.add(btnClear_);
 
 		bindActions_();
@@ -66,19 +67,28 @@ public class TopPanelController extends AbstractController {
 
 	private void bindActions_() {
 
-		btnLoad_.addActionListener(new ActionListener() {
+		btnConnect_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				btnLoad_.setEnabled(false);
-				EventBus.publish(new LoadAction());
+				requestStateChange_(SimStateClient.level_1_connect_requested);
 			}
 		}
 				);
-
+		
+		btnxmlParse_.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				btnxmlParse_.setEnabled(false);
+				requestStateChange_(SimStateClient.level_2_xmlParse_requested);
+				
+			}
+		}
+				);
+		
 
 		btnInit_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				btnInit_.setEnabled(false);
-				EventBus.publish(new InitAction());
+				requestStateChange_(SimStateClient.level_3_init_requested);
+				
 			}
 
 		}
@@ -87,14 +97,23 @@ public class TopPanelController extends AbstractController {
 		btnRun_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				btnRun_.setEnabled(false);
-				EventBus.publish(new RunSimulationAction());
+				requestStateChange_(SimStateClient.level_4_run_requested);
 			}
 		}
 				);
+		
 
-		btnClear_.addActionListener(new ActionListener() {
+		btnStop_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				EventBus.publish(new ClearDebugConsoleAction());
+				requestStateChange_(SimStateClient.level_5_stop_requested);
+			}
+		}
+				);
+		
+		btnResume_.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				btnResume_.setEnabled(false);
+				requestStateChange_(SimStateClient.level_7_resume_requested);
 			}
 		}
 				);
@@ -102,74 +121,78 @@ public class TopPanelController extends AbstractController {
 	}
 
 
-
-	@EventSubscriber(eventClass=FMUstateEvent.class)
-	public void onFMUstateEvent(FMUstateEvent event) {
-		fmuState_ = event.fmuState;
+	private void requestStateChange_(SimStateClient state_arg)
+	{
+		EventBus.publish(
+				new SimStateRequest(this, state_arg)
+				);	
+		
+	}
+	
+	@EventSubscriber(eventClass=SimStateNotify.class)
+	public void onSimStateNotify(SimStateNotify event) {
+		simulationState_ = event.getPayload();
 		updateGUI_();
 	}
 
 
 	private void updateGUI_() {
 		
-		btnRun_.setEnabled(fmuState_ == State.fmuState_level_5_initializedFMU);
-
-		if (fmuState_ == State.fmuState_cleanedup) {
-			btnLoad_.setEnabled(true);
-		}
-		
-		if (fmuState_ == State.fmuState_level_0_uninitialized) {
-			btnLoad_.setEnabled(true);
+		if (simulationState_ == SimStateClient.level_0_uninitialized) {
+			btnConnect_.setEnabled(true);
+			btnxmlParse_.setEnabled(false);
 			btnInit_.setEnabled(false);
 			btnRun_.setEnabled(false);
-			btnCancel_.setEnabled(false);
+			btnStop_.setEnabled(false);
+			btnResume_.setEnabled(false);
 			
-		} else if (fmuState_ == State.fmuState_level_1_xmlParsed) {
-			btnLoad_.setEnabled(false);
+		}  else if (simulationState_ == SimStateClient.level_1_connect_completed) {
+			btnConnect_.setEnabled(false);
+			btnxmlParse_.setEnabled(true);
+			btnInit_.setEnabled(false);
+			btnRun_.setEnabled(false);
+			btnStop_.setEnabled(false);
+			btnResume_.setEnabled(false);
+		} else if (simulationState_ == SimStateClient.level_2_xmlParse_completed) {
+			btnConnect_.setEnabled(false);
+			btnxmlParse_.setEnabled(false);
 			btnInit_.setEnabled(true);
 			btnRun_.setEnabled(false);
-			btnCancel_.setEnabled(false);
-		} else if (fmuState_ == State.fmuState_level_2_dllLoaded) {
-			btnLoad_.setEnabled(false);
-			btnInit_.setEnabled(false);
-			btnRun_.setEnabled(false);
-			btnCancel_.setEnabled(false);
-		} else if (fmuState_ == State.fmuState_level_3_instantiatedSlaves) {
-			btnLoad_.setEnabled(false);
-			btnInit_.setEnabled(false);
-			btnRun_.setEnabled(false);
-			btnCancel_.setEnabled(false);
-		} else if (fmuState_ == State.fmuState_level_4_initializedSlaves) {
-			btnLoad_.setEnabled(false);
-			btnInit_.setEnabled(false);
-			btnRun_.setEnabled(false);
-			btnCancel_.setEnabled(false);
-		} else if (fmuState_ == State.fmuState_level_5_initializedFMU) {
-			btnLoad_.setEnabled(false);
+			btnStop_.setEnabled(false);
+			btnResume_.setEnabled(false);
+		} else if (simulationState_ == SimStateClient.level_3_init_completed) {
+			btnConnect_.setEnabled(false);
+			btnxmlParse_.setEnabled(false);
 			btnInit_.setEnabled(false);
 			btnRun_.setEnabled(true);
-			btnCancel_.setEnabled(false);
-		} else if (fmuState_ == State.fmuState_runningSimulation) {
-			btnLoad_.setEnabled(false);
+			btnStop_.setEnabled(false);
+			btnResume_.setEnabled(false);
+		} else if (simulationState_ == SimStateClient.level_4_run_completed) {
+			btnConnect_.setEnabled(false);
+			btnxmlParse_.setEnabled(false);
 			btnInit_.setEnabled(false);
 			btnRun_.setEnabled(false);
-			btnCancel_.setEnabled(true);
-			
-		} else if (fmuState_ == State.fmuState_completedSimulation) {
-			btnLoad_.setEnabled(false);
+			btnStop_.setEnabled(true);
+			btnResume_.setEnabled(false);
+		} else if (simulationState_ == SimStateClient.level_4_run_started) {
+			btnConnect_.setEnabled(false);
+			btnxmlParse_.setEnabled(false);
 			btnInit_.setEnabled(false);
-			btnRun_.setEnabled(true);
-			btnCancel_.setEnabled(false);
-			
-		}
-		
-
+			btnRun_.setEnabled(false);
+			btnStop_.setEnabled(true);
+			btnResume_.setEnabled(false);
+		} else if (simulationState_ == SimStateClient.level_5_stop_completed) {
+			btnConnect_.setEnabled(false);
+			btnxmlParse_.setEnabled(false);
+			btnInit_.setEnabled(false);
+			btnRun_.setEnabled(false);
+			btnStop_.setEnabled(false);
+			btnResume_.setEnabled(true);
 	}
-	
-	private void updateDataModel_() {
-
+		
 		
 	}
+
 
 
 }

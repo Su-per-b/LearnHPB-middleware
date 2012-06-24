@@ -2,90 +2,154 @@
 package com.sri.straylight.fmuWrapper.test;
 
 
+
+
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import com.sri.straylight.fmuWrapper.FMU;
-import com.sri.straylight.fmuWrapper.event.FMUeventListener;
-import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
-import com.sri.straylight.fmuWrapper.event.InitializedEvent;
-import com.sri.straylight.fmuWrapper.event.MessageEvent;
+import org.bushe.swing.event.annotation.AnnotationProcessor;
+import org.bushe.swing.event.annotation.EventSubscriber;
+
+import com.sri.straylight.fmuWrapper.FMUcontroller;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
-import com.sri.straylight.fmuWrapper.voNative.State;
+import com.sri.straylight.fmuWrapper.event.SimStateServerNotify;
+import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
+import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
+import com.sri.straylight.fmuWrapper.voManaged.ResultOfStep;
+import com.sri.straylight.fmuWrapper.voManaged.SimStateServer;
+import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 
-
-
-/**
- * Unit test for FMU inputs
- */
-public class TestFMU 
-extends TestCase
-{
-	private static String unzipFolder = "C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop";
-	private static String testFmuFile = "E:\\SRI\\modelica-projects\\fmus\\no_licence_needed\\LearnGB_VAVReheat_ClosedLoop.fmu";
-	private static String nativeLibFolder = "E:\\SRI\\straylight_repo\\visualStudioWorkspace\\bin\\Debug";
-
-	public void testMultiThreadedInit() {
-
-		FMU fmu = new FMU(testFmuFile, nativeLibFolder);
-
-		State s = fmu.getFmuState();
+public class TestFMU extends TestCase {
+	
+	
+	final CyclicBarrier mainBarrier = new CyclicBarrier(2);
+	private static SimStateServer nextStateExpected;
+	private FMUcontroller fmuController_;
+	
+	
+	public void testChangeInput() {
 		
-		assert (s.equals(State.fmuState_level_0_uninitialized) );
+		AnnotationProcessor.process(this);
 		
-		final CyclicBarrier finishBarrier = new CyclicBarrier(2);  // +1 for the main thread
-
-
-
-
-		InitThread task = new InitThread(fmu);
+		FMUwrapperConfig config = FMUwrapperConfig.load();
+		fmuController_ = new FMUcontroller(config);
+		
+		InitThread task = new InitThread();
 		task.start();
-
-
-		try {
-			finishBarrier.await();
-		} catch (InterruptedException
-				| BrokenBarrierException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		assert (fmu.getFmuState() == State.fmuState_level_5_initializedFMU);
+		awaitOnBarrier(mainBarrier);
+		
 
 	}
+	
+	
 
 
-	class InitThread extends  Thread  
+	
+	public class InitThread  extends Thread
 	{
-		private FMU fmu_;
-
-		public InitThread(FMU fmu){
-			fmu_ = fmu;
+		
+		
+		final CyclicBarrier barrier = new CyclicBarrier(2);
+		
+		
+		public InitThread(){
+			AnnotationProcessor.process(this);
 		}
 
 		public void run()
 		{
-			Thread.currentThread().setName("Task FMU init");
-			fmu_.initCallbacks();
-			fmu_.initXML(unzipFolder);
-			fmu_.initSimulation(); 
+			Thread.currentThread().setName("InitThread");
+			
+			TestFMU.nextStateExpected = SimStateServer.simStateServer_1_connect_completed;
+			fmuController_.connect();
+			awaitOnBarrier(barrier);
+			
+			Thread t = Thread.currentThread();
+		    String threadName = t.getName();
+		    assert (threadName.equals("InitThread"));
+		    
+		    TestFMU.nextStateExpected = SimStateServer.simStateServer_2_xmlParse_completed;
+			fmuController_.xmlParse();
+			awaitOnBarrier(barrier);
+			
+			TestFMU.nextStateExpected = SimStateServer.simStateServer_3_init_completed;
+			fmuController_.init();
+			awaitOnBarrier(barrier);
+			//fmuController_.run();
+			fmuController_.doOneStep();
+			awaitOnBarrier(barrier);
+			
+			fmuController_.changeInput(56106, 22.5);
+			//awaitOnBarrier(barrier);
+			fmuController_.doOneStep();
+			awaitOnBarrier(barrier);
+			
+			awaitOnBarrier(mainBarrier);
+			
 		}
+		
+		
+		@EventSubscriber(eventClass=XMLparsedEvent.class)
+		public void onXMLparsedEvent(XMLparsedEvent event) {
+			
+			Thread t = Thread.currentThread();
+		    String threadName = t.getName();
+		    assert (threadName.equals("name=AWT-EventQueue-0"));
+		    
+		    XMLparsed xmlParsed = event.xmlParsed;
+			
+			//assert (state.equals(ValueObjects.nextStateExpected) );
+			//awaitOnBarrier(barrier);
 
+		}
+		
+		@EventSubscriber(eventClass=SimStateServerNotify.class)
+		public void onSimStateNotify(SimStateServerNotify event) {
+			Thread t = Thread.currentThread();
+		    String threadName = t.getName();
+		    
+		    assert (threadName.equals("name=AWT-EventQueue-0"));
+		    
+			SimStateServer state = event.getPayload();
+			
+			assert (state.equals(TestFMU.nextStateExpected) );
+			awaitOnBarrier(barrier);
 
+		}
+		
+		
+		@EventSubscriber(eventClass=ResultEvent.class)
+		public void onResultEvent(ResultEvent event) {
+			
+			Thread t = Thread.currentThread();
+		    String threadName = t.getName();
+		    
+		    assert (threadName.equals("name=AWT-EventQueue-0"));
+		    ResultOfStep resultOfStep = event.resultOfStep;
+		    
+
+		    
+		    String str1 = resultOfStep.inputToString();
+		    System.out.println("input=" + str1);
+		    
+		    String str2 = resultOfStep.toString();
+		    System.out.println("output=" + str2);
+		    
+		    
+		    awaitOnBarrier(barrier);
+		}
 	}
-
-
-
+	
+	
+	
 	/** Calls barrier.await and supresses all its checked exceptions */
-	private void awaitOnBarrier(CyclicBarrier barrier, int timeoutSeconds) {
+	private void awaitOnBarrier(CyclicBarrier barrier) {
 		try {
-			barrier.await(timeoutSeconds, TimeUnit.SECONDS);
+			barrier.await(500, TimeUnit.SECONDS);
 		}
 		catch (InterruptedException e) {
 			e.printStackTrace();
@@ -100,28 +164,9 @@ extends TestCase
 			throw new RuntimeException(e);
 		}
 	}
-
-
-	/**
-	 * Create the test case
-	 *
-	 * @param testName name of the test case
-	 */
-	public TestFMU( String testName )
-	{
-		super( testName );
-	}
-
-	/**
-	 * @return the suite of tests being tested
-	 */
-	public static Test suite()
-	{
-
-		return new TestSuite( TestFMU.class );
-	}
-
-
-
-
+	
+	
+	
+	
 }
+

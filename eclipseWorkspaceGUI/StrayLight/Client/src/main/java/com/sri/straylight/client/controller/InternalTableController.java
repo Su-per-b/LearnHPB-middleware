@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 
 import com.sri.straylight.client.framework.AbstractController;
-import com.sri.straylight.fmuWrapper.voManaged.Initialized;
+import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 
 public class InternalTableController  extends AbstractController {
 	
@@ -26,7 +26,7 @@ public class InternalTableController  extends AbstractController {
 	}
 	
 	
-	public void init(Initialized initializedStruct) {  
+	public void init(XMLparsed initializedStruct) {  
 		
 	    JPanel panel = new JPanel();
 	    
@@ -35,7 +35,7 @@ public class InternalTableController  extends AbstractController {
 	    
 		dataModel_ = new DefaultTableModel (
 			initializedStruct.getInternalData(),
-			initializedStruct.getColumnNames()
+			initializedStruct.getInternalColumnNames()
 		);
 		
 		table_ = new JTable(dataModel_);

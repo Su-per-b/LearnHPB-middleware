@@ -4,8 +4,8 @@
 
 
 	<unzipFolderBase>C:\Temp</unzipFolderBase>
-	<testFmuFile>E:\SRI\modelica-projects\fmus\no_licence_needed\LearnGB_VAVReheat_ClosedLoop.fmu</testFmuFile>
+	<unzipFolder>C:\Temp\LearnGB_0v2_VAVReheat_ClosedLoop</unzipFolder>
+	<nativeLibFolder>E:\SRI\straylight_repo\visualStudioWorkspace\bin\Debug</nativeLibFolder>
 	
-	<dllFolder>E:\SRI\straylight_repo\visualStudioWorkspace\bin\Debug</dllFolder>
 	
 </config>

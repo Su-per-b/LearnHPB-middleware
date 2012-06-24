@@ -16,8 +16,8 @@ namespace Straylight
 	Logger::Logger(void)
 	{
 		messageCallbackPtr_ = NULL;
-		debug = 0;  // Control for debug information
-		debugvs = 1;  // Control for debug information to Output window in Visual Studio
+		debug = 1;  // Control for debug information
+		debugvs = 0;  // Control for debug information to Output window in Visual Studio
 	}
 
 
@@ -34,6 +34,7 @@ namespace Straylight
 	void Logger::registerMessageCallback(void (*callbackPtrArg)(MessageStruct *))
 	{
 		messageCallbackPtr_ = callbackPtrArg;
+		printDebug(_T("Logger::registerMessageCallback"));
 	}
 
 
@@ -77,6 +78,21 @@ namespace Straylight
 		printDebugHelper( _T("%s\n"), msg);
 	}
 
+
+	void Logger::printDebugDouble(const char* key, double valueDouble) {
+
+		string valueStr;
+		{ 
+			ostringstream theStream;
+			theStream << valueDouble;
+			valueStr = theStream.str();
+		}
+
+		printDebugHelper(key, valueStr.c_str());
+
+	}
+
+
 	//////////////////////////////////////////////////////////////////////////////
 	/// Print formatted debug message
 	///
@@ -84,37 +100,16 @@ namespace Straylight
 	///\param str2 String variable to be printed for debugging
 	//////////////////////////////////////////////////////////////////////////////
 	void Logger::printDebug2(const char* str1, const char* str2){
-		if (debug == 1)
-		{
-			fprintf(stdout, _T("Debug: "));
-			fprintf(stdout, str1, str2);
-		}
-
-		if (debugvs > 0)
-		{
-			printDebugHelper(str1, str2);
-		}
-
+		printDebugHelper(str1, str2);
 	}
 
 	void Logger::printDebug5(const char* str1, const char* str2, const char* str3,
 		const char* str4, const char* str5) {
 
+		char msg[256];
 
-		if (debug == 1)
-		{
-			fprintf(stdout, _T("Debug: "));
-			fprintf(stdout, str1, str2, str3, str4, str5);
-		}
-
-		if (debugvs > 0)
-		{
-			char msg[256];
-
-			sprintf (msg, str1, str2, str3, str4, str5);
-			printDebugHelper(_T("%s\n"), msg);
-
-		}
+		sprintf (msg, str1, str2, str3, str4, str5);
+		printDebugHelper(_T("%s\n"), msg);
 
 	}
 
@@ -125,10 +120,12 @@ namespace Straylight
 	//////////////////////////////////////////////////////////////////////////////
 	void Logger::printDebugHelper(const char* str1, const char* str2 ) {
 		
+	
 
 		char msg[256];
 
 		sprintf (msg, str1, str2);
+
 
 		if (messageCallbackPtr_ != NULL) {
 

@@ -2,26 +2,17 @@
 
 
 
-int doOneStep()
-{
-   mainController->doOneStep();
-   return 0;
-}
-
-void deleteMessageStruct(MessageStruct * messageStruct)
-{
-   //fmuWrapper->doOneStep();
-   //delete messageStruct;
+void requestStateChange (SimStateNative simStateNative) {
+	mainController->requestStateChange(simStateNative);
 }
 
 
-
-MetaDataStruct * getMetaData() {
-	return mainController->getMetaData();
+ConfigStruct * getConfig() {
+	return mainController->getConfig();
 }
 
-void setMetaData(MetaDataStruct * metaDataStruct) {
-	mainController->setMetaData(metaDataStruct);
+void setConfig(ConfigStruct * configStruct) {
+	mainController->setConfig(configStruct);
 }
 
 
@@ -33,16 +24,9 @@ void onMessageCallbackC(MessageStruct * messageStruct)
 
 
 
-void end() {
+void cleanup() {
 
-	mainController->printSummary();
-
-	//Straylight::Logger * logger = fmuWrapper->logger_;
-
-	//TODO: Fix this - the event should be fired *after* the object is deleted
-	mainController->setState(fmuState_cleanedup);
-	delete mainController;
-
+	mainController->cleanup();
 }
 
 
@@ -56,23 +40,7 @@ int forceCleanup()
 
 int run()
 {
-
-
-	mainController->setState(fmuState_runningSimulation);
-
-	// enter the simulation loop
-	while (!mainController->isSimulationComplete()) {
-		mainController->doOneStep();
-
-		ResultStruct *  ResultStruct = mainController->getResultStruct();
-
-		if(resultCallbackPtr_) {
-			resultCallbackPtr_(ResultStruct);
-		}
-	}
-
-	mainController->setState(fmuState_completedSimulation);
-
+	mainController->run();
    return 0;
 }
 
@@ -80,50 +48,44 @@ int run()
 
 
 
-ScalarVariableStruct *  getScalarVariableStructs() {
 
-	/*
-	int count = fmuWrapper->getVariableCount();
-	ScalarVariableStruct *ptr = new ScalarVariableStruct[count];
+ScalarVariableRealStruct *  getScalarVariableInputStructs() {
 
-	int i = 0;
-	
-	vector<ScalarVariableStruct*> list = fmuWrapper->getScalarVariableStructs();
+	Straylight::MainDataModel * model = mainController->getMainDataModel();
+	return model->getSVinputArray();
+}
 
-	vector<ScalarVariableStruct*>::iterator list_iter = list.begin();
+ScalarVariableRealStruct *  getScalarVariableOutputStructs() {
 
-	for(list_iter; 
-		list_iter != list.end(); list_iter++)
-	{
-		ScalarVariableStruct * svm = *list_iter;
-		ptr[i]  = *svm;
-		i++;
-	}
+	Straylight::MainDataModel * model = mainController->getMainDataModel();
+	return model->getSVoutputArray();
+}
 
+ScalarVariableStruct *  getScalarVariableInternalStructs() {
 
-
-
-	return ptr;
-	*/
-
-
-		vector<ScalarVariableStruct*> vec = mainController->getScalarVariableStructs();
-		int count = vec.size();
-
-		ScalarVariableStruct *ptr5 = new ScalarVariableStruct[count];
-
- 
-		for(int i = 0; i < count; i++)
-			ptr5[i] = *vec[i];
-
-
-		return ptr5;
+	Straylight::MainDataModel * model = mainController->getMainDataModel();
+	return model->getSVinternalArray();
 }
 
 
- int getVariableCount() {
-	 return mainController->getVariableCount();
- }
+
+
+int getInputVariableCount() {
+	 Straylight::MainDataModel * model = mainController->getMainDataModel();
+	 return model->getInputVariableCount();
+}
+
+int getOutputVariableCount() {
+
+	 Straylight::MainDataModel * model = mainController->getMainDataModel();
+	 return model->getOutputVariableCount();
+
+}
+
+int getInternalVariableCount() {
+	 Straylight::MainDataModel * model = mainController->getMainDataModel();
+	 return model->getInternalVariableCount();
+}
 
 
 int isSimulationComplete () {
@@ -132,31 +94,33 @@ int isSimulationComplete () {
 
 
 
-void initCallbacks (
+void connect (
 	void (*messageCallbackPtr)(MessageStruct *), 
-	void (*resultCallbackPtr)(ResultStruct *),
-	void (*stateChangeCallbackPtr)(State )
-	
+	void (*resultCallbackPtr)(ResultOfStepStruct *),
+	void (*stateChangeCallbackPtr)(SimStateNative )
 	)
 {	
-	 messageCallbackPtr_ = messageCallbackPtr;
-	 resultCallbackPtr_ = resultCallbackPtr;
-	 stateChangeCallbackPtr_ = stateChangeCallbackPtr;
 
-	 mainController = new Straylight::MainController( &onMessageCallbackC, stateChangeCallbackPtr_);
+	 mainController = new Straylight::MainController();
+
+	 mainController->connect ( 
+		 messageCallbackPtr, 
+		 resultCallbackPtr,
+		 stateChangeCallbackPtr
+		 );
 
 }
 
-void initXML (char * unzipFolder)
+void xmlParse (char * unzipFolder)
 {
-	int result = mainController->parseXML(unzipFolder);
+	int result = mainController->xmlParse(unzipFolder);
 }
 
 
-void initSimulation ()
+void init ()
 {
 	int result2 = mainController->loadDll();
-	mainController->simulateHelperInit();
+	mainController->init();
 }
 
 
@@ -164,10 +128,18 @@ void initSimulation ()
 
 
 
- ResultStruct * getResultStruct ()
+ ResultOfStepStruct * getResultStruct ()
 {
 	return mainController->getResultStruct();
 }
 
 
 
+ fmiStatus changeInput (int idx, double value) {
+	 return mainController->changeInput(idx,value);
+ }
+
+ void doOneStep () {
+	 return mainController->doOneStep();
+ }
+ 

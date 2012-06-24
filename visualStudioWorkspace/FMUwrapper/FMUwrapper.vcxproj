@@ -101,11 +101,11 @@
     <ClInclude Include="include\qtronic\fmiPlatformTypes.h" />
     <ClInclude Include="include\qtronic\stack.h" />
     <ClInclude Include="Logger.h" />
-    <ClInclude Include=".\MetaDataFactory.h" />
-    <ClInclude Include="ResultItem.h" />
-    <ClInclude Include="ResultPrimitive.h" />
+    <ClInclude Include=".\Config.h" />
+    <ClInclude Include=".\ResultOfStep.h" />
+    <ClInclude Include=".\ScalarValue.h" />
     <ClInclude Include="include\qtronic\xml_parser.h" />
-    <ClInclude Include=".\ScalarVariableFactory.h" />
+    <ClInclude Include="MainDataModel.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="structs.h" />
     <ClInclude Include="Utils.h" />
@@ -124,11 +124,11 @@
     <ClCompile Include="MainController.cpp" />
     <ClCompile Include="include\qtronic\stack.c" />
     <ClCompile Include="Logger.cpp" />
-    <ClCompile Include=".\MetaDataFactory.cpp" />
-    <ClCompile Include="ResultItem.cpp" />
-    <ClCompile Include="ResultPrimitive.cpp" />
+    <ClCompile Include=".\Config.cpp" />
+    <ClCompile Include=".\ResultOfStep.cpp" />
+    <ClCompile Include=".\ScalarValue.cpp" />
     <ClCompile Include="include\qtronic\xml_parser.c" />
-    <ClCompile Include=".\ScalarVariableFactory.cpp" />
+    <ClCompile Include="MainDataModel.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>

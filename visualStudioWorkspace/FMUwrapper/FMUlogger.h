@@ -12,7 +12,7 @@ namespace Straylight
 
 	//private member variables
 	private:
-
+		static Logger* logger_;
 
 	// public functions
 	public:
@@ -25,7 +25,7 @@ namespace Straylight
 
 		static FMU fmu; // the fmu to simulate
 
-		static Logger* logger; 
+		static void setLogger(Logger* logger);
 
 	//private functions
 	private:

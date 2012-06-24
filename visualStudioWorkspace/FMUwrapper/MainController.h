@@ -4,14 +4,13 @@
 
 #include "stdafx.h"
 
-#include "ResultItem.h"
+#include "ResultOfStep.h"
 #include "Logger.h"
 #include "FMUlogger.h"
 #include "structs.h"
 #include "enums.h"
-#include "MetaDataFactory.h"
-#include "ScalarVariableFactory.h";
-
+#include "Config.h"
+#include "MainDataModel.h"
 
 using namespace std;
 
@@ -27,66 +26,75 @@ namespace Straylight
 		char* unzipFolderPath_;
 		char* xmlFilePath_;
 		char* dllFilePath_;
-		FMU* fmuPointer_;  // the fmu to simulate
+		FMU* fmu_;  // the fmu to simulate
 		double time_;
 		fmiStatus fmiStatus_;				// Zuo: add stauus for fmi
 		int nSteps_;
 		fmiComponent fmiComponent_;                  // instance of the fmu 
-		fmiBoolean loggingOn_;
+		fmiBoolean isLoggingEnabled_;
 
 		FMUlogger fmuLogger_;
-		void (*stateChangeCallbackPtr_)(State );
-		State state_;
+		void (*stateChangeCallbackPtr_)(SimStateNative );
+        void (*resultCallbackPtr_)(ResultOfStepStruct *);
 
-		vector<ScalarVariableStruct*> scalarVariables_;
-		vector<ScalarVariableStruct*> scalarVariableOutput_;
+		SimStateNative state_;
 
-		ResultItem* resultItem_;
+		ResultOfStep* resultOfStep_;
 		int variableCount_;
-		MetaDataStruct * metaDataStruct_;
+		ConfigStruct * configStruct_;
 
+		MainDataModel * mainDataModel_;
 	// public functions
 	public:
-		MainController(
-			void (*messageCallbackPtr)(MessageStruct *), 
-			void (*stateChangeCallbackPtr)(State )
-			);
 
+		MainController(void);
 		~MainController(void);
 
-		void doOneStep();
+		void connect(
+			void (*messageCallbackPtr)(MessageStruct *), 
+			void (*resultCallbackPtr)(ResultOfStepStruct *),
+			void (*stateChangeCallbackPtr)(SimStateNative )
+			);
 
-		int getVariableCount();
+
+		void MainController::requestStateChange (SimStateNative simStateNative);
+
 		const char * getVariableDescription(int idx);
 		const char * getVariableName(int idx);
 
 		int isSimulationComplete();
 		int loadDll();
-		int parseXML(char* unzipfolder);
+		int xmlParse(char* unzipfolder);
 		void printSummary();
-		int simulateHelperInit();
+		int init();
 
 		void getModuleFolderPath(_TCHAR * szDir);
 
-		ResultStruct * getResultStruct();
-		void setState(State newState);
-		State getState();
+		ResultOfStepStruct * getResultStruct();
+
+		SimStateNative getState();
 
 		void setTimeStepDelta(double timeStepDelta);
 		void setTimeEnd(double timeEnd);
 
-		MetaDataStruct * getMetaData();
+		ConfigStruct * getConfig();
 
-		vector<ScalarVariableStruct*> getScalarVariableStructs();
 		Logger* logger_;
 
-		void setMetaData(MetaDataStruct * metaDataStruct);
+		void setConfig(ConfigStruct * configStruct);
 
 		double getStopTime();
 		double getStartTime();
 		double getStepDelta();
 
+		MainDataModel * getMainDataModel();
+
+		void run();
+		void stop();
+        void cleanup();
 		
+		fmiStatus changeInput(int idx, double value);
+        void doOneStep();
 
 	//private functions
 	private:
@@ -95,7 +103,8 @@ namespace Straylight
 		char* getXmlFilePath();
 		void* getAdr(const char*);
 		void extractVariables();
-
+        void notifyStateChange_(SimStateNative newState);
+        void doOneStep_();
 
 	};
 
