@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bushe.swing.event.EventBus;
+import org.bushe.swing.event.annotation.AnnotationProcessor;
 
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
@@ -71,10 +72,12 @@ public class FMUcontroller  {
 	
 	public FMUcontroller(FMUwrapperConfig fmuWrapperConfig) {
 		fmuWrapperConfig_ = fmuWrapperConfig;
+		AnnotationProcessor.process(this);
 	}
 	
 	public FMUcontroller() {
 		fmuWrapperConfig_ = FMUwrapperConfig.load();
+		AnnotationProcessor.process(this);
 	}
 	
 	
@@ -142,8 +145,10 @@ public class FMUcontroller  {
 			notifyStateChange_(SimStateServer.simStateServer_4_run_started);
 		} else if (simStateNative == SimStateNative.simStateNative_4_run_completed) {
 			notifyStateChange_(SimStateServer.simStateServer_4_run_completed);
-		} else if (simStateNative == SimStateNative.simStateNative_5_stop_completed) {
-			notifyStateChange_(SimStateServer.simStateServer_5_stop_completed);
+		}else if (simStateNative == SimStateNative.simStateNative_e_error) {
+			notifyStateChange_(SimStateServer.simStateServer_e_error);
+		} else if (simStateNative == SimStateNative.simStateNative_3_ready) {
+			notifyStateChange_(SimStateServer.simStateServer_3_ready);
 		}
 		
 		
@@ -200,7 +205,7 @@ public class FMUcontroller  {
 
 	public void init() {
 		jnaFMUWrapper_.init();
-		notifyStateChange_(SimStateServer.simStateServer_3_init_completed);
+		//notifyStateChange_(SimStateServer.simStateServer_3_init_completed);
 	}
 
 
@@ -245,33 +250,6 @@ public class FMUcontroller  {
 		jnaFMUWrapper_.run();
 	}
 
-//	public void forceCleanup() {
-//
-//		if (simulationStateNative_ == SimStateNative.fmuState_level_5_initializedFMU ||
-//				simulationStateNative_ == SimStateNative.fmuState_error
-//				) {
-//
-//			jnaFMUWrapper_.forceCleanup();
-//			simulationStateNative_ = SimStateNative.fmuState_cleanedup;
-//			
-//			//SimulationStateEvent event = new SimulationStateEvent(this);
-//			//event.simulationState = SimulationState.cleanedup;
-//			//fmuEventDispatacher.fireEvent(event);
-//			
-//			notifyStateChange_(SimStateServer.level_4_run_cleanedup);
-//			
-//
-//		} else if (simulationStateNative_ == SimStateNative.fmuState_level_1_xmlParsed ||
-//				simulationStateNative_ == SimStateNative.fmuState_level_2_dllLoaded ||
-//				simulationStateNative_ == SimStateNative.fmuState_level_3_instantiatedSlaves ||
-//				simulationStateNative_ == SimStateNative.fmuState_level_4_initializedSlaves 
-//				)
-//		{
-//			cleanupWhenPossible_ = true;
-//
-//		}
-//
-//	}
 
 
 
@@ -289,14 +267,10 @@ public class FMUcontroller  {
 
 
 
-	public void changeInput(int idx, double value) {
-		fmiStatus status = jnaFMUWrapper_.changeInput(idx, value);
+	public void setScalarValueReal(int idx, double value) {
+		fmiStatus status = jnaFMUWrapper_.setScalarValueReal(idx, value);
 	}
 
-	public void doOneStep() {
-		jnaFMUWrapper_.doOneStep();
-		
-	}
 
 	
 

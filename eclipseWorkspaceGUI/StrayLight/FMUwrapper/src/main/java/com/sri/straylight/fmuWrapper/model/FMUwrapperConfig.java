@@ -1,6 +1,7 @@
 package com.sri.straylight.fmuWrapper.model;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -16,9 +17,11 @@ public class FMUwrapperConfig {
 	//public double timeDelta;
 	//public double timeEnd;
 	public String unzipFolderBase;
+	public String unzippedFMU;
 	public String unzipFolder;
 	public String nativeLibFolder;
-//	public String testFmuFile;
+
+
 	
 	
 	//public String unzipFolder = "C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop";
@@ -30,27 +33,55 @@ public class FMUwrapperConfig {
 		System.out.println( "Operating system detected: " + theOs);
 		
 		
-		URL configFileUrl = ConfigHelper.class.getClassLoader().getResource(configFile_);
+		URL configFileUrl = FMUwrapperConfig.class.getClassLoader().getResource(configFile_);
 
 		XStream xStream = new XStream();
 		xStream.alias("config", com.sri.straylight.fmuWrapper.model.FMUwrapperConfig.class);
+		FMUwrapperConfig config;
 		
 		try {
 			FileInputStream fi = new FileInputStream (configFileUrl.getFile());
-			FMUwrapperConfig config = (FMUwrapperConfig)xStream.fromXML(fi);
+			config = (FMUwrapperConfig)xStream.fromXML(fi);
 			fi.close();
 			
-			return config;
+			
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
-		return null;
+
+		
+		try {
+			File file = new File (".");
+			String currentDirectory = file.getCanonicalPath();
+			
+			String complexUnzipFolderBase = currentDirectory + config.unzipFolderBase;// + config.unzippedFMU;
+			
+			File file2 = new File (complexUnzipFolderBase + "\\.");
+			String simpleUnzipFolderBase = file2.getCanonicalPath();
+			
+			config.unzipFolderBase = simpleUnzipFolderBase;
+			config.unzipFolder = simpleUnzipFolderBase + "\\" + config.unzippedFMU;
+			
+
+			   
+			   
+			 }catch(Exception e) {
+				 System.out.println("Exceptione is ="+e.getMessage());
+				 return null;
+			 }
+		
+		
+
+		return config;
+		
 	}
 	
 	public static void make() {
@@ -61,7 +92,7 @@ public class FMUwrapperConfig {
 		
 		//serialize
 		String xmlStr = xStream.toXML(config);
-		URL configFileUrl = ConfigHelper.class.getClassLoader().getResource(configFile_);
+		URL configFileUrl = FMUwrapperConfig.class.getClassLoader().getResource(configFile_);
 		String filePath = configFileUrl.getFile();
 		
        	int idx = filePath.lastIndexOf(".");

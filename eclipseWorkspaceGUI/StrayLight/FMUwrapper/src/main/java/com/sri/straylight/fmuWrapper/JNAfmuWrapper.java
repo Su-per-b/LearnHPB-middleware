@@ -44,7 +44,7 @@ public interface JNAfmuWrapper extends Library {
 	
 	public void xmlParse(String unzipFolder);
 	
-	public void init();
+	public int init();
 	
 	public int isSimulationComplete();
 	
@@ -73,7 +73,7 @@ public interface JNAfmuWrapper extends Library {
 
 
 
-	public fmiStatus changeInput(int idx, double value);
+	public fmiStatus setScalarValueReal(int idx, double value);
 
 
 }

@@ -10,24 +10,24 @@ namespace Straylight
 	class FMUlogger
 	{
 
-	//private member variables
+		//private member variables
 	private:
 		static Logger* logger_;
 
-	// public functions
+		// public functions
 	public:
 		FMUlogger(void);
 		~FMUlogger(void);
 
 
 		static void log(fmiComponent c, fmiString instanceName, fmiStatus status,
-						fmiString category, fmiString message, ...);
+			fmiString category, fmiString message, ...);
 
 		static FMU fmu; // the fmu to simulate
 
 		static void setLogger(Logger* logger);
 
-	//private functions
+		//private functions
 	private:
 
 		static const char* fmiStatusToString(fmiStatus status);

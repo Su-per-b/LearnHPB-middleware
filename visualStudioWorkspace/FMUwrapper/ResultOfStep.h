@@ -13,15 +13,13 @@ extern "C"
 
 
 typedef struct  {
-	  double time;
+	double time;
 
-	//  DoubleArrayStruct testStruct;
+	double  * input;
+	int inputLength;
 
-	  double  * input;
-	  int inputLength;
-
-	  double  * output;
-	  int outputLength;
+	double  * output;
+	int outputLength;
 
 } ResultOfStepStruct;
 
@@ -39,7 +37,7 @@ namespace Straylight
 	public:
 		vector<ScalarValue *> svListOutput;
 		vector<ScalarValue *> svListInput;
-		
+
 		double time_;
 
 
@@ -48,11 +46,11 @@ namespace Straylight
 
 		ResultOfStep(double time);
 		~ResultOfStep(void);
-	//	void setTime(double time);
+		//	void setTime(double time);
 
 		void addValue(ScalarValue * scalarValue);
 		void addValueIn(ScalarValue * scalarValue);
-	    char * getString();
+		char * getString();
 
 		ResultOfStepStruct* toStruct();
 

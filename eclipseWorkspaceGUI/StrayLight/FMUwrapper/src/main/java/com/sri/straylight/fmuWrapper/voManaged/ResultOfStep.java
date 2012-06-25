@@ -35,6 +35,11 @@ public class ResultOfStep {
 		return convertToString(output_);
 	}
 	
+	public double[] getInput() {
+		
+		return input_;
+	}
+	
 	public Vector<String> getInputList() {
 		
 		return convertToString(input_);

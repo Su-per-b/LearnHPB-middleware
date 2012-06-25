@@ -6,7 +6,7 @@
 #define BUFSIZE 4096
 #define XML_FILE_STR  "\\modelDescription.xml"
 #define DLL_DIR_STR   "\\binaries\\win32\\"
-//#define ZLIB_WINAPI
+
 
 
 namespace Straylight
@@ -14,8 +14,8 @@ namespace Straylight
 
 
 	/*********************************************//**
-	* Default constructor. 
-	*********************************************/
+												   * Default constructor. 
+												   *********************************************/
 	MainController::MainController()
 	{
 
@@ -25,8 +25,8 @@ namespace Straylight
 
 
 	/*********************************************//**
-* Destructor. Frees memory and releases FMU DLL.
-*********************************************/
+												   * Destructor. Frees memory and releases FMU DLL.
+												   *********************************************/
 	MainController::~MainController(void)
 	{
 
@@ -46,45 +46,54 @@ namespace Straylight
 		delete logger_;
 	}
 
-	
+
 	void MainController:: connect(
 		void (*messageCallbackPtr)(MessageStruct *),
 		void (*resultCallbackPtr)(ResultOfStepStruct *),
 		void (*stateChangeCallbackPtr)(SimStateNative )
 		) {
 
-		fmu_ = new FMU();
-		logger_ = new Logger();
-		logger_->registerMessageCallback(messageCallbackPtr);
+			fmu_ = new FMU();
+			logger_ = new Logger();
+			logger_->registerMessageCallback(messageCallbackPtr);
 
-		resultCallbackPtr_ = resultCallbackPtr;
-		stateChangeCallbackPtr_ = stateChangeCallbackPtr;
+			//logger_->printError(_T("test Error"));
+
+			resultCallbackPtr_ = resultCallbackPtr;
+			stateChangeCallbackPtr_ = stateChangeCallbackPtr;
 
 
-		FMUlogger::setLogger(logger_);
+			FMUlogger::setLogger(logger_);
+			mainDataModel_ = new MainDataModel(logger_);
+			mainDataModel_->setFMU(fmu_);
 
-
-		
-		notifyStateChange_( simStateNative_0_uninitialized );
+			setState_( simStateNative_0_uninitialized );
 
 	}
-		
+
 
 
 	void MainController::requestStateChange (SimStateNative newState) {
 
-		if (state_ != newState) {
-			if (state_ == simStateNative_4_run_started &&
-				newState == simStateNative_5_stop_requested) {
+
+
+		switch (newState) {
+
+		case simStateNative_5_stop_requested :
+			if (state_ == simStateNative_4_run_started) {
 				state_ = newState;
 			}
-			if (state_ == simStateNative_5_stop_completed &&
-				newState == simStateNative_7_resume_requested) {
-				state_ = newState;
-				notifyStateChange_(simStateNative_7_resume_completed);
-				run();
+			break;
+		case simStateNative_5_step_requested :
+			if (state_ == simStateNative_3_ready) {
+				state_ = simStateNative_5_step_requested;
+				doOneStep();
+				setState_(simStateNative_3_ready);
 			}
+
+			break;
 		}
+
 	}
 
 
@@ -95,7 +104,7 @@ namespace Straylight
 		//Straylight::Logger * logger = fmuWrapper->logger_;
 
 		//TODO: Fix this - the event should be fired *after* the object is deleted
-		notifyStateChange_(simStateNative_4_run_cleanedup);
+		setState_(simStateNative_4_run_cleanedup);
 
 	}
 
@@ -110,44 +119,9 @@ namespace Straylight
 		return configStruct_->stepDelta;
 	}
 
-	fmiStatus MainController::changeInput(int idx, double value) {
-
-		ScalarValue * scalarValue = new ScalarValue(idx);
-
-		fmiReal realNumber1;
-		fmiReal realNumber2;
-		fmiReal realNumber3;
-
-		fmiStatus status1;
-        fmiStatus status2;
-        fmiStatus status3;
-
-		realNumber1 = scalarValue->getRealNumber();
-		status1 = scalarValue->getStatus();
-
-		if (status1 != fmiOK) {
-			logger_->printError(_T("MainController::changeInput - error reading initial real value: " ));
-			return status1;
-		} else {
-			scalarValue->setRealNumber(value);
-			status2 = scalarValue->getStatus();
-
-			if (status2 != fmiOK) {
-				logger_->printError(_T("MainController::changeInput - error writing real value:" ));
-				return status2;
-			} else {
-
-				realNumber3 = scalarValue->getRealNumber();
-				status3 = scalarValue->getStatus();
-				
-				if (status3 != fmiOK) {
-					logger_->printError(_T("MainController::changeInput - error reading real value after written: " ));
-				} 
-
-				return status3;
-			}
-		}
-
+	fmiStatus MainController::setScalarValueReal(int idx, double value) {
+		fmiStatus status = mainDataModel_->setScalarValueReal(idx, value);
+		return status;
 	}
 
 
@@ -164,20 +138,25 @@ namespace Straylight
 
 
 
-	void MainController::notifyStateChange_(SimStateNative newState) {
+	void MainController::setState_(SimStateNative newState) {
 		if (state_ != newState) {
 			state_ = newState;
 			stateChangeCallbackPtr_( state_ );
 		}
 	}
 
+	void MainController::setStateError_(const char * message) {
+			
+		logger_->printError(message);
+		state_ = simStateNative_e_error;
+		
+		stateChangeCallbackPtr_( state_ );
+	}
 
+	
 	SimStateNative MainController::getState() {
 		return state_;
 	}
-
-
-
 
 
 	MainDataModel *  MainController::getMainDataModel() {
@@ -186,10 +165,10 @@ namespace Straylight
 
 
 	/*******************************************************//**
-	* Parses the xml file located in the FMU.  
-	*
-	* @param [in,out]	unzipfolder	where the FMU was unzipped to.
-	*******************************************************/
+															 * Parses the xml file located in the FMU.  
+															 *
+															 * @param [in,out]	unzipfolder	where the FMU was unzipped to.
+															 *******************************************************/
 	int MainController::xmlParse(char* unzipfolder) {
 
 		//	logger_->printDebug2("MainController::parseXML unzipfolder %s\n", unzipfolder);	
@@ -214,34 +193,69 @@ namespace Straylight
 
 			logger_->printDebug2(_T("MainController::parseXML xmlFilePath_ %s\n"), xmlFilePath_);	
 			configStruct_ =  Config::make(fmu_);
-			mainDataModel_ = new MainDataModel();
-			mainDataModel_->extractScalarVariables(fmu_->modelDescription);
 
-			notifyStateChange_( simStateNative_2_xmlParse_completed );
+
+			mainDataModel_->extractScalarVariables();
+
+			setState_( simStateNative_2_xmlParse_completed );
 			return 0;
 		}
-
-
-
-
-
-
 
 	}
 
 
 
 
+	///////////////////////////////////////////////////////////////////////////////
+	/// Get address of specific function from specific dll
+	///
+	///\param fmu Name of dll file.
+	///\param funnam Function name .
+	///\return Address of the specific function.
+	//////////////////////////////////////////////////////////////////////////////
+	void* MainController::getAdr(const char* funNam){
+		char name[BUFSIZE];
+		void* fp;
+		sprintf(name, _T("%s_%s"), getModelIdentifier(fmu_->modelDescription), funNam); // Zuo: adding the model name in front of function name
+
+
+		fp = GetProcAddress(fmu_->dllHandle, name);
+
+		if (!fp) {
+			logger_->printfError(_T("Function %s not found in dll\n"), name);        
+		}
+		return fp;
+	}
+
+
+
+	int MainController::init() {
+		logger_->printDebug(_T("-=MainController::init=-\n"));
+
+		int result1 = loadDll();
+		if (result1) return result1;
+
+		int result2 = instantiateSlave_();
+		if (result2) return result2;
+
+		int result3 = initializeSlave_();
+		if (result3) return result3;
+
+		int result4 = setStartValues_();
+		return result4;
+
+
+	}
 
 	/*********************************************//**
-	/* 
-	* Constructs the path to the DLL file and stores it
-	* in the dllFilePath_ member variable. Loads
-	* the DLL with the "LoadLibrary" command and populates the
-	* FMU struct.
-	*
-	* @return	0 for success
-	*********************************************/
+												   /* 
+												   * Constructs the path to the DLL file and stores it
+												   * in the dllFilePath_ member variable. Loads
+												   * the DLL with the "LoadLibrary" command and populates the
+												   * FMU struct.
+												   *
+												   * @return	0 for success
+												   *********************************************/
 	int MainController::loadDll( ) {
 
 		logger_->printDebug2 (_T("MainController::loadDll unzipFolderPath_: %s\n"), unzipFolderPath_);
@@ -291,35 +305,14 @@ namespace Straylight
 		fmu_->getString = (fGetString) getAdr( "fmiGetString");
 		fmu_->doStep = (fDoStep) getAdr("fmiDoStep");
 
-		notifyStateChange_( simStateNative_3_init_dllLoaded );
+		setState_( simStateNative_3_init_dllLoaded );
 
 		return 0;
 	} 
 
-	///////////////////////////////////////////////////////////////////////////////
-	/// Get address of specific function from specific dll
-	///
-	///\param fmu Name of dll file.
-	///\param funnam Function name .
-	///\return Address of the specific function.
-	//////////////////////////////////////////////////////////////////////////////
-	void* MainController::getAdr(const char* funNam){
-		char name[BUFSIZE];
-		void* fp;
-		sprintf(name, _T("%s_%s"), getModelIdentifier(fmu_->modelDescription), funNam); // Zuo: adding the model name in front of function name
 
-
-		fp = GetProcAddress(fmu_->dllHandle, name);
-
-		if (!fp) {
-			logger_->printfError(_T("Function %s not found in dll\n"), name);        
-		}
-		return fp;
-	}
-
-
-
-	int MainController::init() {
+	int MainController::instantiateSlave_() {
+		logger_->printDebug(_T("-=MainController::instantiateSlave_=-\n"));
 
 		logger_->printDebug(_T("MainController::simulateHelperInit\n"));	
 
@@ -331,7 +324,6 @@ namespace Straylight
 		const char* guid;                // global unique id of the fmu
 		const char* modelIdentifier;                //
 		fmiCallbackFunctions callbackFunctions;  // called by the model during simulation
-		fmiStatus fmiFlag;               // return code of the fmu functions
 		fmiBoolean toleranceControlled = fmiFalse;
 		nSteps_ = 0;
 		fmiReal timeout = 100.0;
@@ -356,10 +348,10 @@ namespace Straylight
 
 		logger_->printDebug2(_T("exeDirectory: %s\n"), exeDirectory);	
 		logger_->printDebug2(_T("unzipFolderPath_%s\n"), unzipFolderPath_);
+
 		logger_->printDebugDouble(_T("stepDelta: %s\n"), getStepDelta());
 		logger_->printDebugDouble(_T("time_: %s\n"), time_);
 		logger_->printDebugDouble(_T("stopTime: %s\n"), getStopTime());
-
 
 		logger_->printDebug2(_T("instanceName is %s\n"), modelIdentifier);
 		logger_->printDebug2(_T("GUID = %s!\n"), guid);
@@ -369,12 +361,10 @@ namespace Straylight
 		int bufferLength = GetCurrentDirectory(MAX_PATH, currentDirectory2);
 		logger_->printDebug2(_T("currentDirectory2: %s\n"), currentDirectory2);
 
-
-		logger_->printDebug(_T("=================Instantiate Slave====================\n"));
 		fmiComponent_ = fmu_->instantiateSlave (
 			modelIdentifier,		//fmiString  instanceName
 			guid,					//fmiString  fmuGUID
-			"Model1",		//fmuLocation 
+			"Model1",				//fmuLocation 
 			"",						//fmiString  mimeType 
 			timeout,				//fmiReal timeout
 			visible,				//fmiBoolean visible 
@@ -385,47 +375,61 @@ namespace Straylight
 
 
 		if (!fmiComponent_) {
-			logger_->printError(_T("Could not instantiate slaves\n"));
-			notifyStateChange_( simStateNative_e_error );
+
+			setStateError_(_T("Could not instantiate slaves\n"));
 			return 1;
 		} else {
 			logger_->printDebug(_T("Successfully instantiated one slave\n"));
-		}
+			mainDataModel_->setFmiComponent(fmiComponent_);
 
-		ScalarValue::setFMU(fmu_);
-		ScalarValue::setFmiComponent(fmiComponent_);
-		notifyStateChange_( simStateNative_3_init_instantiatedSlaves );
-
-		logger_->printDebug(_T("=================Initialize Slave====================\n"));
-		fmiFlag =  fmu_->initializeSlave(fmiComponent_, time_, fmiTrue, getStopTime());
-
-
-		if (fmiFlag > fmiWarning) {
-			logger_->printError(_T("could not initializeSlave()"));
-			notifyStateChange_( simStateNative_e_error );
-			return 1;																
-		} else {
-			logger_->printDebug(_T("initializeSlave() successful\n"));
-
-
-			resultOfStep_ = new ResultOfStep(time_);
-			vector<ScalarVariableRealStruct*> svOutput = mainDataModel_->getSVoutputVector();
-			resultOfStep_->extractValues(svOutput, enu_output);
-
-			vector<ScalarVariableRealStruct*> svInput = mainDataModel_->getSVinputVector();
-			resultOfStep_->extractValues(svInput, enu_input);
-
-			ResultOfStepStruct *  resultOfStepStruct = resultOfStep_->toStruct();
-			resultCallbackPtr_(resultOfStepStruct);
-
-
-			notifyStateChange_( simStateNative_3_init_completed );
 			return 0;
 		}
 
+	}
 
+	int MainController::initializeSlave_() {
+
+		logger_->printDebug(_T("-=MainController::initializeSlave_=-\n"));
+
+		fmiStatus fmiFlag;  
+
+
+
+		setState_( simStateNative_3_init_instantiatedSlaves );
+
+		double stopTime = getStopTime();
+		fmiFlag =  fmu_->initializeSlave(fmiComponent_, time_, fmiTrue, stopTime);
+
+
+		if (fmiFlag > fmiWarning) {
+			setStateError_(_T("Could not initialize slaves\n"));
+			return 1;																
+		} else {
+			logger_->printDebug(_T("initializeSlave() successful\n"));
+			return 0;
+		}
 
 	}
+
+
+	int MainController::setStartValues_() {
+
+
+
+		//fmiStatus status = mainDataModel_->setScalarValueReal(idx, value);
+
+		mainDataModel_->setStartValues();
+
+		resultOfStep_ = mainDataModel_->getResultOfStep(time_);
+
+		ResultOfStepStruct *  resultOfStepStruct = resultOfStep_->toStruct();
+		resultCallbackPtr_(resultOfStepStruct);
+
+		setState_( simStateNative_3_ready );
+
+		return 0;
+	}
+
 
 
 
@@ -437,7 +441,7 @@ namespace Straylight
 	void MainController::run() {
 
 
-		notifyStateChange_(simStateNative_4_run_started);
+		setState_(simStateNative_4_run_started);
 
 		// enter the simulation loop
 		while (!isSimulationComplete()) {
@@ -446,16 +450,16 @@ namespace Straylight
 				break;
 			}
 
-			doOneStep_();
+			runHelperDoStep_();
 			ResultOfStepStruct *  resultOfStepStruct = getResultStruct();
 			resultCallbackPtr_(resultOfStepStruct);
 		}
 
 		if (state_ == simStateNative_5_stop_requested) {
-			notifyStateChange_(simStateNative_5_stop_completed);
+			setState_(simStateNative_3_ready);
 		} else {
 			printSummary();
-			notifyStateChange_(simStateNative_4_run_completed);
+			setState_(simStateNative_4_run_completed);
 		}
 
 
@@ -496,44 +500,54 @@ namespace Straylight
 
 	}
 
-
-	void MainController::doOneStep() {
-
-
-
-		if (!isSimulationComplete() &&
-			state_ == simStateNative_3_init_completed) 
-		{
-
-			doOneStep_();
-			ResultOfStepStruct *  resultOfStepStruct = getResultStruct();
-			resultCallbackPtr_(resultOfStepStruct);
-		}
-
-
-
-	}
-
-
-	void MainController::doOneStep_() {
+	int MainController::runHelperDoStep_() {
 
 		// Advance to next time step
 		fmiStatus_ = fmu_->doStep(fmiComponent_, time_, getStepDelta(), fmiTrue); 
 
+		if(fmiStatus_ != fmiOK) {
+			logger_->printError("MainController::doOneStep_ resulted in error");
+			return 1;
+		}
+
 		time_ = min(time_+getStepDelta(), getStopTime());
 
-		resultOfStep_ = new ResultOfStep(time_);
+		resultOfStep_ = mainDataModel_->getResultOfStep(time_);
 
-
-		vector<ScalarVariableRealStruct*> svOutput = mainDataModel_->getSVoutputVector();
-		resultOfStep_->extractValues(svOutput, enu_output);
-
-		vector<ScalarVariableRealStruct*> svInput = mainDataModel_->getSVinputVector();
-		resultOfStep_->extractValues(svInput, enu_input);
 
 		nSteps_++;
+		return 0;
+	}
+
+	int MainController::doOneStep() {
+
+
+		if(isSimulationComplete()) {
+			setStateError_("MainController::doOneStep cannot execute simulation is complete");
+			return 1;
+		}
+
+		if(!(state_ == simStateNative_3_ready|| state_ ==  simStateNative_5_step_requested)) {
+			setStateError_("MainController::doOneStep cannot execute simulation is in the wrong state");
+			return 1;
+		}
+
+
+		int result = runHelperDoStep_();
+
+		if(result) {
+			return 1;
+		} else {
+			ResultOfStepStruct *  resultOfStepStruct = getResultStruct();
+			resultCallbackPtr_(resultOfStepStruct);
+			return 0;
+		}
+
 
 	}
+
+
+
 
 
 

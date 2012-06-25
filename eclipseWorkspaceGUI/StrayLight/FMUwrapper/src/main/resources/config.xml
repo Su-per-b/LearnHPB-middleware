@@ -3,9 +3,10 @@
 
 
 
-	<unzipFolderBase>C:\Temp</unzipFolderBase>
-	<unzipFolder>C:\Temp\LearnGB_0v2_VAVReheat_ClosedLoop</unzipFolder>
+
 	<nativeLibFolder>E:\SRI\straylight_repo\visualStudioWorkspace\bin\Debug</nativeLibFolder>
-	
-	
+	<unzipFolderBase>\..\..\..\assets\FMUs\</unzipFolderBase>
+	<unzippedFMU>LearnGB_0v2_VAVReheat_ClosedLoopEdit2</unzippedFMU>
+
+	 
 </config>

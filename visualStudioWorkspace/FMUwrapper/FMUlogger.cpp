@@ -12,8 +12,8 @@ namespace Straylight
 
 
 	/*********************************************//**
-	* Default constructor. 
-	*********************************************/
+												   * Default constructor. 
+												   *********************************************/
 	FMUlogger::FMUlogger(void)
 	{
 
@@ -21,14 +21,14 @@ namespace Straylight
 
 
 	/*********************************************//**
-	* Destructor. Frees memory and releases FMU DLL.
-	*********************************************/
+												   * Destructor. Frees memory and releases FMU DLL.
+												   *********************************************/
 	FMUlogger::~FMUlogger(void)
 	{
 
 	}
 
-	 void FMUlogger::setLogger(Logger* logger) {
+	void FMUlogger::setLogger(Logger* logger) {
 
 		logger_ = logger;
 
@@ -140,7 +140,7 @@ namespace Straylight
 		buffer[k] = '\0';
 	}
 
-	#define MAX_MSG_SIZE 1000
+#define MAX_MSG_SIZE 1000
 	///////////////////////////////////////////////////////////////////////////////
 	/// FMU logger
 	///
@@ -153,28 +153,28 @@ namespace Straylight
 	void FMUlogger::log(fmiComponent c, fmiString instanceName, fmiStatus status,
 		fmiString category, fmiString message, ...) {
 
-		//printf("fmuLogger\n", 1);
+			//printf("fmuLogger\n", 1);
 
-		char msg[MAX_MSG_SIZE];
-		char* copy;
-		va_list argp;
+			char msg[MAX_MSG_SIZE];
+			char* copy;
+			va_list argp;
 
-		// Replace C format strings
-		va_start(argp, message);
-		vsprintf(msg, message, argp);
+			// Replace C format strings
+			va_start(argp, message);
+			vsprintf(msg, message, argp);
 
-		// Replace e.g. ## and #r12#  
-		copy = strdup(msg);
-		replaceRefsInMessage(copy, msg, MAX_MSG_SIZE, &fmu);
-		free(copy);
+			// Replace e.g. ## and #r12#  
+			copy = strdup(msg);
+			replaceRefsInMessage(copy, msg, MAX_MSG_SIZE, &fmu);
+			free(copy);
 
-		// Print the final message
-		if (!instanceName) instanceName = "?";
-		if (!category) category = "?";
+			// Print the final message
+			if (!instanceName) instanceName = "?";
+			if (!category) category = "?";
 
-		logger_->printDebug5("fmuLogger - status:%s - instanceName:%s - category:%s - msg:%s\n", fmiStatusToString(status), instanceName, category, msg);
+			logger_->printDebug5("fmuLogger - status:%s - instanceName:%s - category:%s - msg:%s\n", fmiStatusToString(status), instanceName, category, msg);
 
-		//printf();
+			//printf();
 	}
 
 

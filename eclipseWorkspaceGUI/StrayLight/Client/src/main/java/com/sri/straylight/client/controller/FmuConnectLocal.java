@@ -44,8 +44,14 @@ public class FmuConnectLocal implements  IFmuConnect {
 		AnnotationProcessor.process(this);
 	}
 	
+	public void doOneStep() {
+		
+	}
+	
 	public void changeInput(int idx, double value) {
 		taskChangeInput_ = new TaskChangeInput();
+		taskChangeInput_.setChange(idx, value);
+		
 		taskChangeInput_.execute();
 	}
 
@@ -70,13 +76,15 @@ public class FmuConnectLocal implements  IFmuConnect {
 		taskRun_ = new TaskRun();
 		taskRun_.execute();
 	}
-
 	
-	public void stop() {
+	public void requestStateChange(SimStateNative newState) {
+		
 		taskRequestStateChange_ = new TaskRequestStateChange();
-		taskRequestStateChange_.setState(SimStateNative.simStateNative_5_stop_requested); 
+		taskRequestStateChange_.setState(newState); 
 		taskRequestStateChange_.execute();
 	}
+	
+
 	
 	public void resume() {
 		taskRequestStateChange_ = new TaskRequestStateChange();
@@ -110,11 +118,7 @@ public class FmuConnectLocal implements  IFmuConnect {
 		//fmu_.inputChange(event.idx, event.value);
 	}
 	
-	@EventSubscriber(eventClass=InputChangeRequest.class)
-	public void onInputChangeRequest(InputChangeRequest event) {
-		
-		fmu_.changeInput(event.idx, event.value);
-	}
+
 	
 	
 	@EventSubscriber(eventClass=com.sri.straylight.fmuWrapper.event.SimStateServerNotify.class)
@@ -130,8 +134,8 @@ public class FmuConnectLocal implements  IFmuConnect {
 		case simStateServer_2_xmlParse_completed:
 			clientState = SimStateClient.level_2_xmlParse_completed;
 			break;
-		case simStateServer_3_init_completed:
-			clientState = SimStateClient.level_3_init_completed;
+		case simStateServer_3_ready:
+			clientState = SimStateClient.level_3_ready;
 			break;
 		case simStateServer_4_run_completed:
 			clientState = SimStateClient.level_4_run_completed;
@@ -139,9 +143,8 @@ public class FmuConnectLocal implements  IFmuConnect {
 		case simStateServer_4_run_started:
 			clientState = SimStateClient.level_4_run_started;
 			break;
-		case simStateServer_5_stop_completed:
-			clientState = SimStateClient.level_5_stop_completed;
-			break;
+
+			
 		default:
 			clientState = SimStateClient.level_e_error;
 			break;
@@ -302,7 +305,7 @@ public class FmuConnectLocal implements  IFmuConnect {
 		@Override
 		public Void doInBackground()
 		{
-			fmu_.changeInput(idx_, value_);
+			fmu_.setScalarValueReal(idx_, value_);
 			return null;
 			
 		}

@@ -15,7 +15,7 @@ namespace Straylight
 		return idx_;
 	}
 
-	 void ScalarValue::setFMU(FMU* fmu) {
+	void ScalarValue::setFMU(FMU* fmu) {
 		fmu_ = fmu;
 	}
 
@@ -50,7 +50,12 @@ namespace Straylight
 
 	void ScalarValue::setRealNumber(double realNumber)
 	{
-		status_ =  fmu_->setReal(fmiComponent_, &valueReference_, 1, &realNumber);
+
+		const fmiValueReference vr[] = {valueReference_};
+		const fmiReal value[]= {realNumber};
+
+		status_ =  fmu_->setReal(fmiComponent_, vr, 1, value);
+
 
 	}
 
@@ -70,26 +75,26 @@ namespace Straylight
 		string str;
 
 		switch (this->type) {
-			case 0:
-				ss << this->scalarReal;
-				str = ss.str();
-				return str;
-				break;
-			case 1:
-				return "unKnownType";
-				break;
-			case 2:
-				return "unKnownType";
-				break;
-			case 3:
-				return "unKnownType";
-				break;
-			default:
-				return "unKnownType";
-				break;
+		case 0:
+			ss << this->scalarReal;
+			str = ss.str();
+			return str;
+			break;
+		case 1:
+			return "unKnownType";
+			break;
+		case 2:
+			return "unKnownType";
+			break;
+		case 3:
+			return "unKnownType";
+			break;
+		default:
+			return "unKnownType";
+			break;
 
 		}
-		
+
 
 	}
 

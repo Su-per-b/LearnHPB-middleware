@@ -18,8 +18,8 @@ void setConfig(ConfigStruct * configStruct) {
 
 void onMessageCallbackC(MessageStruct * messageStruct)
 {
-   messageCallbackPtr_(messageStruct);
-   delete messageStruct;
+	messageCallbackPtr_(messageStruct);
+	delete messageStruct;
 }
 
 
@@ -41,7 +41,7 @@ int forceCleanup()
 int run()
 {
 	mainController->run();
-   return 0;
+	return 0;
 }
 
 
@@ -71,20 +71,20 @@ ScalarVariableStruct *  getScalarVariableInternalStructs() {
 
 
 int getInputVariableCount() {
-	 Straylight::MainDataModel * model = mainController->getMainDataModel();
-	 return model->getInputVariableCount();
+	Straylight::MainDataModel * model = mainController->getMainDataModel();
+	return model->getInputVariableCount();
 }
 
 int getOutputVariableCount() {
 
-	 Straylight::MainDataModel * model = mainController->getMainDataModel();
-	 return model->getOutputVariableCount();
+	Straylight::MainDataModel * model = mainController->getMainDataModel();
+	return model->getOutputVariableCount();
 
 }
 
 int getInternalVariableCount() {
-	 Straylight::MainDataModel * model = mainController->getMainDataModel();
-	 return model->getInternalVariableCount();
+	Straylight::MainDataModel * model = mainController->getMainDataModel();
+	return model->getInternalVariableCount();
 }
 
 
@@ -101,13 +101,13 @@ void connect (
 	)
 {	
 
-	 mainController = new Straylight::MainController();
+	mainController = new Straylight::MainController();
 
-	 mainController->connect ( 
-		 messageCallbackPtr, 
-		 resultCallbackPtr,
-		 stateChangeCallbackPtr
-		 );
+	mainController->connect ( 
+		messageCallbackPtr, 
+		resultCallbackPtr,
+		stateChangeCallbackPtr
+		);
 
 }
 
@@ -117,29 +117,20 @@ void xmlParse (char * unzipFolder)
 }
 
 
-void init ()
+int init ()
 {
-	int result2 = mainController->loadDll();
-	mainController->init();
+	return mainController->init();
 }
 
 
-
-
-
-
- ResultOfStepStruct * getResultStruct ()
+ResultOfStepStruct * getResultStruct ()
 {
 	return mainController->getResultStruct();
 }
 
 
 
- fmiStatus changeInput (int idx, double value) {
-	 return mainController->changeInput(idx,value);
- }
+fmiStatus setScalarValueReal (int idx, double value) {
+	return mainController->setScalarValueReal(idx,value);
+}
 
- void doOneStep () {
-	 return mainController->doOneStep();
- }
- 

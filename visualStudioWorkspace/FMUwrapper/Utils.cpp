@@ -36,9 +36,16 @@ namespace Straylight
 
 	std::string Utils::to_string(double x)
 	{
-	  std::ostringstream ss;
-	  ss << x;
-	  return ss.str();
+		std::ostringstream ss;
+		ss << x;
+		return ss.str();
+	}
+
+	void Utils::doubleToCommaString(char* buffer, double r){
+		char* comma;
+		sprintf(buffer, _T("%.16g"), r);
+		comma = strchr(buffer, '.');
+		if (comma) *comma = ',';
 	}
 
 }

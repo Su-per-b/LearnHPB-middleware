@@ -37,6 +37,8 @@ public class InputFormController extends AbstractController {
 	
 	private final JButton btnSubmit_ = new JButton("submit");
 	
+	private double[] resultInputAry_;
+	
 	public void init(XMLparsed xmlParsed) {  
 		
 		xmlParsed_ = xmlParsed;
@@ -78,26 +80,65 @@ public class InputFormController extends AbstractController {
 
 		btnSubmit_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				submitChanges();
 				
-				
-				int idx = xmlParsed_.inputVars[0].idx;
-				
-				InputChangeRequest event = new InputChangeRequest(56106,10);
-				EventBus.publish(event);
+
 			}
 		}
 				);
 
 	}
 	
+	
+	private void submitChanges() {
+		
+		 Object[][] inData = xmlParsed_.getInputData();
+		 
+		 
+		
+		int len = xmlParsed_.inputVars.length;
+		
+		for (int i = 0; i < len; i++) {
+			int idx = xmlParsed_.inputVars[i].idx;
+			
+			
+			String theCell = (String) inData[i][1];
+			String newValueStr = (String) tableModel_.getValueAt(i, 1);
+			double newValueDouble = Double.valueOf(newValueStr);
+			
+			double currentValueDouble = resultInputAry_[i];
+			
+			if (newValueDouble != currentValueDouble) {
+				
+				resultInputAry_[i] = newValueDouble;
+				
+				InputChangeRequest event = new InputChangeRequest(idx,newValueDouble);
+				EventBus.publish(event);
+
+			}
+			
+			
+
+			
+			
+		}
+		
+		
+
+		
+		
+	}
+	
+	
+	
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
 
 		Vector<String> resultInput = event.resultOfStep.getInputList();
-		
 		int len = resultInput.size();
 		
-
+		resultInputAry_ = event.resultOfStep.getInput();
+				
 		//populate the 'value' column
 		for (int i = 0; i < len; i++) {
 			String str = resultInput.get(i);

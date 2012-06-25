@@ -21,7 +21,7 @@ namespace Straylight
 	class MainController
 	{
 
-	//private member variables
+		//private member variables
 	private:
 		char* unzipFolderPath_;
 		char* xmlFilePath_;
@@ -35,16 +35,17 @@ namespace Straylight
 
 		FMUlogger fmuLogger_;
 		void (*stateChangeCallbackPtr_)(SimStateNative );
-        void (*resultCallbackPtr_)(ResultOfStepStruct *);
+		void (*resultCallbackPtr_)(ResultOfStepStruct *);
 
 		SimStateNative state_;
 
 		ResultOfStep* resultOfStep_;
 		int variableCount_;
+
 		ConfigStruct * configStruct_;
 
 		MainDataModel * mainDataModel_;
-	// public functions
+		// public functions
 	public:
 
 		MainController(void);
@@ -91,21 +92,25 @@ namespace Straylight
 
 		void run();
 		void stop();
-        void cleanup();
-		
-		fmiStatus changeInput(int idx, double value);
-        void doOneStep();
+		void cleanup();
 
-	//private functions
+		fmiStatus setScalarValueReal(int idx, double value);
+		
+
+		//private functions
 	private:
 		int loadDLLhelper(const char* , FMU *);
 		ModelDescription* parseHelper(const char*);
 		char* getXmlFilePath();
 		void* getAdr(const char*);
 		void extractVariables();
-        void notifyStateChange_(SimStateNative newState);
-        void doOneStep_();
-
+		void setState_(SimStateNative newState);
+        int doOneStep();
+		int runHelperDoStep_();
+		int instantiateSlave_();
+		int initializeSlave_();
+		int setStartValues_();
+		void setStateError_(const char * message);
 	};
 
 

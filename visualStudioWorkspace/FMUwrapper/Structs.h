@@ -6,8 +6,8 @@
 
 
 typedef struct {
-	  const char * msgText;
-	  int messageType;
+	const char * msgText;
+	int messageType;
 } MessageStruct;
 
 
@@ -28,29 +28,29 @@ typedef struct {
 
 
 typedef struct {
-    Elm type;          // element type 
-//   const char** attributes; // null or n attribute value strings
-    int n;             // size of attributes, even number
+	Elm type;          // element type 
+	//   const char** attributes; // null or n attribute value strings
+	int n;             // size of attributes, even number
 } TypeSpec;
 
 
 typedef struct {
-	  const char * name;
-	  int idx;
-	  Enu causality;
-	  const char* description;
-	  TypeSpec  * typeSpec;
-	 unsigned int valueReference;
+	const char * name;
+	int idx;
+	Enu causality;
+	const char* description;
+	TypeSpec  * typeSpec;
+	unsigned int valueReference;
 } ScalarVariableStruct;
 
 
 typedef struct {
-	  const char * name;
-	  int idx;
-	  Enu causality;
-	  const char* description;
-	 TypeSpecReal  * typeSpecReal;
-	 unsigned int valueReference;
+	const char * name;
+	int idx;
+	Enu causality;
+	const char* description;
+	TypeSpecReal  * typeSpecReal;
+	unsigned int valueReference;
 } ScalarVariableRealStruct;
 
 

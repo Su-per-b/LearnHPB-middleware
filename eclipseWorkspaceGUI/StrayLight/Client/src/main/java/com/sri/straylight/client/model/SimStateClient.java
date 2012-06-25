@@ -14,19 +14,18 @@ public enum SimStateClient implements JnaEnum<SimStateClient>  {
 	level_2_xmlParse_requested,
 	level_2_xmlParse_completed,
 	level_3_init_requested,
-	level_3_init_completed,
+	level_3_ready,
 	level_4_run_requested,
 	level_4_run_started,
 	level_4_run_completed,
 	level_4_run_cleanedup,
-	level_e_error, 
 	level_5_stop_requested,
-	level_5_stop_completed,
-	level_6_pause_requested,
-	level_6_pause_completed,
-	level_7_resume_requested,
-	level_7_resume_completed;
-	     
+	level_5_step_requested,
+	level_6_reset_requested,
+	level_6_reset_completed,
+	level_e_error;
+	
+	
 	private static int start = 0;
 	
 

@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Hashtable;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -24,15 +26,19 @@ public class TopPanelController extends AbstractController {
 
 	private final JButton btnClear_ = new JButton("Clear Console");
 	private final JButton btnConnect_ = new JButton("Connect");
-	private final JButton btnxmlParse_ = new JButton("XML Parse");
+	private final JButton btnXmlParse_ = new JButton("XML Parse");
 	private final JButton btnInit_ = new JButton("Init");
-	private final JButton btnRun_ = new JButton("Run");
-	private final JButton btnStop_ = new JButton("Stop");
-	private final JButton btnResume_ = new JButton("Resume");
+	private final JButton btnStep_ = new JButton("Step >|");
+	private final JButton btnRun_ = new JButton("Run >");
+	private final JButton btnStop_ = new JButton("Stop []");
+	private final JButton btnReset_ = new JButton("Reset");
 
 
 
 	private SimStateClient simulationState_ = SimStateClient.level_0_uninitialized;
+	private Vector<JButton> buttons_;
+	
+	Hashtable<SimStateClient, JButton[]> stateMap_ = new Hashtable<SimStateClient, JButton[]>();
 	
 	public TopPanelController (AbstractController parentController) {
 
@@ -46,15 +52,28 @@ public class TopPanelController extends AbstractController {
 		panel.setMaximumSize(new Dimension(32767, 60));
 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panel.setAlignmentY(Component.TOP_ALIGNMENT);
+		
+		buttons_ = new Vector<JButton>();
+	
+		buttons_.add(btnConnect_);
+		buttons_.add(btnXmlParse_);
+		buttons_.add(btnInit_);
+		buttons_.add(btnRun_);
+		buttons_.add(btnStep_);
+		buttons_.add(btnStop_);
+		buttons_.add(btnReset_);
+		buttons_.add(btnClear_);
 
-		panel.add(btnConnect_);
-		panel.add(btnxmlParse_);
-		panel.add(btnInit_);
-		panel.add(btnRun_);
-		panel.add(btnStop_);
-		panel.add(btnResume_);
-		panel.add(btnClear_);
-
+		//Array<SimStateClient>[] states = {}
+		
+		int len = buttons_.size();
+		
+		for (int i = 0; i < len; i++) {
+			panel.add(buttons_.get(i));
+		}
+		
+		setupFSM_();
+		
 		bindActions_();
 		updateGUI_();
 		
@@ -62,7 +81,39 @@ public class TopPanelController extends AbstractController {
 
 	}
 
+	private void setupFSM_() {
+		
+		
+		JButton[] ary  = {btnConnect_};
+		
+		stateMap_.put(
+				SimStateClient.level_0_uninitialized,
+				new JButton[]{btnConnect_}
+				);
+		
+		stateMap_.put(
+				SimStateClient.level_1_connect_completed,
+				new JButton[]{btnXmlParse_}
+				);
+		
+		stateMap_.put(
+				SimStateClient.level_2_xmlParse_completed,
+				new JButton[]{btnInit_}
+				);
+		
+		stateMap_.put(
+				SimStateClient.level_3_ready,
+				new JButton[]{btnRun_, btnStep_}
+				);
+		
+		stateMap_.put(
+				SimStateClient.level_4_run_started,
+				new JButton[]{btnStop_}
+				);
+		
 
+		
+	}
 
 
 	private void bindActions_() {
@@ -74,9 +125,9 @@ public class TopPanelController extends AbstractController {
 		}
 				);
 		
-		btnxmlParse_.addActionListener(new ActionListener() {
+		btnXmlParse_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				btnxmlParse_.setEnabled(false);
+			//	btnXmlParse_.setEnabled(false);
 				requestStateChange_(SimStateClient.level_2_xmlParse_requested);
 				
 			}
@@ -86,17 +137,25 @@ public class TopPanelController extends AbstractController {
 
 		btnInit_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				btnInit_.setEnabled(false);
 				requestStateChange_(SimStateClient.level_3_init_requested);
 				
 			}
 
 		}
 				);
+		
+		btnStep_.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				requestStateChange_(SimStateClient.level_5_step_requested);
+				
+			}
+
+		}
+				);
+		
 
 		btnRun_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				btnRun_.setEnabled(false);
 				requestStateChange_(SimStateClient.level_4_run_requested);
 			}
 		}
@@ -110,10 +169,9 @@ public class TopPanelController extends AbstractController {
 		}
 				);
 		
-		btnResume_.addActionListener(new ActionListener() {
+		btnReset_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				btnResume_.setEnabled(false);
-				requestStateChange_(SimStateClient.level_7_resume_requested);
+				requestStateChange_(SimStateClient.level_6_reset_requested);
 			}
 		}
 				);
@@ -129,6 +187,12 @@ public class TopPanelController extends AbstractController {
 		
 	}
 	
+	@EventSubscriber(eventClass=SimStateRequest.class)
+	public void onSimStateRequest(SimStateRequest event) {
+		simulationState_ = event.getPayload();
+		updateGUI_();
+	}
+	
 	@EventSubscriber(eventClass=SimStateNotify.class)
 	public void onSimStateNotify(SimStateNotify event) {
 		simulationState_ = event.getPayload();
@@ -137,59 +201,20 @@ public class TopPanelController extends AbstractController {
 
 
 	private void updateGUI_() {
+
+		int len = buttons_.size();
+		for (int i = 0; i < len; i++) {
+			buttons_.get(i).setEnabled(false);
+		}
 		
-		if (simulationState_ == SimStateClient.level_0_uninitialized) {
-			btnConnect_.setEnabled(true);
-			btnxmlParse_.setEnabled(false);
-			btnInit_.setEnabled(false);
-			btnRun_.setEnabled(false);
-			btnStop_.setEnabled(false);
-			btnResume_.setEnabled(false);
-			
-		}  else if (simulationState_ == SimStateClient.level_1_connect_completed) {
-			btnConnect_.setEnabled(false);
-			btnxmlParse_.setEnabled(true);
-			btnInit_.setEnabled(false);
-			btnRun_.setEnabled(false);
-			btnStop_.setEnabled(false);
-			btnResume_.setEnabled(false);
-		} else if (simulationState_ == SimStateClient.level_2_xmlParse_completed) {
-			btnConnect_.setEnabled(false);
-			btnxmlParse_.setEnabled(false);
-			btnInit_.setEnabled(true);
-			btnRun_.setEnabled(false);
-			btnStop_.setEnabled(false);
-			btnResume_.setEnabled(false);
-		} else if (simulationState_ == SimStateClient.level_3_init_completed) {
-			btnConnect_.setEnabled(false);
-			btnxmlParse_.setEnabled(false);
-			btnInit_.setEnabled(false);
-			btnRun_.setEnabled(true);
-			btnStop_.setEnabled(false);
-			btnResume_.setEnabled(false);
-		} else if (simulationState_ == SimStateClient.level_4_run_completed) {
-			btnConnect_.setEnabled(false);
-			btnxmlParse_.setEnabled(false);
-			btnInit_.setEnabled(false);
-			btnRun_.setEnabled(false);
-			btnStop_.setEnabled(true);
-			btnResume_.setEnabled(false);
-		} else if (simulationState_ == SimStateClient.level_4_run_started) {
-			btnConnect_.setEnabled(false);
-			btnxmlParse_.setEnabled(false);
-			btnInit_.setEnabled(false);
-			btnRun_.setEnabled(false);
-			btnStop_.setEnabled(true);
-			btnResume_.setEnabled(false);
-		} else if (simulationState_ == SimStateClient.level_5_stop_completed) {
-			btnConnect_.setEnabled(false);
-			btnxmlParse_.setEnabled(false);
-			btnInit_.setEnabled(false);
-			btnRun_.setEnabled(false);
-			btnStop_.setEnabled(false);
-			btnResume_.setEnabled(true);
-	}
+		JButton[] activeButtons = stateMap_.get(simulationState_);
+		int len2 = activeButtons.length;
+		for (int j = 0; j < len2; j++) {
+			activeButtons[j].setEnabled(true);
+		}
 		
+		
+		return;
 		
 	}
 

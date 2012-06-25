@@ -68,7 +68,7 @@ public class ResultsTableController extends AbstractController {
 		resultOuput.insertElementAt(Double.toString(time), 0);
 		
 		
-		dataModel_.addRow(resultOuput);
+		dataModel_.insertRow(0,resultOuput);
 	}
 	
 	

@@ -8,6 +8,8 @@ import com.sri.straylight.client.event.SimStateRequest;
 import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.client.model.ConfigClient;
 import com.sri.straylight.client.model.SimStateClient;
+import com.sri.straylight.fmuWrapper.voManaged.SimStateServer;
+import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 
 
@@ -84,9 +86,13 @@ public class SimulationController extends AbstractController  {
 				fmuConnect_.run();
 				break;
 			case level_5_stop_requested:
-				fmuConnect_.stop();
+				//fmuConnect_.stop();
+				fmuConnect_.requestStateChange(SimStateNative.simStateNative_5_stop_requested);
 				break;
-			case level_7_resume_requested:
+			case level_5_step_requested:
+				fmuConnect_.requestStateChange(SimStateNative.simStateNative_5_step_requested);
+				break;
+			case level_6_reset_requested:
 				fmuConnect_.resume();
 				break;
 		}

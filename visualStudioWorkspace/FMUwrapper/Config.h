@@ -21,11 +21,11 @@ using namespace std;
 
 namespace Straylight
 {
-	  class Config
+	class Config
 	{
 
 	public:
-		 static ConfigStruct *  make(FMU* fmuPointer);
+		static ConfigStruct *  make(FMU* fmuPointer);
 
-	 };
+	};
 };

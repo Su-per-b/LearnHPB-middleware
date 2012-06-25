@@ -18,7 +18,7 @@ namespace Straylight
 
 
 
- char * ResultOfStep::getString()
+	char * ResultOfStep::getString()
 	{
 		char * cstr;
 		vector<ScalarValue*>::iterator it = svListOutput.begin();
@@ -35,7 +35,7 @@ namespace Straylight
 
 		for(it; it != svListOutput.end(); ++it)
 		{
-			
+
 			output.append(",");
 			sv = (*it);
 			str = sv->getString();
@@ -45,18 +45,16 @@ namespace Straylight
 
 
 		cstr = new char [output.size()+1];
-        strcpy (cstr, output.c_str());
+		strcpy (cstr, output.c_str());
 
 
 		return cstr;
 	}
 
 
-	 void ResultOfStep::extractValues(vector<ScalarVariableRealStruct*> scalarVariableList, Enu causality) {
+	void ResultOfStep::extractValues(vector<ScalarVariableRealStruct*> scalarVariableList, Enu causality) {
 
 		vector<ScalarVariableRealStruct*>::iterator list_iter = scalarVariableList.begin();
-
-
 
 		for(list_iter; 
 			list_iter != scalarVariableList.end(); list_iter++)
@@ -69,18 +67,18 @@ namespace Straylight
 			} else if (causality == enu_output){
 				svListOutput.push_back(scalarValue);
 			}
-			
+
 		}
 
-	 }
+	}
 
 
 
 
 
-	 void ResultOfStep::addValueIn(ScalarValue * scalarValue) {
+	void ResultOfStep::addValueIn(ScalarValue * scalarValue) {
 		svListInput.push_back(scalarValue);
-	 }
+	}
 
 	void ResultOfStep::addValue(ScalarValue * scalarValue)
 	{
@@ -90,7 +88,7 @@ namespace Straylight
 
 
 
-	 ResultOfStepStruct * ResultOfStep::toStruct ()
+	ResultOfStepStruct * ResultOfStep::toStruct ()
 	{
 		ResultOfStepStruct * result = new ResultOfStepStruct();
 		result->time = time_;
@@ -106,11 +104,6 @@ namespace Straylight
 			result->input [k] = realNumber;
 		}
 
-
-
-
-
-
 		int len = svListOutput.size();
 		result->output = new double[len];
 		result->outputLength = len;
@@ -121,29 +114,6 @@ namespace Straylight
 			double realNumber = sv->getRealNumber();
 			result->output [i] = realNumber;
 		}
-
-
-		/*
-
-		int len2 = svListInput.size();
-
-
-		//DoubleArrayStruct * test = new DoubleArrayStruct();
-
-		//result->testStruct = new DoubleArrayStruct();
-		result->testStruct.length = len2;
-		result->testStruct.doubleArray = new double[len2];	
-
-		for (int j = 0; j < len2; j++)
-		{
-		Straylight::ScalarValue * sv  = svListOutput[j];
-		double realNumber = sv->getRealNumber();
-		result->testStruct.doubleArray[j] = realNumber;
-		}
-		*/
-
-		
-
 
 		return result;
 

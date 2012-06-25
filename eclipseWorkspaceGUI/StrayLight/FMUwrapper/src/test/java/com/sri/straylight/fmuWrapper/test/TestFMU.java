@@ -76,16 +76,18 @@ public class TestFMU extends TestCase {
 			fmuController_.xmlParse();
 			awaitOnBarrier(barrier);
 			
-			TestFMU.nextStateExpected = SimStateServer.simStateServer_3_init_completed;
+			TestFMU.nextStateExpected = SimStateServer.simStateServer_3_ready;
 			fmuController_.init();
 			awaitOnBarrier(barrier);
 			//fmuController_.run();
-			fmuController_.doOneStep();
+			TestFMU.nextStateExpected = SimStateServer.simStateServer_3_ready;
+			
+			//fmuController_.requestStateChange(SimStateServer.simStateServer_5_step_requested);
 			awaitOnBarrier(barrier);
 			
-			fmuController_.changeInput(56106, 22.5);
+			fmuController_.setScalarValueReal(56106, 22.5);
 			//awaitOnBarrier(barrier);
-			fmuController_.doOneStep();
+			//fmuController_.requestStateChange(SimStateServer.simStateServer_5_step_requested);
 			awaitOnBarrier(barrier);
 			
 			awaitOnBarrier(mainBarrier);

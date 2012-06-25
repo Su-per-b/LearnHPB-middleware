@@ -1,6 +1,5 @@
 package com.sri.straylight.fmuWrapper;
 
-import com.sri.straylight.fmuWrapper.model.ConfigHelper;
 import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
 
 
@@ -15,7 +14,7 @@ public class Main
 	
     public static void main( String[] args )
     {
-		config = FMUwrapperConfig.load();
+		//config = FMUwrapperConfig.load();
 
     }
     
