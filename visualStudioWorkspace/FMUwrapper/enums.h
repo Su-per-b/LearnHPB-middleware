@@ -46,6 +46,8 @@ typedef enum {
 	simStateNative_6_pause_completed,
 	simStateNative_7_reset_requested,
 	simStateNative_7_reset_completed,
+	simStateNative_7_resume_requested,
+	simStateNative_7_resume_completed,
 	simStateNative_e_error
 
 } SimStateNative;

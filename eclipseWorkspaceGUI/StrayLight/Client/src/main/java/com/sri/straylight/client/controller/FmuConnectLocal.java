@@ -79,7 +79,11 @@ public class FmuConnectLocal implements  IFmuConnect {
 	}
 	
 
-
+	public void resume() {
+		taskRequestStateChange_ = new TaskRequestStateChange();
+		taskRequestStateChange_.setState(SimStateNative.simStateNative_7_resume_requested); 
+		taskRequestStateChange_.execute();
+	}
 
 	public void setConfig(ConfigStruct configStruct) {
 		fmu_.setConfig(configStruct);

@@ -423,6 +423,7 @@ namespace Straylight
 
 		fmiStatus fmiFlag;  
 
+		setState_( simStateNative_3_init_instantiatedSlaves );
 		double stopTime = getStopTime();
 		fmiFlag =  fmu_->initializeSlave(fmiComponent_, time_, fmiTrue, stopTime);
 
@@ -432,7 +433,6 @@ namespace Straylight
 			return 1;																
 		} else {
 			logger_->printDebug(_T("initializeSlave() successful\n"));
-			setState_( simStateNative_3_init_initializedSlaves );
 			return 0;
 		}
 

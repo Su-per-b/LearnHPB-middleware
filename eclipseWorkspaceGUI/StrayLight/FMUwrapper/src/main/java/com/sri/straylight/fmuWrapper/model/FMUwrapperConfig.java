@@ -14,19 +14,16 @@ public class FMUwrapperConfig {
 	
 	private static final String configFile_ = "config.xml";
 	
-	//public double timeDelta;
-	//public double timeEnd;
-	public String unzipFolderBase;
-	public String unzippedFMU;
-	public String unzipFolder;
-	public String nativeLibFolder;
 
+	public String unzipFolderRelativePath;
+	public String unzipFolderAbsolutePath;
+	public String fmuFolderName;
+	public String fmuFolderAbsolutePath;
+	
+	public String nativeLibFolderRelativePath;
+	public String nativeLibFolderAbsolutePath;
+	
 
-	
-	
-	//public String unzipFolder = "C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop";
-	//public String testFmuFile = "E:\\SRI\\modelica-projects\\fmus\\no_licence_needed\\LearnGB_VAVReheat_ClosedLoop.fmu";
-//	public String nativeLibFolder = "E:\\SRI\\straylight_repo\\visualStudioWorkspace\\bin\\Debug";
 	public static FMUwrapperConfig load() {
 		
 		String theOs = System.getProperty("os.name");
@@ -44,8 +41,6 @@ public class FMUwrapperConfig {
 			config = (FMUwrapperConfig)xStream.fromXML(fi);
 			fi.close();
 			
-			
-			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -56,33 +51,43 @@ public class FMUwrapperConfig {
 			return null;
 		}
 		
+		config.unzipFolderAbsolutePath = convertRelativeToAbsolute(config.unzipFolderRelativePath);
+		config.fmuFolderAbsolutePath = config.unzipFolderAbsolutePath + "\\" + config.fmuFolderName;
+		config.nativeLibFolderAbsolutePath = convertRelativeToAbsolute(config.nativeLibFolderRelativePath);
+		
+		return config;
+		
+	}
+	
+	private static String convertRelativeToAbsolute (String relativePath) {
 
 		
+		String absolutePath ="";
+		
 		try {
+
 			File file = new File (".");
 			String currentDirectory = file.getCanonicalPath();
 			
-			String complexUnzipFolderBase = currentDirectory + config.unzipFolderBase;// + config.unzippedFMU;
+			String complexFolderBase = currentDirectory + relativePath;
 			
-			File file2 = new File (complexUnzipFolderBase + "\\.");
-			String simpleUnzipFolderBase = file2.getCanonicalPath();
+			File file2 = new File (complexFolderBase + "\\.");
+			String simpleFolderBase = file2.getCanonicalPath();
 			
-			config.unzipFolderBase = simpleUnzipFolderBase;
-			config.unzipFolder = simpleUnzipFolderBase + "\\" + config.unzippedFMU;
-			
+			absolutePath = simpleFolderBase;
+			//absolutePath = simpleFolderBase + "\\" + config.unzippedFMU;
 
-			   
 			   
 			 }catch(Exception e) {
 				 System.out.println("Exceptione is ="+e.getMessage());
 				 return null;
 			 }
 		
-		
-
-		return config;
-		
+		return absolutePath;
+	
 	}
+	
+	
 	
 	public static void make() {
 		FMUwrapperConfig config = new FMUwrapperConfig();
