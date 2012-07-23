@@ -19,14 +19,8 @@ public interface IFmuConnect {
 
 	public void setConfig(ConfigStruct configStruct);
 
-	//public void stop();
-	
-	public void resume();
-
 	public void changeInput(int idx, double value);
 
-	public void doOneStep();
-	
 	public void requestStateChange(SimStateNative newState);
 	
 	

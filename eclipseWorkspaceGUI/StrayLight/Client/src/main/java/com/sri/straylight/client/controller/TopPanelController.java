@@ -103,14 +103,17 @@ public class TopPanelController extends AbstractController {
 		
 		stateMap_.put(
 				SimStateClient.level_3_ready,
-				new JButton[]{btnRun_, btnStep_}
+				new JButton[]{btnRun_, btnStep_, btnReset_}
 				);
 		
 		stateMap_.put(
 				SimStateClient.level_4_run_started,
 				new JButton[]{btnStop_}
 				);
-		
+		stateMap_.put(
+				SimStateClient.level_4_run_completed,
+				new JButton[]{btnReset_}
+				);
 
 		
 	}

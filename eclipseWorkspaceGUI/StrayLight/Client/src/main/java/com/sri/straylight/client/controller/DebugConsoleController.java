@@ -75,7 +75,14 @@ public class DebugConsoleController  extends AbstractController {
 		textPane_.setText("");
 	}
 	
-
+	
+	public void reset() {
+		
+		textPane_.setText("reset");
+		
+	}
+	
+	
 	public void  outputText(String txt) {
 
 		long elapsedTimeMillis = System.currentTimeMillis()-startTime_;

@@ -10,10 +10,12 @@ import javax.swing.JTabbedPane;
 
 import org.bushe.swing.event.annotation.EventSubscriber;
 
+import com.sri.straylight.client.event.SimStateNotify;
 import com.sri.straylight.client.event.menu.About_Help;
 import com.sri.straylight.client.event.menu.Options_SelectSimulationEngine;
 import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.client.model.ConfigClient;
+import com.sri.straylight.client.model.SimStateClient;
 import com.sri.straylight.client.view.MainView;
 import com.sri.straylight.client.view.SimulationEngineDialog;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
@@ -26,7 +28,6 @@ public class MainController extends AbstractController {
 	private DebugConsoleController debugConsoleController_;
 	private InputFormController inputFormController_;
 
-	
 	
 	private ResultsTableController resultsTableController_;
 	private InternalTableController internalTableController_;
@@ -96,64 +97,62 @@ public class MainController extends AbstractController {
 				);
 	}
 	
-	
-	@EventSubscriber(eventClass=XMLparsedEvent.class)
-	public void onXMLparsedEvent(XMLparsedEvent event) {
-		  
+	@EventSubscriber(eventClass=SimStateNotify.class)
+    public void onSimStateNotify(SimStateNotify event) {
 		
-		configController_.init(event.metaDataStruct);
-		
-		tabbedPane_.addTab(
-				"Configuration ",
-				null, 
-				configController_.getView(), 
-				null);
-		
-		
-		inputFormController_.init(event.xmlParsed);
-		tabbedPane_.addTab(
-				"Input Form",
-				null, 
-				inputFormController_.getView(), 
-				null);
-		
-		
+		if (event.getPayload() == SimStateClient.level_6_reset_completed) {
+			
+			resultsTableController_.reset();
+			debugConsoleController_.reset();
+		}
 
-		resultsFormController_.init(event.xmlParsed);
-		tabbedPane_.addTab(
-				"Results Form",
-				null, 
-				resultsFormController_.getView(), 
-				null);
-		
-
-		
-		resultsTableController_.init(event.xmlParsed);
-		tabbedPane_.addTab(
-				"Results Table ",
-				null, 
-				resultsTableController_.getView(), 
-				null);
-
-
-		
-		
-		internalTableController_.init(event.xmlParsed);
-		tabbedPane_.addTab(
-				"Internal Table " ,
-				null, 
-				internalTableController_.getView(), 
-				null);
-		
 	}
 	
 	
 	
+	@EventSubscriber(eventClass=XMLparsedEvent.class)
+	public void onXMLparsedEvent(XMLparsedEvent event) {
+		  
 
+		if (tabbedPane_.getTabCount() < 2) {
+			
+			configController_.init(event.metaDataStruct);
+			inputFormController_.init(event.xmlParsed);
+			resultsFormController_.init(event.xmlParsed);
+			resultsTableController_.init(event.xmlParsed);
+			internalTableController_.init(event.xmlParsed);
+			
+			
+			tabbedPane_.addTab(
+					"Configuration ",
+					null, 
+					configController_.getView(), 
+					null);
+			tabbedPane_.addTab(
+					"Input Form",
+					null, 
+					inputFormController_.getView(), 
+					null);
+			tabbedPane_.addTab(
+					"Results Form",
+					null, 
+					resultsFormController_.getView(), 
+					null);
+			tabbedPane_.addTab(
+					"Results Table ",
+					null, 
+					resultsTableController_.getView(), 
+					null);
+			tabbedPane_.addTab(
+					"Internal Table " ,
+					null, 
+					internalTableController_.getView(), 
+					null);
+		} else{
+			inputFormController_.reset(event.xmlParsed);
+		}
 
-
-
-
-
+	}
+	
 
 }

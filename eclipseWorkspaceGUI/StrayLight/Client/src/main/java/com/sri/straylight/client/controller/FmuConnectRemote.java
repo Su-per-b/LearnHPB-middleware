@@ -51,10 +51,6 @@ public class FmuConnectRemote implements IFmuConnect {
 	
 	}
 	
-	public void doOneStep() {
-		
-	}
-	
 
 	
 	public void connect() {

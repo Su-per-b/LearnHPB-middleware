@@ -11,8 +11,10 @@ ConfigStruct * getConfig() {
 	return mainController->getConfig();
 }
 
-void setConfig(ConfigStruct * configStruct) {
+int setConfig(ConfigStruct * configStruct) {
 	mainController->setConfig(configStruct);
+
+	return 0;
 }
 
 

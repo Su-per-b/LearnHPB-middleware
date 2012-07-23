@@ -54,8 +54,15 @@ void test1() {
 	}
 
 	setScalarValueReal(56106,300.2);
+
 	run();
 
+
+
+	requestStateChange (simStateNative_7_reset_requested);
+	run();
+
+	//reset();
 
 }
 

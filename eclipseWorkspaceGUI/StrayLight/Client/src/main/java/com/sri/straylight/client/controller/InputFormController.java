@@ -76,6 +76,21 @@ public class InputFormController extends AbstractController {
 	    
     }
 	
+	
+	public void reset(XMLparsed xmlParsed) {  
+		xmlParsed_ = xmlParsed;
+		
+		tableModel_ = new DefaultTableModel (
+				
+				xmlParsed_.getInputData(),
+				xmlParsed_.getInputFormColumnNames()
+		);
+		
+		table_.setModel(tableModel_);
+		
+	}
+	
+	
 	private void bindActions_() {
 
 		btnSubmit_.addActionListener(new ActionListener() {

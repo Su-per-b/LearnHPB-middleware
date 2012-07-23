@@ -32,6 +32,7 @@ namespace Straylight
 
 		printf(_T("executing deconstructor"));
 
+		//cleanup();
 
 		// Cleanup
 		free((void *) unzipFolderPath_);
@@ -92,6 +93,31 @@ namespace Straylight
 			}
 
 			break;
+		case simStateNative_7_reset_requested :
+			if (state_ == simStateNative_4_run_completed ||
+				state_ == simStateNative_3_ready
+				) {
+
+				time_ = 0;
+				nSteps_ = 0;
+		
+				int result3 = initializeSlave_();
+				//int result4 = setStartValues_();
+				//setState_(simStateNative_2_xmlParse_completed);
+				//setState_(simStateNative_3_init_initializedSlaves);
+
+				mainDataModel_->setStartValues();
+				setState_(simStateNative_7_reset_completed);
+
+				resultOfStep_ = mainDataModel_->getResultOfStep(time_);
+				ResultOfStepStruct *  resultOfStepStruct = resultOfStep_->toStruct();
+				resultCallbackPtr_(resultOfStepStruct);
+
+				setState_(simStateNative_3_ready);
+			}
+
+			break;
+
 		}
 
 	}
@@ -101,9 +127,8 @@ namespace Straylight
 	void MainController::cleanup() {
 
 
-		//Straylight::Logger * logger = fmuWrapper->logger_;
-
-		//TODO: Fix this - the event should be fired *after* the object is deleted
+		fmu_->freeSlaveInstance(fmiComponent_);
+		time_ = 0;
 		setState_(simStateNative_4_run_cleanedup);
 
 	}
@@ -304,6 +329,10 @@ namespace Straylight
 		fmu_->getBoolean = (fGetBoolean) getAdr("fmiGetBoolean");
 		fmu_->getString = (fGetString) getAdr( "fmiGetString");
 		fmu_->doStep = (fDoStep) getAdr("fmiDoStep");
+		fmu_->terminateSlave = (fTerminateSlave) getAdr("fmiTerminateSlave");
+		fmu_->resetSlave = (fResetSlave) getAdr("fmiResetSlave");
+		
+		
 
 		setState_( simStateNative_3_init_dllLoaded );
 
@@ -381,6 +410,7 @@ namespace Straylight
 		} else {
 			logger_->printDebug(_T("Successfully instantiated one slave\n"));
 			mainDataModel_->setFmiComponent(fmiComponent_);
+			setState_( simStateNative_3_init_instantiatedSlaves );
 
 			return 0;
 		}
@@ -393,10 +423,6 @@ namespace Straylight
 
 		fmiStatus fmiFlag;  
 
-
-
-		setState_( simStateNative_3_init_instantiatedSlaves );
-
 		double stopTime = getStopTime();
 		fmiFlag =  fmu_->initializeSlave(fmiComponent_, time_, fmiTrue, stopTime);
 
@@ -406,6 +432,7 @@ namespace Straylight
 			return 1;																
 		} else {
 			logger_->printDebug(_T("initializeSlave() successful\n"));
+			setState_( simStateNative_3_init_initializedSlaves );
 			return 0;
 		}
 
@@ -415,11 +442,7 @@ namespace Straylight
 	int MainController::setStartValues_() {
 
 
-
-		//fmiStatus status = mainDataModel_->setScalarValueReal(idx, value);
-
 		mainDataModel_->setStartValues();
-
 		resultOfStep_ = mainDataModel_->getResultOfStep(time_);
 
 		ResultOfStepStruct *  resultOfStepStruct = resultOfStep_->toStruct();
@@ -460,6 +483,7 @@ namespace Straylight
 		} else {
 			printSummary();
 			setState_(simStateNative_4_run_completed);
+			//cleanup();
 		}
 
 

@@ -34,7 +34,7 @@ extern "C" DllExport int run();
 
 extern "C" DllExport ConfigStruct * getConfig();
 
-extern "C" DllExport void setConfig(ConfigStruct * configStruct);
+extern "C" DllExport int setConfig(ConfigStruct * configStruct);
 
 extern "C" DllExport void connect(
 	void (*messageCallbackPtr)(MessageStruct *), 

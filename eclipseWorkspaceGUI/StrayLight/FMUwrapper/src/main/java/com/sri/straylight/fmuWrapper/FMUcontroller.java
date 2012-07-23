@@ -10,6 +10,7 @@ import java.util.Map;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 
+import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateServerNotify;
@@ -42,6 +43,7 @@ public class FMUcontroller  {
 	private ScalarVariableRealStruct[] scalarVariableInputAry_;
 	private ScalarVariableRealStruct[] scalarVariableOutputAry_;
 	private ScalarVariableStruct[] scalarVariableInternalAry_;
+	
 		
 	public ScalarVariableRealStruct[] getScalarVariableInputAry() {
 		return scalarVariableInputAry_;
@@ -148,8 +150,14 @@ public class FMUcontroller  {
 		}else if (simStateNative == SimStateNative.simStateNative_e_error) {
 			notifyStateChange_(SimStateServer.simStateServer_e_error);
 		} else if (simStateNative == SimStateNative.simStateNative_3_ready) {
-			notifyStateChange_(SimStateServer.simStateServer_3_ready);
+			notifyStateChange_(SimStateServer.simStateServer_3_ready); 
+		} else if (simStateNative == SimStateNative.simStateNative_2_xmlParse_completed) {
+			onXMLparseCompleted();
+		} else if (simStateNative == SimStateNative.simStateNative_7_reset_completed) {
+			onXMLparseCompleted();
+			notifyStateChange_(SimStateServer.simStateServer_6_reset_completed); 
 		}
+		
 		
 		
 		simStateNative_ = simStateNative;
@@ -163,13 +171,7 @@ public class FMUcontroller  {
 	}
 	
 	
-
-
-	public void xmlParse() {
-		
-		//unzipfolder_ = unzippedFolder;
-		jnaFMUWrapper_.xmlParse(fmuWrapperConfig_.unzipFolder);
-
+	private void onXMLparseCompleted() {
 		int intputVariableCount = jnaFMUWrapper_.getInputVariableCount();
 		
 		ScalarVariableRealStruct struct = jnaFMUWrapper_.getScalarVariableInputStructs();
@@ -199,6 +201,11 @@ public class FMUcontroller  {
 		EventBus.publish(event);
 		
 		notifyStateChange_(SimStateServer.simStateServer_2_xmlParse_completed);
+	}
+
+
+	public void xmlParse() {
+		jnaFMUWrapper_.xmlParse(fmuWrapperConfig_.unzipFolder);
 	}
 	
 	
@@ -256,7 +263,13 @@ public class FMUcontroller  {
 	public void setConfig(ConfigStruct configStruct) {
 
 		configStruct_ = configStruct;
-		jnaFMUWrapper_.setConfig(configStruct_);
+		int result = jnaFMUWrapper_.setConfig(configStruct_);
+		
+		if (result == 0) {
+			
+			EventBus.publish(new ConfigChangeNotify(configStruct_));
+		}
+		
 		
 	}
 

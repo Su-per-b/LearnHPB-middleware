@@ -55,7 +55,20 @@ public class ResultsTableController extends AbstractController {
 	    setView_(panel);
 	    
     }
-    
+	
+	
+	public void reset() {
+		
+		int count = dataModel_.getRowCount();
+		for (int i = 0; i < count; i++) {
+			dataModel_.removeRow(0);
+		}
+		
+	}
+	
+	
+	
+	
 	
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {

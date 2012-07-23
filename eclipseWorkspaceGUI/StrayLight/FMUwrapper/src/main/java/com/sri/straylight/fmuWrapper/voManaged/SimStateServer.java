@@ -27,6 +27,8 @@ public enum SimStateServer implements JnaEnum<SimStateServer>  {
 	simStateServer_5_step_completed,
 	simStateServer_6_pause_requested,
 	simStateServer_6_pause_completed,
+	simStateServer_6_reset_requested,
+	simStateServer_6_reset_completed,
 	simStateServer_7_resume_requested,
 	simStateServer_7_resume_completed,
 	simStateServer_e_error;

@@ -15,9 +15,14 @@ import javax.swing.text.NumberFormatter;
 import net.miginfocom.swing.MigLayout;
 
 import org.bushe.swing.event.EventBus;
+import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.event.ConfigChangeRequest;
+import com.sri.straylight.client.event.SimStateNotify;
+import com.sri.straylight.client.event.SimStateRequest;
 import com.sri.straylight.client.framework.AbstractController;
+import com.sri.straylight.client.model.SimStateClient;
+import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
+import com.sri.straylight.fmuWrapper.event.ConfigChangeRequest;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 
@@ -37,6 +42,9 @@ public class ConfigController extends AbstractController {
 	
 	private ConfigStruct configStruct_;
 	
+	
+	private SimStateClient simulationState_ = SimStateClient.level_0_uninitialized;
+	
 	public ConfigController(AbstractController parentController) {
 		super(parentController);
 	}
@@ -46,7 +54,7 @@ public class ConfigController extends AbstractController {
 		
 		btnApply_.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-            	btnApply_.setEnabled(false);
+            	//btnApply_.setEnabled(false);
             	updateDataModel_();
             	EventBus.publish(new ConfigChangeRequest(configStruct_));
              }
@@ -61,7 +69,7 @@ public class ConfigController extends AbstractController {
 		configStruct_ = configStruct;
 		
 		txtStartTime_ = new JFormattedTextField(new Double(0.0));
-		txtStartTime_.setEnabled(false);
+	//	txtStartTime_.setEnabled(false);
 		txtStopTime_ = new JFormattedTextField(new Double(0.0));
 		txtStepDelta_ = new JFormattedTextField(new Double(0.0));
 		
@@ -100,27 +108,43 @@ public class ConfigController extends AbstractController {
 		updateGUI_();
 	}
 	
+	
+	@EventSubscriber(eventClass=ConfigChangeRequest.class)
+	public void onSimStateRequest(SimStateRequest event) {
+		btnApply_.setEnabled(false);
+		simulationState_ = event.getPayload();
+		updateGUIFromState_();
+	}
+	
+	@EventSubscriber(eventClass=ConfigChangeNotify.class)
+	public void onSimStateNotify(SimStateNotify event) {
+		btnApply_.setEnabled(true);
+		simulationState_ = event.getPayload();
+		updateGUIFromState_();
+	}
 
-
-	private void updateGUI_() {
+	
+	private void updateGUIFromState_() {
+		//if (simulationState_ == SimStateClient.)
 		
+		if (simulationState_ == SimStateClient.level_2_xmlParse_completed) {
+			
+		}
+		
+	}
+	
+	
+	
+	private void updateGUI_() {
 		txtStartTime_.setValue(configStruct_.defaultExperimentStruct.startTime);
 		txtStopTime_.setValue(configStruct_.defaultExperimentStruct.stopTime);
 		txtStepDelta_.setValue(configStruct_.stepDelta);
-		
-		
-		//txtStartTime_.setText(Double.toString());
-		//txtStopTime_.setText(Double.toString(metaDataStruct_.defaultExperimentStruct.stopTime));		
-		//txtStepDelta_.setText(Double.toString(metaDataStruct_.stepDelta));		
 	}
 	
 	private void updateDataModel_() {
-
 		configStruct_.defaultExperimentStruct.startTime = (double)txtStartTime_.getValue();
 		configStruct_.defaultExperimentStruct.stopTime = (double)txtStopTime_.getValue();
-		
 		configStruct_.stepDelta = (double)txtStepDelta_.getValue();
-		
 	}
 	
 	

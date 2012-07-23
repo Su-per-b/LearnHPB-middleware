@@ -52,7 +52,7 @@ public interface JNAfmuWrapper extends Library {
 	
 	public void requestStateChange(SimStateNative newState); 
 	
-	public void setConfig(ConfigStruct configStruct);
+	public int setConfig(ConfigStruct configStruct);
 	
 	public ConfigStruct getConfig();
 	

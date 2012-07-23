@@ -93,7 +93,7 @@ public class SimulationController extends AbstractController  {
 				fmuConnect_.requestStateChange(SimStateNative.simStateNative_5_step_requested);
 				break;
 			case level_6_reset_requested:
-				fmuConnect_.resume();
+				fmuConnect_.requestStateChange(SimStateNative.simStateNative_7_reset_requested);
 				break;
 		}
     }
