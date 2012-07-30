@@ -10,7 +10,7 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	test1();
+	test2();
 	getch();
 
 	return 0;
@@ -53,7 +53,7 @@ void test1() {
 		return;
 	}
 
-	setScalarValueReal(56106,300.2);
+	//setScalarValueReal(56106,300.2);
 
 	run();
 
@@ -70,15 +70,33 @@ void test2 () {
 
 	connect(&messageCallback, &resultCallback, &fmuStateCallback);
 
-	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v2_VAVReheat_ClosedLoop"));
+	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v2_VAVReheat_ClosedLoopEdit2"));
 
+	int inputVariableCount = getInputVariableCount();
+	int outputVariableCount = getOutputVariableCount();
+	int internalVariableCount = getInternalVariableCount();
 
+	ScalarVariableRealStruct * svrInput = getScalarVariableInputStructs();
+	ScalarVariableRealStruct * svrOutput = getScalarVariableOutputStructs();
+	ScalarVariableRealStruct * svrInternal = getScalarVariableInternalStructs();
 	
+
+
+
 	int result = init();
 
 	if(result) {
 		return;
 	}
+
+	//setScalarValueReal(56106,300.2);
+
+	run();
+
+
+
+	requestStateChange (simStateNative_7_reset_requested);
+	run();
 
 	requestStateChange(simStateNative_5_step_requested);
 	//doOneStep();

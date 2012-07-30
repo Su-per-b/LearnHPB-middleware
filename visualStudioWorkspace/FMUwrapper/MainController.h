@@ -97,6 +97,7 @@ namespace Straylight
 		fmiStatus setScalarValueReal(int idx, double value);
 		
 
+
 		//private functions
 	private:
 		int loadDLLhelper(const char* , FMU *);

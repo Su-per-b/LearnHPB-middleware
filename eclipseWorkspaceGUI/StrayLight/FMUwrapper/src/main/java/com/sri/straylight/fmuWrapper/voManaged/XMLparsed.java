@@ -14,7 +14,7 @@ public class XMLparsed extends Structure {
 
 	public ScalarVariableRealStruct[] inputVars;
 	public ScalarVariableRealStruct[] outputVars;
-	public ScalarVariableStruct[] internalVars;
+	public ScalarVariableRealStruct[] internalVars;
 
 	
 	public String[] getOutputColumnNames() {
@@ -126,11 +126,11 @@ public class XMLparsed extends Structure {
 		Object[][] data = new Object[len][];
 
 		for (int i = 0; i < len; i++) {
-			ScalarVariableStruct sv = internalVars[i];
+			ScalarVariableRealStruct sv = internalVars[i];
 			String[] row  = {
 				sv.name,
 				"unknown",
-				sv.typeSpec.getTypeEnum().toString(),
+				"Real",
 				sv.getCausalityEnum().toString(),
 				sv.description
 			};

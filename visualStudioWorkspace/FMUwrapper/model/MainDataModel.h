@@ -10,7 +10,8 @@
 #include "TypeDefFactory.h"
 #include "ScalarVariableFactory.h"
 #include "TypeDefDataModel.h"
-
+#include "ScalarVariableCollection.h"
+#include "ScalarVariableDataModel.h"
 
 using namespace std;
 
@@ -25,13 +26,15 @@ namespace Straylight
 		MainDataModel(Logger* logger);
 		~MainDataModel(void);
 
-		void extractScalarVariables();
-		void extractTypeDefinitions();
+		//void extractScalarVariables();
+		//void extractTypeDefinitions();
 
+		void extract();
+		void extractScalarVariables();
 
 		ScalarVariableRealStruct *  getSVinputArray();
 		ScalarVariableRealStruct *  getSVoutputArray();
-		ScalarVariableStruct *  getSVinternalArray();
+		ScalarVariableRealStruct *  getSVinternalArray();
 
 		vector<ScalarVariableRealStruct*>  getSVoutputVector();
 		vector<ScalarVariableRealStruct*>  getSVinputVector();
@@ -53,21 +56,12 @@ namespace Straylight
 
 		//private member variables
 	private:
-		vector<ScalarVariableRealStruct*> svOutput_; //depricated
-		vector<ScalarVariableRealStruct*> svInput_;//depricated
-		vector<ScalarVariableStruct*> svInternal_;//depricated
 
-		vector<ScalarVariableRealStruct*> svVectorReal_;
-		vector<ScalarVariableBooleanStruct*> svVectorBoolean_;
-		vector<ScalarVariableIntegerStruct*> svVectorInteger_;
-		vector<ScalarVariableEnumerationStruct*> svVectorEnumeration_;
-		vector<ScalarVariableStringStruct*> svVectorString_;
 
-		vector<TypeDefinitionReal*> typeDefVectorReal_;
-		vector<TypeDefinitionBoolean*> typeDefVectorBoolean_;
-		vector<TypeDefinitionInteger*> typeDefVectorInteger_;
-		vector<TypeDefinitionEnumeration*> typeDefVectorEnumeration_;
-		vector<TypeDefinitionString*> typeDefVectorString_;
+
+		TypeDefDataModel * typeDefDataModel_;
+		ScalarVariableDataModel * scalarVariableDataModel_;
+
 
 		ScalarVariableStruct* extractOneScalarVariable_(ScalarVariable* scalarVariable);
 

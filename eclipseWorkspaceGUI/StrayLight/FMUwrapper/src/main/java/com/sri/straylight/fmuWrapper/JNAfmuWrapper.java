@@ -29,7 +29,7 @@ public interface JNAfmuWrapper extends Library {
 	
 	public ScalarVariableRealStruct getScalarVariableInputStructs();
 	public ScalarVariableRealStruct getScalarVariableOutputStructs();
-	public ScalarVariableStruct getScalarVariableInternalStructs();
+	public ScalarVariableRealStruct getScalarVariableInternalStructs();
 	
 	public int getInputVariableCount();
 	public int getOutputVariableCount();

@@ -61,8 +61,6 @@ namespace Straylight
 					typeDefVectorString_.push_back(typeDefinitionString);
 					break;
 				}	
-
-
 			}
 
 		}

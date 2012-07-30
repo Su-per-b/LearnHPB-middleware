@@ -45,9 +45,6 @@
     <ClInclude Include=".\ScalarValue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ScalarVariableFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include=".\model\TypeDefDataModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -87,6 +84,15 @@
     <ClInclude Include=".\qtronic\xml_parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include=".\model\ScalarVariableDataModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\model\ScalarVariableFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\model\ScalarVariableCollection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -113,9 +119,6 @@
     <ClCompile Include=".\ScalarValue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScalarVariableFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include=".\model\TypeDefDataModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -135,6 +138,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include=".\qtronic\xml_parser.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\model\ScalarVariableDataModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\model\ScalarVariableFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\model\ScalarVariableCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

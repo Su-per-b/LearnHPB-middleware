@@ -42,7 +42,7 @@ public class FMUcontroller  {
 	
 	private ScalarVariableRealStruct[] scalarVariableInputAry_;
 	private ScalarVariableRealStruct[] scalarVariableOutputAry_;
-	private ScalarVariableStruct[] scalarVariableInternalAry_;
+	private ScalarVariableRealStruct[] scalarVariableInternalAry_;
 	
 		
 	public ScalarVariableRealStruct[] getScalarVariableInputAry() {
@@ -53,7 +53,7 @@ public class FMUcontroller  {
 		return scalarVariableOutputAry_;
 	}
 	
-	public ScalarVariableStruct[] getScalarVariableInternalAry() {
+	public ScalarVariableRealStruct[] getScalarVariableInternalAry() {
 		return scalarVariableInternalAry_;
 	}
 	
@@ -172,36 +172,39 @@ public class FMUcontroller  {
 	
 	
 	private void onXMLparseCompleted() {
-		jnaFMUWrapper_.xmlParse(fmuWrapperConfig_.fmuFolderAbsolutePath);
-		int intputVariableCount = jnaFMUWrapper_.getInputVariableCount();
 		
-		ScalarVariableRealStruct struct = jnaFMUWrapper_.getScalarVariableInputStructs();
-		scalarVariableInputAry_ = (ScalarVariableRealStruct[]) struct.toArray(intputVariableCount);
+		return;
 		
-		
-		int outputVariableCount = jnaFMUWrapper_.getOutputVariableCount();
-		scalarVariableOutputAry_ = (ScalarVariableRealStruct[]) 
-				jnaFMUWrapper_.getScalarVariableOutputStructs().toArray(outputVariableCount);
-		
-
-		int internalVariableCount = jnaFMUWrapper_.getInternalVariableCount();
-		scalarVariableInternalAry_ = (ScalarVariableStruct[]) 
-				jnaFMUWrapper_.getScalarVariableInternalStructs().toArray(internalVariableCount);
-		
-		
-		
-		configStruct_ = jnaFMUWrapper_.getConfig();
-				
-		XMLparsed xmlParsedStruct = new XMLparsed();
-		
-		xmlParsedStruct.inputVars = scalarVariableInputAry_;
-		xmlParsedStruct.outputVars = scalarVariableOutputAry_;
-		xmlParsedStruct.internalVars = scalarVariableInternalAry_;
-
-		XMLparsedEvent event = new XMLparsedEvent(this, xmlParsedStruct, configStruct_);
-		EventBus.publish(event);
-		
-		notifyStateChange_(SimStateServer.simStateServer_2_xmlParse_completed);
+//		int intputVariableCount = jnaFMUWrapper_.getInputVariableCount();
+//		
+//		ScalarVariableRealStruct struct = jnaFMUWrapper_.getScalarVariableInputStructs();
+//		scalarVariableInputAry_ = (ScalarVariableRealStruct[]) struct.toArray(intputVariableCount);
+//		
+//		
+//		int outputVariableCount = jnaFMUWrapper_.getOutputVariableCount();
+//		
+//		scalarVariableOutputAry_ = (ScalarVariableRealStruct[]) 
+//				jnaFMUWrapper_.getScalarVariableOutputStructs().toArray(outputVariableCount);
+//		
+//
+//		int internalVariableCount = jnaFMUWrapper_.getInternalVariableCount();
+//		scalarVariableInternalAry_ = (ScalarVariableRealStruct[]) 
+//				jnaFMUWrapper_.getScalarVariableInternalStructs().toArray(internalVariableCount);
+//		
+//		
+//		
+//		configStruct_ = jnaFMUWrapper_.getConfig();
+//				
+//		XMLparsed xmlParsedStruct = new XMLparsed();
+//		
+//		xmlParsedStruct.inputVars = scalarVariableInputAry_;
+//		xmlParsedStruct.outputVars = scalarVariableOutputAry_;
+//		xmlParsedStruct.internalVars = scalarVariableInternalAry_;
+//
+//		XMLparsedEvent event = new XMLparsedEvent(this, xmlParsedStruct, configStruct_);
+//		EventBus.publish(event);
+//		
+//		notifyStateChange_(SimStateServer.simStateServer_2_xmlParse_completed);
 	}
 
 
@@ -222,7 +225,7 @@ public class FMUcontroller  {
 		
 
 		int internalVariableCount = jnaFMUWrapper_.getInternalVariableCount();
-		scalarVariableInternalAry_ = (ScalarVariableStruct[]) 
+		scalarVariableInternalAry_ = (ScalarVariableRealStruct[]) 
 				jnaFMUWrapper_.getScalarVariableInternalStructs().toArray(internalVariableCount);
 		
 		

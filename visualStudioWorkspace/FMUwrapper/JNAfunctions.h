@@ -22,7 +22,7 @@ extern "C" DllExport int forceCleanup();
 
 extern "C" DllExport ScalarVariableRealStruct * getScalarVariableInputStructs();
 extern "C" DllExport ScalarVariableRealStruct * getScalarVariableOutputStructs();
-extern "C" DllExport ScalarVariableStruct * getScalarVariableInternalStructs();
+extern "C" DllExport ScalarVariableRealStruct * getScalarVariableInternalStructs();
 
 extern "C" DllExport int getInputVariableCount();
 extern "C" DllExport int getOutputVariableCount();

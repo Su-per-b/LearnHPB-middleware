@@ -106,7 +106,9 @@
     <ClInclude Include=".\ScalarValue.h" />
     <ClInclude Include=".\qtronic\xml_parser.h" />
     <ClInclude Include=".\model\MainDataModel.h" />
-    <ClInclude Include="ScalarVariableFactory.h" />
+    <ClInclude Include=".\model\ScalarVariableDataModel.h" />
+    <ClInclude Include=".\model\ScalarVariableFactory.h" />
+    <ClInclude Include=".\model\ScalarVariableCollection.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include=".\model\structs.h" />
     <ClInclude Include=".\model\TypeDefDataModel.h" />
@@ -133,10 +135,12 @@
     <ClCompile Include=".\ScalarValue.cpp" />
     <ClCompile Include=".\qtronic\xml_parser.c" />
     <ClCompile Include=".\model\MainDataModel.cpp" />
-    <ClCompile Include="ScalarVariableFactory.cpp" />
+    <ClCompile Include=".\model\ScalarVariableDataModel.cpp" />
+    <ClCompile Include=".\model\ScalarVariableFactory.cpp" />
     <ClCompile Include=".\model\TypeDefDataModel.cpp" />
     <ClCompile Include=".\model\TypeDefFactory.cpp" />
     <ClCompile Include=".\model\UnitDefFactory.cpp" />
+    <ClCompile Include=".\model\ScalarVariableCollection.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>

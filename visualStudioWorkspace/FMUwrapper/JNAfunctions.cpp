@@ -63,7 +63,7 @@ ScalarVariableRealStruct *  getScalarVariableOutputStructs() {
 	return model->getSVoutputArray();
 }
 
-ScalarVariableStruct *  getScalarVariableInternalStructs() {
+ScalarVariableRealStruct *  getScalarVariableInternalStructs() {
 
 	Straylight::MainDataModel * model = mainController->getMainDataModel();
 	return model->getSVinternalArray();

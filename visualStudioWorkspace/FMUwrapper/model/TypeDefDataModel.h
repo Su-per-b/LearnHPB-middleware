@@ -1,7 +1,5 @@
 #pragma once
-
 #include "stdafx.h"
-
 #include "structs.h"
 #include <Logger.h>
 #include "TypeDefFactory.h"
