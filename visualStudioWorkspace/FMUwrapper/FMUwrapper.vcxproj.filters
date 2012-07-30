@@ -21,27 +21,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\qtronic\fmiPlatformTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qtronic\fmi_cs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qtronic\fmiFunctions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qtronic\fmiModelFunctions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qtronic\fmiModelTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qtronic\xml_parser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qtronic\stack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="JNAfunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -49,9 +28,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FMUlogger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="enums.h">
@@ -63,27 +39,57 @@
     <ClInclude Include="Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include=".\ResultOfStep.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MainDataModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include=".\Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include=".\ScalarValue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ScalarVariableFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\model\TypeDefDataModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\model\TypeDefFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\model\UnitDefFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\model\MainDataModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\model\structs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\model\ResultOfStep.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\qtronic\fmi_cs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\qtronic\fmiFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\qtronic\fmiModelFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\qtronic\fmiModelTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\qtronic\fmiPlatformTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\qtronic\stack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\qtronic\xml_parser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="include\qtronic\xml_parser.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="include\qtronic\stack.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="JNAfunctions.cpp">
@@ -101,16 +107,34 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include=".\ResultOfStep.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MainDataModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include=".\Config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include=".\ScalarValue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScalarVariableFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\model\TypeDefDataModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\model\TypeDefFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\model\UnitDefFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\model\MainDataModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\model\ResultOfStep.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\qtronic\stack.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\qtronic\xml_parser.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -219,7 +219,7 @@ namespace Straylight
 			logger_->printDebug2(_T("MainController::parseXML xmlFilePath_ %s\n"), xmlFilePath_);	
 			configStruct_ =  Config::make(fmu_);
 
-
+			mainDataModel_->extractTypeDefinitions();
 			mainDataModel_->extractScalarVariables();
 
 			setState_( simStateNative_2_xmlParse_completed );

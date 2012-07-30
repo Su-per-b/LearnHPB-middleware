@@ -14,9 +14,6 @@
 
 #include <SDKDDKVer.h>
 
-
-
-
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 
 // Windows Header Files:
@@ -27,11 +24,12 @@
 #include <sstream>
 #include <tchar.h>
 #include <vector>
+#include <assert.h>
 
 extern "C"
 {
-#include <expat.h>
-#include "xml_parser.h"
-#include "fmi_cs.h"
+	#include <expat.h>
+	#include <xml_parser.h>
+	#include <fmi_cs.h>
 }
 
