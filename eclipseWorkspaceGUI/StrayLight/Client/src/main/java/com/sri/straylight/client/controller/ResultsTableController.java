@@ -2,8 +2,6 @@ package com.sri.straylight.client.controller;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JPanel;

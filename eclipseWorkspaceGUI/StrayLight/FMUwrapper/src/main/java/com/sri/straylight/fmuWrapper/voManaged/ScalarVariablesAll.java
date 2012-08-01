@@ -1,6 +1,5 @@
 package com.sri.straylight.fmuWrapper.voManaged;
 
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableCollectionStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariablesAllStruct;
 
 public class ScalarVariablesAll {

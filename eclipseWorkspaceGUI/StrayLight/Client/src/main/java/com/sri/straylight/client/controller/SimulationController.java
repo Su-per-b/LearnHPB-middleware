@@ -8,7 +8,6 @@ import com.sri.straylight.client.event.SimStateRequest;
 import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.client.model.ConfigClient;
 import com.sri.straylight.client.model.SimStateClient;
-import com.sri.straylight.fmuWrapper.voManaged.SimStateServer;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 

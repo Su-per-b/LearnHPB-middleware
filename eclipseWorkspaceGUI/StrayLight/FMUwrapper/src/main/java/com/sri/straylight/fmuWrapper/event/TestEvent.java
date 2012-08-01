@@ -2,8 +2,6 @@ package com.sri.straylight.fmuWrapper.event;
 
 import java.util.EventObject;
 
-import com.sri.straylight.fmuWrapper.voManaged.ResultOfStep;
-
 
 
 public class TestEvent extends EventObject {

@@ -9,8 +9,6 @@ import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
-import org.bushe.swing.event.annotation.AnnotationProcessor;
-
 import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 

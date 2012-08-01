@@ -20,6 +20,8 @@ extern "C" void onMessageCallback(MessageStruct *);
 
 extern "C" DllExport int forceCleanup();
 
+
+/*
 extern "C" DllExport ScalarVariableRealStruct * getScalarVariableInputStructs();
 extern "C" DllExport ScalarVariableRealStruct * getScalarVariableOutputStructs();
 extern "C" DllExport ScalarVariableRealStruct * getScalarVariableInternalStructs();
@@ -32,6 +34,7 @@ extern "C" DllExport ScalarVariableCollectionStruct * getScalarVariableCollectio
 
 extern "C" DllExport ScalarVariableRealStruct * testSVRealStruct();
 extern "C" DllExport ScalarVariableBooleanStruct * testSVBooleanStruct();
+*/
 
 extern "C" DllExport ScalarVariablesAllStruct * getAllScalarVariables();
 

@@ -23,7 +23,6 @@ import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.client.model.SimStateClient;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeRequest;
-import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 
 public class ConfigController extends AbstractController {

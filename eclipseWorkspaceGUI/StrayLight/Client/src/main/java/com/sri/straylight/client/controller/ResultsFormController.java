@@ -14,7 +14,6 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
-import com.sri.straylight.fmuWrapper.voManaged.ScalarValue;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 
 

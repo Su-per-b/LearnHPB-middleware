@@ -6,9 +6,6 @@ package com.sri.straylight.fmuWrapper;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.ResultOfStepStruct;
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableBooleanStruct;
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableCollectionStruct;
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariablesAllStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sri.straylight.fmuWrapper.voNative.fmiStatus;
@@ -28,20 +25,20 @@ public interface JNAfmuWrapper extends Library {
 	
 	public int forceCleanup();
 	
-	public ScalarVariableRealStruct getScalarVariableInputStructs();
-	public ScalarVariableRealStruct getScalarVariableOutputStructs();
-	public ScalarVariableRealStruct getScalarVariableInternalStructs();
+	//public ScalarVariableRealStruct getScalarVariableInputStructs();
+	//public ScalarVariableRealStruct getScalarVariableOutputStructs();
+	//public ScalarVariableRealStruct getScalarVariableInternalStructs();
 	
-	public int getInputVariableCount();
-	public int getOutputVariableCount();
-	public int getInternalVariableCount();
-	
-	
-	public ScalarVariableCollectionStruct  getScalarVariableCollectionStruct(); 
+	//public int getInputVariableCount();
+	//public int getOutputVariableCount();
+	//public int getInternalVariableCount();
 	
 	
-	public ScalarVariableRealStruct  testSVRealStruct();
-	public ScalarVariableBooleanStruct  testSVBooleanStruct();
+	//public ScalarVariableCollectionStruct  getScalarVariableCollectionStruct(); 
+	
+	
+	//public ScalarVariableRealStruct  testSVRealStruct();
+	//public ScalarVariableBooleanStruct  testSVBooleanStruct();
 	
 	public ScalarVariablesAllStruct  getAllScalarVariables();
 	

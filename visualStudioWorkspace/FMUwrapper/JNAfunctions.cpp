@@ -47,32 +47,6 @@ int run()
 }
 
 
-ScalarVariableCollectionStruct * getScalarVariableCollectionStruct() {
-
-	Straylight::MainDataModel * model = mainController->getMainDataModel();
-	return model->scalarVariableDataModel_->svInput_->convertToStruct();
-
-}
-
-
-ScalarVariableRealStruct * testSVRealStruct() {
-	Straylight::MainDataModel * model = mainController->getMainDataModel();
-	return model->scalarVariableDataModel_->svInput_->getRealAsArray();
-}
-
-ScalarVariableBooleanStruct * testSVBooleanStruct() {
-	
-	
- 	Straylight::MainDataModel * model = mainController->getMainDataModel();
-	ScalarVariableBooleanStruct * st1  = model->scalarVariableDataModel_->svInput_->getBooleanAsArray();
-	st1->causality = enu_input;
-
-	ScalarVariableBooleanStruct * st2 = new ScalarVariableBooleanStruct();
-	st2->causality = enu_input;
-
-	return st1;
-}
-
 
 ScalarVariablesAllStruct * getAllScalarVariables() {
 
@@ -88,7 +62,7 @@ ScalarVariablesAllStruct * getAllScalarVariables() {
 }
 
 
-
+/*
 
 ScalarVariableRealStruct *  getScalarVariableInputStructs() {
 
@@ -127,6 +101,35 @@ int getInternalVariableCount() {
 	Straylight::MainDataModel * model = mainController->getMainDataModel();
 	return model->getInternalVariableCount();
 }
+ScalarVariableRealStruct * testSVRealStruct() {
+	Straylight::MainDataModel * model = mainController->getMainDataModel();
+	return model->scalarVariableDataModel_->svInput_->getRealAsArray();
+}
+
+ScalarVariableBooleanStruct * testSVBooleanStruct() {
+	
+	
+ 	Straylight::MainDataModel * model = mainController->getMainDataModel();
+	ScalarVariableBooleanStruct * st1  = model->scalarVariableDataModel_->svInput_->getBooleanAsArray();
+	st1->causality = enu_input;
+
+	ScalarVariableBooleanStruct * st2 = new ScalarVariableBooleanStruct();
+	st2->causality = enu_input;
+
+	return st1;
+}
+
+ScalarVariableCollectionStruct * getScalarVariableCollectionStruct() {
+
+	Straylight::MainDataModel * model = mainController->getMainDataModel();
+	return model->scalarVariableDataModel_->svInput_->convertToStruct();
+
+}
+
+
+
+
+*/
 
 
 int isSimulationComplete () {

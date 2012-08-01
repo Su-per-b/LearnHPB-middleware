@@ -1,7 +1,6 @@
 package com.sri.straylight.fmuWrapper.voManaged;
 
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableBooleanStruct;
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableCollectionStruct.ByReference;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableCollectionStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableEnumerationStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableIntegerStruct;
