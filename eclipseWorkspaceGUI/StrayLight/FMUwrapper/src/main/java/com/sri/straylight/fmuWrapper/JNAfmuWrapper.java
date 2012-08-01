@@ -3,12 +3,13 @@
 package com.sri.straylight.fmuWrapper;
 
 
-
-import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
+import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.ResultOfStepStruct;
+import com.sri.straylight.fmuWrapper.voNative.ScalarVariableBooleanStruct;
+import com.sri.straylight.fmuWrapper.voNative.ScalarVariableCollectionStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableStruct;
+import com.sri.straylight.fmuWrapper.voNative.ScalarVariablesAllStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sri.straylight.fmuWrapper.voNative.fmiStatus;
 import com.sun.jna.Callback;
@@ -35,6 +36,14 @@ public interface JNAfmuWrapper extends Library {
 	public int getOutputVariableCount();
 	public int getInternalVariableCount();
 	
+	
+	public ScalarVariableCollectionStruct  getScalarVariableCollectionStruct(); 
+	
+	
+	public ScalarVariableRealStruct  testSVRealStruct();
+	public ScalarVariableBooleanStruct  testSVBooleanStruct();
+	
+	public ScalarVariablesAllStruct  getAllScalarVariables();
 	
 	public void connect (
 			MessageCallbackInterface messageCallback,

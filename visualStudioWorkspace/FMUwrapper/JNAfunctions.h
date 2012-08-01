@@ -28,6 +28,14 @@ extern "C" DllExport int getInputVariableCount();
 extern "C" DllExport int getOutputVariableCount();
 extern "C" DllExport int getInternalVariableCount();
 
+extern "C" DllExport ScalarVariableCollectionStruct * getScalarVariableCollectionStruct();
+
+extern "C" DllExport ScalarVariableRealStruct * testSVRealStruct();
+extern "C" DllExport ScalarVariableBooleanStruct * testSVBooleanStruct();
+
+extern "C" DllExport ScalarVariablesAllStruct * getAllScalarVariables();
+
+
 extern "C" DllExport int isSimulationComplete();
 
 extern "C" DllExport int run();

@@ -54,13 +54,15 @@ namespace Straylight
 
 		void setStartValues();
 
+		TypeDefDataModel * typeDefDataModel_;
+		ScalarVariableDataModel * scalarVariableDataModel_;
+
 		//private member variables
 	private:
 
 
 
-		TypeDefDataModel * typeDefDataModel_;
-		ScalarVariableDataModel * scalarVariableDataModel_;
+
 
 
 		ScalarVariableStruct* extractOneScalarVariable_(ScalarVariable* scalarVariable);

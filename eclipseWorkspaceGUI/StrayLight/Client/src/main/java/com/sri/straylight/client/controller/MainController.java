@@ -28,7 +28,6 @@ public class MainController extends AbstractController {
 	private DebugConsoleController debugConsoleController_;
 	private InputFormController inputFormController_;
 
-	
 	private ResultsTableController resultsTableController_;
 	private InternalTableController internalTableController_;
 	private ResultsFormController resultsFormController_;

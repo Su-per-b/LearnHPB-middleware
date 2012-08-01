@@ -45,8 +45,6 @@ void test1() {
 
 	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v2_VAVReheat_ClosedLoopEdit2"));
 
-
-	
 	int result = init();
 
 	if(result) {
@@ -80,8 +78,13 @@ void test2 () {
 	ScalarVariableRealStruct * svrOutput = getScalarVariableOutputStructs();
 	ScalarVariableRealStruct * svrInternal = getScalarVariableInternalStructs();
 	
+	ScalarVariableRealStruct * s1 = testSVRealStruct();
+	ScalarVariableBooleanStruct * s2 = testSVBooleanStruct();
+
+	ScalarVariableCollectionStruct * st = getScalarVariableCollectionStruct();
 
 
+	ScalarVariablesAllStruct * s4 = getAllScalarVariables();
 
 	int result = init();
 

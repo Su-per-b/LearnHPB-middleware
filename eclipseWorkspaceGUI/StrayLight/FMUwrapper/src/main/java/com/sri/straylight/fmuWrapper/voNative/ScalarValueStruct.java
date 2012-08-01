@@ -10,5 +10,5 @@ public class ScalarValueStruct extends Structure {
 	public int idx;
 	public String string;
 	  
-
+	
 }

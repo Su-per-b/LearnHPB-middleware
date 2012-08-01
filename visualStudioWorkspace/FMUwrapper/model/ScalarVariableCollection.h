@@ -19,8 +19,17 @@ namespace Straylight
 
 
 		ScalarVariableRealStruct * getRealAsArray();
+		ScalarVariableBooleanStruct * getBooleanAsArray();
+		ScalarVariableIntegerStruct * getIntegerAsArray();
+		ScalarVariableEnumerationStruct * getEnumerationAsArray();
+		ScalarVariableStringStruct * getStringAsArray();
 
+		ScalarVariableCollectionStruct * convertToStruct();
 
 	};
+
+
+
+
 
 }

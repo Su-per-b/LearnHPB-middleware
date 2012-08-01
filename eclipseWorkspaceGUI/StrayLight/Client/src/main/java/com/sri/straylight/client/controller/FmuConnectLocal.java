@@ -89,21 +89,21 @@ public class FmuConnectLocal implements  IFmuConnect {
 		fmu_.setConfig(configStruct);
 	}
 
-
-	public String[] getOutputVariableNames() {
-
-		ScalarVariableRealStruct[] svAry = fmu_.getScalarVariableOutputAry();
-		int len = svAry.length;
-		String[] strAry = new String [len];
-
-		for (int i = 0; i < len; i++) {
-			strAry[i] = svAry[i].name;
-		}
-
-		return strAry;
-
-	}
-	
+//
+//	public String[] getOutputVariableNames() {
+//
+//		ScalarVariableRealStruct[] svAry = fmu_.getScalarVariableOutputAry();
+//		int len = svAry.length;
+//		String[] strAry = new String [len];
+//
+//		for (int i = 0; i < len; i++) {
+//			strAry[i] = svAry[i].name;
+//		}
+//
+//		return strAry;
+//
+//	}
+//	
 	
 	@EventSubscriber(eventClass=ConfigChangeRequest.class)
 	public void onConfigChangeRequest(ConfigChangeRequest event) {

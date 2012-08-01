@@ -54,9 +54,6 @@ namespace Straylight
 		bool scalarBool;
 		string scalarString;
 		int type;
-
-
-
 	};
 
 

@@ -3,19 +3,37 @@ package com.sri.straylight.fmuWrapper.voManaged;
 
 
 
-import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableStruct;
-import com.sun.jna.Structure;
 
-public class XMLparsed extends Structure {
+public class XMLparsed  {
 
 	private String[] outputVarNames;
 
-	public ScalarVariableRealStruct[] inputVars;
-	public ScalarVariableRealStruct[] outputVars;
-	public ScalarVariableRealStruct[] internalVars;
+	private ScalarVariableRealStruct[] inputVars;
+	private ScalarVariableRealStruct[] outputVars;
+	private ScalarVariableRealStruct[] internalVars;
 
+	private ScalarVariablesAll scalarVariablesAll_;
+	
+	
+	public XMLparsed() {
+
+	}
+	
+	public XMLparsed(ScalarVariablesAll scalarVariablesAll) {
+		scalarVariablesAll_ = scalarVariablesAll;
+		
+		inputVars = scalarVariablesAll.input.realValue;
+		outputVars = scalarVariablesAll.output.realValue;
+		internalVars = scalarVariablesAll.internal.realValue;
+	}
+
+	
+	public ScalarVariableRealStruct[] getInputVars() {
+		
+		return inputVars;
+	}
+	
 	
 	public String[] getOutputColumnNames() {
 

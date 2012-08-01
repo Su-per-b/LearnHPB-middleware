@@ -107,8 +107,10 @@ typedef struct {
 	int idx;
 	Enu causality;
 	const char* description;
-	TypeSpecReal  * typeSpecReal;
 	unsigned int valueReference;
+
+	TypeSpecReal  * typeSpecReal;
+
 } ScalarVariableRealStruct;
 
 
@@ -117,8 +119,9 @@ typedef struct {
 	int idx;
 	Enu causality;
 	const char* description;
-	TypeSpecBoolean  * typeSpecBoolean;
 	unsigned int valueReference;
+
+	TypeSpecBoolean  * typeSpecBoolean;
 } ScalarVariableBooleanStruct;
 
 typedef struct {
@@ -126,8 +129,9 @@ typedef struct {
 	int idx;
 	Enu causality;
 	const char* description;
-	TypeSpecInteger  * typeSpecInteger;
 	unsigned int valueReference;
+
+	TypeSpecInteger  * typeSpecInteger;
 } ScalarVariableIntegerStruct;
 
 
@@ -136,8 +140,9 @@ typedef struct {
 	int idx;
 	Enu causality;
 	const char* description;
-	TypeSpecEnumeration  * typeSpecEnumeration;
 	unsigned int valueReference;
+
+	TypeSpecEnumeration  * typeSpecEnumeration;
 } ScalarVariableEnumerationStruct;
 
 
@@ -146,8 +151,9 @@ typedef struct {
 	int idx;
 	Enu causality;
 	const char* description;
-	TypeSpecString  * typeSpecString;
 	unsigned int valueReference;
+
+	TypeSpecString  * typeSpecString;
 } ScalarVariableStringStruct;
 
 
@@ -215,5 +221,29 @@ typedef struct {
 	const char * unit;
 	int idx;
 
-
 } TypeDefinitionString;
+
+
+typedef struct {
+
+	ScalarVariableRealStruct * realValue;
+	int realSize;
+	ScalarVariableBooleanStruct * booleanValue;
+	int booleanSize;
+	ScalarVariableIntegerStruct * integerValue;
+	int integerSize;
+	ScalarVariableEnumerationStruct * enumerationValue;
+	int enumerationSize;
+	ScalarVariableStringStruct * stringValue;
+	int stringSize;
+
+} ScalarVariableCollectionStruct;
+
+
+typedef struct {
+
+	ScalarVariableCollectionStruct * input;
+	ScalarVariableCollectionStruct * output;
+	ScalarVariableCollectionStruct * internal;
+
+} ScalarVariablesAllStruct;

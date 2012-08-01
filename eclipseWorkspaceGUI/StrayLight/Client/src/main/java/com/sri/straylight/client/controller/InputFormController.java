@@ -23,6 +23,7 @@ import com.sri.straylight.client.model.SimStateClient;
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
+import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 
 public class InputFormController extends AbstractController {
 
@@ -109,12 +110,13 @@ public class InputFormController extends AbstractController {
 		
 		 Object[][] inData = xmlParsed_.getInputData();
 		 
+		 ScalarVariableRealStruct[] inputVars = xmlParsed_.getInputVars();
 		 
-		
-		int len = xmlParsed_.inputVars.length;
+		 
+		int len = inputVars.length;
 		
 		for (int i = 0; i < len; i++) {
-			int idx = xmlParsed_.inputVars[i].idx;
+			int idx = inputVars[i].idx;
 			
 			
 			String theCell = (String) inData[i][1];
