@@ -10,6 +10,8 @@ void test1();
 
 void test2();
 
+void test3();
+
 void resultCallback(ResultOfStepStruct * resultOfStepStruct);
 
 void messageCallback(MessageStruct * messageStruct);

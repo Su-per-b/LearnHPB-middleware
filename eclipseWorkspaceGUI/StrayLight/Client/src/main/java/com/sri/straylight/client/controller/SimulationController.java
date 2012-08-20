@@ -1,13 +1,19 @@
 package com.sri.straylight.client.controller;
 
+import java.util.Vector;
+
+import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.InputChangeRequest;
+import com.sri.straylight.client.event.ScalarValueChangeRequest;
 import com.sri.straylight.client.event.SimStateNotify;
 import com.sri.straylight.client.event.SimStateRequest;
 import com.sri.straylight.client.framework.AbstractController;
-import com.sri.straylight.client.model.ConfigClient;
+import com.sri.straylight.client.model.ClientConfig;
+import com.sri.straylight.client.model.ClientConfigXML;
 import com.sri.straylight.client.model.SimStateClient;
+import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 
@@ -17,21 +23,31 @@ public class SimulationController extends AbstractController  {
 
 	private IFmuConnect fmuConnect_;
 	
-    private ConfigClient configModel_;
+    private ClientConfig configModel_;
     
     private SimStateClient simulationStateClient_ = 
     		SimStateClient.level_0_uninitialized;
     
     
-	public SimulationController (AbstractController parentController, ConfigClient configModel) {
+	public SimulationController (AbstractController parentController, ClientConfig configModel) {
         super(parentController);
         configModel_ = configModel;
         
+        
+        if (configModel_.autoConnectFlag) {
+        	requestStateChange_(SimStateClient.level_1_connect_requested);
+        }
 	}
 	
 
 
 	private void connect_() {
+		
+		
+		if (configModel_.connectTo == null) {
+		    throw new IllegalArgumentException("configModel_.connectTo");
+		}
+
 		
     	switch (configModel_.connectTo) {
 			case connecTo_localhost :
@@ -51,18 +67,49 @@ public class SimulationController extends AbstractController  {
 	
 	
 	
-	@EventSubscriber(eventClass=InputChangeRequest.class)
-    public void onInputChangeRequest(InputChangeRequest event) {
-		double v = event.value;
-		fmuConnect_.changeInput(event.idx, event.value);
+	@EventSubscriber(eventClass=ScalarValueChangeRequest.class)
+    public void onInputChangeRequest(ScalarValueChangeRequest event) {
+		//double v = event.value;
+		
+		
+		Vector<ScalarValueRealStruct> list = event.getPayload();
+		
+		
+		fmuConnect_.changeScalarValues(list);
+		
 	}
 	
 	
 	@EventSubscriber(eventClass=SimStateNotify.class)
     public void onSimStateNotify(SimStateNotify event) {
 		simulationStateClient_ = event.getPayload();
+		
+		
+
+        
+		switch (simulationStateClient_) {
+			case level_1_connect_completed:
+		        if (configModel_.autoParseXMLFlag) {
+		        	requestStateChange_(SimStateClient.level_2_xmlParse_requested);
+		        }
+				break;
+			case level_2_xmlParse_completed :
+		        if (configModel_.autoInitFlag) {
+		        	requestStateChange_(SimStateClient.level_3_init_requested);
+		        }
+				break;
+		}
+		
 	}
 	
+	
+	private void requestStateChange_(SimStateClient state_arg)
+	{
+		EventBus.publish(
+				new SimStateRequest(this, state_arg)
+				);	
+		
+	}
 	
 	@EventSubscriber(eventClass=SimStateRequest.class)
     public void onSimStateRequest(SimStateRequest event) {

@@ -20,6 +20,11 @@ public class XMLparsed  {
 
 	}
 	
+	public ScalarVariablesAll getScalarVariablesAll() {
+		
+		return scalarVariablesAll_;
+	}
+	
 	public XMLparsed(ScalarVariablesAll scalarVariablesAll) {
 		scalarVariablesAll_ = scalarVariablesAll;
 		
@@ -58,6 +63,8 @@ public class XMLparsed  {
 				"nominal",
 				"min",
 				"max",
+				"causality",
+				"variability",
 				"description"
 		};
 		
@@ -72,6 +79,7 @@ public class XMLparsed  {
 				"value",
 				"type",
 				"causality",
+				"variability",
 				"description"
 		};
 		
@@ -88,6 +96,7 @@ public class XMLparsed  {
 				"min",
 				"max",
 				"causality",
+				"variability",
 				"description"
 		};
 		
@@ -104,6 +113,8 @@ public class XMLparsed  {
 			String[] row  = {
 				sv.name,
 				"Real",
+				sv.getCausalityEnum().toString(),
+				sv.getVariabilityEnum().toString(),
 				sv.description
 			};
 			
@@ -128,6 +139,8 @@ public class XMLparsed  {
 					Double.toString(sv.typeSpecReal.nominal),
 					Double.toString(sv.typeSpecReal.min),
 					Double.toString(sv.typeSpecReal.max),
+					sv.getCausalityEnum().toString(),
+					sv.getVariabilityEnum().toString(),
 					sv.description
 			};
 			
@@ -150,6 +163,7 @@ public class XMLparsed  {
 				"unknown",
 				"Real",
 				sv.getCausalityEnum().toString(),
+				sv.getVariabilityEnum().toString(),
 				sv.description
 			};
 			
@@ -176,6 +190,7 @@ public class XMLparsed  {
 				Double.toString(sv.typeSpecReal.min),
 				Double.toString(sv.typeSpecReal.max),
 				sv.getCausalityEnum().toString(),
+				sv.getVariabilityEnum().toString(),
 				sv.description
 			};
 			

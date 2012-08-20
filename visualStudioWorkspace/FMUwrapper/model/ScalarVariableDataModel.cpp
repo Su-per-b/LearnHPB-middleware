@@ -27,17 +27,14 @@ namespace Straylight
 		ScalarVariable* scalarVariable;
 		for (i=0; scalarVariable = scalarVariableArray[i]; i++) {
 
-			Enu causality = getCausality(scalarVariable);
-			Enu variability = getVariability(scalarVariable);
-
+			//Enu causality = getCausality(scalarVariable);
 			Elm theType = scalarVariable->typeSpec->type;
 
 			switch(theType) {
 
 			case elm_Real :  
 				{
-					//ScalarVariableRealStruct * svs = ScalarVariableFactory::makeReal(scalarVariable);
-					ScalarVariableRealStruct * svs = ScalarVariableFactory::makeReal(scalarVariable); 
+					ScalarVariableRealStruct * svs = ScalarVariableFactory::makeReal(scalarVariable, i); 
 
 					switch (svs->causality) {
 
@@ -53,32 +50,57 @@ namespace Straylight
 					}
 
 
-					svs->idx = i;
-					svAll_->real.push_back(svs);
 					break;
 				}
 			case elm_Boolean: 
 				{
-					ScalarVariableBooleanStruct * svs = ScalarVariableFactory::makeBoolean(scalarVariable);
-					svs->idx = i;
-					svAll_->boolean.push_back(svs);
+					ScalarVariableBooleanStruct * svs = ScalarVariableFactory::makeBoolean(scalarVariable, i);
+
+					switch (svs->causality) {
+
+						case enu_input :
+							svInput_->boolean.push_back(svs);
+							break;
+						case enu_output :
+							svOutput_->boolean.push_back(svs);
+							break;
+						case enu_internal :
+							svInternal_->boolean.push_back(svs);
+							break;
+					}
+
+
+
 					break;
 				}
 
 			case elm_Integer: 
 				{
 
-					ScalarVariableIntegerStruct * svs = ScalarVariableFactory::makeInteger(scalarVariable);
+					ScalarVariableIntegerStruct * svs = ScalarVariableFactory::makeInteger(scalarVariable, i);
 
 					svs->idx = i;
-					svAll_->integer.push_back(svs);
+
+					switch (svs->causality) {
+
+						case enu_input :
+							svInput_->integer.push_back(svs);
+							break;
+						case enu_output :
+							svOutput_->integer.push_back(svs);
+							break;
+						case enu_internal :
+							svInternal_->integer.push_back(svs);
+							break;
+					}
+
+
 					break;
 				}	
 			case elm_Enumeration: 
 				{
 
-					ScalarVariableEnumerationStruct * svs = ScalarVariableFactory::makeEnumeration(scalarVariable);
-					svs->idx = i;
+					ScalarVariableEnumerationStruct * svs = ScalarVariableFactory::makeEnumeration(scalarVariable, i);
 
 
 					/*
@@ -105,16 +127,40 @@ namespace Straylight
 					*/
 
 
-					svAll_->enumeration.push_back(svs);
+					switch (svs->causality) {
+
+						case enu_input :
+							svInput_->enumeration.push_back(svs);
+							break;
+						case enu_output :
+							svOutput_->enumeration.push_back(svs);
+							break;
+						case enu_internal :
+							svInternal_->enumeration.push_back(svs);
+							break;
+					}
+
+
 					break;
 				}
 
 			case elm_String: 
 				{
-					ScalarVariableStringStruct * svs = ScalarVariableFactory::makeString(scalarVariable);
+					ScalarVariableStringStruct * svs = ScalarVariableFactory::makeString(scalarVariable, i);
 
-					svs->idx = i;
-					svAll_->string.push_back(svs);
+					switch (svs->causality) {
+
+						case enu_input :
+							svInput_->string.push_back(svs);
+							break;
+						case enu_output :
+							svOutput_->string.push_back(svs);
+							break;
+						case enu_internal :
+							svInternal_->string.push_back(svs);
+							break;
+					}
+
 					break;
 				}	
 

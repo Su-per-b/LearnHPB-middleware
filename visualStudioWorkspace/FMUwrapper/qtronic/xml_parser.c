@@ -18,9 +18,7 @@
  * Copyright 2011 QTronic GmbH. All rights reserved. 
  * -------------------------------------------------------------------------*/
 
-#include <stdio.h>
-#include <assert.h>
-#include <string.h>
+
 #include "xml_parser.h"
 
 const char *elmNames[SIZEOF_ELM] = { 
@@ -368,6 +366,10 @@ int getElementAttributeInteger(Element* e, ValueStatus * valueStatus, Att attrib
 		*valueStatus = valueMissing;
 	} else {
 		*valueStatus = (1==sscanf(valueChar, "%d", &value)) ? valueDefined : valueIllegal;
+
+
+
+		
 	}
 
 	return value;
@@ -386,6 +388,10 @@ double getElementAttributeReal(Element* e, ValueStatus * valueStatus, Att attrib
 		*valueStatus = valueMissing;
 	} else {
 		*valueStatus = (1==sscanf(valueChar, "%lf", &valueDouble)) ? valueDefined : valueIllegal;
+
+		if (*valueStatus == valueIllegal) {
+			int x = 0;
+		}
 	}
 
 	return valueDouble;
@@ -429,12 +435,10 @@ double getRealAttribute(ScalarVariable* scalarVariable, ValueStatus * valueStatu
 }
 */
 
-const char* getElementAttributeString(Element* e, ValueStatus * valueStatus, Att attribute) {
-   
 
-	const char* valueChar = getString(e, attribute);
-	 
-	//const char* valueChar = getString(e, attribute);
+const char* getObjectAttributeString(void* objctPtr, ValueStatus * valueStatus, Att attribute) {
+   
+	const char* valueChar = getString(objctPtr, attribute);
 
 	if (valueChar == NULL) {
 		*valueStatus = valueMissing;
@@ -444,11 +448,6 @@ const char* getElementAttributeString(Element* e, ValueStatus * valueStatus, Att
 
 	return valueChar;
 }
-
-
-
-
-
 
 
 const char* getStringAttribute(ScalarVariable* scalarVariable, ValueStatus * valueStatus, Att attribute){ 
@@ -463,6 +462,22 @@ const char* getStringAttribute(ScalarVariable* scalarVariable, ValueStatus * val
 
 	return valueChar;
 }
+
+
+
+
+
+const char* getElementAttributeString(Element* e, ValueStatus * valueStatus, Att attribute) {
+	return getObjectAttributeString(e, valueStatus, attribute);
+}
+
+
+
+
+
+
+
+
 
 
 

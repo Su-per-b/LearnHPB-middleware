@@ -1,5 +1,5 @@
 #include "MainDataModel.h"
-#include "ScalarVariableDataModel.h"
+
 
 
 
@@ -8,12 +8,12 @@ namespace Straylight
 
 
 	/*********************************************//**
-												   * Default constructor. 
-												   *********************************************/
-	MainDataModel::MainDataModel(Logger* logger)
+	* Default constructor. 
+	*********************************************/
+	MainDataModel::MainDataModel()
 	{
-		logger_ = logger;
 		maxInternalScalarVariables = 1000;
+		Logger::instance->printDebug("MainController::staticLogger");
 
 		typeDefDataModel_ = new TypeDefDataModel();
 		scalarVariableDataModel_ = new ScalarVariableDataModel();
@@ -22,76 +22,18 @@ namespace Straylight
 
 
 	/*********************************************//**
-												   * Destructor. Frees memory and releases FMU DLL.
-												   *********************************************/
+	* Destructor. Frees memory and releases FMU DLL.
+	*********************************************/
 	MainDataModel::~MainDataModel(void)
 	{
 		delete typeDefDataModel_;
 		delete scalarVariableDataModel_;
-
 	}
-
-
-
 
 
 	void MainDataModel::extract() {
-
-		
 		typeDefDataModel_->extract(fmu_->modelDescription->typeDefinitions);
 		scalarVariableDataModel_->extract(fmu_->modelDescription->modelVariables);
-
-		ostringstream convert;   // stream used for the conversion
-		convert << getInputVariableCount();      // insert the textual representation of 'Number' in the characters in the stream
-		
-		string str;
-		str = convert.str(); 
-
-		const char  * theCstr = str.c_str();
-
-		//logger_->printDebug2("getInputVariableCount() - %s\n", theCstr);
-
-	}
-
-
-
-
-
-
-	ScalarVariableRealStruct *  MainDataModel::getSVinputArray() {
-		return scalarVariableDataModel_->svInput_->getRealAsArray();
-	}
-
-
-	ScalarVariableRealStruct *  MainDataModel::getSVoutputArray() {
-		return scalarVariableDataModel_->svOutput_->getRealAsArray();
-	}
-
-	ScalarVariableRealStruct *  MainDataModel::getSVinternalArray() {
-		return scalarVariableDataModel_->svInternal_->getRealAsArray();
-	}
-
-
-	vector<ScalarVariableRealStruct*> MainDataModel::getSVinputVector() {
-		return scalarVariableDataModel_->svInput_->real;
-	}
-
-	vector<ScalarVariableRealStruct*> MainDataModel::getSVoutputVector() {
-		return scalarVariableDataModel_->svOutput_->real;
-	}
-
-
-
-	int MainDataModel::getInputVariableCount() {
-		return scalarVariableDataModel_->svInput_->real.size();
-	}
-
-	int MainDataModel::getOutputVariableCount() {
-		return scalarVariableDataModel_->svOutput_->real.size();
-	}
-
-	int MainDataModel::getInternalVariableCount() {
-		return scalarVariableDataModel_->svInternal_->real.size();
 	}
 
 
@@ -121,14 +63,14 @@ namespace Straylight
 		status1 = scalarValue->getStatus();
 
 		if (status1 == fmiFatal || status1 == fmiError ) {
-			logger_->printError(_T("MainController::changeInput - error reading initial real value: " ));
+			Logger::instance->printError(_T("MainController::changeInput - error reading initial real value: " ));
 			return status1;
 		} else {
 			scalarValue->setRealNumber(value);
 			status2 = scalarValue->getStatus();
 
 			if (status1 == fmiFatal || status1 == fmiError ) {
-				logger_->printError(_T("MainController::changeInput - error writing real value:" ));
+				Logger::instance->printError(_T("MainController::changeInput - error writing real value:" ));
 				return status2;
 			} else {
 
@@ -136,15 +78,12 @@ namespace Straylight
 				status3 = scalarValue->getStatus();
 
 				if (status1 == fmiFatal || status1 == fmiError ) {
-					logger_->printError(_T("MainController::changeInput - error reading real value after written: " ));
+					Logger::instance->printError(_T("MainController::changeInput - error reading real value after written: " ));
 				} 
 
 				return status3;
 			}
 		}
-
-
-		//fmiComponent
 
 	}
 
@@ -170,16 +109,36 @@ namespace Straylight
 			ScalarVariableRealStruct * svStruct =  scalarVariableDataModel_->svInput_->real[i];
 			ValueStatus status = (ValueStatus) svStruct->typeSpecReal->startValueStatus;
 
+
 			if(status == valueDefined) {
 				setScalarValueReal(svStruct->idx, svStruct->typeSpecReal->start);
 			} else {
-				logger_->printError("No start value defined for input varable");
+				Logger::instance->printError("No start value defined for input varable");
 			}
 
 		}
 
 	}
 
+
+
+	void MainDataModel::setScalarValues (ScalarValueRealStruct * scalarValueAry, int length) {
+
+
+		for (int i = 0; i < length; i++)
+		{
+			ScalarValueRealStruct   sv = scalarValueAry[i];
+			fmiStatus status = setScalarValueReal(sv.idx, sv.value);
+
+			if (status == fmiOK) {
+				//Logger::instance->printDebug("setScalarValueReal fmiOK \n");
+			} else {
+				Logger::instance->printError("setScalarValueReal ERROR \n");
+			}
+
+		}
+
+	}
 
 }
 

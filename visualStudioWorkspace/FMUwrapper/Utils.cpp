@@ -41,6 +41,11 @@ namespace Straylight
 		return ss.str();
 	}
 
+	void Utils::intToString(char* buffer, int i) {
+
+		sprintf( buffer, "%d", i );
+	}
+
 	void Utils::doubleToCommaString(char* buffer, double r){
 		char* comma;
 		sprintf(buffer, _T("%.16g"), r);

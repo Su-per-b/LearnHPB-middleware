@@ -10,6 +10,8 @@
 #include "MainDataModel.h"
 
 
+using namespace Straylight;
+
 void (*messageCallbackPtr_)(MessageStruct *);
 void (*resultCallbackPtr_)(ResultOfStepStruct *);
 void (*stateChangeCallbackPtr_)(SimStateNative );
@@ -61,3 +63,4 @@ extern "C" DllExport void requestStateChange (SimStateNative newState);
 
 extern "C" DllExport fmiStatus setScalarValueReal (int idx, double value);
 
+extern "C" DllExport  void setScalarValues (ScalarValueRealStruct * scalarValueAry , int length);

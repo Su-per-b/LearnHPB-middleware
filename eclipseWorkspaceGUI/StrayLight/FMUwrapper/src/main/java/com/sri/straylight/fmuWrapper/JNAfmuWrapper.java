@@ -6,6 +6,7 @@ package com.sri.straylight.fmuWrapper;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.ResultOfStepStruct;
+import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariablesAllStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sri.straylight.fmuWrapper.voNative.fmiStatus;
@@ -41,6 +42,8 @@ public interface JNAfmuWrapper extends Library {
 	//public ScalarVariableBooleanStruct  testSVBooleanStruct();
 	
 	public ScalarVariablesAllStruct  getAllScalarVariables();
+	
+	public void setScalarValues(ScalarValueRealStruct[] scalarValueAry, int length);
 	
 	public void connect (
 			MessageCallbackInterface messageCallback,

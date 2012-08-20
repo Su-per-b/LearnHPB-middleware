@@ -2,7 +2,7 @@
 
 namespace Straylight
 {
-	TypeDefDataModel::TypeDefDataModel(void)
+	TypeDefDataModel::TypeDefDataModel()
 	{
 	}
 
@@ -27,6 +27,22 @@ namespace Straylight
 				{
 					TypeDefinitionReal * typeDefinitionReal = TypeDefFactory::makeReal(type); 
 					typeDefinitionReal->idx = i;
+					
+
+
+					if (typeDefinitionReal->maxValueStatus == valueDefined && 
+						typeDefinitionReal->start == valueDefined)
+					{
+						if (typeDefinitionReal->start > typeDefinitionReal->max) {
+							Logger::instance->printErrorInt 
+								( "TypeDefDataModel::extract() start value above maximum idx:%s\n", i);
+						}
+					}
+
+
+
+
+
 					typeDefVectorReal_.push_back(typeDefinitionReal);
 					break;
 				}

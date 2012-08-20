@@ -6,9 +6,9 @@
 namespace Straylight
 {
 
-	FMU FMUlogger::fmu;
+	FMU * FMUlogger::fmu;
 
-	Logger* FMUlogger::logger_; 
+
 
 
 	/*********************************************//**
@@ -28,12 +28,11 @@ namespace Straylight
 
 	}
 
-	void FMUlogger::setLogger(Logger* logger) {
 
-		logger_ = logger;
+	void FMUlogger::setFMU(FMU* fmuArg) {
+		FMUlogger::fmu = fmuArg;
 
 	}
-
 
 	///////////////////////////////////////////////////////////////////////////////
 	/// Translate FMI status to string variable
@@ -67,10 +66,10 @@ namespace Straylight
 		ScalarVariable** vars = fmu->modelDescription->modelVariables;
 		if (vr==fmiUndefinedValueReference) return NULL;
 		switch (type) {
-		case 'r': tp = elm_Real;    break;
-		case 'i': tp = elm_Integer; break;
-		case 'b': tp = elm_Boolean; break;
-		case 's': tp = elm_String;  break;                
+			case 'r': tp = elm_Real;    break;
+			case 'i': tp = elm_Integer; break;
+			case 'b': tp = elm_Boolean; break;
+			case 's': tp = elm_String;  break;                
 		}
 		for (i=0; vars[i]; i++) {
 			ScalarVariable* sv = vars[i];
@@ -165,14 +164,14 @@ namespace Straylight
 
 			// Replace e.g. ## and #r12#  
 			copy = strdup(msg);
-			replaceRefsInMessage(copy, msg, MAX_MSG_SIZE, &fmu);
+			replaceRefsInMessage(copy, msg, MAX_MSG_SIZE, fmu);
 			free(copy);
 
 			// Print the final message
 			if (!instanceName) instanceName = "?";
 			if (!category) category = "?";
 
-			logger_->printDebug5("fmuLogger - status:%s - instanceName:%s - category:%s - msg:%s\n", fmiStatusToString(status), instanceName, category, msg);
+			Logger::instance->printDebug5("fmuLogger - status:%s - instanceName:%s - category:%s - msg:%s\n", fmiStatusToString(status), instanceName, category, msg);
 
 			//printf();
 	}

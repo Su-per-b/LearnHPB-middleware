@@ -42,9 +42,6 @@
     <ClInclude Include=".\Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include=".\ScalarValue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include=".\model\TypeDefDataModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -93,6 +90,9 @@
     <ClInclude Include=".\model\ScalarVariableCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include=".\model\ScalarValue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -114,9 +114,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include=".\Config.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include=".\ScalarValue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include=".\model\TypeDefDataModel.cpp">
@@ -147,6 +144,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include=".\model\ScalarVariableCollection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\model\ScalarValue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

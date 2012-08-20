@@ -103,7 +103,7 @@
     <ClInclude Include="Logger.h" />
     <ClInclude Include=".\Config.h" />
     <ClInclude Include=".\model\ResultOfStep.h" />
-    <ClInclude Include=".\ScalarValue.h" />
+    <ClInclude Include=".\model\ScalarValue.h" />
     <ClInclude Include=".\qtronic\xml_parser.h" />
     <ClInclude Include=".\model\MainDataModel.h" />
     <ClInclude Include=".\model\ScalarVariableDataModel.h" />
@@ -132,7 +132,7 @@
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include=".\Config.cpp" />
     <ClCompile Include=".\model\ResultOfStep.cpp" />
-    <ClCompile Include=".\ScalarValue.cpp" />
+    <ClCompile Include=".\model\ScalarValue.cpp" />
     <ClCompile Include=".\qtronic\xml_parser.c" />
     <ClCompile Include=".\model\MainDataModel.cpp" />
     <ClCompile Include=".\model\ScalarVariableDataModel.cpp" />

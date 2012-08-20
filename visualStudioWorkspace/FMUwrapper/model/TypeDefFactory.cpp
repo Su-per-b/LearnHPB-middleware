@@ -37,6 +37,13 @@ namespace Straylight
 		typeDefinitionReal->max = getElementAttributeReal(type->typeSpec,&maxValueStatus, att_max);
 		typeDefinitionReal->maxValueStatus = maxValueStatus;
 
+
+
+
+
+
+
+
 		return typeDefinitionReal;
 	}
 

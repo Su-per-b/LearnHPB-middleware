@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+
+	<nativeLibFolderRelativePath>\..\..\..\visualStudioWorkspace\bin\Debug</nativeLibFolderRelativePath>
+	<unzipFolderRelativePath>\..\..\..\assets\FMUs\</unzipFolderRelativePath>
+	<fmuFolderName>LearnGB_0v2_0forTestingDataType_VAVReheat_ClosedLoop2</fmuFolderName>
+	
+	
+</config>

@@ -19,5 +19,8 @@ namespace Straylight
 		static std::string to_string(double x);
 		static void doubleToCommaString(char* buffer, double r);
 
+		static void intToString(char* buffer, int i);
+
+
 	};
 };

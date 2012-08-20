@@ -5,6 +5,7 @@ package com.sri.straylight.fmuWrapper;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
@@ -23,6 +24,9 @@ import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.EnumTypeMapper;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.ResultOfStepStruct;
+import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
+import com.sri.straylight.fmuWrapper.voNative.ScalarValueStruct;
+import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariablesAllStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sri.straylight.fmuWrapper.voNative.fmiStatus;
@@ -123,7 +127,6 @@ public class FMUcontroller  {
 	public void onSimStateNative(SimStateNative simStateNative)
 	{
 
-
 		if (simStateNative == SimStateNative.simStateNative_4_run_started) {
 			notifyStateChange_(SimStateServer.simStateServer_4_run_started);
 		} else if (simStateNative == SimStateNative.simStateNative_4_run_completed) {
@@ -138,8 +141,6 @@ public class FMUcontroller  {
 			onXMLparseCompleted();
 			notifyStateChange_(SimStateServer.simStateServer_6_reset_completed); 
 		}
-		
-		
 		
 		simStateNative_ = simStateNative;
 		
@@ -251,6 +252,28 @@ public class FMUcontroller  {
 	public void setScalarValueReal(int idx, double value) {
 		fmiStatus status = jnaFMUWrapper_.setScalarValueReal(idx, value);
 	}
+
+	public void setScalarValues(Vector<ScalarValueRealStruct> scalarValueList) {
+
+		int len = scalarValueList.size();
+		
+
+		
+		ScalarValueRealStruct[] ary4 = (ScalarValueRealStruct[]) new ScalarValueRealStruct().toArray(len);
+		
+		
+		
+		for (int i = 0; i < len; i++) {
+			ScalarValueRealStruct struct = scalarValueList.get(i);
+			ary4[i].idx = struct.idx;
+			ary4[i].value = struct.value;
+		}
+		
+		
+		jnaFMUWrapper_.setScalarValues(ary4, len);
+		
+	}
+	
 
 
 	

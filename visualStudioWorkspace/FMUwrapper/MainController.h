@@ -45,11 +45,14 @@ namespace Straylight
 		ConfigStruct * configStruct_;
 
 		MainDataModel * mainDataModel_;
+		Logger* logger_;
+
 		// public functions
 	public:
 
 		MainController(void);
 		~MainController(void);
+
 
 		void connect(
 			void (*messageCallbackPtr)(MessageStruct *), 
@@ -80,7 +83,7 @@ namespace Straylight
 
 		ConfigStruct * getConfig();
 
-		Logger* logger_;
+
 
 		void setConfig(ConfigStruct * configStruct);
 
@@ -96,6 +99,7 @@ namespace Straylight
 
 		fmiStatus setScalarValueReal(int idx, double value);
 		
+		void setScalarValues (ScalarValueRealStruct * scalarValueAry, int length);
 
 
 		//private functions

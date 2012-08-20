@@ -27,7 +27,7 @@ void resultCallback(ResultOfStepStruct * resultOfStepStruct) {
 }
 
 void messageCallback(MessageStruct * messageStruct) {
-	printf ("Main.exe messageCallback: %s \n", messageStruct->msgText);
+	//printf ("Main.exe messageCallback: %s \n", messageStruct->msgText);
 }
 
 void fmuStateCallback(SimStateNative simStateNative) {
@@ -43,7 +43,7 @@ void test1() {
 
 	connect(&messageCallback, &resultCallback, &fmuStateCallback);
 
-	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v2_VAVReheat_ClosedLoopEdit2"));
+	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v2_0forTestingDataType_VAVReheat_ClosedLoop2"));
 
 	int result = init();
 
@@ -68,9 +68,7 @@ void test2 () {
 
 	connect(&messageCallback, &resultCallback, &fmuStateCallback);
 
-	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v2_VAVReheat_ClosedLoopEdit2"));
-
-
+	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v2_0forTestingDataType_VAVReheat_ClosedLoop2"));
 
 
 	ScalarVariablesAllStruct * s4 = getAllScalarVariables();
@@ -81,18 +79,49 @@ void test2 () {
 		return;
 	}
 
-	//setScalarValueReal(56106,300.2);
 
 	run();
 
 
+}
+void test3 () {
 
-	requestStateChange (simStateNative_7_reset_requested);
-	run();
+	connect(&messageCallback, &resultCallback, &fmuStateCallback);
 
-	requestStateChange(simStateNative_5_step_requested);
-	//doOneStep();
+	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v2_0forTestingDataType_VAVReheat_ClosedLoop2"));
 
+
+	ScalarVariablesAllStruct * s4 = getAllScalarVariables();
+
+	int result = init();
+
+	if(result) {
+		return;
+	}
+
+
+
+	ScalarValueRealStruct *ary = new ScalarValueRealStruct[100];
+
+
+
+	ScalarValueRealStruct * sVal_1 = new ScalarValueRealStruct();
+	sVal_1->idx =1;
+	sVal_1->value = 11.1;
+
+	ary[0] = *sVal_1;
+
+
+	ScalarValueRealStruct * sVal_2 = new ScalarValueRealStruct();
+	sVal_2->idx =1;
+	sVal_2->value = 12.2;
+
+	ary[1] = *sVal_2;
+
+
+
+
+	setScalarValues(ary,2);
 
 }
 

@@ -11,6 +11,9 @@
 // define XML_STATIC before including expat.h
 // to prevent error when linking with libexpatMT.lib
 #define XML_STATIC 
+#include <stdio.h>
+#include <assert.h>
+#include <string.h>
 #include <expat.h>
 #include "stack.h"
 
@@ -25,6 +28,8 @@ extern const char *attNames[SIZEOF_ATT];
 
 #define SIZEOF_ENU 13
 extern const char *enuNames[SIZEOF_ENU];
+
+
 
 // Elements
 typedef enum {
@@ -170,10 +175,13 @@ char getBooleanAttribute(ScalarVariable* scalarVariable, ValueStatus * valueStat
 int getIntegerAttribute(ScalarVariable* scalarVariable, ValueStatus * valueStatus, Att attribute);
 const char * getStringAttribute(ScalarVariable* scalarVariable, ValueStatus * valueStatus, Att attribute);
 
+
+const char *  getObjectAttributeString(void* scalarVariable, ValueStatus * valueStatus, Att attribute);
+
+
 double getElementAttributeReal(Element* e, ValueStatus * valueStatus, Att attribute);
 const char * getElementAttributeString(Element* e, ValueStatus * valueStatus, Att attribute);
 int getElementAttributeInteger(Element* e, ValueStatus * valueStatus, Att attribute);
-
 char getElementAttributeBoolean(Element* e, ValueStatus * valueStatus, Att attribute);
 
 

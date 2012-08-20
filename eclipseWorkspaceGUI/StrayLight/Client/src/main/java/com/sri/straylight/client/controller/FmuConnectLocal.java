@@ -2,6 +2,7 @@ package com.sri.straylight.client.controller;
 
 
 import java.util.EventObject;
+import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
@@ -15,6 +16,7 @@ import com.sri.straylight.fmuWrapper.FMUcontroller;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeRequest;
 import com.sri.straylight.fmuWrapper.voManaged.SimStateServer;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
+import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 
@@ -27,6 +29,8 @@ public class FmuConnectLocal implements  IFmuConnect {
 	private TaskRun taskRun_;
 	private TaskRequestStateChange taskRequestStateChange_;
 	private TaskChangeInput taskChangeInput_;
+	
+	private TaskChangeScalarValues taskChangeScalarValues_;
 	
 	private Object changeInputSync_ = new Object();
 	private Object requestStateChangeSync_ = new Object();
@@ -45,6 +49,15 @@ public class FmuConnectLocal implements  IFmuConnect {
 		}
 	}
 
+	public void changeScalarValues(Vector<ScalarValueRealStruct> scalarValueList) {
+		
+		synchronized(changeInputSync_) { 
+			taskChangeScalarValues_ = new TaskChangeScalarValues();
+			taskChangeScalarValues_.setScalarValues(scalarValueList);
+			taskChangeScalarValues_.execute();
+		}
+	}
+	
 	public void connect() {
 		taskXMLconnect_ = new TaskConnect();
 		taskXMLconnect_.execute();
@@ -284,6 +297,51 @@ public class FmuConnectLocal implements  IFmuConnect {
           }
 
 	}
+	
+	
+	private class TaskChangeScalarValues extends SwingWorker<Void, EventObject>
+	{
+		
+
+		private Vector<ScalarValueRealStruct> scalarValueList_;
+		
+		
+		public void setScalarValues(Vector<ScalarValueRealStruct> scalarValueList) {
+		
+			scalarValueList_ = scalarValueList;
+		}
+		
+		
+		@Override
+		public Void doInBackground()
+		{
+			fmu_.setScalarValues(scalarValueList_);
+			return null;
+			
+		}
+		
+		
+		
+		@Override
+		public void done() {
+			
+			// TODO enable button, change text here
+			try {
+				super.get();
+			} catch (InterruptedException | ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			synchronized(MainController.instance) {
+				taskChangeInput_ = null;
+            	//System.out.println("execute done");
+			}
+		}
+		
+	}
+	
 	
 	private class TaskChangeInput extends SwingWorker<Void, EventObject>
 	{

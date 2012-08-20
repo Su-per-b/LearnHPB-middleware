@@ -10,14 +10,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.sri.straylight.client.model.ConfigClient;
+import com.sri.straylight.client.model.ClientConfig;
+import com.sri.straylight.client.model.ClientConfigXML;
 
 public class MainView extends JFrame {
 	
 	
-	private ConfigClient configModel_ = new ConfigClient();
+	private ClientConfig configModel_;
 	
-    public MainView(ConfigClient configModel) {
+    public MainView(ClientConfig configModel) {
     	
     	configModel_ = configModel;
     	
@@ -39,10 +40,9 @@ public class MainView extends JFrame {
 
         
     	//set icon
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        URL imageUrl = classLoader.getResource(ConfigClient.WindowIcon);
 
-        ImageIcon imageIcon = new ImageIcon(imageUrl);
+
+        ImageIcon imageIcon = new ImageIcon(configModel_.windowIconUrl);
         Image image = imageIcon.getImage();
         setIconImage(image);
         

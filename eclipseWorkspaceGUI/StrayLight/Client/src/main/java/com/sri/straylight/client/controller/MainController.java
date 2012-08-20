@@ -14,7 +14,8 @@ import com.sri.straylight.client.event.SimStateNotify;
 import com.sri.straylight.client.event.menu.About_Help;
 import com.sri.straylight.client.event.menu.Options_SelectSimulationEngine;
 import com.sri.straylight.client.framework.AbstractController;
-import com.sri.straylight.client.model.ConfigClient;
+import com.sri.straylight.client.model.ClientConfig;
+import com.sri.straylight.client.model.ClientConfigXML;
 import com.sri.straylight.client.model.SimStateClient;
 import com.sri.straylight.client.view.MainView;
 import com.sri.straylight.client.view.SimulationEngineDialog;
@@ -22,12 +23,13 @@ import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 
 public class MainController extends AbstractController {
 	
-	//private MainModel model_;
+
 	private TopPanelController topPanelController_;
 	private SimulationController simulationController_;
 	private DebugConsoleController debugConsoleController_;
 	private InputFormController inputFormController_;
-
+	private InputDetailController inputDetailController_;
+	
 	private ResultsTableController resultsTableController_;
 	private InternalTableController internalTableController_;
 	private ResultsFormController resultsFormController_;
@@ -35,29 +37,30 @@ public class MainController extends AbstractController {
 	private TopMenuController topMenuController_;
 	private ConfigController configController_;
 	
-	
 	private JTabbedPane tabbedPane_;
-    private ConfigClient configModel_ = new ConfigClient();
+    private ClientConfig configModel_;
 	private MainView mainView_;
 	
 	public static MainController instance;
 	
 	public MainController() {
 		super(null);
-
+		
+		configModel_ = ClientConfigXML.load();
+		
 		mainView_ = new MainView(configModel_);
 
 		topPanelController_  = new TopPanelController(this);
 		simulationController_ = new SimulationController(this, configModel_);
 		debugConsoleController_ = new DebugConsoleController(this);
 		inputFormController_ = new InputFormController(this);
-
+		inputDetailController_ = new InputDetailController(this);
 		resultsTableController_ = new ResultsTableController(this);
 		resultsFormController_ = new ResultsFormController(this);
-		
 		internalTableController_ = new InternalTableController(this);
 		topMenuController_ = new TopMenuController(this);
 		configController_ = new ConfigController(this);
+	
 		
 		mainView_.add(topPanelController_.getView(), BorderLayout.NORTH);
 
@@ -90,7 +93,7 @@ public class MainController extends AbstractController {
 		
 		JOptionPane.showMessageDialog(
 				mainView_, 
-				"Version: " + ConfigClient.VERSION,
+				"Version: " + ClientConfigXML.VERSION,
 				"About Straylight Simulation Client",
 				JOptionPane.INFORMATION_MESSAGE
 				);
@@ -117,13 +120,15 @@ public class MainController extends AbstractController {
 			
 			configController_.init(event.metaDataStruct);
 			inputFormController_.init(event.xmlParsed);
+			
+			inputDetailController_.init(event.xmlParsed);
+			
 			resultsFormController_.init(event.xmlParsed);
 			resultsTableController_.init(event.xmlParsed);
 			internalTableController_.init(event.xmlParsed);
 			
-			
 			tabbedPane_.addTab(
-					"Configuration ",
+					"Configuration",
 					null, 
 					configController_.getView(), 
 					null);
@@ -132,6 +137,12 @@ public class MainController extends AbstractController {
 					null, 
 					inputFormController_.getView(), 
 					null);
+			
+			tabbedPane_.addTab(
+					"Input Detail",
+					null, 
+					inputDetailController_.getView(), 
+					null);		
 			tabbedPane_.addTab(
 					"Results Form",
 					null, 

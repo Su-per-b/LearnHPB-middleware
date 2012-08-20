@@ -13,12 +13,12 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 import com.sri.straylight.client.event.menu.About_Help;
 import com.sri.straylight.client.event.menu.Options_SelectSimulationEngine;
 import com.sri.straylight.client.framework.AbstractController;
-import com.sri.straylight.client.model.ConfigClient;
+import com.sri.straylight.client.model.ClientConfigXML;
 
 public class TopMenuController  extends AbstractController  {
 
 
-	private ConfigClient configModel_;
+	private ClientConfigXML configModel_;
 	
     private JMenuBar menuBar_;
     

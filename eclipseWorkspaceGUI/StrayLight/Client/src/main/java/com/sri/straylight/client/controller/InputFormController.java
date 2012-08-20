@@ -1,165 +1,80 @@
 package com.sri.straylight.client.controller;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Vector;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 
 import org.bushe.swing.event.EventBus;
+import org.bushe.swing.event.EventServiceLocator;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.event.InputChangeRequest;
+import com.sri.straylight.client.event.ScalarValueChangeRequest;
+import com.sri.straylight.client.event.menu.About_Help;
 import com.sri.straylight.client.framework.AbstractController;
+import com.sri.straylight.client.model.ClientConfigXML;
+import com.sri.straylight.client.model.InputFormDataModel;
+import com.sri.straylight.client.view.InputFormView;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 
 public class InputFormController extends AbstractController {
 
-    private  JTable table_;
-    private DefaultTableModel tableModel_;
-    
-    private XMLparsed xmlParsed_;
+
+
+    private InputFormDataModel inputFormDataModel_;
     
 	public InputFormController(AbstractController parentController) {
 		super(parentController);
 	}
 	
-	private final JButton btnSubmit_ = new JButton("submit");
-	
-	private double[] resultInputAry_;
-	
+
+
 	public void init(XMLparsed xmlParsed) {  
 		
-		xmlParsed_ = xmlParsed;
 		
-		JPanel panelButton = new JPanel();
-	    JPanel panel = new JPanel();
-	    
-	    panel.setPreferredSize(new Dimension(704, 300));
-	    panel.setLayout(new GridLayout(2, 1, 0, 0));
-	    
-		tableModel_ = new DefaultTableModel (
-				
-				xmlParsed_.getInputData(),
-				xmlParsed_.getInputFormColumnNames()
-		);
+		inputFormDataModel_ = new InputFormDataModel();
+		inputFormDataModel_.xmlParsed = xmlParsed;
+		
 		
 
-		table_ = new JTable(tableModel_);
-		table_.setPreferredScrollableViewportSize(new Dimension(700, 600));
-		table_.setFillsViewportHeight(true);
-		
-	    //Create the scroll pane and add the table to it.
-	    JScrollPane scrollPaneTable = new JScrollPane(table_);
-	    scrollPaneTable.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-	    scrollPaneTable.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-	    
-	    
-	    panelButton.add(btnSubmit_);
-	    
-	    panel.add(scrollPaneTable);
-	    panel.add(panelButton);
-	    
-	    setView_(panel);
-	    bindActions_();
-	    
+		InputFormView theView = new InputFormView(this, inputFormDataModel_);
+	    setView_(theView);
+
     }
 	
 	
 	public void reset(XMLparsed xmlParsed) {  
-		xmlParsed_ = xmlParsed;
+		//	xmlParsed_ = xmlParsed;
 		
-		tableModel_ = new DefaultTableModel (
-				
-				xmlParsed_.getInputData(),
-				xmlParsed_.getInputFormColumnNames()
-		);
-		
-		table_.setModel(tableModel_);
-		
+		//InputFormView theView = (InputFormView) this.getView();
+		//theView.reset(xmlParsed_);
 	}
 	
 	
-	private void bindActions_() {
 
-		btnSubmit_.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				submitChanges();
-				
-
-			}
-		}
-				);
-
-	}
-	
-	
-	private void submitChanges() {
-		
-		 Object[][] inData = xmlParsed_.getInputData();
-		 
-		 ScalarVariableRealStruct[] inputVars = xmlParsed_.getInputVars();
-		 
-		 
-		int len = inputVars.length;
-		
-		for (int i = 0; i < len; i++) {
-			int idx = inputVars[i].idx;
-			
-			
-			String theCell = (String) inData[i][1];
-			String newValueStr = (String) tableModel_.getValueAt(i, 1);
-			double newValueDouble = Double.valueOf(newValueStr);
-			
-			double currentValueDouble = resultInputAry_[i];
-			
-			if (newValueDouble != currentValueDouble) {
-				
-				resultInputAry_[i] = newValueDouble;
-				
-				InputChangeRequest event = new InputChangeRequest(idx,newValueDouble);
-				EventBus.publish(event);
-
-			}
-			
-			
-
-			
-			
-		}
-		
-		
-
-		
-		
-	}
-	
-	
-	
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
 
 		Vector<String> resultInput = event.resultOfStep.getInputList();
 		int len = resultInput.size();
 		
-		resultInputAry_ = event.resultOfStep.getInput();
-				
-		//populate the 'value' column
-		for (int i = 0; i < len; i++) {
-			String str = resultInput.get(i);
-			
-			tableModel_.setValueAt(str, i, 1);
-		}
-		
+		 double[] resultInputAry_ = event.resultOfStep.getInput();
+		 InputFormView theView = (InputFormView) this.getView();
+		 
+		 theView.newResult(resultInput);
+		 
 	}
+	
+
+
+
+
+
+	public void onDataModelUpdateRequest(ScalarValueChangeRequest event) {
+		EventBus.publish(event);
+	}
+	
+	
+
     
 }

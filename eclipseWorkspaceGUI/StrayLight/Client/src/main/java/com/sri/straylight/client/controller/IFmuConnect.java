@@ -2,7 +2,10 @@ package com.sri.straylight.client.controller;
 
 
 
+import java.util.Vector;
+
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
+import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 public interface IFmuConnect {
@@ -21,6 +24,8 @@ public interface IFmuConnect {
 	public void changeInput(int idx, double value);
 
 	public void requestStateChange(SimStateNative newState);
+
+	public void changeScalarValues(Vector<ScalarValueRealStruct> scalrValueList);
 	
 	
 }

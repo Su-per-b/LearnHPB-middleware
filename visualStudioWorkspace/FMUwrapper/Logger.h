@@ -5,7 +5,7 @@
 #include "ResultOfStep.h"
 #include "structs.h"
 #include "enums.h"
-
+#include "Utils.h"
 
 namespace Straylight
 {
@@ -27,7 +27,7 @@ namespace Straylight
 		Logger(void);
 		~Logger(void);
 
-
+		static Logger* instance;
 
 		void registerMessageCallback(void (*callbackPtrArg)(MessageStruct *));
 		void registerCallback(void (*callbackPtrArg)(char *));
@@ -40,6 +40,9 @@ namespace Straylight
 
 		void printDebugHelper(const char* str1, const char* str2 );
 		void printError(const char* msg);
+		void printErrorInt(const char* msg, int i);
+		
+
 		void printfError(const char* str1, const char* str2);
 		void setDebug();
 		void printDebugDouble(const char* key, double valueDouble);

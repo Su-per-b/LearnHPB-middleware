@@ -12,7 +12,7 @@ import com.thoughtworks.xstream.XStream;
 
 public class FMUwrapperConfig {
 	
-	private static final String configFile_ = "config.xml";
+	private static final String configFile_ = "fmuwrapper-config.xml";
 	
 
 	public String unzipFolderRelativePath;
@@ -27,10 +27,11 @@ public class FMUwrapperConfig {
 	public static FMUwrapperConfig load() {
 		
 		String theOs = System.getProperty("os.name");
-		System.out.println( "Operating system detected: " + theOs);
+		System.out.println( "FMUwrapperConfig detected operating system : " + theOs);
 		
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		
-		URL configFileUrl = FMUwrapperConfig.class.getClassLoader().getResource(configFile_);
+		URL configFileUrl = classLoader.getResource(configFile_);
 
 		XStream xStream = new XStream();
 		xStream.alias("config", com.sri.straylight.fmuWrapper.model.FMUwrapperConfig.class);
@@ -59,7 +60,7 @@ public class FMUwrapperConfig {
 		
 	}
 	
-	private static String convertRelativeToAbsolute (String relativePath) {
+	public static String convertRelativeToAbsolute (String relativePath) {
 
 		
 		String absolutePath ="";

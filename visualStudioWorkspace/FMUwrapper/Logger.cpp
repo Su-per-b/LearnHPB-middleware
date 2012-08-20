@@ -10,6 +10,9 @@
 namespace Straylight
 {
 
+	Logger* Logger::instance;
+
+
 	/*********************************************//**
 												   * Default constructor. 
 												   *********************************************/
@@ -18,6 +21,8 @@ namespace Straylight
 		messageCallbackPtr_ = NULL;
 		debug = 1;  // Control for debug information
 		debugvs = 0;  // Control for debug information to Output window in Visual Studio
+		instance = this;
+
 	}
 
 
@@ -111,6 +116,8 @@ namespace Straylight
 			sprintf (msg, str1, str2, str3, str4, str5);
 			printDebugHelper(_T("%s\n"), msg);
 
+
+
 	}
 
 
@@ -155,6 +162,15 @@ namespace Straylight
 	void Logger::printError(const char* msg){
 
 		printfError( _T("%s\n"), msg);
+
+	}
+
+
+	void Logger::printErrorInt(const char* msg, int i) {
+		char str[256];
+		Utils::intToString(str, i);
+
+		printfError(msg, str);
 
 	}
 

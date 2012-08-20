@@ -18,7 +18,7 @@ namespace Straylight
 												   *********************************************/
 	MainController::MainController()
 	{
-
+		logger_ = new Logger();
 
 	}
 
@@ -44,7 +44,7 @@ namespace Straylight
 		freeElement(fmu_->modelDescription);
 
 		delete fmu_;
-		delete logger_;
+		delete Logger::instance;
 	}
 
 
@@ -55,17 +55,14 @@ namespace Straylight
 		) {
 
 			fmu_ = new FMU();
-			logger_ = new Logger();
-			logger_->registerMessageCallback(messageCallbackPtr);
-
-			//logger_->printError(_T("test Error"));
+			Logger::instance->registerMessageCallback(messageCallbackPtr);
 
 			resultCallbackPtr_ = resultCallbackPtr;
 			stateChangeCallbackPtr_ = stateChangeCallbackPtr;
 
+			FMUlogger::setFMU(fmu_);
 
-			FMUlogger::setLogger(logger_);
-			mainDataModel_ = new MainDataModel(logger_);
+			mainDataModel_ = new MainDataModel();
 			mainDataModel_->setFMU(fmu_);
 
 			setState_( simStateNative_0_uninitialized );
@@ -172,7 +169,7 @@ namespace Straylight
 
 	void MainController::setStateError_(const char * message) {
 			
-		logger_->printError(message);
+		Logger::instance->printError(message);
 		state_ = simStateNative_e_error;
 		
 		stateChangeCallbackPtr_( state_ );
@@ -196,12 +193,12 @@ namespace Straylight
 															 *******************************************************/
 	int MainController::xmlParse(char* unzipfolder) {
 
-		//	logger_->printDebug2("MainController::parseXML unzipfolder %s\n", unzipfolder);	
+		//	Logger::instance->printDebug2("MainController::parseXML unzipfolder %s\n", unzipfolder);	
 		int len1 = strlen(unzipfolder) + 1;
 
 		unzipFolderPath_ = (char *) calloc(sizeof(char), len1 + 1);
 		lstrcpy(unzipFolderPath_, unzipfolder);
-		logger_->printDebug2(_T("MainController::parseXML unzipFolderPath_ %s\n"), unzipFolderPath_);	
+		Logger::instance->printDebug2(_T("MainController::parseXML unzipFolderPath_ %s\n"), unzipFolderPath_);	
 
 		//construct the path to the XML file and 
 		// store as member variable
@@ -212,18 +209,16 @@ namespace Straylight
 		fmu_->modelDescription = parse(xmlFilePath_); 
 
 		if (fmu_->modelDescription == NULL) {
-			logger_->printfError(_T("Error - MainController::parseXML xmlFilePath_ %s\n"), xmlFilePath_);
+			Logger::instance->printfError(_T("Error - MainController::parseXML xmlFilePath_ %s\n"), xmlFilePath_);
 			return 1;
 		} else {
 
-			logger_->printDebug2(_T("MainController::parseXML xmlFilePath_ %s\n"), xmlFilePath_);	
+			Logger::instance->printDebug2(_T("MainController::parseXML xmlFilePath_ %s\n"), xmlFilePath_);	
 			configStruct_ =  Config::make(fmu_);
 
 
 			mainDataModel_->extract();
 
-			//mainDataModel_->extractTypeDefinitions();
-			//mainDataModel_->extractScalarVariables();
 
 			setState_( simStateNative_2_xmlParse_completed );
 			return 0;
@@ -250,7 +245,7 @@ namespace Straylight
 		fp = GetProcAddress(fmu_->dllHandle, name);
 
 		if (!fp) {
-			logger_->printfError(_T("Function %s not found in dll\n"), name);        
+			Logger::instance->printfError(_T("Function %s not found in dll\n"), name);        
 		}
 		return fp;
 	}
@@ -258,7 +253,7 @@ namespace Straylight
 
 
 	int MainController::init() {
-		logger_->printDebug(_T("-=MainController::init=-\n"));
+		Logger::instance->printDebug(_T("-=MainController::init=-\n"));
 
 		int result1 = loadDll();
 		if (result1) return result1;
@@ -286,7 +281,7 @@ namespace Straylight
 												   *********************************************/
 	int MainController::loadDll( ) {
 
-		logger_->printDebug2 (_T("MainController::loadDll unzipFolderPath_: %s\n"), unzipFolderPath_);
+		Logger::instance->printDebug2 (_T("MainController::loadDll unzipFolderPath_: %s\n"), unzipFolderPath_);
 		const char* modelId = getModelIdentifier(fmu_->modelDescription);
 
 		dllFilePath_ = (char *) calloc(sizeof(char), strlen(unzipFolderPath_) + strlen(DLL_DIR_STR) 
@@ -301,19 +296,19 @@ namespace Straylight
 
 
 		if (dllFilePath_ == NULL){
-			logger_->printfError(_T("Failed to allocate memory for wText\n"), dllFilePath_);
+			Logger::instance->printfError(_T("Failed to allocate memory for wText\n"), dllFilePath_);
 			return 1;
 		}
 
 
-		logger_->printDebug2 (_T("dllFilePath_: %s \n"), dllFilePath_);
+		Logger::instance->printDebug2 (_T("dllFilePath_: %s \n"), dllFilePath_);
 
 
 		HINSTANCE h;
 		h = LoadLibrary(dllFilePath_);
 
 		if(!h) {
-			logger_->printfError(_T("Can not load %s\n"), dllFilePath_);
+			Logger::instance->printfError(_T("Can not load %s\n"), dllFilePath_);
 			exit(EXIT_FAILURE);
 		}
 
@@ -344,9 +339,9 @@ namespace Straylight
 
 
 	int MainController::instantiateSlave_() {
-		logger_->printDebug(_T("-=MainController::instantiateSlave_=-\n"));
+		Logger::instance->printDebug(_T("-=MainController::instantiateSlave_=-\n"));
 
-		logger_->printDebug(_T("MainController::simulateHelperInit\n"));	
+		Logger::instance->printDebug(_T("MainController::simulateHelperInit\n"));	
 
 		_TCHAR currentDirectory[MAX_PATH] =  _T("");
 		_TCHAR currentDirectory2[MAX_PATH] =  _T("");
@@ -366,7 +361,7 @@ namespace Straylight
 		time_ = getStartTime();
 
 		GetCurrentDirectory(MAX_PATH, currentDirectory);
-		logger_->printDebug2(_T("currentDirectory: %s\n"), currentDirectory);
+		Logger::instance->printDebug2(_T("currentDirectory: %s\n"), currentDirectory);
 
 		this->getModuleFolderPath(exeDirectory);
 
@@ -378,20 +373,20 @@ namespace Straylight
 		modelIdentifier =  getModelIdentifier(fmu_->modelDescription);
 
 
-		logger_->printDebug2(_T("exeDirectory: %s\n"), exeDirectory);	
-		logger_->printDebug2(_T("unzipFolderPath_%s\n"), unzipFolderPath_);
+		Logger::instance->printDebug2(_T("exeDirectory: %s\n"), exeDirectory);	
+		Logger::instance->printDebug2(_T("unzipFolderPath_%s\n"), unzipFolderPath_);
 
-		logger_->printDebugDouble(_T("stepDelta: %s\n"), getStepDelta());
-		logger_->printDebugDouble(_T("time_: %s\n"), time_);
-		logger_->printDebugDouble(_T("stopTime: %s\n"), getStopTime());
+		Logger::instance->printDebugDouble(_T("stepDelta: %s\n"), getStepDelta());
+		Logger::instance->printDebugDouble(_T("time_: %s\n"), time_);
+		Logger::instance->printDebugDouble(_T("stopTime: %s\n"), getStopTime());
 
-		logger_->printDebug2(_T("instanceName is %s\n"), modelIdentifier);
-		logger_->printDebug2(_T("GUID = %s!\n"), guid);
+		Logger::instance->printDebug2(_T("instanceName is %s\n"), modelIdentifier);
+		Logger::instance->printDebug2(_T("GUID = %s!\n"), guid);
 
 
 		BOOL isSet = SetCurrentDirectory(unzipFolderPath_);
 		int bufferLength = GetCurrentDirectory(MAX_PATH, currentDirectory2);
-		logger_->printDebug2(_T("currentDirectory2: %s\n"), currentDirectory2);
+		Logger::instance->printDebug2(_T("currentDirectory2: %s\n"), currentDirectory2);
 
 		fmiComponent_ = fmu_->instantiateSlave (
 			modelIdentifier,		//fmiString  instanceName
@@ -411,7 +406,7 @@ namespace Straylight
 			setStateError_(_T("Could not instantiate slaves\n"));
 			return 1;
 		} else {
-			logger_->printDebug(_T("Successfully instantiated one slave\n"));
+			Logger::instance->printDebug(_T("Successfully instantiated one slave\n"));
 			mainDataModel_->setFmiComponent(fmiComponent_);
 			setState_( simStateNative_3_init_instantiatedSlaves );
 
@@ -422,7 +417,7 @@ namespace Straylight
 
 	int MainController::initializeSlave_() {
 
-		logger_->printDebug(_T("-=MainController::initializeSlave_=-\n"));
+		Logger::instance->printDebug(_T("-=MainController::initializeSlave_=-\n"));
 
 		fmiStatus fmiFlag;  
 
@@ -435,7 +430,7 @@ namespace Straylight
 			setStateError_(_T("Could not initialize slaves\n"));
 			return 1;																
 		} else {
-			logger_->printDebug(_T("initializeSlave() successful\n"));
+			Logger::instance->printDebug(_T("initializeSlave() successful\n"));
 			return 0;
 		}
 
@@ -517,13 +512,13 @@ namespace Straylight
 		char msg3[1024];
 
 		sprintf (msg1, "Simulation from %g to %g terminated successful\n", getStartTime(), getStopTime());
-		logger_->printDebug (msg1);
+		Logger::instance->printDebug (msg1);
 
 		sprintf (msg2, "  steps ............ %d\n",  nSteps_);
-		logger_->printDebug (msg2);
+		Logger::instance->printDebug (msg2);
 
 		sprintf (msg3, "  fixed step size .. %g\n",  getStepDelta());
-		logger_->printDebug (msg3);
+		Logger::instance->printDebug (msg3);
 
 	}
 
@@ -533,7 +528,7 @@ namespace Straylight
 		fmiStatus_ = fmu_->doStep(fmiComponent_, time_, getStepDelta(), fmiTrue); 
 
 		if(fmiStatus_ != fmiOK) {
-			logger_->printError("MainController::doOneStep_ resulted in error");
+			Logger::instance->printError("MainController::doOneStep_ resulted in error");
 			return 1;
 		}
 
@@ -598,6 +593,18 @@ namespace Straylight
 	{
 		return xmlFilePath_;
 	}
+
+
+	void MainController::setScalarValues (ScalarValueRealStruct * scalarValueAry, int length) {
+
+
+		if (state_ != simStateNative_4_run_cleanedup ) {
+			mainDataModel_->setScalarValues(scalarValueAry, length);
+		}
+
+
+	}
+
 
 
 }

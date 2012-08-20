@@ -1,7 +1,6 @@
 package com.sri.straylight.fmuWrapper.voNative;
 
 
-
 import com.sun.jna.Structure;
 
 public class ScalarValueStruct extends Structure {
@@ -10,5 +9,4 @@ public class ScalarValueStruct extends Structure {
 	public int idx;
 	public String string;
 	  
-	
 }

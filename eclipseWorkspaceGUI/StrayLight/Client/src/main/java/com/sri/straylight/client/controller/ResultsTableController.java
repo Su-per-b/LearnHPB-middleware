@@ -74,11 +74,8 @@ public class ResultsTableController extends AbstractController {
 		Vector<String> resultOuput = event.resultOfStep.getOutputList();
 		
 		double time = event.resultOfStep.getTime();
-		
-		
 		resultOuput.insertElementAt(Double.toString(time), 0);
-		
-		
+				
 		dataModel_.insertRow(0,resultOuput);
 	}
 	

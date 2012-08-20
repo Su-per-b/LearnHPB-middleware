@@ -3,6 +3,7 @@ package com.sri.straylight.client.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Vector;
 
 import org.bushe.swing.event.EventBus;
 
@@ -15,6 +16,7 @@ import com.sri.straylight.fmuWrapper.serialization.GsonController;
 import com.sri.straylight.fmuWrapper.serialization.SerializeableObject;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageType;
+import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 import de.roderick.weberknecht.WebSocket;
@@ -51,6 +53,10 @@ public class FmuConnectRemote implements IFmuConnect {
 	}
 	
 
+	public void changeScalarValues(Vector<ScalarValueRealStruct> scalrValueList) {
+		
+		
+	}
 	
 	public void connect() {
 

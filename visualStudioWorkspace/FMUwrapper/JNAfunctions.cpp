@@ -62,75 +62,6 @@ ScalarVariablesAllStruct * getAllScalarVariables() {
 }
 
 
-/*
-
-ScalarVariableRealStruct *  getScalarVariableInputStructs() {
-
-	Straylight::MainDataModel * model = mainController->getMainDataModel();
-	return model->getSVinputArray();
-}
-
-ScalarVariableRealStruct *  getScalarVariableOutputStructs() {
-
-	Straylight::MainDataModel * model = mainController->getMainDataModel();
-	return model->getSVoutputArray();
-}
-
-ScalarVariableRealStruct *  getScalarVariableInternalStructs() {
-
-	Straylight::MainDataModel * model = mainController->getMainDataModel();
-	return model->getSVinternalArray();
-}
-
-
-
-
-int getInputVariableCount() {
-	Straylight::MainDataModel * model = mainController->getMainDataModel();
-	return model->getInputVariableCount();
-}
-
-int getOutputVariableCount() {
-
-	Straylight::MainDataModel * model = mainController->getMainDataModel();
-	return model->getOutputVariableCount();
-
-}
-
-int getInternalVariableCount() {
-	Straylight::MainDataModel * model = mainController->getMainDataModel();
-	return model->getInternalVariableCount();
-}
-ScalarVariableRealStruct * testSVRealStruct() {
-	Straylight::MainDataModel * model = mainController->getMainDataModel();
-	return model->scalarVariableDataModel_->svInput_->getRealAsArray();
-}
-
-ScalarVariableBooleanStruct * testSVBooleanStruct() {
-	
-	
- 	Straylight::MainDataModel * model = mainController->getMainDataModel();
-	ScalarVariableBooleanStruct * st1  = model->scalarVariableDataModel_->svInput_->getBooleanAsArray();
-	st1->causality = enu_input;
-
-	ScalarVariableBooleanStruct * st2 = new ScalarVariableBooleanStruct();
-	st2->causality = enu_input;
-
-	return st1;
-}
-
-ScalarVariableCollectionStruct * getScalarVariableCollectionStruct() {
-
-	Straylight::MainDataModel * model = mainController->getMainDataModel();
-	return model->scalarVariableDataModel_->svInput_->convertToStruct();
-
-}
-
-
-
-
-*/
-
 
 int isSimulationComplete () {
 	return mainController->isSimulationComplete();
@@ -145,7 +76,7 @@ void connect (
 	)
 {	
 
-	mainController = new Straylight::MainController();
+	mainController = new MainController();
 
 	mainController->connect ( 
 		messageCallbackPtr, 
@@ -178,3 +109,18 @@ fmiStatus setScalarValueReal (int idx, double value) {
 	return mainController->setScalarValueReal(idx,value);
 }
 
+void setScalarValues (ScalarValueRealStruct * scalarValueAry , int length) {
+
+		vector<ScalarValueRealStruct> scalarValueList;
+
+		for (int i = 0; i < length; i++)
+		{
+			ScalarValueRealStruct st = scalarValueAry[i];
+			scalarValueList.push_back(st);
+
+			Logger::instance->printDebug(_T("setScalarValues\n"));
+		}
+
+		mainController->setScalarValues(scalarValueAry,length);
+
+}

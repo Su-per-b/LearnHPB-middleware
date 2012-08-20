@@ -12,7 +12,7 @@ namespace Straylight
 
 		//private member variables
 	private:
-		static Logger* logger_;
+
 
 		// public functions
 	public:
@@ -23,12 +23,12 @@ namespace Straylight
 		static void log(fmiComponent c, fmiString instanceName, fmiStatus status,
 			fmiString category, fmiString message, ...);
 
-		static FMU fmu; // the fmu to simulate
-
-		static void setLogger(Logger* logger);
+		static void setFMU(FMU* fmuArg);
 
 		//private functions
 	private:
+
+		static FMU * fmu; // the fmu to simulate
 
 		static const char* fmiStatusToString(fmiStatus status);
 		static ScalarVariable* getSV(FMU* fmu, char type, fmiValueReference vr);

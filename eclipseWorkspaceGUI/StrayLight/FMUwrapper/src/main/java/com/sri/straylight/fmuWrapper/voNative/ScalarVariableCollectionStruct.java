@@ -50,7 +50,7 @@ public class ScalarVariableCollectionStruct extends Structure {
 		}
 		
 		if (arraySize > 0) {
-			ScalarVariableBooleanStruct[] ary = (ScalarVariableBooleanStruct[]) realValue.toArray(arraySize);
+			ScalarVariableBooleanStruct[] ary = (ScalarVariableBooleanStruct[]) booleanValue.toArray(arraySize);
 			return ary;
 		} else {
 			return null;
@@ -70,7 +70,7 @@ public class ScalarVariableCollectionStruct extends Structure {
 		}
 		
 		if (arraySize > 0) {
-			ScalarVariableIntegerStruct[] ary = (ScalarVariableIntegerStruct[]) realValue.toArray(arraySize);
+			ScalarVariableIntegerStruct[] ary = (ScalarVariableIntegerStruct[]) integerValue.toArray(arraySize);
 			return ary;
 		} else {
 			return null;
@@ -91,7 +91,7 @@ public class ScalarVariableCollectionStruct extends Structure {
 		
 		
 		if (arraySize > 0) {
-			ScalarVariableEnumerationStruct[] ary = (ScalarVariableEnumerationStruct[]) realValue.toArray(arraySize);
+			ScalarVariableEnumerationStruct[] ary = (ScalarVariableEnumerationStruct[]) enumerationValue.toArray(arraySize);
 			return ary;
 		} else {
 			return null;
@@ -112,7 +112,7 @@ public class ScalarVariableCollectionStruct extends Structure {
 		
 		
 		if (arraySize > 0) {
-			ScalarVariableStringStruct[] ary = (ScalarVariableStringStruct[]) realValue.toArray(arraySize);
+			ScalarVariableStringStruct[] ary = (ScalarVariableStringStruct[]) stringValue.toArray(arraySize);
 			return ary;
 		} else {
 			return null;

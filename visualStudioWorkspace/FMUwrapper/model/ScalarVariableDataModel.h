@@ -31,10 +31,6 @@ namespace Straylight
 		vector<ScalarVariableEnumerationStruct*> svVectorEnumeration_;
 		vector<ScalarVariableStringStruct*> svVectorString_;
 
-
-
-
-
 	};
 
 }

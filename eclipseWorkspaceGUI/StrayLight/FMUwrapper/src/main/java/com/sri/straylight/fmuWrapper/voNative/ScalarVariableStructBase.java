@@ -7,6 +7,7 @@ public class ScalarVariableStructBase extends Structure {
 	public String name;
 	public int idx;
 	public int causality;
+	public int variability;
 	public String description;
 	public int valueReference;
 	
@@ -19,5 +20,12 @@ public class ScalarVariableStructBase extends Structure {
 		return theEnum;
 	}
 	
+	public Enu getVariabilityEnum() {
+
+		Enu p = Enu.enu_constant;
+		Enu theEnum  = p.getForValue (variability);
+		
+		return theEnum;
+	}
 	
 }
