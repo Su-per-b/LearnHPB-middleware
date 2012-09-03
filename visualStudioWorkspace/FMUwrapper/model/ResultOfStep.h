@@ -1,9 +1,15 @@
+/*******************************************************//**
+ * @file	model\ResultOfStep.h
+ *
+ * Declares the result of step class.
+ *******************************************************/
 #pragma once
 
 #include "stdafx.h"
 #include "ScalarValue.h"
 #include "structs.h"
 #include "enums.h"
+#include "ScalarVariableCollection.h"
 
 extern "C"
 {
@@ -11,19 +17,35 @@ extern "C"
 #include "fmi_cs.h"
 }
 
-
+/*******************************************************//**
+ * Defines an alias representing the structure.
+ *******************************************************/
 typedef struct  {
+
+	/*******************************************************//**
+	 * The time.
+	 *******************************************************/
 	double time;
 
 	double  * input;
+
+	/*******************************************************//**
+	 * Length of the input.
+	 *******************************************************/
 	int inputLength;
 
 	double  * output;
+
+	/*******************************************************//**
+	 * Length of the output.
+	 *******************************************************/
 	int outputLength;
 
 } ResultOfStepStruct;
 
-
+/*******************************************************//**
+ * .
+ *******************************************************/
 using namespace std;
 
 namespace Straylight
@@ -35,21 +57,24 @@ namespace Straylight
 
 
 	public:
+
+		/*******************************************************//**
+		 * The sv list output.
+		 *******************************************************/
 		vector<ScalarValue *> svListOutput;
 		vector<ScalarValue *> svListInput;
 
+		/*******************************************************//**
+		 * The time.
+		 *******************************************************/
 		double time_;
-
 
 	public:
 
 
 		ResultOfStep(double time);
 		~ResultOfStep(void);
-		//	void setTime(double time);
 
-		void addValue(ScalarValue * scalarValue);
-		void addValueIn(ScalarValue * scalarValue);
 		char * getString();
 
 		ResultOfStepStruct* toStruct();

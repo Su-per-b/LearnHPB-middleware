@@ -13,4 +13,5 @@ public class TypeSpecBoolean extends Structure {
 	public int fixedValueStatus;
 
 	public String declaredType;
+	
 }

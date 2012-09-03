@@ -5,41 +5,44 @@
 
 namespace Straylight
 {
-
+	/*******************************************************//**
+	 * The fm ulogger fmu.
+	 *******************************************************/
 	FMU * FMUlogger::fmu;
 
-
-
-
-	/*********************************************//**
-												   * Default constructor. 
-												   *********************************************/
+	/*******************************************************//**
+	 * Default constructor.
+	 *******************************************************/
 	FMUlogger::FMUlogger(void)
 	{
 
 	}
 
-
-	/*********************************************//**
-												   * Destructor. Frees memory and releases FMU DLL.
-												   *********************************************/
+	/*******************************************************//**
+	 * Destructor. Frees memory and releases FMU DLL.
+	 *******************************************************/
 	FMUlogger::~FMUlogger(void)
 	{
 
 	}
 
-
+	/*******************************************************//**
+	 * Sets a fmu.
+	 *
+	 * @param [in,out]	fmuArg	If non-null, the fmu argument.
+	 *******************************************************/
 	void FMUlogger::setFMU(FMU* fmuArg) {
 		FMUlogger::fmu = fmuArg;
 
 	}
 
-	///////////////////////////////////////////////////////////////////////////////
-	/// Translate FMI status to string variable
-	///
-	///\param status FMI status
-	///\return Corresponding string variable if it is found.
-	///////////////////////////////////////////////////////////////////////////////
+	/*******************************************************//**
+	 * Fmi status to string.
+	 *
+	 * @param	status	The status.
+	 *
+	 * @return	null if it fails, else.
+	 *******************************************************/
 	const char* FMUlogger::fmiStatusToString(fmiStatus status) {
 		switch (status){
 		case fmiOK:      return "ok";
@@ -52,14 +55,15 @@ namespace Straylight
 		}
 	}
 
-	///////////////////////////////////////////////////////////////////////////////
-	/// Search a fmu for the given variable.
-	///
-	///\param fmu FMU.
-	///\param type Type of FMU variable.
-	///\param vr FMI value reference.
-	///\return NULL if not found or vr = fmiUndefinedValueReference
-	///////////////////////////////////////////////////////////////////////////////
+	/*******************************************************//**
+	 * Gets a sv.
+	 *
+	 * @param [in,out]	fmu	If non-null, the fmu.
+	 * @param	type	   	The type.
+	 * @param	vr		   	The vr.
+	 *
+	 * @return	null if it fails, else the sv.
+	 *******************************************************/
 	ScalarVariable* FMUlogger::getSV(FMU* fmu, char type, fmiValueReference vr) {
 		int i;
 		Elm tp;
@@ -79,16 +83,14 @@ namespace Straylight
 		return NULL;
 	}
 
-	///////////////////////////////////////////////////////////////////////////////
-	/// Replace reference information in message.
-	/// E.g. #r1365# by variable name and ## by # in message
-	/// copies the result to buffer
-	///
-	///\param msg 
-	///\param buffer
-	///\param nBuffer
-	///\param fmu FMU
-	///////////////////////////////////////////////////////////////////////////////
+	/*******************************************************//**
+	 * Replace references in message.
+	 *
+	 * @param	msg			  	The message.
+	 * @param [in,out]	buffer	If non-null, the buffer.
+	 * @param	nBuffer		  	The buffer.
+	 * @param [in,out]	fmu   	If non-null, the fmu.
+	 *******************************************************/
 	void FMUlogger::replaceRefsInMessage(const char* msg, char* buffer, int nBuffer, FMU* fmu) {
 		int i=0; // position in msg
 		int k=0; // position in buffer
@@ -139,16 +141,20 @@ namespace Straylight
 		buffer[k] = '\0';
 	}
 
+/*******************************************************//**
+ * A macro that defines maximum message size.
+ *******************************************************/
 #define MAX_MSG_SIZE 1000
-	///////////////////////////////////////////////////////////////////////////////
-	/// FMU logger
-	///
-	///\param c FMI component.
-	///\param instanceName FMI string.
-	///\param status FMI status.
-	///\param category FMI string. 
-	///\param message Message to be recorded.
-	///////////////////////////////////////////////////////////////////////////////
+
+	/*******************************************************//**
+	 * Logs.
+	 *
+	 * @param	c				The fmiComponent to process.
+	 * @param	instanceName	Name of the instance.
+	 * @param	status			The status.
+	 * @param	category		The category.
+	 * @param	message			The message.
+	 *******************************************************/
 	void FMUlogger::log(fmiComponent c, fmiString instanceName, fmiStatus status,
 		fmiString category, fmiString message, ...) {
 

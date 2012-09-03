@@ -1,17 +1,33 @@
+/*******************************************************//**
+ * @file	model\TypeDefFactory.cpp
+ *
+ * Implements the type def factory class.
+ *******************************************************/
 #include "TypeDefFactory.h"
 
 namespace Straylight
 {
+	/*******************************************************//**
+	 * Default constructor.
+	 *******************************************************/
 	TypeDefFactory::TypeDefFactory(void)
 	{
 	}
 
-
+	/*******************************************************//**
+	 * Destructor.
+	 *******************************************************/
 	TypeDefFactory::~TypeDefFactory(void)
 	{
 	}
 
-
+	/*******************************************************//**
+	 * Makes a real.
+	 *
+	 * @param [in,out]	type	If non-null, the type.
+	 *
+	 * @return	null if it fails, else.
+	 *******************************************************/
 	TypeDefinitionReal* TypeDefFactory::makeReal(Type* type) {
 
 
@@ -37,16 +53,16 @@ namespace Straylight
 		typeDefinitionReal->max = getElementAttributeReal(type->typeSpec,&maxValueStatus, att_max);
 		typeDefinitionReal->maxValueStatus = maxValueStatus;
 
-
-
-
-
-
-
-
 		return typeDefinitionReal;
 	}
 
+	/*******************************************************//**
+	 * Makes a boolean.
+	 *
+	 * @param [in,out]	type	If non-null, the type.
+	 *
+	 * @return	null if it fails, else.
+	 *******************************************************/
 	TypeDefinitionBoolean* TypeDefFactory::makeBoolean(Type* type) {
 
 		TypeDefinitionBoolean * typeDefinitionBoolean = new TypeDefinitionBoolean(); 
@@ -67,7 +83,13 @@ namespace Straylight
 		return typeDefinitionBoolean;
 	}
 
-
+	/*******************************************************//**
+	 * Makes an integer.
+	 *
+	 * @param [in,out]	type	If non-null, the type.
+	 *
+	 * @return	null if it fails, else.
+	 *******************************************************/
 	TypeDefinitionInteger* TypeDefFactory::makeInteger(Type* type) {
 
 		TypeDefinitionInteger* typeDefinitionInteger = new TypeDefinitionInteger();
@@ -95,8 +117,13 @@ namespace Straylight
 		return typeDefinitionInteger;
 	}
 
-
-
+	/*******************************************************//**
+	 * Makes an enumeration.
+	 *
+	 * @param [in,out]	type	If non-null, the type.
+	 *
+	 * @return	null if it fails, else.
+	 *******************************************************/
 	TypeDefinitionEnumeration* TypeDefFactory::makeEnumeration(Type* type) {
 
 		TypeDefinitionEnumeration* typeDefinitionEnumeration = new TypeDefinitionEnumeration();
@@ -129,7 +156,14 @@ namespace Straylight
 		return typeDefinitionEnumeration;
 	}
 
-
+	/*******************************************************//**
+	 * Extracts the item array.
+	 *
+	 * @param [in,out]	listElement	If non-null, the list element.
+	 * @param [in,out]	length	   	If non-null, the length.
+	 *
+	 * @return	null if it fails, else the extracted item array.
+	 *******************************************************/
 	EnumerationItem * TypeDefFactory::extractItemArray(ListElement* listElement, int * length) {
 
 		Element** listArray = listElement->list;
@@ -172,8 +206,13 @@ namespace Straylight
 
 	}
 
-
-
+	/*******************************************************//**
+	 * Makes a string.
+	 *
+	 * @param [in,out]	type	If non-null, the type.
+	 *
+	 * @return	null if it fails, else.
+	 *******************************************************/
 	TypeDefinitionString* TypeDefFactory::makeString(Type* type) {
 
 

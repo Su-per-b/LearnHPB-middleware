@@ -6,7 +6,13 @@
 
 namespace Straylight
 {
-
+	/*******************************************************//**
+	 * Makes the given fmu pointer.
+	 *
+	 * @param	fmuPointer	If non-null, the fmu pointer.
+	 *
+	 * @return	null if it fails, else.
+	 *******************************************************/
 	ConfigStruct *  Config::make(FMU* fmuPointer) {
 
 		ConfigStruct * configStruct = new ConfigStruct(); // = new ScalarVariableStruct();

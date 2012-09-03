@@ -1,44 +1,76 @@
+/*******************************************************//**
+ * @file	model\ScalarValue.cpp
+ *
+ * Implements the scalar value class.
+ *******************************************************/
 #include "ScalarValue.h"
 
 
 namespace Straylight
 {
-
-
+	/*******************************************************//**
+	 * The scalar value fmu.
+	 *******************************************************/
 	FMU * ScalarValue::fmu_;
 
+	/*******************************************************//**
+	 * The scalar value fmi component.
+	 *******************************************************/
 	fmiComponent ScalarValue::fmiComponent_;
 
-
-
+	/*******************************************************//**
+	 * Gets the index.
+	 *
+	 * @return	The index.
+	 *******************************************************/
 	int ScalarValue::getIdx() {
 		return idx_;
 	}
 
+	/*******************************************************//**
+	 * Sets a fmu.
+	 *
+	 * @param [in,out]	fmu	If non-null, the fmu.
+	 *******************************************************/
 	void ScalarValue::setFMU(FMU* fmu) {
 		fmu_ = fmu;
 	}
 
+	/*******************************************************//**
+	 * Sets fmi component.
+	 *
+	 * @param	fmiComponent_arg	The fmi component argument.
+	 *******************************************************/
 	void ScalarValue::setFmiComponent(fmiComponent fmiComponent_arg) {
 		fmiComponent_ = fmiComponent_arg;
 	}
 
-
+	/*******************************************************//**
+	 * Constructor.
+	 *
+	 * @param	idx_local	The index local.
+	 *******************************************************/
 	ScalarValue::ScalarValue(int idx_local)
 	{
 		idx_ = idx_local;
 		scalarVariable_ = (ScalarVariable*)fmu_->modelDescription->modelVariables[idx_];
 
 		valueReference_ = getValueReference(scalarVariable_); //unsigned int 
-
 	}
 
-
+	/*******************************************************//**
+	 * Destructor.
+	 *******************************************************/
 	ScalarValue::~ScalarValue(void)
 	{
 
 	}
 
+	/*******************************************************//**
+	 * Gets real number.
+	 *
+	 * @return	The real number.
+	 *******************************************************/
 	fmiReal ScalarValue::getRealNumber(void)
 	{
 
@@ -48,6 +80,11 @@ namespace Straylight
 		return realNumber;
 	}
 
+	/*******************************************************//**
+	 * Sets real number.
+	 *
+	 * @param	realNumber	The real number.
+	 *******************************************************/
 	void ScalarValue::setRealNumber(double realNumber)
 	{
 
@@ -59,16 +96,20 @@ namespace Straylight
 
 	}
 
-
-
-
-
+	/*******************************************************//**
+	 * Gets the status.
+	 *
+	 * @return	The status.
+	 *******************************************************/
 	fmiStatus ScalarValue::getStatus() {
 		return status_;
 	}
 
-
-
+	/*******************************************************//**
+	 * Gets the string.
+	 *
+	 * @return	The string.
+	 *******************************************************/
 	string ScalarValue::getString(void)	{
 
 		stringstream ss;

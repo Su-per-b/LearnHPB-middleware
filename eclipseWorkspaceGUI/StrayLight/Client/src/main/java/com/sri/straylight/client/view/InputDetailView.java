@@ -6,18 +6,17 @@ import java.util.Vector;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-
-import org.bushe.swing.event.EventBus;
 
 import com.sri.straylight.client.controller.InputDetailController;
 import com.sri.straylight.client.event.ScalarValueChangeRequest;
 import com.sri.straylight.fmuWrapper.voManaged.ResultOfStep;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
+import com.sri.straylight.fmuWrapper.voNative.ScalarValueBooleanStruct;
+import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableBooleanStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableStructBase;
@@ -27,7 +26,7 @@ public class InputDetailView extends JPanel  {
 	 private XMLparsed xmlParsed_;
 	 private JPanel contentPanel_;
 
-	 private Vector<ScalarVariablePanelReal> scalarVariablePanelList_;
+	 private Vector<JPanel> scalarVariablePanelList_;
 	 private InputDetailController inputDetailController_;
 	 
 	public InputDetailView(InputDetailController inputDetailController, XMLparsed xmlParsed) {
@@ -53,7 +52,7 @@ public class InputDetailView extends JPanel  {
 	
 	public void setModel(XMLparsed xmlParsed) {
 		
-		scalarVariablePanelList_ = new Vector<ScalarVariablePanelReal>();
+		scalarVariablePanelList_ = new Vector<JPanel>();
 		
 		
 		xmlParsed_ = xmlParsed;
@@ -89,7 +88,7 @@ public class InputDetailView extends JPanel  {
 	
 	public void showReal(ScalarVariableRealStruct sv) {
 
-		ScalarVariablePanelReal panel = new ScalarVariablePanelReal(this); // FlowLayout 
+		ScalarVariableRealPanel panel = new ScalarVariableRealPanel(this); // FlowLayout 
 		panel.setMetaData(sv);
 
 		scalarVariablePanelList_.add(panel);
@@ -97,6 +96,17 @@ public class InputDetailView extends JPanel  {
 		contentPanel_.add(leftJustify( panel ));
 		
 	}
+	
+	public void showBoolean(ScalarVariableBooleanStruct sv) {
+		
+		ScalarVariableBooleanPanel panel = new ScalarVariableBooleanPanel(this); // FlowLayout 
+		panel.setMetaData(sv);
+
+		scalarVariablePanelList_.add(panel);
+		
+		contentPanel_.add(leftJustify( panel ));
+	}
+	
 	
 	private Component leftJustify( JPanel panel )  {
 	    Box  b = Box.createHorizontalBox();
@@ -108,10 +118,8 @@ public class InputDetailView extends JPanel  {
 	}
 
 	
-	public void showBoolean(ScalarVariableBooleanStruct sv) {
-		
-		
-	}
+
+	
 
 
 	public void setResult(ResultOfStep resultOfStep) {
@@ -123,11 +131,28 @@ public class InputDetailView extends JPanel  {
 		for (int i = 0; i < len; i++) {
 			
 			String str = valueList.get(i);
+			JPanel p = scalarVariablePanelList_.get(i);
 			
-			ScalarVariablePanelReal p = scalarVariablePanelList_.get(i);
+			if (p instanceof ScalarVariableRealPanel) {
+				
+				ScalarVariableRealPanel realPanel = (ScalarVariableRealPanel) p;
+				
+				ScalarValueRealStruct sValue = new ScalarValueRealStruct();
+				sValue.value = Double.valueOf(str);
+				realPanel.setValue(sValue);
+
+			} else if (p instanceof ScalarVariableBooleanPanel) {
+				
+				ScalarVariableBooleanPanel booleanPanel = (ScalarVariableBooleanPanel) p;
+				
+				ScalarValueBooleanStruct scalarValueBooleanStruct = new ScalarValueBooleanStruct();
+				
+				scalarValueBooleanStruct.value = Boolean.valueOf(str);
+				booleanPanel.setValue(scalarValueBooleanStruct);
+				
+			}
 			
-			
-			p.setValue(Double.valueOf(str));
+
 			
 		}
 		

@@ -1,23 +1,36 @@
+/*******************************************************//**
+ * @file	model\ResultOfStep.cpp
+ *
+ * Implements the result of step class.
+ *******************************************************/
 #include "ResultOfStep.h"
 
 
 namespace Straylight
 {
-
+	/*******************************************************//**
+	 * Constructor.
+	 *
+	 * @param	time	The time.
+	 *******************************************************/
 	ResultOfStep::ResultOfStep(double time)
 	{
 
 		time_ = time;
 	}
 
-
+	/*******************************************************//**
+	 * Destructor.
+	 *******************************************************/
 	ResultOfStep::~ResultOfStep(void)
 	{
 	}
 
-
-
-
+	/*******************************************************//**
+	 * Gets the string.
+	 *
+	 * @return	null if it fails, else the string.
+	 *******************************************************/
 	char * ResultOfStep::getString()
 	{
 		char * cstr;
@@ -51,7 +64,12 @@ namespace Straylight
 		return cstr;
 	}
 
-
+	/*******************************************************//**
+	 * Extracts the values.
+	 *
+	 * @param [in,out]	scalarVariableList	If non-null, list of scalar variables.
+	 * @param	causality				  	The causality.
+	 *******************************************************/
 	void ResultOfStep::extractValues(vector<ScalarVariableRealStruct*> scalarVariableList, Enu causality) {
 
 		vector<ScalarVariableRealStruct*>::iterator list_iter = scalarVariableList.begin();
@@ -72,22 +90,11 @@ namespace Straylight
 
 	}
 
-
-
-
-
-	void ResultOfStep::addValueIn(ScalarValue * scalarValue) {
-		svListInput.push_back(scalarValue);
-	}
-
-	void ResultOfStep::addValue(ScalarValue * scalarValue)
-	{
-		svListOutput.push_back(scalarValue);
-	}
-
-
-
-
+	/*******************************************************//**
+	 * Converts this object to a structure.
+	 *
+	 * @return	This object as a ResultOfStepStruct*.
+	 *******************************************************/
 	ResultOfStepStruct * ResultOfStep::toStruct ()
 	{
 		ResultOfStepStruct * result = new ResultOfStepStruct();

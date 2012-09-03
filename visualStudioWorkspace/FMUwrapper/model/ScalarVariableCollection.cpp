@@ -2,16 +2,25 @@
 
 namespace Straylight
 {
+	/*******************************************************//**
+	 * Default constructor.
+	 *******************************************************/
 	ScalarVariableCollection::ScalarVariableCollection(void)
 	{
 	}
 
-
+	/*******************************************************//**
+	 * Destructor.
+	 *******************************************************/
 	ScalarVariableCollection::~ScalarVariableCollection(void)
 	{
 	}
 
-
+	/*******************************************************//**
+	 * Converts this object to a structure.
+	 *
+	 * @return	null if it fails, else object converted to a structure.
+	 *******************************************************/
 	ScalarVariableCollectionStruct * ScalarVariableCollection::convertToStruct() {
 
 		ScalarVariableCollectionStruct * svStruct = new ScalarVariableCollectionStruct();
@@ -35,7 +44,11 @@ namespace Straylight
 		return svStruct;
 	}
 
-
+	/*******************************************************//**
+	 * Gets real as array.
+	 *
+	 * @return	null if it fails, else the real as array.
+	 *******************************************************/
 	ScalarVariableRealStruct * ScalarVariableCollection::getRealAsArray() {
 
 		int count = real.size();
@@ -52,6 +65,11 @@ namespace Straylight
 		}
 	}
 
+	/*******************************************************//**
+	 * Gets boolean as array.
+	 *
+	 * @return	null if it fails, else the boolean as array.
+	 *******************************************************/
 	ScalarVariableBooleanStruct * ScalarVariableCollection::getBooleanAsArray() {
 
 		int count = boolean.size();
@@ -72,7 +90,11 @@ namespace Straylight
 
 	}
 
-
+	/*******************************************************//**
+	 * Gets integer as array.
+	 *
+	 * @return	null if it fails, else the integer as array.
+	 *******************************************************/
 	ScalarVariableIntegerStruct * ScalarVariableCollection::getIntegerAsArray() {
 
 
@@ -92,7 +114,11 @@ namespace Straylight
 
 	}
 
-
+	/*******************************************************//**
+	 * Gets enumeration as array.
+	 *
+	 * @return	null if it fails, else the enumeration as array.
+	 *******************************************************/
 	ScalarVariableEnumerationStruct * ScalarVariableCollection::getEnumerationAsArray() {
 
 
@@ -111,7 +137,11 @@ namespace Straylight
 
 	}
 
-
+	/*******************************************************//**
+	 * Gets string as array.
+	 *
+	 * @return	null if it fails, else the string as array.
+	 *******************************************************/
 	ScalarVariableStringStruct * ScalarVariableCollection::getStringAsArray() {
 
 		int count = string.size();

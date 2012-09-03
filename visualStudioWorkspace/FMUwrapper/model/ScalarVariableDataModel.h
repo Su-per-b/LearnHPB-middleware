@@ -9,6 +9,9 @@
 
 namespace Straylight
 {
+	/*******************************************************//**
+	 * Scalar variable data model.
+	 *******************************************************/
 	class ScalarVariableDataModel
 	{
 	public:
@@ -25,12 +28,17 @@ namespace Straylight
 
 	private:
 
-		vector<ScalarVariableRealStruct*> svVectorReal_;
-		vector<ScalarVariableBooleanStruct*> svVectorBoolean_;
-		vector<ScalarVariableIntegerStruct*> svVectorInteger_;
-		vector<ScalarVariableEnumerationStruct*> svVectorEnumeration_;
-		vector<ScalarVariableStringStruct*> svVectorString_;
+		//vector<ScalarVariableRealStruct*> svVectorReal_;
+		//vector<ScalarVariableBooleanStruct*> svVectorBoolean_;
+		//vector<ScalarVariableIntegerStruct*> svVectorInteger_;
+		////vector<ScalarVariableEnumerationStruct*> svVectorEnumeration_;
+	//	vector<ScalarVariableStringStruct*> svVectorString_;
 
 	};
 
+/*******************************************************//**
+ * Gets or sets the. 
+ *
+ * @value	.
+ *******************************************************/
 }

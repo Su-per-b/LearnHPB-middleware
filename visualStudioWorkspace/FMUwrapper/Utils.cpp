@@ -7,8 +7,14 @@
 
 namespace Straylight
 {
-
-
+	/*******************************************************//**
+	 * Character to double.
+	 *
+	 * @param	valueChar		   	The value character.
+	 * @param [in,out]	valueStatus	If non-null, the value status.
+	 *
+	 * @return	.
+	 *******************************************************/
 	double Utils::charToDouble(const char * valueChar, ValueStatus * valueStatus) {
 
 		double valueDouble = 0.0;
@@ -22,8 +28,13 @@ namespace Straylight
 		return valueDouble;
 	}
 
-
-
+	/*******************************************************//**
+	 * Character to double.
+	 *
+	 * @param	valueChar	The value character.
+	 *
+	 * @return	.
+	 *******************************************************/
 	double Utils::charToDouble(const char * valueChar) {
 
 
@@ -32,8 +43,13 @@ namespace Straylight
 
 	}
 
-
-
+	/*******************************************************//**
+	 * Converts an x to a string.
+	 *
+	 * @param	x	The double to process.
+	 *
+	 * @return	x as a std::string.
+	 *******************************************************/
 	std::string Utils::to_string(double x)
 	{
 		std::ostringstream ss;
@@ -41,11 +57,23 @@ namespace Straylight
 		return ss.str();
 	}
 
+	/*******************************************************//**
+	 * Int to string.
+	 *
+	 * @param [in,out]	buffer	If non-null, the buffer.
+	 * @param	i			  	Zero-based index of the.
+	 *******************************************************/
 	void Utils::intToString(char* buffer, int i) {
 
 		sprintf( buffer, "%d", i );
 	}
 
+	/*******************************************************//**
+	 * Double to comma string.
+	 *
+	 * @param [in,out]	buffer	If non-null, the buffer.
+	 * @param	r			  	The double to process.
+	 *******************************************************/
 	void Utils::doubleToCommaString(char* buffer, double r){
 		char* comma;
 		sprintf(buffer, _T("%.16g"), r);

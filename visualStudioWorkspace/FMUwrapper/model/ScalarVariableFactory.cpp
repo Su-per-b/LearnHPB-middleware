@@ -2,17 +2,30 @@
 
 namespace Straylight
 {
+	/*******************************************************//**
+	 * Default constructor.
+	 *******************************************************/
 	ScalarVariableFactory::ScalarVariableFactory()
 	{
 
 	}
 
-
+	/*******************************************************//**
+	 * Destructor.
+	 *******************************************************/
 	ScalarVariableFactory::~ScalarVariableFactory(void)
 	{
 
 	}
 
+	/*******************************************************//**
+	 * Makes a real.
+	 *
+	 * @param [in,out]	scalarVariable	If non-null, the scalar variable.
+	 * @param	i					  	Zero-based index of the.
+	 *
+	 * @return	null if it fails, else.
+	 *******************************************************/
 	ScalarVariableRealStruct* ScalarVariableFactory::makeReal(ScalarVariable* scalarVariable, int i) {
 		ScalarVariableRealStruct * svStruct = new ScalarVariableRealStruct(); 
 
@@ -79,6 +92,14 @@ namespace Straylight
 		return svStruct;
 	}
 
+	/*******************************************************//**
+	 * Makes a boolean.
+	 *
+	 * @param [in,out]	scalarVariable	If non-null, the scalar variable.
+	 * @param	i					  	Zero-based index of the.
+	 *
+	 * @return	null if it fails, else.
+	 *******************************************************/
 	ScalarVariableBooleanStruct* ScalarVariableFactory::makeBoolean(ScalarVariable* scalarVariable, int i) {
 		ScalarVariableBooleanStruct * svStruct = new ScalarVariableBooleanStruct(); 
 
@@ -108,6 +129,14 @@ namespace Straylight
 		return svStruct;
 	}
 
+	/*******************************************************//**
+	 * Makes an integer.
+	 *
+	 * @param [in,out]	scalarVariable	If non-null, the scalar variable.
+	 * @param	i					  	Zero-based index of the.
+	 *
+	 * @return	null if it fails, else.
+	 *******************************************************/
 	ScalarVariableIntegerStruct* ScalarVariableFactory::makeInteger(ScalarVariable* scalarVariable, int i) {
 		ScalarVariableIntegerStruct * svStruct = new ScalarVariableIntegerStruct(); 
 
@@ -149,6 +178,14 @@ namespace Straylight
 		return svStruct;
 	}
 
+	/*******************************************************//**
+	 * Makes an enumeration.
+	 *
+	 * @param [in,out]	scalarVariable	If non-null, the scalar variable.
+	 * @param	i					  	Zero-based index of the.
+	 *
+	 * @return	null if it fails, else.
+	 *******************************************************/
 	ScalarVariableEnumerationStruct* ScalarVariableFactory::makeEnumeration(ScalarVariable* scalarVariable, int i) {
 		ScalarVariableEnumerationStruct * svStruct = new ScalarVariableEnumerationStruct(); 
 
@@ -176,6 +213,14 @@ namespace Straylight
 		return svStruct;
 	}
 
+	/*******************************************************//**
+	 * Makes a string.
+	 *
+	 * @param [in,out]	scalarVariable	If non-null, the scalar variable.
+	 * @param	i					  	Zero-based index of the.
+	 *
+	 * @return	null if it fails, else.
+	 *******************************************************/
 	ScalarVariableStringStruct* ScalarVariableFactory::makeString(ScalarVariable* scalarVariable, int i) {
 		ScalarVariableStringStruct * svStruct = new ScalarVariableStringStruct(); 
 		svStruct->name = getName( scalarVariable );

@@ -3,30 +3,37 @@
 
 #include "MainController.h"
 
+/*******************************************************//**
+ * A macro that defines bufsize.
+ *******************************************************/
 #define BUFSIZE 4096
+
+/*******************************************************//**
+ * A macro that defines XML file string.
+ *******************************************************/
 #define XML_FILE_STR  "\\modelDescription.xml"
+
+/*******************************************************//**
+ * A macro that defines DLL dir string.
+ *******************************************************/
 #define DLL_DIR_STR   "\\binaries\\win32\\"
 
 
 
 namespace Straylight
 {
-
-
-	/*********************************************//**
-												   * Default constructor. 
-												   *********************************************/
+	/*******************************************************//**
+	 * Default constructor.
+	 *******************************************************/
 	MainController::MainController()
 	{
 		logger_ = new Logger();
 
 	}
 
-
-
-	/*********************************************//**
-												   * Destructor. Frees memory and releases FMU DLL.
-												   *********************************************/
+	/*******************************************************//**
+	 * Destructor. Frees memory and releases FMU DLL.
+	 *******************************************************/
 	MainController::~MainController(void)
 	{
 
@@ -47,7 +54,13 @@ namespace Straylight
 		delete Logger::instance;
 	}
 
-
+	/*******************************************************//**
+	 * Connects the given message callback pointer.
+	 *
+	 * @param	messageCallbackPtr	If non-null, the message callback pointer to connect.
+	 *
+	 * @return	.
+	 *******************************************************/
 	void MainController:: connect(
 		void (*messageCallbackPtr)(MessageStruct *),
 		void (*resultCallbackPtr)(ResultOfStepStruct *),
@@ -69,8 +82,11 @@ namespace Straylight
 
 	}
 
-
-
+	/*******************************************************//**
+	 * Request state change.
+	 *
+	 * @param	newState	State of the new.
+	 *******************************************************/
 	void MainController::requestStateChange (SimStateNative newState) {
 
 
@@ -119,8 +135,9 @@ namespace Straylight
 
 	}
 
-
-
+	/*******************************************************//**
+	 * Cleanups this object.
+	 *******************************************************/
 	void MainController::cleanup() {
 
 
@@ -130,36 +147,70 @@ namespace Straylight
 
 	}
 
-
+	/*******************************************************//**
+	 * Gets stop time.
+	 *
+	 * @return	The stop time.
+	 *******************************************************/
 	double MainController::getStopTime() {
 		return configStruct_->defaultExperimentStruct->stopTime;
 	}
+
+	/*******************************************************//**
+	 * Gets start time.
+	 *
+	 * @return	The start time.
+	 *******************************************************/
 	double MainController::getStartTime() {
 		return configStruct_->defaultExperimentStruct->startTime;
 	}
+
+	/*******************************************************//**
+	 * Gets step delta.
+	 *
+	 * @return	The step delta.
+	 *******************************************************/
 	double MainController::getStepDelta() {
 		return configStruct_->stepDelta;
 	}
 
+	/*******************************************************//**
+	 * Sets scalar value real.
+	 *
+	 * @param	idx  	The index.
+	 * @param	value	The value.
+	 *
+	 * @return	.
+	 *******************************************************/
 	fmiStatus MainController::setScalarValueReal(int idx, double value) {
 		fmiStatus status = mainDataModel_->setScalarValueReal(idx, value);
 		return status;
 	}
 
-
-
+	/*******************************************************//**
+	 * Sets a configuration.
+	 *
+	 * @param	configStruct	If non-null, the configuration structure.
+	 *******************************************************/
 	void MainController::setConfig(ConfigStruct * configStruct) {
 		configStruct_ = configStruct;
 		//metaDataStruct_->stepDelta = 1.0;
 	}
 
-
+	/*******************************************************//**
+	 * Gets the configuration.
+	 *
+	 * @return	null if it fails, else the configuration.
+	 *******************************************************/
 	ConfigStruct * MainController::getConfig() {
 		return configStruct_;
 	}
 
-
-
+	/*******************************************************//**
+	 * Sets a state.
+	 *
+	 * @param	newState	State of the new.
+	 *******************************************************/
 	void MainController::setState_(SimStateNative newState) {
 		if (state_ != newState) {
 			state_ = newState;
@@ -167,6 +218,11 @@ namespace Straylight
 		}
 	}
 
+	/*******************************************************//**
+	 * Sets state error.
+	 *
+	 * @param	message	The message.
+	 *******************************************************/
 	void MainController::setStateError_(const char * message) {
 			
 		Logger::instance->printError(message);
@@ -175,22 +231,31 @@ namespace Straylight
 		stateChangeCallbackPtr_( state_ );
 	}
 
-	
+	/*******************************************************//**
+	 * Gets the state.
+	 *
+	 * @return	The state.
+	 *******************************************************/
 	SimStateNative MainController::getState() {
 		return state_;
 	}
 
-
+	/*******************************************************//**
+	 * Gets main data model.
+	 *
+	 * @return	null if it fails, else the main data model.
+	 *******************************************************/
 	MainDataModel *  MainController::getMainDataModel() {
 		return mainDataModel_;
 	}
 
-
 	/*******************************************************//**
-															 * Parses the xml file located in the FMU.  
-															 *
-															 * @param [in,out]	unzipfolder	where the FMU was unzipped to.
-															 *******************************************************/
+	 * Parses the xml file located in the FMU.  
+	 *
+	 * @param	unzipfolder	where the FMU was unzipped to.
+	 *
+	 * @return	.
+	 *******************************************************/
 	int MainController::xmlParse(char* unzipfolder) {
 
 		//	Logger::instance->printDebug2("MainController::parseXML unzipfolder %s\n", unzipfolder);	
@@ -226,16 +291,13 @@ namespace Straylight
 
 	}
 
-
-
-
-	///////////////////////////////////////////////////////////////////////////////
-	/// Get address of specific function from specific dll
-	///
-	///\param fmu Name of dll file.
-	///\param funnam Function name .
-	///\return Address of the specific function.
-	//////////////////////////////////////////////////////////////////////////////
+	/*******************************************************//**
+	 * Gets the address.
+	 *
+	 * @param	funNam	The fun nam.
+	 *
+	 * @return	null if it fails, else the address.
+	 *******************************************************/
 	void* MainController::getAdr(const char* funNam){
 		char name[BUFSIZE];
 		void* fp;
@@ -250,8 +312,11 @@ namespace Straylight
 		return fp;
 	}
 
-
-
+	/*******************************************************//**
+	 * Initialises this object.
+	 *
+	 * @return	.
+	 *******************************************************/
 	int MainController::init() {
 		Logger::instance->printDebug(_T("-=MainController::init=-\n"));
 
@@ -271,14 +336,20 @@ namespace Straylight
 	}
 
 	/*********************************************//**
-												   /* 
-												   * Constructs the path to the DLL file and stores it
-												   * in the dllFilePath_ member variable. Loads
-												   * the DLL with the "LoadLibrary" command and populates the
-												   * FMU struct.
-												   *
-												   * @return	0 for success
-												   *********************************************/
+	/* 
+	* Constructs the path to the DLL file and stores it
+	* in the dllFilePath_ member variable. Loads
+	* the DLL with the "LoadLibrary" command and populates the
+	* FMU struct.
+	*
+	* @return	0 for success
+	*********************************************/
+
+	/*******************************************************//**
+	 * Loads the DLL.
+	 *
+	 * @return	The DLL.
+	 *******************************************************/
 	int MainController::loadDll( ) {
 
 		Logger::instance->printDebug2 (_T("MainController::loadDll unzipFolderPath_: %s\n"), unzipFolderPath_);
@@ -337,7 +408,11 @@ namespace Straylight
 		return 0;
 	} 
 
-
+	/*******************************************************//**
+	 * Gets the instantiate slave.
+	 *
+	 * @return	.
+	 *******************************************************/
 	int MainController::instantiateSlave_() {
 		Logger::instance->printDebug(_T("-=MainController::instantiateSlave_=-\n"));
 
@@ -415,6 +490,11 @@ namespace Straylight
 
 	}
 
+	/*******************************************************//**
+	 * Initializes the slave.
+	 *
+	 * @return	.
+	 *******************************************************/
 	int MainController::initializeSlave_() {
 
 		Logger::instance->printDebug(_T("-=MainController::initializeSlave_=-\n"));
@@ -436,7 +516,11 @@ namespace Straylight
 
 	}
 
-
+	/*******************************************************//**
+	 * Sets start values.
+	 *
+	 * @return	.
+	 *******************************************************/
 	int MainController::setStartValues_() {
 
 
@@ -451,14 +535,18 @@ namespace Straylight
 		return 0;
 	}
 
-
-
-
+	/*******************************************************//**
+	 * Gets the is simulation complete.
+	 *
+	 * @return	.
+	 *******************************************************/
 	int MainController::isSimulationComplete() {
 		return !(time_ < getStopTime()) ;
 	}
 
-
+	/*******************************************************//**
+	 * Runs this object.
+	 *******************************************************/
 	void MainController::run() {
 
 
@@ -487,21 +575,32 @@ namespace Straylight
 
 	}
 
-
+	/*******************************************************//**
+	 * Gets variable description.
+	 *
+	 * @param	idx	The index.
+	 *
+	 * @return	null if it fails, else the variable description.
+	 *******************************************************/
 	const char* MainController::getVariableDescription(int idx) {
 		ScalarVariable* sv = (ScalarVariable*)fmu_->modelDescription->modelVariables[idx];
 
 		return getDescription(fmu_->modelDescription,  sv );
 	}
 
-
-
-
+	/*******************************************************//**
+	 * Gets result structure.
+	 *
+	 * @return	null if it fails, else the result structure.
+	 *******************************************************/
 	ResultOfStepStruct * MainController::getResultStruct() {
 
 		return resultOfStep_->toStruct();
 	}
 
+	/*******************************************************//**
+	 * Print summary.
+	 *******************************************************/
 	void MainController::printSummary() {
 
 		// Print simulation summary
@@ -522,6 +621,11 @@ namespace Straylight
 
 	}
 
+	/*******************************************************//**
+	 * Executes the helper do step operation.
+	 *
+	 * @return	.
+	 *******************************************************/
 	int MainController::runHelperDoStep_() {
 
 		// Advance to next time step
@@ -533,7 +637,6 @@ namespace Straylight
 		}
 
 		time_ = min(time_+getStepDelta(), getStopTime());
-
 		resultOfStep_ = mainDataModel_->getResultOfStep(time_);
 
 
@@ -541,8 +644,12 @@ namespace Straylight
 		return 0;
 	}
 
+	/*******************************************************//**
+	 * Executes the one step operation.
+	 *
+	 * @return	.
+	 *******************************************************/
 	int MainController::doOneStep() {
-
 
 		if(isSimulationComplete()) {
 			setStateError_("MainController::doOneStep cannot execute simulation is complete");
@@ -568,11 +675,11 @@ namespace Straylight
 
 	}
 
-
-
-
-
-
+	/*******************************************************//**
+	 * Gets module folder path.
+	 *
+	 * @param [in,out]	szDir	If non-null, the dir.
+	 *******************************************************/
 	void MainController::getModuleFolderPath(_TCHAR * szDir) {
 
 		//allocate string buffers using character independent data type.
@@ -589,12 +696,22 @@ namespace Straylight
 
 	}
 
+	/*******************************************************//**
+	 * Gets XML file path.
+	 *
+	 * @return	null if it fails, else the XML file path.
+	 *******************************************************/
 	char* MainController::getXmlFilePath()
 	{
 		return xmlFilePath_;
 	}
 
-
+	/*******************************************************//**
+	 * Sets scalar values.
+	 *
+	 * @param [in,out]	scalarValueAry	If non-null, the scalar value ary.
+	 * @param	length				  	The length.
+	 *******************************************************/
 	void MainController::setScalarValues (ScalarValueRealStruct * scalarValueAry, int length) {
 
 

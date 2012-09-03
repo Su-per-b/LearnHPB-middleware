@@ -9,13 +9,14 @@
 
 namespace Straylight
 {
-
+	/*******************************************************//**
+	 * The logger instance.
+	 *******************************************************/
 	Logger* Logger::instance;
 
-
-	/*********************************************//**
-												   * Default constructor. 
-												   *********************************************/
+	/*******************************************************//**
+	 * Default constructor.
+	 *******************************************************/
 	Logger::Logger(void)
 	{
 		messageCallbackPtr_ = NULL;
@@ -25,33 +26,32 @@ namespace Straylight
 
 	}
 
-
-	/*********************************************//**
-												   * Destructor. Frees memory and releases FMU DLL.
-												   *********************************************/
+	/*******************************************************//**
+	 * Destructor. Frees memory and releases FMU DLL.
+	 *******************************************************/
 	Logger::~Logger(void)
 	{
 
 
 	}
 
-
+	/*******************************************************//**
+	 * Registers the message callback described by callbackPtrArg.
+	 *
+	 * @param [in,out]	callbackPtrArg	If non-null, the callback pointer argument.
+	 *******************************************************/
 	void Logger::registerMessageCallback(void (*callbackPtrArg)(MessageStruct *))
 	{
 		messageCallbackPtr_ = callbackPtrArg;
 		printDebug(_T("Logger::registerMessageCallback"));
 	}
 
-
-
-
-
-	///////////////////////////////////////////////////////////////////////////////
-	/// Translate the double variable to string variable.
-	///
-	///\param buffer String variable.
-	///\param r Double varaible.
-	///////////////////////////////////////////////////////////////////////////////
+	/*******************************************************//**
+	 * Double to comma string.
+	 *
+	 * @param [in,out]	buffer	If non-null, the buffer.
+	 * @param	r			  	The double to process.
+	 *******************************************************/
 	void Logger::doubleToCommaString(char* buffer, double r){
 		char* comma;
 		sprintf(buffer, _T("%.16g"), r);
@@ -59,31 +59,29 @@ namespace Straylight
 		if (comma) *comma = ',';
 	}
 
-
-
-
-	//////////////////////////////////////////////////////////////////////////////
-	/// Set the mode in debug so that the debug information will be printed
-	///
-	//////////////////////////////////////////////////////////////////////////////
+	/*******************************************************//**
+	 * Sets the debug.
+	 *******************************************************/
 	void Logger::setDebug( )
 	{
 		debug = 1;
 	}
 
-
-
-
-	//////////////////////////////////////////////////////////////////////////////
-	/// Print debug message
-	///
-	///\param msg Message to be printed for debugging 
-	//////////////////////////////////////////////////////////////////////////////
+	/*******************************************************//**
+	 * Print debug.
+	 *
+	 * @param	msg	The message.
+	 *******************************************************/
 	void Logger::printDebug(const char* msg){
 		printDebugHelper( _T("%s\n"), msg);
 	}
 
-
+	/*******************************************************//**
+	 * Print debug double.
+	 *
+	 * @param	key		   	The key.
+	 * @param	valueDouble	The value double.
+	 *******************************************************/
 	void Logger::printDebugDouble(const char* key, double valueDouble) {
 
 		string valueStr;
@@ -97,17 +95,25 @@ namespace Straylight
 
 	}
 
-
-	//////////////////////////////////////////////////////////////////////////////
-	/// Print formatted debug message
-	///
-	///\param str1 Message to be printed for debugging 
-	///\param str2 String variable to be printed for debugging
-	//////////////////////////////////////////////////////////////////////////////
+	/*******************************************************//**
+	 * Print debug 2.
+	 *
+	 * @param	str1	The first string.
+	 * @param	str2	The second string.
+	 *******************************************************/
 	void Logger::printDebug2(const char* str1, const char* str2){
 		printDebugHelper(str1, str2);
 	}
 
+	/*******************************************************//**
+	 * Print debug 5.
+	 *
+	 * @param	str1	The first string.
+	 * @param	str2	The second string.
+	 * @param	str3	The third string.
+	 * @param	str4	The fourth string.
+	 * @param	str5	The fifth string.
+	 *******************************************************/
 	void Logger::printDebug5(const char* str1, const char* str2, const char* str3,
 		const char* str4, const char* str5) {
 
@@ -120,11 +126,12 @@ namespace Straylight
 
 	}
 
-
-	//////////////////////////////////////////////////////////////////////////////
-	/// Print debug message to the console in Visual Studio
-	///
-	//////////////////////////////////////////////////////////////////////////////
+	/*******************************************************//**
+	 * Helper method that print debug.
+	 *
+	 * @param	str1	The first string.
+	 * @param	str2	The second string.
+	 *******************************************************/
 	void Logger::printDebugHelper(const char* str1, const char* str2 ) {
 
 		char msg[256];
@@ -152,20 +159,23 @@ namespace Straylight
 		fflush(stdout);	
 	}
 
-
-
-	//////////////////////////////////////////////////////////////////////////////
-	/// Print error message
-	///
-	///\param msg Error message to be printed
-	//////////////////////////////////////////////////////////////////////////////
+	/*******************************************************//**
+	 * Print error.
+	 *
+	 * @param	msg	The message.
+	 *******************************************************/
 	void Logger::printError(const char* msg){
 
 		printfError( _T("%s\n"), msg);
 
 	}
 
-
+	/*******************************************************//**
+	 * Print error int.
+	 *
+	 * @param	msg	The message.
+	 * @param	i  	Zero-based index of the.
+	 *******************************************************/
 	void Logger::printErrorInt(const char* msg, int i) {
 		char str[256];
 		Utils::intToString(str, i);
@@ -174,13 +184,12 @@ namespace Straylight
 
 	}
 
-
-	//////////////////////////////////////////////////////////////////////////////
-	/// Print formatted error message
-	///
-	///\param str1 Error message to be printed
-	///\param str2 String variable to be printed
-	//////////////////////////////////////////////////////////////////////////////
+	/*******************************************************//**
+	 * Printf error.
+	 *
+	 * @param	str1	The first string.
+	 * @param	str2	The second string.
+	 *******************************************************/
 	void Logger::printfError(const char* str1, const char* str2){
 
 		char msg[256];

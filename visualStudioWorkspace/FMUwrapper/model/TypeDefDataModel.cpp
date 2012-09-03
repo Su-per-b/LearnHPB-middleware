@@ -1,17 +1,31 @@
+/*******************************************************//**
+ * @file	model\TypeDefDataModel.cpp
+ *
+ * Implements the type def data model class.
+ *******************************************************/
 #include "TypeDefDataModel.h"
 
 namespace Straylight
 {
+	/*******************************************************//**
+	 * Default constructor.
+	 *******************************************************/
 	TypeDefDataModel::TypeDefDataModel()
 	{
 	}
 
-
+	/*******************************************************//**
+	 * Destructor.
+	 *******************************************************/
 	TypeDefDataModel::~TypeDefDataModel(void)
 	{
 	}
 
-
+	/*******************************************************//**
+	 * Extracts the given typeDefinitions.
+	 *
+	 * @param [in,out]	typeDefinitions	If non-null, the type definitions.
+	 *******************************************************/
 	void TypeDefDataModel::extract(Type** typeDefinitions) {
 
 

@@ -1,9 +1,17 @@
+/*******************************************************//**
+ * @file	model\ScalarVariableDataModel.cpp
+ *
+ * Implements the scalar variable data model class.
+ *******************************************************/
 #include "ScalarVariableDataModel.h"
 
 
 
 namespace Straylight
 {
+	/*******************************************************//**
+	 * Default constructor.
+	 *******************************************************/
 	ScalarVariableDataModel::ScalarVariableDataModel(void)
 	{
 		svAll_ = new ScalarVariableCollection();
@@ -12,11 +20,18 @@ namespace Straylight
 		svInternal_= new ScalarVariableCollection();
 	}
 
-
+	/*******************************************************//**
+	 * Destructor.
+	 *******************************************************/
 	ScalarVariableDataModel::~ScalarVariableDataModel(void)
 	{
 	}
 
+	/*******************************************************//**
+	 * Extracts the given scalarVariableArray.
+	 *
+	 * @param [in,out]	scalarVariableArray	If non-null, array of scalar variables.
+	 *******************************************************/
 	void ScalarVariableDataModel::extract(ScalarVariable** scalarVariableArray) {
 		
 

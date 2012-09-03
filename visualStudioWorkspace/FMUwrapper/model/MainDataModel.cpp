@@ -5,11 +5,9 @@
 
 namespace Straylight
 {
-
-
-	/*********************************************//**
-	* Default constructor. 
-	*********************************************/
+	/*******************************************************//**
+	 * Default constructor.
+	 *******************************************************/
 	MainDataModel::MainDataModel()
 	{
 		maxInternalScalarVariables = 1000;
@@ -19,34 +17,57 @@ namespace Straylight
 		scalarVariableDataModel_ = new ScalarVariableDataModel();
 	}
 
-
-
-	/*********************************************//**
-	* Destructor. Frees memory and releases FMU DLL.
-	*********************************************/
+	/*******************************************************//**
+	 * Destructor. Frees memory and releases FMU DLL.
+	 *******************************************************/
 	MainDataModel::~MainDataModel(void)
 	{
 		delete typeDefDataModel_;
 		delete scalarVariableDataModel_;
 	}
 
-
+	/*******************************************************//**
+	 * Extracts this object.
+	 *******************************************************/
 	void MainDataModel::extract() {
 		typeDefDataModel_->extract(fmu_->modelDescription->typeDefinitions);
 		scalarVariableDataModel_->extract(fmu_->modelDescription->modelVariables);
 	}
 
-
+	/*******************************************************//**
+	 * Gets result of step.
+	 *
+	 * @param	time	The time.
+	 *
+	 * @return	null if it fails, else the result of step.
+	 *******************************************************/
 	ResultOfStep * MainDataModel::getResultOfStep(double time)
 	{
-		ResultOfStep * resultOfStep = new ResultOfStep(time);
+		//scalarVariableDataModel_->extract(time);
 
+		ResultOfStep * resultOfStep = new ResultOfStep(time);
 		resultOfStep->extractValues(scalarVariableDataModel_->svOutput_->real, enu_output);
 		resultOfStep->extractValues(scalarVariableDataModel_->svInput_->real, enu_input);
+
+
+		ScalarValueDataModel * scalarValueDataModel = new ScalarValueDataModel(time);
+
+		scalarValueDataModel->extract(scalarVariableDataModel_->svInput_, enu_input);
+		scalarValueDataModel->extract(scalarVariableDataModel_->svOutput_, enu_output);
+
+		//resultOfStep->extractValues(scalarVariableDataModel_->svInput_, enu_input);
 
 		return resultOfStep;
 	}
 
+	/*******************************************************//**
+	 * Sets scalar value real.
+	 *
+	 * @param	idx  	The index.
+	 * @param	value	The value.
+	 *
+	 * @return	.
+	 *******************************************************/
 	fmiStatus MainDataModel::setScalarValueReal(int idx, double value)
 	{
 		ScalarValue * scalarValue = new ScalarValue(idx);
@@ -87,17 +108,29 @@ namespace Straylight
 
 	}
 
-
+	/*******************************************************//**
+	 * Sets a fmu.
+	 *
+	 * @param [in,out]	fmu	If non-null, the fmu.
+	 *******************************************************/
 	void MainDataModel::setFMU(FMU* fmu) {
 		fmu_ = fmu;
 		ScalarValue::setFMU( fmu);
 	}
 
+	/*******************************************************//**
+	 * Sets fmi component.
+	 *
+	 * @param	fmiComponent_arg	The fmi component argument.
+	 *******************************************************/
 	void MainDataModel::setFmiComponent(fmiComponent fmiComponent_arg) {
 		fmiComponent_ = fmiComponent_arg;
 		ScalarValue::setFmiComponent( fmiComponent_arg);
 	}
 
+	/*******************************************************//**
+	 * Sets start values.
+	 *******************************************************/
 	void MainDataModel::setStartValues() {
 
 
@@ -120,8 +153,12 @@ namespace Straylight
 
 	}
 
-
-
+	/*******************************************************//**
+	 * Sets scalar values.
+	 *
+	 * @param [in,out]	scalarValueAry	If non-null, the scalar value ary.
+	 * @param	length				  	The length.
+	 *******************************************************/
 	void MainDataModel::setScalarValues (ScalarValueRealStruct * scalarValueAry, int length) {
 
 
