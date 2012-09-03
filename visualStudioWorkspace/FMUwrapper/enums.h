@@ -7,7 +7,6 @@
 
 #include "stdafx.h"
 
-
 // Enumeration values
 
 /*******************************************************//**
@@ -15,10 +14,10 @@
  *******************************************************/
 typedef enum {
 	///< .
-	messageType_debug, 
-	messageType_info, 
+	messageType_debug,
+	messageType_info,
 	///< .
-	messageType_error   
+	messageType_error
 } MessageType;
 
 /*******************************************************//**
@@ -26,8 +25,8 @@ typedef enum {
  *******************************************************/
 typedef enum {
 	///< .
-	fmuState_level_0_uninitialized, 
-	fmuState_level_1_xmlParsed, 
+	fmuState_level_0_uninitialized,
+	fmuState_level_1_xmlParsed,
 	///< .
 	fmuState_level_2_dllLoaded,
 	fmuState_level_3_instantiatedSlaves,
@@ -40,7 +39,6 @@ typedef enum {
 	///< .
 	fmuState_cleanedup,
 	fmuState_error
-
 } SimulationStateEnum;
 
 /*******************************************************//**
@@ -82,7 +80,4 @@ typedef enum {
 	simStateNative_7_resume_completed,
 	///< .
 	simStateNative_e_error
-
 } SimStateNative;
-
-

@@ -3,10 +3,6 @@
 
 #include "Logger.h"
 
-
-
-
-
 namespace Straylight
 {
 	/*******************************************************//**
@@ -23,7 +19,6 @@ namespace Straylight
 		debug = 1;  // Control for debug information
 		debugvs = 0;  // Control for debug information to Output window in Visual Studio
 		instance = this;
-
 	}
 
 	/*******************************************************//**
@@ -31,8 +26,6 @@ namespace Straylight
 	 *******************************************************/
 	Logger::~Logger(void)
 	{
-
-
 	}
 
 	/*******************************************************//**
@@ -83,16 +76,14 @@ namespace Straylight
 	 * @param	valueDouble	The value double.
 	 *******************************************************/
 	void Logger::printDebugDouble(const char* key, double valueDouble) {
-
 		string valueStr;
-		{ 
+		{
 			ostringstream theStream;
 			theStream << valueDouble;
 			valueStr = theStream.str();
 		}
 
 		printDebugHelper(key, valueStr.c_str());
-
 	}
 
 	/*******************************************************//**
@@ -116,14 +107,10 @@ namespace Straylight
 	 *******************************************************/
 	void Logger::printDebug5(const char* str1, const char* str2, const char* str3,
 		const char* str4, const char* str5) {
-
 			char msg[256];
 
 			sprintf (msg, str1, str2, str3, str4, str5);
 			printDebugHelper(_T("%s\n"), msg);
-
-
-
 	}
 
 	/*******************************************************//**
@@ -133,12 +120,10 @@ namespace Straylight
 	 * @param	str2	The second string.
 	 *******************************************************/
 	void Logger::printDebugHelper(const char* str1, const char* str2 ) {
-
 		char msg[256];
 		sprintf (msg, str1, str2);
 
 		if (messageCallbackPtr_ != NULL) {
-
 			MessageStruct * messageStruct = new MessageStruct;
 			messageStruct->msgText = msg;
 			messageStruct->messageType = messageType_info;
@@ -156,7 +141,7 @@ namespace Straylight
 			OutputDebugString(msg);
 		}
 
-		fflush(stdout);	
+		fflush(stdout);
 	}
 
 	/*******************************************************//**
@@ -165,9 +150,7 @@ namespace Straylight
 	 * @param	msg	The message.
 	 *******************************************************/
 	void Logger::printError(const char* msg){
-
 		printfError( _T("%s\n"), msg);
-
 	}
 
 	/*******************************************************//**
@@ -181,7 +164,6 @@ namespace Straylight
 		Utils::intToString(str, i);
 
 		printfError(msg, str);
-
 	}
 
 	/*******************************************************//**
@@ -191,15 +173,13 @@ namespace Straylight
 	 * @param	str2	The second string.
 	 *******************************************************/
 	void Logger::printfError(const char* str1, const char* str2){
-
 		char msg[256];
 		sprintf (msg, str1, str2);
 
 		fprintf(stderr, _T("*** Error:%s\n"), msg);
-		fflush(stderr);	
+		fflush(stderr);
 
 		if (messageCallbackPtr_ != NULL) {
-
 			MessageStruct * messageStruct = new MessageStruct;
 			messageStruct->msgText = msg;
 			messageStruct->messageType = messageType_error;
@@ -207,17 +187,9 @@ namespace Straylight
 			messageCallbackPtr_(messageStruct);
 		}
 
-
 		if (debugvs > 0)
 		{
-
 			OutputDebugString(msg);
 		}
 	}
-
-
 }
-
-
-
-

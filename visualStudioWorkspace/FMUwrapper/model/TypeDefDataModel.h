@@ -10,7 +10,6 @@
 #include <Logger.h>
 #include "TypeDefFactory.h"
 
-
 namespace Straylight
 {
 	/*******************************************************//**
@@ -28,7 +27,6 @@ namespace Straylight
 		 * @param [in,out]	typeDefinitions	If non-null, the type definitions.
 		 *******************************************************/
 		void extract(Type** typeDefinitions);
-
 
 	private:
 
@@ -56,7 +54,5 @@ namespace Straylight
 		 * The type def vector string.
 		 *******************************************************/
 		vector<TypeDefinitionString*> typeDefVectorString_;
-
-
 	};
 }

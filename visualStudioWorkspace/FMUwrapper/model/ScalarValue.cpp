@@ -5,7 +5,6 @@
  *******************************************************/
 #include "ScalarValue.h"
 
-
 namespace Straylight
 {
 	/*******************************************************//**
@@ -55,7 +54,7 @@ namespace Straylight
 		idx_ = idx_local;
 		scalarVariable_ = (ScalarVariable*)fmu_->modelDescription->modelVariables[idx_];
 
-		valueReference_ = getValueReference(scalarVariable_); //unsigned int 
+		valueReference_ = getValueReference(scalarVariable_); //unsigned int
 	}
 
 	/*******************************************************//**
@@ -63,7 +62,6 @@ namespace Straylight
 	 *******************************************************/
 	ScalarValue::~ScalarValue(void)
 	{
-
 	}
 
 	/*******************************************************//**
@@ -73,7 +71,6 @@ namespace Straylight
 	 *******************************************************/
 	fmiReal ScalarValue::getRealNumber(void)
 	{
-
 		fmiReal realNumber;
 		status_ =  fmu_->getReal(fmiComponent_, &valueReference_, 1, &realNumber);
 
@@ -87,13 +84,10 @@ namespace Straylight
 	 *******************************************************/
 	void ScalarValue::setRealNumber(double realNumber)
 	{
-
 		const fmiValueReference vr[] = {valueReference_};
 		const fmiReal value[]= {realNumber};
 
 		status_ =  fmu_->setReal(fmiComponent_, vr, 1, value);
-
-
 	}
 
 	/*******************************************************//**
@@ -111,7 +105,6 @@ namespace Straylight
 	 * @return	The string.
 	 *******************************************************/
 	string ScalarValue::getString(void)	{
-
 		stringstream ss;
 		string str;
 
@@ -133,11 +126,6 @@ namespace Straylight
 		default:
 			return "unKnownType";
 			break;
-
 		}
-
-
 	}
-
-
 }

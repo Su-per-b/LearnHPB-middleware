@@ -9,11 +9,8 @@ namespace Straylight
 	 *******************************************************/
 	ScalarValueDataModel::ScalarValueDataModel(double time)
 	{
-
 		time_ = time;
 		scalarValueCollection_ = new ScalarValueCollection();
-
-
 	}
 
 	/*******************************************************//**
@@ -30,12 +27,9 @@ namespace Straylight
 	 * @param	causality							The causality.
 	 *******************************************************/
 	void ScalarValueDataModel::extract(ScalarVariableCollection * scalarVariableCollection, Enu causality) {
-
-
 		//int c =1;
-		
-		extractReal(scalarVariableCollection->real, causality);
 
+		extractReal(scalarVariableCollection->real, causality);
 	}
 
 	/*******************************************************//**
@@ -45,11 +39,9 @@ namespace Straylight
 	 * @param	causality					  	The causality.
 	 *******************************************************/
 	void extractReal(vector<ScalarVariableRealStruct*> scalarVariableRealList, Enu causality) {
-
-
 		vector<ScalarVariableRealStruct*>::iterator list_iter = scalarVariableRealList.begin();
 
-		for(list_iter; 
+		for(list_iter;
 			list_iter != scalarVariableRealList.end(); list_iter++)
 		{
 			ScalarVariableRealStruct * scalarVariableRealStruct =  *list_iter;
@@ -60,13 +52,6 @@ namespace Straylight
 			} else if (causality == enu_output){
 				svListOutput.push_back(scalarValue);
 			}
-
 		}
-
 	}
-
-
-	
-
-
 }

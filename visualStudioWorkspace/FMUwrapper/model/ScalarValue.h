@@ -13,7 +13,6 @@ using namespace std;
  * Defines an alias representing the scalar value structure.
  *******************************************************/
 typedef struct ScalarValueStruct_ {
-
 	/*******************************************************//**
 	 * The index.
 	 *******************************************************/
@@ -25,7 +24,6 @@ typedef struct ScalarValueStruct_ {
  * Defines an alias representing the structure.
  *******************************************************/
 typedef struct  {
-
 	/*******************************************************//**
 	 * The index.
 	 *******************************************************/
@@ -37,7 +35,6 @@ typedef struct  {
  * Defines an alias representing the structure.
  *******************************************************/
 typedef struct  {
-
 	/*******************************************************//**
 	 * The index.
 	 *******************************************************/
@@ -49,18 +46,15 @@ typedef struct  {
  * Defines an alias representing the structure.
  *******************************************************/
 typedef struct {
-
 	/*******************************************************//**
 	 * The real value.
 	 *******************************************************/
 	ScalarValueRealStruct * realValue;
 	ScalarValueBooleanStruct * booleanValue;
-
 } ScalarValueCollectionStruct;
 
-
 namespace Straylight
-{  
+{
 	/*******************************************************//**
 	 * Scalar value.
 	 *******************************************************/
@@ -124,6 +118,4 @@ namespace Straylight
 		 *******************************************************/
 		int type;
 	};
-
-
 }

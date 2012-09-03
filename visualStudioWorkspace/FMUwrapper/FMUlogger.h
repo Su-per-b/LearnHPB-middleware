@@ -8,7 +8,6 @@
 #include "stdafx.h"
 #include "Logger.h"
 
-
 namespace Straylight
 {
 	/*******************************************************//**
@@ -16,10 +15,8 @@ namespace Straylight
 	 *******************************************************/
 	class FMUlogger
 	{
-
 		//private member variables
 	private:
-
 
 		// public functions
 	public:
@@ -90,11 +87,5 @@ namespace Straylight
 		 * @param [in,out]	fmu   	If non-null, the fmu.
 		 *******************************************************/
 		static void replaceRefsInMessage(const char* msg, char* buffer, int nBuffer, FMU* fmu);
-
 	};
-
-
 };
-
-
-

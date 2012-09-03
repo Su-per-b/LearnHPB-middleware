@@ -9,8 +9,6 @@
 
 using namespace std;
 
-
-
 namespace Straylight
 {
 	/*******************************************************//**
@@ -18,8 +16,6 @@ namespace Straylight
 	 *******************************************************/
 	class Utils
 	{
-
-
 	public:
 
 		/*******************************************************//**
@@ -65,7 +61,5 @@ namespace Straylight
 		 * @param	i			  	Zero-based index of the.
 		 *******************************************************/
 		static void intToString(char* buffer, int i);
-
-
 	};
 };

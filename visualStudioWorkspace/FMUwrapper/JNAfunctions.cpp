@@ -54,7 +54,6 @@ void onMessageCallbackC(MessageStruct * messageStruct)
  * Cleanups this object.
  *******************************************************/
 void cleanup() {
-
 	/*******************************************************//**
 	 * Default constructor.
 	 *******************************************************/
@@ -86,7 +85,6 @@ int run()
  * @return	null if it fails, else all scalar variables.
  *******************************************************/
 ScalarVariablesAllStruct * getAllScalarVariables() {
-
 	Straylight::MainDataModel * model = mainController->getMainDataModel();
 
 	ScalarVariablesAllStruct * allScalarVariables = new ScalarVariablesAllStruct();
@@ -95,7 +93,6 @@ ScalarVariablesAllStruct * getAllScalarVariables() {
 	allScalarVariables->internal = model->scalarVariableDataModel_->svInternal_->convertToStruct();
 
 	return allScalarVariables;
-
 }
 
 /*******************************************************//**
@@ -113,20 +110,18 @@ int isSimulationComplete () {
  * @param [in,out]	messageCallbackPtr	If non-null, the message callback pointer to connect.
  *******************************************************/
 void connect (
-	void (*messageCallbackPtr)(MessageStruct *), 
+	void (*messageCallbackPtr)(MessageStruct *),
 	void (*resultCallbackPtr)(ResultOfStepStruct *),
 	void (*stateChangeCallbackPtr)(SimStateNative )
 	)
-{	
-
+{
 	mainController = new MainController();
 
-	mainController->connect ( 
-		messageCallbackPtr, 
+	mainController->connect (
+		messageCallbackPtr,
 		resultCallbackPtr,
 		stateChangeCallbackPtr
 		);
-
 }
 
 /*******************************************************//**
@@ -178,7 +173,6 @@ fmiStatus setScalarValueReal (int idx, double value) {
  * @param	length				  	The length.
  *******************************************************/
 void setScalarValues (ScalarValueRealStruct * scalarValueAry , int length) {
-
 		vector<ScalarValueRealStruct> scalarValueList;
 
 		for (int i = 0; i < length; i++)
@@ -190,5 +184,4 @@ void setScalarValues (ScalarValueRealStruct * scalarValueAry , int length) {
 		}
 
 		mainController->setScalarValues(scalarValueAry,length);
-
 }

@@ -7,7 +7,6 @@ namespace Straylight
 	 *******************************************************/
 	ScalarVariableFactory::ScalarVariableFactory()
 	{
-
 	}
 
 	/*******************************************************//**
@@ -15,7 +14,6 @@ namespace Straylight
 	 *******************************************************/
 	ScalarVariableFactory::~ScalarVariableFactory(void)
 	{
-
 	}
 
 	/*******************************************************//**
@@ -27,11 +25,11 @@ namespace Straylight
 	 * @return	null if it fails, else.
 	 *******************************************************/
 	ScalarVariableRealStruct* ScalarVariableFactory::makeReal(ScalarVariable* scalarVariable, int i) {
-		ScalarVariableRealStruct * svStruct = new ScalarVariableRealStruct(); 
+		ScalarVariableRealStruct * svStruct = new ScalarVariableRealStruct();
 
 		svStruct->name = getName( scalarVariable );
 		svStruct->causality =  getCausality(scalarVariable);
-		svStruct->valueReference = getValueReference(scalarVariable); 
+		svStruct->valueReference = getValueReference(scalarVariable);
 		svStruct->variability = getVariability(scalarVariable);
 		svStruct->idx = i;
 
@@ -64,31 +62,27 @@ namespace Straylight
 		svStruct->typeSpecReal->max = getElementAttributeReal(scalarVariable->typeSpec,&maxValueStatus, att_max);
 		svStruct->typeSpecReal->maxValueStatus = maxValueStatus;
 
-
-		if (svStruct->typeSpecReal->minValueStatus == valueDefined && 
+		if (svStruct->typeSpecReal->minValueStatus == valueDefined &&
 			svStruct->typeSpecReal->startValueStatus == valueDefined)
 		{
 			if (svStruct->typeSpecReal->start < svStruct->typeSpecReal->min) {
-				
 				Logger::instance->printDebugDouble("svStruct->typeSpecReal->start: %s\n", svStruct->typeSpecReal->start);
 				Logger::instance->printDebugDouble("svStruct->typeSpecReal->min: %s\n", svStruct->typeSpecReal->min);
 
-				Logger::instance->printErrorInt 
+				Logger::instance->printErrorInt
 				( "ScalarVariableFactory::makeReal() start value below minimum valueReference:%s\n", svStruct->valueReference);
 			}
 		}
 
-
-		if (svStruct->typeSpecReal->maxValueStatus == valueDefined && 
+		if (svStruct->typeSpecReal->maxValueStatus == valueDefined &&
 			svStruct->typeSpecReal->startValueStatus == valueDefined)
 		{
 			if (svStruct->typeSpecReal->start > svStruct->typeSpecReal->max) {
-				Logger::instance->printErrorInt 
+				Logger::instance->printErrorInt
 					( "ScalarVariableFactory::makeReal() start value above maximum valueReference:%s\n", svStruct->valueReference);
 			}
 		}
 
-		
 		return svStruct;
 	}
 
@@ -101,11 +95,11 @@ namespace Straylight
 	 * @return	null if it fails, else.
 	 *******************************************************/
 	ScalarVariableBooleanStruct* ScalarVariableFactory::makeBoolean(ScalarVariable* scalarVariable, int i) {
-		ScalarVariableBooleanStruct * svStruct = new ScalarVariableBooleanStruct(); 
+		ScalarVariableBooleanStruct * svStruct = new ScalarVariableBooleanStruct();
 
 		svStruct->name = getName( scalarVariable );
 		svStruct->causality =  getCausality(scalarVariable);
-		svStruct->valueReference = getValueReference(scalarVariable); 
+		svStruct->valueReference = getValueReference(scalarVariable);
 		svStruct->variability = getVariability(scalarVariable);
 
 		ValueStatus descriptionValueStatus;
@@ -125,7 +119,6 @@ namespace Straylight
 		svStruct->typeSpecBoolean->fixed = getBooleanAttribute(scalarVariable, &fixedValueStatus,att_fixed);
 		svStruct->typeSpecBoolean->fixedValueStatus = fixedValueStatus;
 
-
 		return svStruct;
 	}
 
@@ -138,11 +131,11 @@ namespace Straylight
 	 * @return	null if it fails, else.
 	 *******************************************************/
 	ScalarVariableIntegerStruct* ScalarVariableFactory::makeInteger(ScalarVariable* scalarVariable, int i) {
-		ScalarVariableIntegerStruct * svStruct = new ScalarVariableIntegerStruct(); 
+		ScalarVariableIntegerStruct * svStruct = new ScalarVariableIntegerStruct();
 
 		svStruct->name = getName( scalarVariable );
 		svStruct->causality =  getCausality(scalarVariable);
-		svStruct->valueReference = getValueReference(scalarVariable); 
+		svStruct->valueReference = getValueReference(scalarVariable);
 		svStruct->variability = getVariability(scalarVariable);
 
 		ValueStatus descriptionValueStatus;
@@ -174,7 +167,6 @@ namespace Straylight
 		svStruct->typeSpecInteger->fixed = getIntegerAttribute(scalarVariable,&fixedValueStatus, att_fixed);
 		svStruct->typeSpecInteger->fixedValueStatus = fixedValueStatus;
 
-
 		return svStruct;
 	}
 
@@ -187,13 +179,12 @@ namespace Straylight
 	 * @return	null if it fails, else.
 	 *******************************************************/
 	ScalarVariableEnumerationStruct* ScalarVariableFactory::makeEnumeration(ScalarVariable* scalarVariable, int i) {
-		ScalarVariableEnumerationStruct * svStruct = new ScalarVariableEnumerationStruct(); 
+		ScalarVariableEnumerationStruct * svStruct = new ScalarVariableEnumerationStruct();
 
 		svStruct->name = getName( scalarVariable );
 		svStruct->causality =  getCausality(scalarVariable);
-		svStruct->valueReference = getValueReference(scalarVariable); 
+		svStruct->valueReference = getValueReference(scalarVariable);
 		svStruct->variability = getVariability(scalarVariable);
-
 
 		ValueStatus descriptionValueStatus;
 		svStruct->description = getObjectAttributeString(scalarVariable, &descriptionValueStatus, att_description);
@@ -201,14 +192,10 @@ namespace Straylight
 			svStruct->description = _T("{no description}");
 		}
 
-
 		svStruct->typeSpecEnumeration = new TypeSpecEnumeration();
 		svStruct->typeSpecEnumeration->declaredType = getString(scalarVariable->typeSpec, att_declaredType);
 
-
 		const char * enumerationDeclaredType = getEnumerationDeclaredType(scalarVariable);
-
-
 
 		return svStruct;
 	}
@@ -222,12 +209,11 @@ namespace Straylight
 	 * @return	null if it fails, else.
 	 *******************************************************/
 	ScalarVariableStringStruct* ScalarVariableFactory::makeString(ScalarVariable* scalarVariable, int i) {
-		ScalarVariableStringStruct * svStruct = new ScalarVariableStringStruct(); 
+		ScalarVariableStringStruct * svStruct = new ScalarVariableStringStruct();
 		svStruct->name = getName( scalarVariable );
 		svStruct->causality =  getCausality(scalarVariable);
-		svStruct->valueReference = getValueReference(scalarVariable); 
+		svStruct->valueReference = getValueReference(scalarVariable);
 		svStruct->variability = getVariability(scalarVariable);
-
 
 		ValueStatus descriptionValueStatus;
 		svStruct->description = getObjectAttributeString(scalarVariable, &descriptionValueStatus, att_description);
@@ -237,5 +223,4 @@ namespace Straylight
 
 		return svStruct;
 	}
-
 }

@@ -1,22 +1,16 @@
 #include "ScalarValueCollection.h"
 
-
 namespace Straylight
 {
-
 	ScalarValueCollection::ScalarValueCollection(void)
 	{
 	}
-
-
 
 	ScalarValueCollection::~ScalarValueCollection(void)
 	{
 	}
 
-
 	ScalarValueCollectionStruct * ScalarValueCollection::convertToStruct() {
-
 		ScalarValueCollectionStruct * sValCol = new ScalarValueCollectionStruct();
 
 		sValCol->realValue = getRealAsArray();
@@ -25,10 +19,7 @@ namespace Straylight
 		return sValCol;
 	}
 
-
-
 	ScalarValueRealStruct * ScalarValueCollection::getRealAsArray() {
-
 		int count = real.size();
 
 		if (count > 0) {
@@ -43,9 +34,7 @@ namespace Straylight
 		}
 	}
 
-
 	ScalarValueBooleanStruct * ScalarValueCollection::getBooleanAsArray() {
-
 		int count = boolean.size();
 
 		if (count > 0) {
@@ -58,6 +47,5 @@ namespace Straylight
 		} else {
 			return new ScalarValueBooleanStruct();
 		}
-
 	}
 }

@@ -11,7 +11,6 @@
  * Defines an alias representing the default experiment structure.
  *******************************************************/
 typedef struct DefaultExperimentStruct_ {
-
 	/*******************************************************//**
 	 * The start time.
 	 *******************************************************/
@@ -28,17 +27,13 @@ typedef struct DefaultExperimentStruct_ {
  *******************************************************/
 } DefaultExperimentStruct;
 
-
 typedef struct {
-
 	/*******************************************************//**
 	 * The default experiment structure.
 	 *******************************************************/
 	DefaultExperimentStruct * defaultExperimentStruct;
 	double stepDelta;
 } ConfigStruct;
-
-
 
 using namespace std;
 
@@ -49,9 +44,7 @@ namespace Straylight
 	 *******************************************************/
 	class Config
 	{
-
 	public:
 		static ConfigStruct *  make(FMU* fmuPointer);
-
 	};
 };

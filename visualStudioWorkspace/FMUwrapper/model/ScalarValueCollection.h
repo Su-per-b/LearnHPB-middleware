@@ -10,7 +10,6 @@
 #include "structs.h"
 #include "ScalarValue.h"
 
-
 namespace Straylight
 {
 	/*******************************************************//**
@@ -46,7 +45,5 @@ namespace Straylight
 		//ScalarValueIntegerStruct * getIntegerAsArray();
 		//ScalarValueEnumerationStruct * getEnumerationAsArray();
 		//ScalarValueStringStruct * getStringAsArray();
-
 	};
-
 }

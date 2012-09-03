@@ -21,7 +21,6 @@ extern "C"
  * Defines an alias representing the structure.
  *******************************************************/
 typedef struct  {
-
 	/*******************************************************//**
 	 * The time.
 	 *******************************************************/
@@ -40,7 +39,6 @@ typedef struct  {
 	 * Length of the output.
 	 *******************************************************/
 	int outputLength;
-
 } ResultOfStepStruct;
 
 /*******************************************************//**
@@ -52,9 +50,7 @@ namespace Straylight
 {
 	class  ResultOfStep
 	{
-
 	private:
-
 
 	public:
 
@@ -71,7 +67,6 @@ namespace Straylight
 
 	public:
 
-
 		ResultOfStep(double time);
 		~ResultOfStep(void);
 
@@ -80,10 +75,5 @@ namespace Straylight
 		ResultOfStepStruct* toStruct();
 
 		void extractValues(vector<ScalarVariableRealStruct*> scalarVariableList, Enu causality);
-
-
 	};
-
-
-
 }

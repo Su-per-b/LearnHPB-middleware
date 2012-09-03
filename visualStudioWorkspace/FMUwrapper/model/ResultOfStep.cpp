@@ -5,7 +5,6 @@
  *******************************************************/
 #include "ResultOfStep.h"
 
-
 namespace Straylight
 {
 	/*******************************************************//**
@@ -15,7 +14,6 @@ namespace Straylight
 	 *******************************************************/
 	ResultOfStep::ResultOfStep(double time)
 	{
-
 		time_ = time;
 	}
 
@@ -48,18 +46,14 @@ namespace Straylight
 
 		for(it; it != svListOutput.end(); ++it)
 		{
-
 			output.append(",");
 			sv = (*it);
 			str = sv->getString();
 			output.append(str);
-
 		}
-
 
 		cstr = new char [output.size()+1];
 		strcpy (cstr, output.c_str());
-
 
 		return cstr;
 	}
@@ -71,10 +65,9 @@ namespace Straylight
 	 * @param	causality				  	The causality.
 	 *******************************************************/
 	void ResultOfStep::extractValues(vector<ScalarVariableRealStruct*> scalarVariableList, Enu causality) {
-
 		vector<ScalarVariableRealStruct*>::iterator list_iter = scalarVariableList.begin();
 
-		for(list_iter; 
+		for(list_iter;
 			list_iter != scalarVariableList.end(); list_iter++)
 		{
 			ScalarVariableRealStruct * svm =  *list_iter;
@@ -85,9 +78,7 @@ namespace Straylight
 			} else if (causality == enu_output){
 				svListOutput.push_back(scalarValue);
 			}
-
 		}
-
 	}
 
 	/*******************************************************//**
@@ -123,7 +114,5 @@ namespace Straylight
 		}
 
 		return result;
-
 	}
-
 }

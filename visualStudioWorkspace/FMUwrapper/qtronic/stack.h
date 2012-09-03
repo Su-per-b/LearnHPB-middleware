@@ -1,8 +1,8 @@
-/* ------------------------------------------------------------------------- 
+/* -------------------------------------------------------------------------
  * stack.c
- * A stack of pointers. 
- * Copyright 2010 QTronic GmbH. All rights reserved. 
- * -------------------------------------------------------------------------*/ 
+ * A stack of pointers.
+ * Copyright 2010 QTronic GmbH. All rights reserved.
+ * -------------------------------------------------------------------------*/
 
 #ifndef STACK_H
 #define STACK_H
@@ -25,4 +25,3 @@ void** stackLastPopedAsArray0(Stack* s, int n);
 void stackFree(Stack* s);
 
 #endif // STACK_H
-

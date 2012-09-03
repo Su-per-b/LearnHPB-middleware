@@ -74,12 +74,10 @@ namespace Straylight
 		 * @return	null if it fails, else the extracted item array.
 		 *******************************************************/
 		static EnumerationItem * extractItemArray(ListElement* listElement, int * length);
-
-
 	};
 
 /*******************************************************//**
- * Gets or sets the. 
+ * Gets or sets the.
  *
  * @value	.
  *******************************************************/

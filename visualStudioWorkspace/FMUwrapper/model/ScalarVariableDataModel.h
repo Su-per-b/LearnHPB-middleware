@@ -5,8 +5,6 @@
 #include "ScalarVariableFactory.h"
 #include "ScalarVariableCollection.h"
 
-
-
 namespace Straylight
 {
 	/*******************************************************//**
@@ -25,7 +23,6 @@ namespace Straylight
 		ScalarVariableCollection * svOutput_;
 		ScalarVariableCollection * svInternal_;
 
-
 	private:
 
 		//vector<ScalarVariableRealStruct*> svVectorReal_;
@@ -33,11 +30,10 @@ namespace Straylight
 		//vector<ScalarVariableIntegerStruct*> svVectorInteger_;
 		////vector<ScalarVariableEnumerationStruct*> svVectorEnumeration_;
 	//	vector<ScalarVariableStringStruct*> svVectorString_;
-
 	};
 
 /*******************************************************//**
- * Gets or sets the. 
+ * Gets or sets the.
  *
  * @value	.
  *******************************************************/

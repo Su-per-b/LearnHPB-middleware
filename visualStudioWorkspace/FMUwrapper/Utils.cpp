@@ -1,9 +1,6 @@
 #pragma once
 
-
 #include "Utils.h";
-
-
 
 namespace Straylight
 {
@@ -16,11 +13,10 @@ namespace Straylight
 	 * @return	.
 	 *******************************************************/
 	double Utils::charToDouble(const char * valueChar, ValueStatus * valueStatus) {
-
 		double valueDouble = 0.0;
 
-		if (!valueChar) { 
-			*valueStatus = valueMissing;  
+		if (!valueChar) {
+			*valueStatus = valueMissing;
 		} else {
 			*valueStatus = (1==sscanf(valueChar, "%lf", &valueDouble)) ? valueDefined : valueIllegal;
 		}
@@ -36,11 +32,8 @@ namespace Straylight
 	 * @return	.
 	 *******************************************************/
 	double Utils::charToDouble(const char * valueChar) {
-
-
 		ValueStatus valueStatus;
 		return charToDouble(valueChar, &valueStatus);
-
 	}
 
 	/*******************************************************//**
@@ -64,7 +57,6 @@ namespace Straylight
 	 * @param	i			  	Zero-based index of the.
 	 *******************************************************/
 	void Utils::intToString(char* buffer, int i) {
-
 		sprintf( buffer, "%d", i );
 	}
 
@@ -80,5 +72,4 @@ namespace Straylight
 		comma = strchr(buffer, '.');
 		if (comma) *comma = ',';
 	}
-
 }

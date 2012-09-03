@@ -7,7 +7,6 @@
 #include "structs.h"
 #include "Logger.h"
 
-
 namespace Straylight
 {
 	/*******************************************************//**
@@ -15,7 +14,6 @@ namespace Straylight
 	 *******************************************************/
 	class ScalarVariableFactory
 	{
-
 	public:
 
 		/*******************************************************//**
@@ -77,12 +75,10 @@ namespace Straylight
 		 * @return	null if it fails, else.
 		 *******************************************************/
 		static ScalarVariableStringStruct* makeString(ScalarVariable* scalarVariable, int i);
-
-
 	};
 
 /*******************************************************//**
- * Gets or sets the. 
+ * Gets or sets the.
  *
  * @value	.
  *******************************************************/

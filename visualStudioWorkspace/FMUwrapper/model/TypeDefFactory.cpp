@@ -29,8 +29,6 @@ namespace Straylight
 	 * @return	null if it fails, else.
 	 *******************************************************/
 	TypeDefinitionReal* TypeDefFactory::makeReal(Type* type) {
-
-
 		TypeDefinitionReal* typeDefinitionReal = new TypeDefinitionReal();
 
 		ValueStatus unitValueStatus;
@@ -64,13 +62,11 @@ namespace Straylight
 	 * @return	null if it fails, else.
 	 *******************************************************/
 	TypeDefinitionBoolean* TypeDefFactory::makeBoolean(Type* type) {
-
-		TypeDefinitionBoolean * typeDefinitionBoolean = new TypeDefinitionBoolean(); 
+		TypeDefinitionBoolean * typeDefinitionBoolean = new TypeDefinitionBoolean();
 
 		ValueStatus unitValueStatus;
 		typeDefinitionBoolean->unit = getElementAttributeString(type->typeSpec, &unitValueStatus, att_unit);
 		typeDefinitionBoolean->name = getName( type );
-
 
 		ValueStatus startValueStatus;
 		typeDefinitionBoolean->start = getElementAttributeBoolean(type->typeSpec, &startValueStatus,att_start);
@@ -91,7 +87,6 @@ namespace Straylight
 	 * @return	null if it fails, else.
 	 *******************************************************/
 	TypeDefinitionInteger* TypeDefFactory::makeInteger(Type* type) {
-
 		TypeDefinitionInteger* typeDefinitionInteger = new TypeDefinitionInteger();
 
 		ValueStatus unitValueStatus;
@@ -125,12 +120,9 @@ namespace Straylight
 	 * @return	null if it fails, else.
 	 *******************************************************/
 	TypeDefinitionEnumeration* TypeDefFactory::makeEnumeration(Type* type) {
-
 		TypeDefinitionEnumeration* typeDefinitionEnumeration = new TypeDefinitionEnumeration();
 
-
 		typeDefinitionEnumeration->name = getName( type );
-
 
 		ValueStatus minValueStatus;
 		typeDefinitionEnumeration->min = getElementAttributeInteger(type->typeSpec,&minValueStatus, att_min);
@@ -152,7 +144,6 @@ namespace Straylight
 
 		assert (typeDefinitionEnumeration->max == length);
 
-
 		return typeDefinitionEnumeration;
 	}
 
@@ -165,13 +156,11 @@ namespace Straylight
 	 * @return	null if it fails, else the extracted item array.
 	 *******************************************************/
 	EnumerationItem * TypeDefFactory::extractItemArray(ListElement* listElement, int * length) {
-
 		Element** listArray = listElement->list;
 
 		//
 		int lengthCalculated = 0;
 		for (int k=0; Element* listElement = listArray[k]; k++) {
-
 			lengthCalculated++;
 		}
 
@@ -180,7 +169,6 @@ namespace Straylight
 		EnumerationItem * enumerationItemArray = new EnumerationItem[*length];
 
 		for (int i=0; Element* listElement = listArray[i]; i++) {
-
 			EnumerationItem * item = new EnumerationItem();
 			item->name = getName(listElement);
 
@@ -193,17 +181,12 @@ namespace Straylight
 			#ifdef DEBUG
 
 				for (int j=0; j<length; j++) {
-
 					EnumerationItem item = enumerationItemArray[j];
 					int xx=0;
-
 				}
 			#endif
 
-		
-
 		return enumerationItemArray;
-
 	}
 
 	/*******************************************************//**
@@ -214,8 +197,6 @@ namespace Straylight
 	 * @return	null if it fails, else.
 	 *******************************************************/
 	TypeDefinitionString* TypeDefFactory::makeString(Type* type) {
-
-
 		TypeDefinitionString* typeDefinitionString = new TypeDefinitionString();
 
 		ValueStatus unitValueStatus;
@@ -224,9 +205,4 @@ namespace Straylight
 
 		return typeDefinitionString;
 	}
-
-
-
-
-
 }

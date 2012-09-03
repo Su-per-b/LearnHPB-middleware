@@ -24,7 +24,6 @@
                        o tabs replaced by spaces
    - October 16, 2010: First public Version
 
-
    Copyright � 2008-2010, MODELISAR consortium. All rights reserved.
    This file is licensed by the copyright holders under the BSD License
    (http://www.opensource.org/licenses/bsd-license.html):
@@ -116,7 +115,6 @@ Functions for FMI for Co-Simulation
 #ifdef WIN32
 #pragma pack(push,8)
 #endif
-
 
 /* Type definitions */
      typedef enum {fmiOK,
@@ -216,7 +214,6 @@ Functions for FMI for Co-Simulation
                                      fmiReal      communicationStepSize,
                                      fmiBoolean   newStep);
 
-
    typedef enum {fmiDoStepStatus,
                  fmiPendingStatus,
                  fmiLastSuccessfulTime} fmiStatusKind;
@@ -226,6 +223,5 @@ Functions for FMI for Co-Simulation
    DllExport fmiStatus fmiGetIntegerStatus(fmiComponent c, const fmiStatusKind s, fmiInteger* value);
    DllExport fmiStatus fmiGetBooleanStatus(fmiComponent c, const fmiStatusKind s, fmiBoolean* value);
    DllExport fmiStatus fmiGetStringStatus (fmiComponent c, const fmiStatusKind s, fmiString*  value);
-
 
 #endif // fmiFunctions_h

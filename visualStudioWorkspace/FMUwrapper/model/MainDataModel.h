@@ -5,8 +5,6 @@
  *******************************************************/
 #pragma once
 
-
-
 #include "stdafx.h"
 #include "structs.h"
 #include "ResultOfStep.h"
@@ -27,7 +25,6 @@ namespace Straylight
 	 *******************************************************/
 	class MainDataModel
 	{
-
 	public:
 		MainDataModel();
 		~MainDataModel(void);
@@ -77,13 +74,5 @@ namespace Straylight
 		 *******************************************************/
 		FMU* fmu_;
 		fmiComponent fmiComponent_;
-
 	};
-
-
-
-
 };
-
-
-

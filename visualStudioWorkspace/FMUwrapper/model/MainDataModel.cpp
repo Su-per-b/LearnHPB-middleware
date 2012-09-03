@@ -1,8 +1,5 @@
 #include "MainDataModel.h"
 
-
-
-
 namespace Straylight
 {
 	/*******************************************************//**
@@ -49,7 +46,6 @@ namespace Straylight
 		resultOfStep->extractValues(scalarVariableDataModel_->svOutput_->real, enu_output);
 		resultOfStep->extractValues(scalarVariableDataModel_->svInput_->real, enu_input);
 
-
 		ScalarValueDataModel * scalarValueDataModel = new ScalarValueDataModel(time);
 
 		scalarValueDataModel->extract(scalarVariableDataModel_->svInput_, enu_input);
@@ -94,18 +90,16 @@ namespace Straylight
 				Logger::instance->printError(_T("MainController::changeInput - error writing real value:" ));
 				return status2;
 			} else {
-
 				realNumber3 = scalarValue->getRealNumber();
 				status3 = scalarValue->getStatus();
 
 				if (status1 == fmiFatal || status1 == fmiError ) {
 					Logger::instance->printError(_T("MainController::changeInput - error reading real value after written: " ));
-				} 
+				}
 
 				return status3;
 			}
 		}
-
 	}
 
 	/*******************************************************//**
@@ -132,25 +126,19 @@ namespace Straylight
 	 * Sets start values.
 	 *******************************************************/
 	void MainDataModel::setStartValues() {
-
-
 		int len =  scalarVariableDataModel_->svInput_->real.size();
 
 		for (int i = 0; i < len; i++)
 		{
-
 			ScalarVariableRealStruct * svStruct =  scalarVariableDataModel_->svInput_->real[i];
 			ValueStatus status = (ValueStatus) svStruct->typeSpecReal->startValueStatus;
-
 
 			if(status == valueDefined) {
 				setScalarValueReal(svStruct->idx, svStruct->typeSpecReal->start);
 			} else {
 				Logger::instance->printError("No start value defined for input varable");
 			}
-
 		}
-
 	}
 
 	/*******************************************************//**
@@ -160,8 +148,6 @@ namespace Straylight
 	 * @param	length				  	The length.
 	 *******************************************************/
 	void MainDataModel::setScalarValues (ScalarValueRealStruct * scalarValueAry, int length) {
-
-
 		for (int i = 0; i < length; i++)
 		{
 			ScalarValueRealStruct   sv = scalarValueAry[i];
@@ -172,10 +158,6 @@ namespace Straylight
 			} else {
 				Logger::instance->printError("setScalarValueReal ERROR \n");
 			}
-
 		}
-
 	}
-
 }
-

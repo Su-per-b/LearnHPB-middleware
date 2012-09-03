@@ -5,7 +5,6 @@
  *******************************************************/
 #pragma once
 
-
 #include "stdafx.h"
 #include "ResultOfStep.h"
 #include "structs.h"
@@ -19,7 +18,6 @@ namespace Straylight
 	 *******************************************************/
 	class Logger
 	{
-
 		//private member variables
 	private:
 
@@ -31,7 +29,6 @@ namespace Straylight
 		void (*messageCallbackPtr_)(MessageStruct *);
 		int debug;  // Control for debug information
 		int debugvs;  // Control for debug information to Output window in Visual Studio
-
 
 		// public functions
 	public:
@@ -115,11 +112,4 @@ namespace Straylight
 		void setDebug();
 		void printDebugDouble(const char* key, double valueDouble);
 	};
-
-
-
-
 };
-
-
-

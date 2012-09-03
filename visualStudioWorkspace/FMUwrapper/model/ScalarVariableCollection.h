@@ -85,11 +85,5 @@ namespace Straylight
 		 * @return	null if it fails, else object converted to a structure.
 		 *******************************************************/
 		ScalarVariableCollectionStruct * convertToStruct();
-
 	};
-
-
-
-
-
 }

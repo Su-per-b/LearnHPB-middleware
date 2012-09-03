@@ -46,7 +46,6 @@
                     meeting with additional improvements (by Martin Otter, DLR).
    - Dec. 3 , 2008: First version by Martin Otter (DLR) and Hans Olsson (Dynasim).
 
-
    Copyright © 2008-2009, MODELISAR consortium. All rights reserved.
    This file is licensed by the copyright holders under the BSD License
    (http://www.opensource.org/licenses/bsd-license.html):
@@ -125,7 +124,6 @@
 #define fmiGetStateValueReferences    fmiFullName(_fmiGetStateValueReferences)
 #define fmiTerminate                  fmiFullName(_fmiTerminate)
 
-
 /* Version number */
 #define fmiVersion "1.0"
 
@@ -178,7 +176,6 @@
    DllExport void      fmiFreeModelInstance(fmiComponent c);
    DllExport fmiStatus fmiSetDebugLogging  (fmiComponent c, fmiBoolean loggingOn);
 
-
 /* Providing independent variables and re-initialization of caching */
    DllExport fmiStatus fmiSetTime                (fmiComponent c, fmiReal time);
    DllExport fmiStatus fmiSetContinuousStates    (fmiComponent c, const fmiReal x[], size_t nx);
@@ -187,7 +184,6 @@
    DllExport fmiStatus fmiSetInteger             (fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiInteger value[]);
    DllExport fmiStatus fmiSetBoolean             (fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiBoolean value[]);
    DllExport fmiStatus fmiSetString              (fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiString  value[]);
-
 
 /* Evaluation of the model equations */
    DllExport fmiStatus fmiInitialize(fmiComponent c, fmiBoolean toleranceControlled,

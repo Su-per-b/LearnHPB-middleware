@@ -14,7 +14,6 @@
 #include "Config.h"
 #include "MainDataModel.h"
 
-
 using namespace Straylight;
 
 /*******************************************************//**
@@ -56,7 +55,6 @@ extern "C" void onMessageCallback(MessageStruct *);
  * @return	.
  *******************************************************/
 extern "C" DllExport int forceCleanup();
-
 
 /*
 extern "C" DllExport ScalarVariableRealStruct * getScalarVariableInputStructs();
@@ -116,7 +114,7 @@ extern "C" DllExport int setConfig(ConfigStruct * configStruct);
  * @param [in,out]	messageCallbackPtr	If non-null, the message callback pointer to connect.
  *******************************************************/
 extern "C" DllExport void connect(
-	void (*messageCallbackPtr)(MessageStruct *), 
+	void (*messageCallbackPtr)(MessageStruct *),
 	void (*resultCallbackPtr)(ResultOfStepStruct *),
 	void (*stateChangeCallbackPtr)(SimStateNative)
 	);

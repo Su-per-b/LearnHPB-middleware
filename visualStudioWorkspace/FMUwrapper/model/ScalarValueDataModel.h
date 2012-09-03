@@ -61,7 +61,6 @@ namespace Straylight
 		ScalarValueCollection * sValueCollectionOutput_;
 		ScalarValueCollection * sValueCollectionInternal_;
 
-
 	private:
 
 		/*******************************************************//**
@@ -90,5 +89,4 @@ namespace Straylight
 		//void extractEnumeration(vector<ScalarVariableEnumerationStruct*> scalarVariableList, Enu causality);
 		//void extractString(vector<ScalarVariableStringStruct*> scalarVariableList, Enu causality);
 	};
-
 }

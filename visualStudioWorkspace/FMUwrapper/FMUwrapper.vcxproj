@@ -94,7 +94,7 @@
     <ClInclude Include="FMUlogger.h" />
     <ClInclude Include=".\qtronic\fmi_cs.h" />
     <ClInclude Include="JNAfunctions.h" />
-    <ClInclude Include="MainController.h" />
+    <ClInclude Include="controller\MainController.h" />
     <ClInclude Include=".\qtronic\fmiFunctions.h" />
     <ClInclude Include=".\qtronic\fmiModelFunctions.h" />
     <ClInclude Include=".\qtronic\fmiModelTypes.h" />
@@ -129,7 +129,7 @@
     </ClCompile>
     <ClCompile Include="FMUlogger.cpp" />
     <ClCompile Include="JNAfunctions.cpp" />
-    <ClCompile Include="MainController.cpp" />
+    <ClCompile Include="controller\MainController.cpp" />
     <ClCompile Include=".\qtronic\stack.c" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include=".\Config.cpp" />

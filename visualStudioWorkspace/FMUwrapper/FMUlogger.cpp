@@ -2,7 +2,6 @@
 //
 #include "FMUlogger.h"
 
-
 namespace Straylight
 {
 	/*******************************************************//**
@@ -15,7 +14,6 @@ namespace Straylight
 	 *******************************************************/
 	FMUlogger::FMUlogger(void)
 	{
-
 	}
 
 	/*******************************************************//**
@@ -23,7 +21,6 @@ namespace Straylight
 	 *******************************************************/
 	FMUlogger::~FMUlogger(void)
 	{
-
 	}
 
 	/*******************************************************//**
@@ -33,7 +30,6 @@ namespace Straylight
 	 *******************************************************/
 	void FMUlogger::setFMU(FMU* fmuArg) {
 		FMUlogger::fmu = fmuArg;
-
 	}
 
 	/*******************************************************//**
@@ -50,7 +46,7 @@ namespace Straylight
 		case fmiDiscard: return "discard";
 		case fmiError:   return "error";
 
-			// case fmiPending: return "pending";	
+			// case fmiPending: return "pending";
 		default:         return "?";
 		}
 	}
@@ -73,11 +69,11 @@ namespace Straylight
 			case 'r': tp = elm_Real;    break;
 			case 'i': tp = elm_Integer; break;
 			case 'b': tp = elm_Boolean; break;
-			case 's': tp = elm_String;  break;                
+			case 's': tp = elm_String;  break;
 		}
 		for (i=0; vars[i]; i++) {
 			ScalarVariable* sv = vars[i];
-			if (vr==getValueReference(sv) && tp==sv->typeSpec->type) 
+			if (vr==getValueReference(sv) && tp==sv->typeSpec->type)
 				return sv;
 		}
 		return NULL;
@@ -127,7 +123,7 @@ namespace Straylight
 						sprintf(buffer+k, "%s", name);
 						k += strlen(name);
 						i += (n+1);
-						c = msg[i]; 
+						c = msg[i];
 					}
 					else {
 						// could not parse the number
@@ -157,7 +153,6 @@ namespace Straylight
 	 *******************************************************/
 	void FMUlogger::log(fmiComponent c, fmiString instanceName, fmiStatus status,
 		fmiString category, fmiString message, ...) {
-
 			//printf("fmuLogger\n", 1);
 
 			char msg[MAX_MSG_SIZE];
@@ -168,7 +163,7 @@ namespace Straylight
 			va_start(argp, message);
 			vsprintf(msg, message, argp);
 
-			// Replace e.g. ## and #r12#  
+			// Replace e.g. ## and #r12#
 			copy = strdup(msg);
 			replaceRefsInMessage(copy, msg, MAX_MSG_SIZE, fmu);
 			free(copy);
@@ -181,11 +176,4 @@ namespace Straylight
 
 			//printf();
 	}
-
-
-
 }
-
-
-
-
