@@ -14,9 +14,16 @@ import com.google.gson.JsonSerializer;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MessageStructAdapter.
+ */
 public class MessageStructAdapter implements 
 JsonSerializer<MessageStruct>, JsonDeserializer<MessageStruct> {
 
+	/* (non-Javadoc)
+	 * @see com.google.gson.JsonSerializer#serialize(java.lang.Object, java.lang.reflect.Type, com.google.gson.JsonSerializationContext)
+	 */
 	@Override
     public JsonElement serialize(
     		MessageStruct src, 
@@ -33,6 +40,9 @@ JsonSerializer<MessageStruct>, JsonDeserializer<MessageStruct> {
     
     
     
+    /* (non-Javadoc)
+     * @see com.google.gson.JsonDeserializer#deserialize(com.google.gson.JsonElement, java.lang.reflect.Type, com.google.gson.JsonDeserializationContext)
+     */
     @Override
     public MessageStruct deserialize(
     		JsonElement jsonElement, 

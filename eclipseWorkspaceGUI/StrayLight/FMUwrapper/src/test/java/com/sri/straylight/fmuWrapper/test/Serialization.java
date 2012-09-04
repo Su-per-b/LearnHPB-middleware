@@ -18,17 +18,20 @@ import com.sri.straylight.fmuWrapper.voNative.MessageType;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
+// TODO: Auto-generated Javadoc
 /**
- * Unit test for JSON serialization
+ * Unit test for JSON serialization.
  */
 public class Serialization 
     extends TestCase
 {
 	
 	
+	/** The gson. */
 	private static Gson gson = GsonController.getInstance().getGson();
+    
     /**
-     * Create the test case
+     * Create the test case.
      *
      * @param testName name of the test case
      */
@@ -38,6 +41,8 @@ public class Serialization
     }
     
     /**
+     * Suite.
+     *
      * @return the suite of tests being tested
      */
     public static Test suite()
@@ -46,6 +51,9 @@ public class Serialization
         return new TestSuite( Serialization.class );
     }
     
+    /**
+     * Test initialized event.
+     */
     public void testInitializedEvent() {
     	XMLparsed initializedStruct1 = new XMLparsed();
 //    	initializedStruct1.outputVarNames = new String[2];
@@ -67,6 +75,9 @@ public class Serialization
     	
     }
     
+    /**
+     * Test initialized struct.
+     */
     public void testInitializedStruct() {
     	XMLparsed initializedStruct1 = new XMLparsed();
 //    	initializedStruct1.outputVarNames = new String[2];
@@ -88,6 +99,9 @@ public class Serialization
     
     
     
+    /**
+     * Test fm ustate event.
+     */
     public void testFMUstateEvent() {
     	//SimStateNative state1 = SimStateNative.fmuState_level_2_dllLoaded;
     	
@@ -106,7 +120,7 @@ public class Serialization
     
     
     /**
-     * State
+     * State.
      */
     public void testState() {
     	//SimStateNative state1= SimStateNative.fmuState_level_1_xmlParsed;
@@ -128,7 +142,7 @@ public class Serialization
     
     
     /**
-     * ResultEvent
+     * ResultEvent.
      */
     public void testResultEvent()
     {
@@ -178,7 +192,7 @@ public class Serialization
     }
     
     /**
-     * ResultItem
+     * ResultItem.
      */
     public void testResultItem()
     {
@@ -227,7 +241,7 @@ public class Serialization
     
     
     /**
-     * ResultItemPrimitiveStruct
+     * ResultItemPrimitiveStruct.
      */
     public void testResultItemPrimitiveStruct()
     {
@@ -258,7 +272,7 @@ public class Serialization
     
     
     /**
-     * MessageEvent
+     * MessageEvent.
      */
     public void testMessageEvent()
     {
@@ -289,7 +303,7 @@ public class Serialization
     }
     
     /**
-     * MessageStruct
+     * MessageStruct.
      */
     public void testMessageStruct()
     {

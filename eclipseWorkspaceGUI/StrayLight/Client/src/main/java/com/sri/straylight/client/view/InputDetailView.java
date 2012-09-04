@@ -21,14 +21,30 @@ import com.sri.straylight.fmuWrapper.voNative.ScalarVariableBooleanStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableStructBase;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class InputDetailView.
+ */
 public class InputDetailView extends JPanel  {
 
-	 private XMLparsed xmlParsed_;
-	 private JPanel contentPanel_;
-
-	 private Vector<JPanel> scalarVariablePanelList_;
-	 private InputDetailController inputDetailController_;
+	 /** The xml parsed_. */
+ 	private XMLparsed xmlParsed_;
 	 
+ 	/** The content panel_. */
+ 	private JPanel contentPanel_;
+
+	 /** The scalar variable panel list_. */
+ 	private Vector<JPanel> scalarVariablePanelList_;
+	 
+ 	/** The input detail controller_. */
+ 	private InputDetailController inputDetailController_;
+	 
+	/**
+	 * Instantiates a new input detail view.
+	 *
+	 * @param inputDetailController the input detail controller
+	 * @param xmlParsed the xml parsed
+	 */
 	public InputDetailView(InputDetailController inputDetailController, XMLparsed xmlParsed) {
 
 		inputDetailController_ = inputDetailController;
@@ -50,6 +66,11 @@ public class InputDetailView extends JPanel  {
 	}
 	
 	
+	/**
+	 * Sets the model.
+	 *
+	 * @param xmlParsed the new model
+	 */
 	public void setModel(XMLparsed xmlParsed) {
 		
 		scalarVariablePanelList_ = new Vector<JPanel>();
@@ -80,12 +101,22 @@ public class InputDetailView extends JPanel  {
 	}
 	
 	
+	/**
+	 * On data model update request.
+	 *
+	 * @param event the event
+	 */
 	public void onDataModelUpdateRequest(ScalarValueChangeRequest event) {
 
 		inputDetailController_.onDataModelUpdateRequest(event);
 	}
 	
 	
+	/**
+	 * Show real.
+	 *
+	 * @param sv the sv
+	 */
 	public void showReal(ScalarVariableRealStruct sv) {
 
 		ScalarVariableRealPanel panel = new ScalarVariableRealPanel(this); // FlowLayout 
@@ -97,6 +128,11 @@ public class InputDetailView extends JPanel  {
 		
 	}
 	
+	/**
+	 * Show boolean.
+	 *
+	 * @param sv the sv
+	 */
 	public void showBoolean(ScalarVariableBooleanStruct sv) {
 		
 		ScalarVariableBooleanPanel panel = new ScalarVariableBooleanPanel(this); // FlowLayout 
@@ -108,6 +144,12 @@ public class InputDetailView extends JPanel  {
 	}
 	
 	
+	/**
+	 * Left justify.
+	 *
+	 * @param panel the panel
+	 * @return the component
+	 */
 	private Component leftJustify( JPanel panel )  {
 	    Box  b = Box.createHorizontalBox();
 	    b.add( panel );
@@ -122,6 +164,11 @@ public class InputDetailView extends JPanel  {
 	
 
 
+	/**
+	 * Sets the result.
+	 *
+	 * @param resultOfStep the new result
+	 */
 	public void setResult(ResultOfStep resultOfStep) {
 
 		

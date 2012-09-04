@@ -25,51 +25,86 @@ import de.roderick.weberknecht.WebSocketEventHandler;
 import de.roderick.weberknecht.WebSocketException;
 import de.roderick.weberknecht.WebSocketMessage;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FmuConnectRemote.
+ */
 public class FmuConnectRemote implements IFmuConnect {
 	
 
+    /** The websocket connection_. */
     private WebSocket websocketConnection_;
    // private final String websocketServerUrl_ = "ws://localhost:8081/";
    // private final String websocketServerUrlRemote_ = "ws://wintermute.straylightsim.com:8081/";
 	
-    private final String urlString_;
+    /** The url string_. */
+   private final String urlString_;
 
+    /**
+     * Instantiates a new fmu connect remote.
+     *
+     * @param hostName the host name
+     */
     public FmuConnectRemote(String hostName) {
     	
     	urlString_ = "ws://" + hostName + ":8081/";	
     }
     
+	/* (non-Javadoc)
+	 * @see com.sri.straylight.client.controller.IFmuConnect#setConfig(com.sri.straylight.fmuWrapper.voNative.ConfigStruct)
+	 */
 	public void setConfig(ConfigStruct configStruct) {
 		//fmu_.setMetaData(metaDataStruct);
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.sri.straylight.client.controller.IFmuConnect#changeInput(int, double)
+	 */
 	public void changeInput(int idx, double value) {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see com.sri.straylight.client.controller.IFmuConnect#requestStateChange(com.sri.straylight.fmuWrapper.voNative.SimStateNative)
+	 */
 	public void requestStateChange(SimStateNative newState) {
 		
 	
 	}
 	
 
+	/* (non-Javadoc)
+	 * @see com.sri.straylight.client.controller.IFmuConnect#changeScalarValues(java.util.Vector)
+	 */
 	public void changeScalarValues(Vector<ScalarValueRealStruct> scalrValueList) {
 		
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.sri.straylight.client.controller.IFmuConnect#connect()
+	 */
 	public void connect() {
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.sri.straylight.client.controller.IFmuConnect#init()
+	 */
 	public void init() {
 
 	}
 
+	/**
+	 * Resume.
+	 */
 	public void resume() {
 		
 	}
 	
+    /* (non-Javadoc)
+     * @see com.sri.straylight.client.controller.IFmuConnect#xmlParse()
+     */
     public void xmlParse() {
 
     	
@@ -335,6 +370,9 @@ public class FmuConnectRemote implements IFmuConnect {
     }
      */
     
+    /* (non-Javadoc)
+     * @see com.sri.straylight.client.controller.IFmuConnect#run()
+     */
     public void run() {
     	
     	try {

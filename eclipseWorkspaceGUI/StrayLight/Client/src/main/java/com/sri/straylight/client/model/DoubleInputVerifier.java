@@ -17,17 +17,38 @@ import org.apache.commons.validator.routines.DoubleValidator;
 import ch.ethz.polyql.jql.domain.shared.Assert;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DoubleInputVerifier.
+ */
 public class DoubleInputVerifier extends InputVerifier  {
 
+	/** The validator. */
 	private final DoubleValidator validator = new DoubleValidator();
+	
+	/** The pattern. */
 	private final String pattern;
+	
+	/** The scientific. */
 	private final boolean scientific;
+	
+	/** The locale. */
 	private final Locale locale = ConfigProperties.DEFAULT_LOCALE;
 
+	/** The min. */
 	private BigDecimal min;
+	
+	/** The max. */
 	private BigDecimal max;
+	
+	/** The is valid_. */
 	private boolean isValid_; 
 
+	/**
+	 * Instantiates a new double input verifier.
+	 *
+	 * @param pattern the pattern
+	 */
 	public DoubleInputVerifier(final String pattern) {
 		Assert.assertNotNullOrEmpty(pattern, "pattern");
 		this.pattern = pattern;
@@ -39,6 +60,12 @@ public class DoubleInputVerifier extends InputVerifier  {
 	}
 
 	
+	/**
+	 * Sets the range.
+	 *
+	 * @param min the min
+	 * @param max the max
+	 */
 	public void setRange(double min, double max) {
 
         this.min = new BigDecimal(Double.toString(min));
@@ -47,6 +74,9 @@ public class DoubleInputVerifier extends InputVerifier  {
 	
 	
 
+	/* (non-Javadoc)
+	 * @see javax.swing.InputVerifier#verify(javax.swing.JComponent)
+	 */
 	@Override
 	public boolean verify(final JComponent input) {
 
@@ -76,6 +106,14 @@ public class DoubleInputVerifier extends InputVerifier  {
 		}
 	}
 
+	/**
+	 * Checks if is valid.
+	 *
+	 * @param existing the existing
+	 * @param newChar the new char
+	 * @param insertPos the insert pos
+	 * @return true, if is valid
+	 */
 	public boolean isValid(final String existing, final char newChar, final int insertPos) {
 		// no spaces allowed:
 		if (Character.isSpaceChar(newChar)) {
@@ -100,19 +138,42 @@ public class DoubleInputVerifier extends InputVerifier  {
 	}
 	
 	
+	/**
+	 * Gets the checks if is valid.
+	 *
+	 * @return the checks if is valid
+	 */
 	public boolean getIsValid() {
 		
 		return isValid_;
 	}
 
+	/**
+	 * Validate and format.
+	 *
+	 * @param s the s
+	 * @return the string
+	 */
 	private String validateAndFormat(final String s) {
 		return validator.format(validator.validate(s, pattern, locale), pattern, locale);
 	}
 
+	/**
+	 * Format.
+	 *
+	 * @param d the d
+	 * @return the string
+	 */
 	public String format(final Double d) {
 		return validator.format(d, pattern, locale);
 	}
 
+	/**
+	 * Gets the single instance of DoubleInputVerifier.
+	 *
+	 * @param formatProperty the format property
+	 * @return single instance of DoubleInputVerifier
+	 */
 	public static DoubleInputVerifier getInstance(final String formatProperty) {
 		return new DoubleInputVerifier("##0.0##");
 	}

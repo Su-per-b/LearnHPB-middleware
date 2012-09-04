@@ -8,21 +8,45 @@ import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableStringStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableStructBase;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ScalarVariableCollection.
+ */
 public class ScalarVariableCollection {
 	
 
+	/** The real value. */
 	public ScalarVariableRealStruct[] realValue;
+	
+	/** The boolean value. */
 	public ScalarVariableBooleanStruct[] booleanValue;
+	
+	/** The integer value. */
 	public ScalarVariableIntegerStruct[] integerValue;
+	
+	/** The enumeration value. */
 	public ScalarVariableEnumerationStruct[] enumerationValue;
+	
+	/** The string value. */
 	public ScalarVariableStringStruct[] stringValue;
 	
+	/** The max array size. */
 	public int maxArraySize = 100;
+	
+	/** The total size. */
 	public int totalSize;
 	
+	/** The all values. */
 	public ScalarVariableStructBase[] allValues;
+	
+	/** The all values len. */
 	private int allValuesLen;
 	
+	/**
+	 * Instantiates a new scalar variable collection.
+	 *
+	 * @param struct the struct
+	 */
 	public ScalarVariableCollection(ScalarVariableCollectionStruct.ByReference struct) {
 		// TODO Auto-generated constructor stub
 		
@@ -65,6 +89,11 @@ public class ScalarVariableCollection {
 	}
 	
 	
+	/**
+	 * Adds the.
+	 *
+	 * @param ary the ary
+	 */
 	private void add(ScalarVariableStructBase[] ary) {
 			
 		if (ary == null) return;

@@ -5,6 +5,12 @@
 
 namespace Straylight
 {
+	/*******************************************************//**
+	 * <summary> Collection of scalar variables. This is essentially for storing Meta-Data 
+	 * 			 describing the input and output values</summary>
+	 *
+	 * <remarks> Raj Dye raj@pcdigi.com, 9/3/2012.</remarks>
+	 *******************************************************/
 	class ScalarVariableCollection
 	{
 	public:
@@ -85,5 +91,8 @@ namespace Straylight
 		 * @return	null if it fails, else object converted to a structure.
 		 *******************************************************/
 		ScalarVariableCollectionStruct * convertToStruct();
+
+
+
 	};
 }

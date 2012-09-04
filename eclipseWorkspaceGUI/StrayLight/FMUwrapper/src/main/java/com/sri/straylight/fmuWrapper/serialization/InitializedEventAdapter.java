@@ -14,9 +14,16 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class InitializedEventAdapter.
+ */
 public class InitializedEventAdapter implements 
 JsonSerializer<InitializedEvent>, JsonDeserializer<InitializedEvent> {
 
+	/* (non-Javadoc)
+	 * @see com.google.gson.JsonSerializer#serialize(java.lang.Object, java.lang.reflect.Type, com.google.gson.JsonSerializationContext)
+	 */
 	@Override
     public JsonElement serialize(
     		InitializedEvent src, 
@@ -34,6 +41,9 @@ JsonSerializer<InitializedEvent>, JsonDeserializer<InitializedEvent> {
     
     
     
+    /* (non-Javadoc)
+     * @see com.google.gson.JsonDeserializer#deserialize(com.google.gson.JsonElement, java.lang.reflect.Type, com.google.gson.JsonDeserializationContext)
+     */
     @Override
     public InitializedEvent deserialize(
     		JsonElement jsonElement, 

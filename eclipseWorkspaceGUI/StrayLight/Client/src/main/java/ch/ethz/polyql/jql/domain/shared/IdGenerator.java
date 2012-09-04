@@ -22,14 +22,23 @@ package ch.ethz.polyql.jql.domain.shared;
 
 import java.util.UUID;
 
+// TODO: Auto-generated Javadoc
 /**
- * Author: Michael Gfeller
+ * Author: Michael Gfeller.
  */
 
 final public class IdGenerator { // only static methods -> no need for inheritance
 
-  private IdGenerator() {} // only static methods -> no instances needed
+  /**
+  * Instantiates a new id generator.
+  */
+ private IdGenerator() {} // only static methods -> no instances needed
 
+  /**
+   * Creates the uuid.
+   *
+   * @return the string
+   */
   public static String createUUID() {
     return UUID.randomUUID().toString();
   }

@@ -20,36 +20,71 @@
  */
 package ch.ethz.polyql.jql.domain.shared;
 
+// TODO: Auto-generated Javadoc
 /**
- * Author: Michael Gfeller
+ * Author: Michael Gfeller.
  */
 public final class Assert {
+  
+  /**
+   * Instantiates a new assert.
+   */
   private Assert() {} // no instances
 
+  /**
+   * Assert not zero or negative.
+   *
+   * @param i the i
+   * @param name the name
+   */
   public static void assertNotZeroOrNegative( final int i, final String name ) {
     if (i <= 0) {
       throw new IllegalArgumentException( name + " cannot be negative or zero" );
     }
   }
 
+  /**
+   * Assert true.
+   *
+   * @param b the b
+   * @param expression the expression
+   */
   public static void assertTrue( final boolean b, final String expression ) {
     if (!b) {
       throw new IllegalArgumentException( "'" + expression + "' expected true" );
     }
   }
 
+  /**
+   * Assert not null or empty.
+   *
+   * @param s the s
+   * @param expression the expression
+   */
   public static void assertNotNullOrEmpty( final String s, final String expression ) {
     if (TextUtil.isEmpty( s )) {
       throw new IllegalArgumentException( "'" + expression + "' expected not null or empty" );
     }
   }
 
+  /**
+   * Assert not null.
+   *
+   * @param o the o
+   * @param s the s
+   */
   public static void assertNotNull( final Object o, final String s ) {
     if (o == null) {
       throw new IllegalArgumentException( s + " is required not to be null" );
     }
   }
 
+  /**
+   * Assert false.
+   *
+   * @param b the b
+   * @param expression the expression
+   */
   public static void assertFalse( final boolean b, final String expression ) {
     if (b) {
       throw new IllegalArgumentException( "'" + expression + "' expected false" );

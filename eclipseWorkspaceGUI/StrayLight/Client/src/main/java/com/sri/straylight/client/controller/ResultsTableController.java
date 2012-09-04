@@ -17,16 +17,33 @@ import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ResultsTableController.
+ */
 public class ResultsTableController extends AbstractController {
 	
+    /** The table_. */
     private  JTable table_;
+    
+    /** The data model_. */
     private DefaultTableModel dataModel_;
     
     
+	/**
+	 * Instantiates a new results table controller.
+	 *
+	 * @param parentController the parent controller
+	 */
 	public ResultsTableController(AbstractController parentController) {
 		super(parentController);
 	}
 	
+	/**
+	 * Inits the.
+	 *
+	 * @param xmlParsed the xml parsed
+	 */
 	public void init(XMLparsed xmlParsed) {  
 		
 
@@ -55,6 +72,9 @@ public class ResultsTableController extends AbstractController {
     }
 	
 	
+	/**
+	 * Reset.
+	 */
 	public void reset() {
 		
 		int count = dataModel_.getRowCount();
@@ -68,6 +88,11 @@ public class ResultsTableController extends AbstractController {
 	
 	
 	
+	/**
+	 * On result event.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
 

@@ -15,9 +15,16 @@ import com.google.gson.JsonSerializer;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.voManaged.ResultOfStep;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ResultEventAdapter.
+ */
 public class ResultEventAdapter implements 
 JsonSerializer<ResultEvent>, JsonDeserializer<ResultEvent> {
 
+	/* (non-Javadoc)
+	 * @see com.google.gson.JsonSerializer#serialize(java.lang.Object, java.lang.reflect.Type, com.google.gson.JsonSerializationContext)
+	 */
 	@Override
     public JsonElement serialize(
     		ResultEvent src, 
@@ -41,6 +48,9 @@ JsonSerializer<ResultEvent>, JsonDeserializer<ResultEvent> {
     
     
     
+    /* (non-Javadoc)
+     * @see com.google.gson.JsonDeserializer#deserialize(com.google.gson.JsonElement, java.lang.reflect.Type, com.google.gson.JsonDeserializationContext)
+     */
     @Override
     public ResultEvent deserialize(
     		JsonElement jsonElement, 

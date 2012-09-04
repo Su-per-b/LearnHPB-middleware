@@ -19,21 +19,37 @@ import com.sri.straylight.fmuWrapper.voNative.ScalarValueBooleanStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableBooleanStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ScalarVariableBooleanPanel.
+ */
 public class ScalarVariableBooleanPanel extends JPanel {
 
+	/** The lbl name_. */
 	private JLabel lblName_;
+	
+	/** The lbl value_. */
 	private JLabel lblValue_;
 
+	/** The value_. */
 	private ScalarValueBooleanStruct theValue_;
+	
+	/** The btn submit_. */
 	private JButton btnSubmit_;
 
+	/** The scalar variable boolean struct_. */
 	private ScalarVariableBooleanStruct scalarVariableBooleanStruct_;
+	
+	/** The lbl description_. */
 	private JLabel lblDescription_;
 	
+	/** The check box_. */
 	private JCheckBox checkBox_;
 	
 	/**
 	 * Create the panel.
+	 *
+	 * @param inputDetailView the input detail view
 	 */
 	public ScalarVariableBooleanPanel(InputDetailView inputDetailView) {
 		
@@ -109,6 +125,11 @@ public class ScalarVariableBooleanPanel extends JPanel {
 
 	}
 
+	/**
+	 * Sets the meta data.
+	 *
+	 * @param sv the new meta data
+	 */
 	public void setMetaData(ScalarVariableBooleanStruct sv) {
 		
 		scalarVariableBooleanStruct_ = sv;
@@ -129,6 +150,9 @@ public class ScalarVariableBooleanPanel extends JPanel {
 	}
 	
 
+	/**
+	 * Submit button pressed.
+	 */
 	public void submitButtonPressed() {
 		
 		boolean isSelected = checkBox_.isSelected();
@@ -139,6 +163,11 @@ public class ScalarVariableBooleanPanel extends JPanel {
 
 
 
+	/**
+	 * Sets the value.
+	 *
+	 * @param scalarValueBooleanStruct the new value
+	 */
 	public void setValue(ScalarValueBooleanStruct scalarValueBooleanStruct) {
 
 		theValue_ = scalarValueBooleanStruct;

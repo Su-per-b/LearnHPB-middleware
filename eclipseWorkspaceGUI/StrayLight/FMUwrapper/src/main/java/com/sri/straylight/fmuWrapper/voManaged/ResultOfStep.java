@@ -7,19 +7,36 @@ import java.util.Vector;
 import com.sri.straylight.fmuWrapper.voNative.ResultOfStepStruct;
 import com.sun.jna.Pointer;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ResultOfStep.
+ */
 public class ResultOfStep {
 	
+	/** The time_. */
 	private double time_;
+	
+	/** The input_. */
 	private double[] input_;
+	
+	/** The output_. */
 	private double[] output_;
 	
 	
 	
+	/**
+	 * Instantiates a new result of step.
+	 */
 	public ResultOfStep() {
 		
 	}
 	
 	
+	/**
+	 * Instantiates a new result of step.
+	 *
+	 * @param resultOfStepStruct the result of step struct
+	 */
 	public ResultOfStep(ResultOfStepStruct resultOfStepStruct) {
 		
 		time_ = resultOfStepStruct.time;
@@ -31,26 +48,52 @@ public class ResultOfStep {
 		output_ = p2.getDoubleArray(0, resultOfStepStruct.outputLength);
 	}
 	
+	/**
+	 * Gets the output list.
+	 *
+	 * @return the output list
+	 */
 	public Vector<String> getOutputList() {
 		return convertToString(output_);
 	}
 	
+	/**
+	 * Gets the input.
+	 *
+	 * @return the input
+	 */
 	public double[] getInput() {
 		
 		return input_;
 	}
 	
+	/**
+	 * Gets the input list.
+	 *
+	 * @return the input list
+	 */
 	public Vector<String> getInputList() {
 		
 		return convertToString(input_);
 	}
 	
+	/**
+	 * Gets the time.
+	 *
+	 * @return the time
+	 */
 	public double getTime() {
 		
 		return time_;
 	}
 	
 	
+	/**
+	 * Convert to string.
+	 *
+	 * @param ary the ary
+	 * @return the vector
+	 */
 	private Vector<String> convertToString(double[] ary) {
 		
 		String[] strArray = new String[ary.length];
@@ -66,6 +109,11 @@ public class ResultOfStep {
         return vector;
 	}
 	
+	/**
+	 * Input to string.
+	 *
+	 * @return the string
+	 */
 	public String inputToString() {
 		
 		Vector<String> strList = getInputList();
@@ -75,6 +123,9 @@ public class ResultOfStep {
 		return strList.toString();
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		
 		Vector<String> strList = getOutputList();

@@ -13,11 +13,21 @@ import javax.swing.JPanel;
 import com.sri.straylight.client.model.ClientConfig;
 import com.sri.straylight.client.model.ClientConfigXML;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MainView.
+ */
 public class MainView extends JFrame {
 	
 	
+	/** The config model_. */
 	private ClientConfig configModel_;
 	
+    /**
+     * Instantiates a new main view.
+     *
+     * @param configModel the config model
+     */
     public MainView(ClientConfig configModel) {
     	
     	configModel_ = configModel;
@@ -26,6 +36,9 @@ public class MainView extends JFrame {
     }
     
     
+	/**
+	 * Inits the.
+	 */
 	private void init() {
 		
 		setTitle ("Straylight Simulation Client");

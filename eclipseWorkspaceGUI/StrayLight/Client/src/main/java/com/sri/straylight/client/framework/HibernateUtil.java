@@ -6,13 +6,15 @@ import javax.persistence.Persistence;
 import org.hibernate.SessionFactory;
 import org.hibernate.ejb.HibernateEntityManagerFactory;
 
+// TODO: Auto-generated Javadoc
 /**
- * The only purpose of this class is to provide a SessionFactory
+ * The only purpose of this class is to provide a SessionFactory.
  *
  * @author Christian Bauer
  */
 public class HibernateUtil {
 
+    /** The Constant sessionFactory. */
     private static final SessionFactory sessionFactory;
 
     static {
@@ -28,6 +30,11 @@ public class HibernateUtil {
         }
     }
 
+    /**
+     * Gets the session factory.
+     *
+     * @return the session factory
+     */
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
     }

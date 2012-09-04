@@ -27,32 +27,64 @@ import com.sri.straylight.client.model.DoubleInputVerifier;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ScalarVariableRealPanel.
+ */
 public class ScalarVariableRealPanel extends JPanel {
 
+	/** The lbl name_. */
 	private JLabel lblName_;
+	
+	/** The lbl min_. */
 	private JLabel lblMin_;
+	
+	/** The lbl max_. */
 	private JLabel lblMax_;
 
+	/** The lbl start_. */
 	private JLabel lblStart_;
 
+	/** The text field. */
 	private JTextField textField;
+	
+	/** The lbl nominal_. */
 	private JLabel lblNominal_;
+	
+	/** The lbl value_. */
 	private JLabel lblValue_;
+	
+	/** The slider_. */
 	private JSlider slider_;
+	
+	/** The text field_. */
 	private JTextField textField_;
 
+	/** The scalar value real struct_. */
 	private ScalarValueRealStruct scalarValueRealStruct_;
+	
+	/** The btn submit_. */
 	private JButton btnSubmit_;
+	
+	/** The double input verifier_. */
 	private DoubleInputVerifier doubleInputVerifier_;
 
+	/** The is text field initialized_. */
 	private boolean isTextFieldInitialized_ = false;
+	
+	/** The input detail view_. */
 	private InputDetailView inputDetailView_;
 	
+	/** The scalar variable real struct_. */
 	private ScalarVariableRealStruct scalarVariableRealStruct_;
+	
+	/** The lbl description_. */
 	private JLabel lblDescription_;
 	
 	/**
 	 * Create the panel.
+	 *
+	 * @param inputDetailView the input detail view
 	 */
 	public ScalarVariableRealPanel(InputDetailView inputDetailView) {
 		
@@ -169,6 +201,11 @@ public class ScalarVariableRealPanel extends JPanel {
 
 	}
 
+	/**
+	 * Sets the meta data.
+	 *
+	 * @param sv the new meta data
+	 */
 	public void setMetaData(ScalarVariableRealStruct sv) {
 		
 		scalarVariableRealStruct_ = sv;
@@ -256,6 +293,9 @@ public class ScalarVariableRealPanel extends JPanel {
 		
 	}
 
+	/**
+	 * Submit button pressed.
+	 */
 	public void submitButtonPressed() {
 		
 		String newStringValue = textField_.getText();
@@ -276,6 +316,9 @@ public class ScalarVariableRealPanel extends JPanel {
 		
 	}
 
+	/**
+	 * Submit slider change.
+	 */
 	public void submitSliderChange() {
 
 		int newIntValue = slider_.getValue();
@@ -292,6 +335,9 @@ public class ScalarVariableRealPanel extends JPanel {
 	}
 
 
+	/**
+	 * Submit text field change.
+	 */
 	public void submitTextFieldChange() {
 
 		String newStringValue = textField_.getText();
@@ -306,6 +352,11 @@ public class ScalarVariableRealPanel extends JPanel {
 	}
 
 
+	/**
+	 * Sets the value.
+	 *
+	 * @param scalarValueRealStruct the new value
+	 */
 	public void setValue(ScalarValueRealStruct scalarValueRealStruct) {
 
 		scalarValueRealStruct_ = scalarValueRealStruct;

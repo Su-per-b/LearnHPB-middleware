@@ -1,5 +1,6 @@
 package com.sri.straylight.fmuWrapper.test;
 
+import java.io.IOException;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
@@ -18,16 +19,28 @@ import com.sri.straylight.fmuWrapper.voManaged.SimStateServer;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MultiThreaded.
+ */
 public class MultiThreaded extends TestCase {
 	
 
 
 	
+	/** The main barrier. */
 	final CyclicBarrier mainBarrier = new CyclicBarrier(2);
+	
+	/** The next state expected. */
 	private static SimStateServer nextStateExpected;
+	
+	/** The fmu controller_. */
 	private FMUcontroller fmuController_;
 	
 	
+	/**
+	 * Test init.
+	 */
 	public void testInit() {
 		
 		AnnotationProcessor.process(this);
@@ -44,6 +57,9 @@ public class MultiThreaded extends TestCase {
 	
 	
 	
+	/**
+	 * Test run.
+	 */
 	public void testRun() {
 		
 		
@@ -58,23 +74,44 @@ public class MultiThreaded extends TestCase {
 	
 
 	
+	/**
+	 * The Class InitThread.
+	 */
 	public class InitThread  extends Thread
 	{
 		
 		
+		/** The barrier. */
 		final CyclicBarrier barrier = new CyclicBarrier(2);
 		
 		
+		/**
+		 * Instantiates a new inits the thread.
+		 */
 		public InitThread(){
 			AnnotationProcessor.process(this);
 		}
 
+		/* (non-Javadoc)
+		 * @see java.lang.Thread#run()
+		 */
 		public void run()
 		{
 			Thread.currentThread().setName("InitThread");
 			
 			MultiThreaded.nextStateExpected = SimStateServer.simStateServer_1_connect_completed;
-			fmuController_.connect();
+			
+
+			try
+			{
+				fmuController_.connect();
+			}
+			catch(IOException ex)
+			{
+				ex.printStackTrace();
+			}
+			
+			
 			awaitOnBarrier(barrier);
 			
 			Thread t = Thread.currentThread();
@@ -92,6 +129,11 @@ public class MultiThreaded extends TestCase {
 			
 		}
 		
+		/**
+		 * On sim state notify.
+		 *
+		 * @param event the event
+		 */
 		@EventSubscriber(eventClass=SimStateServerNotify.class)
 		public void onSimStateNotify(SimStateServerNotify event) {
 			Thread t = Thread.currentThread();
@@ -114,7 +156,11 @@ public class MultiThreaded extends TestCase {
 	
 	
 	
-	/** Calls barrier.await and supresses all its checked exceptions */
+	/**
+	 * Calls barrier.await and supresses all its checked exceptions
+	 *
+	 * @param barrier the barrier
+	 */
 	private void awaitOnBarrier(CyclicBarrier barrier) {
 		try {
 			barrier.await(500, TimeUnit.SECONDS);

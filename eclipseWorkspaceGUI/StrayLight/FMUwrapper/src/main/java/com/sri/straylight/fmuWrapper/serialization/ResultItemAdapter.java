@@ -15,9 +15,16 @@ import com.sri.straylight.fmuWrapper.voManaged.ResultOfStep;
 
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ResultItemAdapter.
+ */
 public class ResultItemAdapter implements 
 JsonSerializer<ResultOfStep>, JsonDeserializer<ResultOfStep> {
 
+	/* (non-Javadoc)
+	 * @see com.google.gson.JsonSerializer#serialize(java.lang.Object, java.lang.reflect.Type, com.google.gson.JsonSerializationContext)
+	 */
 	@Override
     public JsonElement serialize(
     		ResultOfStep src, 
@@ -51,6 +58,9 @@ JsonSerializer<ResultOfStep>, JsonDeserializer<ResultOfStep> {
     
     
     
+    /* (non-Javadoc)
+     * @see com.google.gson.JsonDeserializer#deserialize(com.google.gson.JsonElement, java.lang.reflect.Type, com.google.gson.JsonDeserializationContext)
+     */
     @Override
     public ResultOfStep deserialize(
     		JsonElement jsonElement, 

@@ -20,10 +20,21 @@ import com.sri.straylight.client.model.ClientConfigXML;
 
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SimulationEngineDialog.
+ */
 public class SimulationEngineDialog extends JDialog  {
 
+	/** The config model_. */
 	private ClientConfig configModel_;
 	
+	/**
+	 * Instantiates a new simulation engine dialog.
+	 *
+	 * @param parent the parent
+	 * @param configModel the config model
+	 */
 	public SimulationEngineDialog(JFrame parent, ClientConfig configModel) {
 		super(parent, "Select Simulation engine", true);
 
@@ -40,6 +51,9 @@ public class SimulationEngineDialog extends JDialog  {
 	
 	
 	
+	/**
+	 * Sets the content_.
+	 */
 	private void setContent_() {
 		JPanel serverSelectionPanel = new JPanel();
     	serverSelectionPanel.setSize(600, 150);

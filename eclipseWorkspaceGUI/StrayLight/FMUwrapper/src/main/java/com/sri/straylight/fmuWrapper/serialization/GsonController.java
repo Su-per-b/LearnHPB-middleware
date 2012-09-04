@@ -16,28 +16,50 @@ import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class GsonController.
+ */
 public class GsonController {
 
 
+	/** The inststance_. */
 	private static GsonController inststance_ = new GsonController();
 	
+	/** The gson_. */
 	private Gson gson_;
 	
 	/* Prevent direct access to the constructor */
+	/**
+	 * Instantiates a new gson controller.
+	 */
 	private GsonController() {
 		super();
 		init();
 		
 	}
 
+    /**
+     * Gets the single instance of GsonController.
+     *
+     * @return single instance of GsonController
+     */
     public static GsonController getInstance() {
         return inststance_;
     }
     
+	/**
+	 * Gets the gson.
+	 *
+	 * @return the gson
+	 */
 	public Gson getGson() {
 		return gson_;
 	}
 	
+	/**
+	 * Inits the.
+	 */
 	private void init() {
 		
 		

@@ -4,6 +4,7 @@ package com.sri.straylight.fmuWrapper.test;
 
 
 
+import java.io.IOException;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
@@ -23,14 +24,26 @@ import com.sri.straylight.fmuWrapper.voManaged.ResultOfStep;
 import com.sri.straylight.fmuWrapper.voManaged.SimStateServer;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TestFMU.
+ */
 public class TestFMU extends TestCase {
 	
 	
+	/** The main barrier. */
 	final CyclicBarrier mainBarrier = new CyclicBarrier(2);
+	
+	/** The next state expected. */
 	private static SimStateServer nextStateExpected;
+	
+	/** The fmu controller_. */
 	private FMUcontroller fmuController_;
 	
 	
+	/**
+	 * Test change input.
+	 */
 	public void testChangeInput() {
 		
 		AnnotationProcessor.process(this);
@@ -49,23 +62,45 @@ public class TestFMU extends TestCase {
 
 
 	
+	/**
+	 * The Class InitThread.
+	 */
 	public class InitThread  extends Thread
 	{
 		
 		
+		/** The barrier. */
 		final CyclicBarrier barrier = new CyclicBarrier(2);
 		
 		
+		/**
+		 * Instantiates a new inits the thread.
+		 */
 		public InitThread(){
 			AnnotationProcessor.process(this);
 		}
 
+		/* (non-Javadoc)
+		 * @see java.lang.Thread#run()
+		 */
 		public void run()
 		{
 			Thread.currentThread().setName("InitThread");
 			
 			TestFMU.nextStateExpected = SimStateServer.simStateServer_1_connect_completed;
-			fmuController_.connect();
+			
+			
+			try
+			{
+				fmuController_.connect();
+			}
+			catch(IOException ex)
+			{
+				ex.printStackTrace();
+			}
+			
+			
+			
 			awaitOnBarrier(barrier);
 			
 			Thread t = Thread.currentThread();
@@ -95,6 +130,11 @@ public class TestFMU extends TestCase {
 		}
 		
 		
+		/**
+		 * On xm lparsed event.
+		 *
+		 * @param event the event
+		 */
 		@EventSubscriber(eventClass=XMLparsedEvent.class)
 		public void onXMLparsedEvent(XMLparsedEvent event) {
 			
@@ -109,6 +149,11 @@ public class TestFMU extends TestCase {
 
 		}
 		
+		/**
+		 * On sim state notify.
+		 *
+		 * @param event the event
+		 */
 		@EventSubscriber(eventClass=SimStateServerNotify.class)
 		public void onSimStateNotify(SimStateServerNotify event) {
 			Thread t = Thread.currentThread();
@@ -124,6 +169,11 @@ public class TestFMU extends TestCase {
 		}
 		
 		
+		/**
+		 * On result event.
+		 *
+		 * @param event the event
+		 */
 		@EventSubscriber(eventClass=ResultEvent.class)
 		public void onResultEvent(ResultEvent event) {
 			
@@ -148,7 +198,11 @@ public class TestFMU extends TestCase {
 	
 	
 	
-	/** Calls barrier.await and supresses all its checked exceptions */
+	/**
+	 * Calls barrier.await and supresses all its checked exceptions
+	 *
+	 * @param barrier the barrier
+	 */
 	private void awaitOnBarrier(CyclicBarrier barrier) {
 		try {
 			barrier.await(500, TimeUnit.SECONDS);

@@ -19,16 +19,29 @@ import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SimulationController.
+ */
 public class SimulationController extends AbstractController  {
 
+	/** The fmu connect_. */
 	private IFmuConnect fmuConnect_;
 	
+    /** The config model_. */
     private ClientConfig configModel_;
     
+    /** The simulation state client_. */
     private SimStateClient simulationStateClient_ = 
     		SimStateClient.level_0_uninitialized;
     
     
+	/**
+	 * Instantiates a new simulation controller.
+	 *
+	 * @param parentController the parent controller
+	 * @param configModel the config model
+	 */
 	public SimulationController (AbstractController parentController, ClientConfig configModel) {
         super(parentController);
         configModel_ = configModel;
@@ -41,6 +54,9 @@ public class SimulationController extends AbstractController  {
 	
 
 
+	/**
+	 * Connect_.
+	 */
 	private void connect_() {
 		
 		
@@ -67,6 +83,11 @@ public class SimulationController extends AbstractController  {
 	
 	
 	
+	/**
+	 * On input change request.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=ScalarValueChangeRequest.class)
     public void onInputChangeRequest(ScalarValueChangeRequest event) {
 		//double v = event.value;
@@ -80,6 +101,11 @@ public class SimulationController extends AbstractController  {
 	}
 	
 	
+	/**
+	 * On sim state notify.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=SimStateNotify.class)
     public void onSimStateNotify(SimStateNotify event) {
 		simulationStateClient_ = event.getPayload();
@@ -103,6 +129,11 @@ public class SimulationController extends AbstractController  {
 	}
 	
 	
+	/**
+	 * Request state change_.
+	 *
+	 * @param state_arg the state_arg
+	 */
 	private void requestStateChange_(SimStateClient state_arg)
 	{
 		EventBus.publish(
@@ -111,6 +142,11 @@ public class SimulationController extends AbstractController  {
 		
 	}
 	
+	/**
+	 * On sim state request.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=SimStateRequest.class)
     public void onSimStateRequest(SimStateRequest event) {
 		SimStateClient state = event.getPayload();

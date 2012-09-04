@@ -12,45 +12,55 @@ using namespace std;
 namespace Straylight
 {
 	/*******************************************************//**
-	 * Utilities.
+	 * <summary> Utilities.</summary>
+	 *
+	 * <remarks> Raj Dye raj@pcdigi.com, 9/3/2012.</remarks>
 	 *******************************************************/
 	class Utils
 	{
 	public:
 
 		/*******************************************************//**
-		 * Character to double.
+		 * <summary> Character to double.</summary>
 		 *
-		 * @param	valueChar		   	The value character.
-		 * @param [in,out]	valueStatus	If non-null, the value status.
+		 * <remarks> Raj Dye raj@pcdigi.com, 9/3/2012.</remarks>
 		 *
-		 * @return	.
+		 * <param name="valueChar">   The value character.</param>
+		 * <param name="valueStatus"> If non-null, the value status.</param>
+		 *
+		 * <returns> .</returns>
 		 *******************************************************/
 		static double charToDouble(const char * valueChar, ValueStatus * valueStatus);
 
 		/*******************************************************//**
-		 * Character to double.
+		 * <summary> Character to double.</summary>
 		 *
-		 * @param	valueChar	The value character.
+		 * <remarks> Raj Dye raj@pcdigi.com, 9/3/2012.</remarks>
 		 *
-		 * @return	.
+		 * <param name="valueChar"> The value character.</param>
+		 *
+		 * <returns> .</returns>
 		 *******************************************************/
 		static double charToDouble(const char * valueChar);
 
 		/*******************************************************//**
-		 * Converts an x to a string.
+		 * <summary> Converts an x to a string.</summary>
 		 *
-		 * @param	x	The double to process.
+		 * <remarks> Raj Dye raj@pcdigi.com, 9/3/2012.</remarks>
 		 *
-		 * @return	x as a std::string.
+		 * <param name="x"> The double to process.</param>
+		 *
+		 * <returns> x as a std::string.</returns>
 		 *******************************************************/
 		static std::string to_string(double x);
 
 		/*******************************************************//**
-		 * Double to comma string.
+		 * <summary> Double to comma string.</summary>
 		 *
-		 * @param [in,out]	buffer	If non-null, the buffer.
-		 * @param	r			  	The double to process.
+		 * <remarks> Raj Dye raj@pcdigi.com, 9/3/2012.</remarks>
+		 *
+		 * <param name="buffer"> [in,out] If non-null, the buffer.</param>
+		 * <param name="r">		 The double to process.</param>
 		 *******************************************************/
 		static void doubleToCommaString(char* buffer, double r);
 

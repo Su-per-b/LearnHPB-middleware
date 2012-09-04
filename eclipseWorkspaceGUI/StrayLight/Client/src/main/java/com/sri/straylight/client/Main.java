@@ -9,11 +9,21 @@ import org.bushe.swing.event.EventService;
 import com.sri.straylight.client.controller.MainController;
 import com.sri.straylight.client.framework.AbstractController;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Main.
+ */
 public class Main {
 	
+	/** The application controller. */
 	public static AbstractController applicationController;
 	
 	
+    /**
+     * The main method.
+     *
+     * @param args the arguments
+     */
     public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.

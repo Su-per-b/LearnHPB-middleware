@@ -23,12 +23,20 @@ package com.sri.straylight.client.model;
 import java.util.Locale;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ConfigProperties.
+ */
 public final class ConfigProperties {
 
 
+  /**
+   * Instantiates a new config properties.
+   */
   private ConfigProperties() {
   }
 
+  /** The Constant DEFAULT_LOCALE. */
   public static final Locale DEFAULT_LOCALE = Locale.US;
 
 }

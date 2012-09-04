@@ -17,16 +17,33 @@ import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ResultsFormController.
+ */
 public class ResultsFormController extends AbstractController {
 	
+    /** The table_. */
     private  JTable table_;
+    
+    /** The table model_. */
     private DefaultTableModel tableModel_;
 	
     
+	/**
+	 * Instantiates a new results form controller.
+	 *
+	 * @param parentController the parent controller
+	 */
 	public ResultsFormController(AbstractController parentController) {
 		super(parentController);
 	}
 	
+	/**
+	 * Inits the.
+	 *
+	 * @param xmlParsed the xml parsed
+	 */
 	public void init(XMLparsed xmlParsed) {  
 		
 	    JPanel panel = new JPanel();
@@ -57,6 +74,11 @@ public class ResultsFormController extends AbstractController {
     }
 	
 	
+	/**
+	 * On result event.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
 

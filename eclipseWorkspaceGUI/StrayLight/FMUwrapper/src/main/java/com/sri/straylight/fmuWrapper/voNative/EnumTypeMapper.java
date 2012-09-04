@@ -6,8 +6,15 @@ import com.sun.jna.DefaultTypeMapper;
 
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class EnumTypeMapper.
+ */
 public class EnumTypeMapper extends DefaultTypeMapper {
 	 
+    /**
+     * Instantiates a new enum type mapper.
+     */
     public EnumTypeMapper() {
     	
     	CustomEnumConverter converter = new CustomEnumConverter();

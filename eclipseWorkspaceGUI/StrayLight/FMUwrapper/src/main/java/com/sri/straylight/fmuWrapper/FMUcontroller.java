@@ -3,6 +3,8 @@ package com.sri.straylight.fmuWrapper;
 
 
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -35,33 +37,57 @@ import com.sun.jna.Native;
 
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FMUcontroller.
+ */
 public class FMUcontroller  {
 
 	
+	/** The jna fmu wrapper_. */
 	private JNAfmuWrapper jnaFMUWrapper_;
+	
+	/** The config struct_. */
 	private ConfigStruct configStruct_;
+	
+	/** The fmu wrapper config_. */
 	private FMUwrapperConfig fmuWrapperConfig_;
 	
 	
+	/** The sim state native_. */
 	private SimStateNative simStateNative_;
 
 
 
+	/**
+	 * Gets the fmu state.
+	 *
+	 * @return the fmu state
+	 */
 	public SimStateNative getFmuState() {
 		return simStateNative_;
 	}
 
 
+	/** The cleanup when possible_. */
 	private boolean cleanupWhenPossible_ = false;
 
 
 
 	
+	/**
+	 * Instantiates a new fM ucontroller.
+	 *
+	 * @param fmuWrapperConfig the fmu wrapper config
+	 */
 	public FMUcontroller(FMUwrapperConfig fmuWrapperConfig) {
 		fmuWrapperConfig_ = fmuWrapperConfig;
 		AnnotationProcessor.process(this);
 	}
 	
+	/**
+	 * Instantiates a new fM ucontroller.
+	 */
 	public FMUcontroller() {
 		fmuWrapperConfig_ = FMUwrapperConfig.load();
 		AnnotationProcessor.process(this);
@@ -70,6 +96,11 @@ public class FMUcontroller  {
 	
 	
 	
+	/**
+	 * Notify state change_.
+	 *
+	 * @param state_arg the state_arg
+	 */
 	private void notifyStateChange_(SimStateServer state_arg)
 	{
 		EventBus.publish(
@@ -80,6 +111,7 @@ public class FMUcontroller  {
 	
 	
 	
+	/** The message callback func_. */
 	private JNAfmuWrapper.MessageCallbackInterface messageCallbackFunc_ = 
 			new JNAfmuWrapper.MessageCallbackInterface() {
 
@@ -97,6 +129,7 @@ public class FMUcontroller  {
 	};
 
 
+	/** The result callback func_. */
 	private JNAfmuWrapper.ResultCallbackInterface resultCallbackFunc_ = 
 			new JNAfmuWrapper.ResultCallbackInterface() {
 
@@ -114,6 +147,7 @@ public class FMUcontroller  {
 	};
 
 
+	/** The state change callback func_. */
 	private JNAfmuWrapper.StateChangeCallbackInterface stateChangeCallbackFunc_ = 
 
 			new JNAfmuWrapper.StateChangeCallbackInterface() {
@@ -124,6 +158,11 @@ public class FMUcontroller  {
 		}		
 	};
 
+	/**
+	 * On sim state native.
+	 *
+	 * @param simStateNative the sim state native
+	 */
 	public void onSimStateNative(SimStateNative simStateNative)
 	{
 
@@ -148,11 +187,19 @@ public class FMUcontroller  {
 
 
 
+	/**
+	 * Gets the meta data.
+	 *
+	 * @return the meta data
+	 */
 	public ConfigStruct getMetaData() {
 		return configStruct_;
 	}
 	
 	
+	/**
+	 * On xm lparse completed.
+	 */
 	private void onXMLparseCompleted() {
 		
 		return;
@@ -160,6 +207,9 @@ public class FMUcontroller  {
 	}
 
 
+	/**
+	 * Xml parse.
+	 */
 	public void xmlParse() {
 		
 		jnaFMUWrapper_.xmlParse(fmuWrapperConfig_.fmuFolderAbsolutePath);
@@ -179,17 +229,51 @@ public class FMUcontroller  {
 
 	
 
+	/**
+	 * Inits the.
+	 */
 	public void init() {
 		jnaFMUWrapper_.init();
 		//notifyStateChange_(SimStateServer.simStateServer_3_init_completed);
 	}
 
 
+	/**
+	 * Check config.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	private void checkConfig()  throws IOException {
+		
+		//check to see that DLL exists
+		boolean exists = (new File(fmuWrapperConfig_.nativeLibFolderAbsolutePath + "\\FMUwrapper.dll")).exists();
+		
+		if (!exists) {
+			throw new IOException ("FMUwrapper.dll not found in: " + fmuWrapperConfig_.nativeLibFolderAbsolutePath);
+		}
+		
+		
+		
+		
+		
+		
+		
+	}
 
 
+	/**
+	 * Connect.
+	 *
+	 * @throws Exception the exception
+	 */
+	public void connect() throws IOException {
 
-	public void connect() {
-
+		
+		checkConfig();
+		
+		
+		
+		//System.setProperty("java.library.path", "fmuWrapperConfig_.nativeLibFolderAbsolutePath");
 		System.setProperty("jna.library.path", fmuWrapperConfig_.nativeLibFolderAbsolutePath);
 
 		Map<String, Object> options = new HashMap<String, Object>();
@@ -209,6 +293,9 @@ public class FMUcontroller  {
 
 
 
+	/**
+	 * Unzip.
+	 */
 	public void unzip() {
 //
 //		String name = new File(fmuFilePath_).getName();
@@ -222,6 +309,9 @@ public class FMUcontroller  {
 
 
 
+	/**
+	 * Run.
+	 */
 	public void run() {
 		jnaFMUWrapper_.run();
 	}
@@ -229,6 +319,11 @@ public class FMUcontroller  {
 
 
 
+	/**
+	 * Sets the config.
+	 *
+	 * @param configStruct the new config
+	 */
 	public void setConfig(ConfigStruct configStruct) {
 
 		configStruct_ = configStruct;
@@ -243,16 +338,32 @@ public class FMUcontroller  {
 	}
 
 
+	/**
+	 * Request state change.
+	 *
+	 * @param newState the new state
+	 */
 	public void requestStateChange(SimStateNative newState) {
 		jnaFMUWrapper_.requestStateChange(newState);
 	}
 
 
 
+	/**
+	 * Sets the scalar value real.
+	 *
+	 * @param idx the idx
+	 * @param value the value
+	 */
 	public void setScalarValueReal(int idx, double value) {
 		fmiStatus status = jnaFMUWrapper_.setScalarValueReal(idx, value);
 	}
 
+	/**
+	 * Sets the scalar values.
+	 *
+	 * @param scalarValueList the new scalar values
+	 */
 	public void setScalarValues(Vector<ScalarValueRealStruct> scalarValueList) {
 
 		int len = scalarValueList.size();

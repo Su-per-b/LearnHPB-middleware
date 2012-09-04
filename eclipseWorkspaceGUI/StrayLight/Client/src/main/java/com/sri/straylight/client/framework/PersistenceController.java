@@ -10,6 +10,7 @@ import org.hibernate.context.internal.ManagedSessionContext;
 
 
 
+// TODO: Auto-generated Javadoc
 /**
  * A controller that includes persistence context management.
  * <p>
@@ -53,9 +54,13 @@ import org.hibernate.context.internal.ManagedSessionContext;
  */
 public abstract class PersistenceController extends AbstractController {
 
+    /** The log. */
     private static Log log = LogFactory.getLog(PersistenceController.class);
 
+    /** The persistence context. */
     private Session persistenceContext;
+    
+    /** The owns persistence context. */
     private boolean ownsPersistenceContext;
 
     /**
@@ -66,7 +71,7 @@ public abstract class PersistenceController extends AbstractController {
     /**
      * Subclass wants to control own view and is subcontroller. Gets a fresh persistence context.
      *
-     * @param parentController
+     * @param parentController the parent controller
      */
     public PersistenceController(AbstractController parentController) {
         this(null, parentController, null);
@@ -75,8 +80,8 @@ public abstract class PersistenceController extends AbstractController {
     /**
      * Subclass is completely dependend on the given view and is a subcontroller. Gets a fresh persistence context.
      *
-     * @param view
-     * @param parentController
+     * @param view the view
+     * @param parentController the parent controller
      */
     public PersistenceController(Container view, AbstractController parentController) {
         this(view, parentController, null);
@@ -85,8 +90,8 @@ public abstract class PersistenceController extends AbstractController {
     /**
      * Subclass wants to control own view and is subcontroller. Also joins given persistence context.
      *
-     * @param parentController
-     * @param persistenceContext
+     * @param parentController the parent controller
+     * @param persistenceContext the persistence context
      */
     public PersistenceController(AbstractController parentController, Session persistenceContext) {
         this(null, parentController, persistenceContext);
@@ -95,9 +100,9 @@ public abstract class PersistenceController extends AbstractController {
     /**
      * Subclass is completely dependend on the given view and is a subcontroller. Also joins given persistence context.
      *
-     * @param view
-     * @param parentController
-     * @param persistenceContext
+     * @param view the view
+     * @param parentController the parent controller
+     * @param persistenceContext the persistence context
      */
     public PersistenceController(Container view, AbstractController parentController, Session persistenceContext) {
         super(view, parentController);
@@ -114,6 +119,11 @@ public abstract class PersistenceController extends AbstractController {
         }
     }
 
+    /**
+     * Gets the persistence context.
+     *
+     * @return the persistence context
+     */
     public Session getPersistenceContext() {
         return persistenceContext;
     }
@@ -133,6 +143,9 @@ public abstract class PersistenceController extends AbstractController {
         super.dispose();
     }
 
+    /* (non-Javadoc)
+     * @see com.sri.straylight.client.framework.AbstractController#preActionExecute()
+     */
     protected void preActionExecute() {
         log.debug("Binding current persistence context to Hibernate");
      //  org.hibernate.classic.Session currentSession =
@@ -141,6 +154,9 @@ public abstract class PersistenceController extends AbstractController {
 
     }
 
+    /* (non-Javadoc)
+     * @see com.sri.straylight.client.framework.AbstractController#finalActionExecute()
+     */
     protected void finalActionExecute() {
         log.debug("Unbinding current persistence context from Hibernate");
         ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());

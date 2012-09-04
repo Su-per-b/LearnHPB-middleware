@@ -15,9 +15,16 @@ import com.google.gson.JsonSerializer;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MessageEventAdapter.
+ */
 public class MessageEventAdapter implements 
 JsonSerializer<MessageEvent>, JsonDeserializer<MessageEvent> {
 
+	/* (non-Javadoc)
+	 * @see com.google.gson.JsonSerializer#serialize(java.lang.Object, java.lang.reflect.Type, com.google.gson.JsonSerializationContext)
+	 */
 	@Override
     public JsonElement serialize(
     		MessageEvent src, 
@@ -37,6 +44,9 @@ JsonSerializer<MessageEvent>, JsonDeserializer<MessageEvent> {
     
     
     
+    /* (non-Javadoc)
+     * @see com.google.gson.JsonDeserializer#deserialize(com.google.gson.JsonElement, java.lang.reflect.Type, com.google.gson.JsonDeserializationContext)
+     */
     @Override
     public MessageEvent deserialize(
     		JsonElement jsonElement, 

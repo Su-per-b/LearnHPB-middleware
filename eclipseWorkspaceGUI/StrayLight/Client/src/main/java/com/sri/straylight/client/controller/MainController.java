@@ -21,28 +21,58 @@ import com.sri.straylight.client.view.MainView;
 import com.sri.straylight.client.view.SimulationEngineDialog;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MainController.
+ */
 public class MainController extends AbstractController {
 	
 
+	/** The top panel controller_. */
 	private TopPanelController topPanelController_;
+	
+	/** The simulation controller_. */
 	private SimulationController simulationController_;
+	
+	/** The debug console controller_. */
 	private DebugConsoleController debugConsoleController_;
+	
+	/** The input form controller_. */
 	private InputFormController inputFormController_;
+	
+	/** The input detail controller_. */
 	private InputDetailController inputDetailController_;
 	
+	/** The results table controller_. */
 	private ResultsTableController resultsTableController_;
+	
+	/** The internal table controller_. */
 	private InternalTableController internalTableController_;
+	
+	/** The results form controller_. */
 	private ResultsFormController resultsFormController_;
 	
+	/** The top menu controller_. */
 	private TopMenuController topMenuController_;
+	
+	/** The config controller_. */
 	private ConfigController configController_;
 	
+	/** The tabbed pane_. */
 	private JTabbedPane tabbedPane_;
+    
+    /** The config model_. */
     private ClientConfig configModel_;
+	
+	/** The main view_. */
 	private MainView mainView_;
 	
+	/** The instance. */
 	public static MainController instance;
 	
+	/**
+	 * Instantiates a new main controller.
+	 */
 	public MainController() {
 		super(null);
 		
@@ -82,11 +112,21 @@ public class MainController extends AbstractController {
 	}
 	
 
+	/**
+	 * On select simulation engine.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=Options_SelectSimulationEngine.class)
 	public void onSelectSimulationEngine(Options_SelectSimulationEngine event) {
 		  new SimulationEngineDialog((MainView) getView(), configModel_);
 	}
 
+	/**
+	 * On select simulation engine.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=About_Help.class)
 	public void onSelectSimulationEngine(About_Help event) {
 		  
@@ -99,6 +139,11 @@ public class MainController extends AbstractController {
 				);
 	}
 	
+	/**
+	 * On sim state notify.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=SimStateNotify.class)
     public void onSimStateNotify(SimStateNotify event) {
 		
@@ -112,6 +157,11 @@ public class MainController extends AbstractController {
 	
 	
 	
+	/**
+	 * On xm lparsed event.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=XMLparsedEvent.class)
 	public void onXMLparsedEvent(XMLparsedEvent event) {
 		  

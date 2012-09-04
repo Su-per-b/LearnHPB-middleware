@@ -6,13 +6,20 @@ import com.sun.jna.ToNativeContext;
 import com.sun.jna.TypeConverter;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CustomEnumConverter.
+ */
 public class CustomEnumConverter implements TypeConverter {
 	 
 	//private static final Logger logger = Log.getLogger(CustomEnumConverter.class);
 	
     //private static final Logger logger = LoggerFactory.getLogger(EnumConverter.class);
  
-    public Object fromNative(Object input, FromNativeContext context) {
+    /* (non-Javadoc)
+	 * @see com.sun.jna.FromNativeConverter#fromNative(java.lang.Object, com.sun.jna.FromNativeContext)
+	 */
+	public Object fromNative(Object input, FromNativeContext context) {
         Integer i = (Integer) input;
         Class<?> targetClass = context.getTargetType();
         if (!JnaEnum.class.isAssignableFrom(targetClass)) {
@@ -32,11 +39,17 @@ public class CustomEnumConverter implements TypeConverter {
  
     }
  
+    /* (non-Javadoc)
+     * @see com.sun.jna.ToNativeConverter#toNative(java.lang.Object, com.sun.jna.ToNativeContext)
+     */
     public Object toNative(Object input, ToNativeContext context) {
         JnaEnum<?> j = (JnaEnum<?>) input;
         return new Integer(j.getIntValue());
     }
  
+    /* (non-Javadoc)
+     * @see com.sun.jna.FromNativeConverter#nativeType()
+     */
     public Class<Integer> nativeType() {
         return Integer.class;
     }

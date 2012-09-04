@@ -11,6 +11,7 @@ namespace Straylight
 	{
 		time_ = time;
 		scalarValueCollection_ = new ScalarValueCollection();
+
 	}
 
 	/*******************************************************//**
@@ -27,9 +28,12 @@ namespace Straylight
 	 * @param	causality							The causality.
 	 *******************************************************/
 	void ScalarValueDataModel::extract(ScalarVariableCollection * scalarVariableCollection, Enu causality) {
-		//int c =1;
+
 
 		extractReal(scalarVariableCollection->real, causality);
+		
+
+
 	}
 
 	/*******************************************************//**
@@ -38,7 +42,7 @@ namespace Straylight
 	 * @param [in,out]	scalarVariableRealList	If non-null, list of scalar variable reals.
 	 * @param	causality					  	The causality.
 	 *******************************************************/
-	void extractReal(vector<ScalarVariableRealStruct*> scalarVariableRealList, Enu causality) {
+	void ScalarValueDataModel::extractReal(vector<ScalarVariableRealStruct*> scalarVariableRealList, Enu causality) {
 		vector<ScalarVariableRealStruct*>::iterator list_iter = scalarVariableRealList.begin();
 
 		for(list_iter;
@@ -47,11 +51,21 @@ namespace Straylight
 			ScalarVariableRealStruct * scalarVariableRealStruct =  *list_iter;
 			ScalarValue * scalarValue = new ScalarValue(scalarVariableRealStruct->idx);
 
-			if (causality == enu_input) {
-				svListInput.push_back(scalarValue);
-			} else if (causality == enu_output){
-				svListOutput.push_back(scalarValue);
-			}
+			ScalarValueRealStruct * scalarValueRealStruct = new ScalarValueRealStruct();
+			scalarValueRealStruct->idx = scalarValue->getIdx();
+			scalarValueRealStruct->value = scalarValue->getRealNumber();
+
+
+			scalarValueCollection_->real.push_back(scalarValueRealStruct);
+
+
 		}
+
+
+
+
+
+
+
 	}
 }

@@ -22,12 +22,20 @@ package com.sri.straylight.client.model;
 
 import java.awt.*;
 
+// TODO: Auto-generated Javadoc
 /**
- * Author: Michael Gfeller
+ * Author: Michael Gfeller.
  */
 public final class Constants {
+  
+  /** The Constant BACKGROUND_VERIFICATION_OK. */
   public static final Color BACKGROUND_VERIFICATION_OK = Color.WHITE;
+  
+  /** The Constant BACKGROUND_VERIFICATION_ERROR. */
   public static final Color BACKGROUND_VERIFICATION_ERROR = Color.ORANGE;
 
+  /**
+   * Instantiates a new constants.
+   */
   private Constants() {}
 }

@@ -5,26 +5,50 @@ package com.sri.straylight.fmuWrapper.voManaged;
 
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class XMLparsed.
+ */
 public class XMLparsed  {
 
+	/** The output var names. */
 	private String[] outputVarNames;
 
+	/** The input vars. */
 	private ScalarVariableRealStruct[] inputVars;
+	
+	/** The output vars. */
 	private ScalarVariableRealStruct[] outputVars;
+	
+	/** The internal vars. */
 	private ScalarVariableRealStruct[] internalVars;
 
+	/** The scalar variables all_. */
 	private ScalarVariablesAll scalarVariablesAll_;
 	
 	
+	/**
+	 * Instantiates a new xM lparsed.
+	 */
 	public XMLparsed() {
 
 	}
 	
+	/**
+	 * Gets the scalar variables all.
+	 *
+	 * @return the scalar variables all
+	 */
 	public ScalarVariablesAll getScalarVariablesAll() {
 		
 		return scalarVariablesAll_;
 	}
 	
+	/**
+	 * Instantiates a new xM lparsed.
+	 *
+	 * @param scalarVariablesAll the scalar variables all
+	 */
 	public XMLparsed(ScalarVariablesAll scalarVariablesAll) {
 		scalarVariablesAll_ = scalarVariablesAll;
 		
@@ -34,12 +58,22 @@ public class XMLparsed  {
 	}
 
 	
+	/**
+	 * Gets the input vars.
+	 *
+	 * @return the input vars
+	 */
 	public ScalarVariableRealStruct[] getInputVars() {
 		
 		return inputVars;
 	}
 	
 	
+	/**
+	 * Gets the output column names.
+	 *
+	 * @return the output column names
+	 */
 	public String[] getOutputColumnNames() {
 
 		int len = outputVars.length + 1;
@@ -53,6 +87,11 @@ public class XMLparsed  {
 		return columnNames;
 	}
 	
+	/**
+	 * Gets the output form column names.
+	 *
+	 * @return the output form column names
+	 */
 	public String[] getOutputFormColumnNames() {
 
 		String[] columnNames  = {
@@ -72,6 +111,11 @@ public class XMLparsed  {
 	}
 	
 	
+	/**
+	 * Gets the internal column names.
+	 *
+	 * @return the internal column names
+	 */
 	public String[] getInternalColumnNames() {
 
 		String[] columnNames  = {
@@ -86,6 +130,11 @@ public class XMLparsed  {
 		return columnNames;
 	}
 	
+	/**
+	 * Gets the input form column names.
+	 *
+	 * @return the input form column names
+	 */
 	public String[] getInputFormColumnNames() {
 
 		String[] columnNames  = {
@@ -103,6 +152,11 @@ public class XMLparsed  {
 		return columnNames;
 	}
 	
+	/**
+	 * Gets the output data.
+	 *
+	 * @return the output data
+	 */
 	public Object[][] getOutputData () {
 		
 		int len = outputVars.length;
@@ -124,6 +178,11 @@ public class XMLparsed  {
 		return data;
 	}
 	
+	/**
+	 * Gets the output form data.
+	 *
+	 * @return the output form data
+	 */
 	public Object[][] getOutputFormData () {
 		
 		int len = outputVars.length;
@@ -151,6 +210,11 @@ public class XMLparsed  {
 	}
 	
 	
+	/**
+	 * Gets the internal data.
+	 *
+	 * @return the internal data
+	 */
 	public Object[][] getInternalData () {
 		
 		int len = internalVars.length;
@@ -175,6 +239,11 @@ public class XMLparsed  {
 	
 
 	
+	/**
+	 * Gets the input data.
+	 *
+	 * @return the input data
+	 */
 	public Object[][] getInputData() {
 		
 		int len = inputVars.length;

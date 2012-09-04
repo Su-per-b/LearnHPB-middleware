@@ -25,30 +25,55 @@ import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeRequest;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ConfigController.
+ */
 public class ConfigController extends AbstractController {
 	
 	
+	/** The txt start time_. */
 	private JFormattedTextField txtStartTime_;
+	
+	/** The txt stop time_. */
 	private JFormattedTextField txtStopTime_;
+	
+	/** The txt step delta_. */
 	private JFormattedTextField txtStepDelta_;
 	
+	/** The btn apply_. */
 	private final JButton btnApply_ = new JButton("Apply");
 
+	/** The lbl start time_. */
 	private final JLabel lblStartTime_ = new JLabel("Start Time");
+	
+	/** The lbl stop time_. */
 	private final JLabel lblStopTime_ = new JLabel("Stop Time");
+	
+	/** The lbl step delta_. */
 	private final JLabel lblStepDelta_ = new JLabel("Step Delta");
 
 	
+	/** The config struct_. */
 	private ConfigStruct configStruct_;
 	
 	
+	/** The simulation state_. */
 	private SimStateClient simulationState_ = SimStateClient.level_0_uninitialized;
 	
+	/**
+	 * Instantiates a new config controller.
+	 *
+	 * @param parentController the parent controller
+	 */
 	public ConfigController(AbstractController parentController) {
 		super(parentController);
 	}
 
 
+	/**
+	 * Bind actions_.
+	 */
 	private void bindActions_() {
 		
 		btnApply_.addActionListener(new ActionListener() {
@@ -63,6 +88,11 @@ public class ConfigController extends AbstractController {
 	}
 	
 
+	/**
+	 * Inits the.
+	 *
+	 * @param configStruct the config struct
+	 */
 	public void init(ConfigStruct configStruct) {
 		
 		configStruct_ = configStruct;
@@ -108,6 +138,11 @@ public class ConfigController extends AbstractController {
 	}
 	
 	
+	/**
+	 * On sim state request.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=ConfigChangeRequest.class)
 	public void onSimStateRequest(SimStateRequest event) {
 		btnApply_.setEnabled(false);
@@ -115,6 +150,11 @@ public class ConfigController extends AbstractController {
 		updateGUIFromState_();
 	}
 	
+	/**
+	 * On sim state notify.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=ConfigChangeNotify.class)
 	public void onSimStateNotify(SimStateNotify event) {
 		btnApply_.setEnabled(true);
@@ -123,6 +163,9 @@ public class ConfigController extends AbstractController {
 	}
 
 	
+	/**
+	 * Update gui from state_.
+	 */
 	private void updateGUIFromState_() {
 		//if (simulationState_ == SimStateClient.)
 		
@@ -134,12 +177,18 @@ public class ConfigController extends AbstractController {
 	
 	
 	
+	/**
+	 * Update gu i_.
+	 */
 	private void updateGUI_() {
 		txtStartTime_.setValue(configStruct_.defaultExperimentStruct.startTime);
 		txtStopTime_.setValue(configStruct_.defaultExperimentStruct.stopTime);
 		txtStepDelta_.setValue(configStruct_.stepDelta);
 	}
 	
+	/**
+	 * Update data model_.
+	 */
 	private void updateDataModel_() {
 		configStruct_.defaultExperimentStruct.startTime = (double)txtStartTime_.getValue();
 		configStruct_.defaultExperimentStruct.stopTime = (double)txtStopTime_.getValue();

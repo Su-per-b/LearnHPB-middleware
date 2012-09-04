@@ -15,6 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 
+// TODO: Auto-generated Javadoc
 /**
  * Abstract superclass for building a hierarchical controller structure (HMVC).
  * <p>
@@ -38,12 +39,22 @@ import org.bushe.swing.event.annotation.AnnotationProcessor;
  */
 public abstract class AbstractController implements ActionListener, WindowListener {
 
+    /** The log. */
     private static Log log = LogFactory.getLog(AbstractController.class);
 
+    /** The view. */
     private Container view;
+    
+    /** The parent controller. */
     private AbstractController parentController;
+    
+    /** The sub controllers. */
     private java.util.List<AbstractController> subControllers = new ArrayList<AbstractController>();
+    
+    /** The actions. */
     private Map<String, DefaultAction> actions = new HashMap<String, DefaultAction>();
+    
+    /** The event listeners. */
     private Map<Class, java.util.List<DefaultEventListener>> eventListeners =
             new HashMap<Class, java.util.List<DefaultEventListener>>();
 
@@ -58,7 +69,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
     /**
      * Subclass wants to control own view and is a subcontroller.
      *
-     * @param parentController
+     * @param parentController the parent controller
      */
     public AbstractController(AbstractController parentController) {
         this(null, parentController);
@@ -66,14 +77,21 @@ public abstract class AbstractController implements ActionListener, WindowListen
 
     /**
      * Subclass is completely dependend on the given view and is a subcontroller.
-     * @param view
-     * @param parentController
+     *
+     * @param view the view
+     * @param parentController the parent controller
      */
     public AbstractController(Container view, AbstractController parentController) {
 
     	init_(view, parentController);
     }
     
+    /**
+     * Init_.
+     *
+     * @param view the view
+     * @param parentController the parent controller
+     */
     protected void init_(Container view, AbstractController parentController) {
     	AnnotationProcessor.process(this);
     	
@@ -87,18 +105,38 @@ public abstract class AbstractController implements ActionListener, WindowListen
 
     }
     
+    /**
+     * Gets the view.
+     *
+     * @return the view
+     */
     public Container getView() {
         return view;
     }
     
+    /**
+     * Sets the view_.
+     *
+     * @param c the new view_
+     */
     protected void setView_(Container c) {
         view = c;
     }
     
+    /**
+     * Gets the parent controller.
+     *
+     * @return the parent controller
+     */
     public AbstractController getParentController() {
         return parentController;
     }
 
+    /**
+     * Gets the sub controllers.
+     *
+     * @return the sub controllers
+     */
     public java.util.List<AbstractController> getSubControllers() {
         return subControllers;
     }
@@ -168,6 +206,12 @@ public abstract class AbstractController implements ActionListener, WindowListen
         fireEvent(event, true);
     }
 
+    /**
+     * Fire event.
+     *
+     * @param event the event
+     * @param global the global
+     */
     private void fireEvent(DefaultEvent event, boolean global) {
         if (!event.alreadyFired(this)) {
             if (eventListeners.get(event.getClass()) != null) {
@@ -195,7 +239,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
      * command. If the controller has this command registered, the registered action is executed. Otherwise
      * the action is passed upwards in the hierarchy of controllers.
      *
-     * @param actionEvent
+     * @param actionEvent the action event
      */
     public void actionPerformed(ActionEvent actionEvent) {
 
@@ -233,19 +277,61 @@ public abstract class AbstractController implements ActionListener, WindowListen
         }
     }
 
+    /**
+     * Pre action execute.
+     */
     protected void preActionExecute() {}
+    
+    /**
+     * Post action execute.
+     */
     protected void postActionExecute() {}
+    
+    /**
+     * Failed action execute.
+     */
     protected void failedActionExecute() {}
+    
+    /**
+     * Final action execute.
+     */
     protected void finalActionExecute() {}
 
     // If this controller is responsible for a JFrame, close it and all its children when the
     // window is closed.
+    /* (non-Javadoc)
+     * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
+     */
     public void windowClosing(WindowEvent windowEvent) { dispose(); }
+    
+    /* (non-Javadoc)
+     * @see java.awt.event.WindowListener#windowOpened(java.awt.event.WindowEvent)
+     */
     public void windowOpened(WindowEvent windowEvent) {}
+    
+    /* (non-Javadoc)
+     * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
+     */
     public void windowClosed(WindowEvent windowEvent) {}
+    
+    /* (non-Javadoc)
+     * @see java.awt.event.WindowListener#windowIconified(java.awt.event.WindowEvent)
+     */
     public void windowIconified(WindowEvent windowEvent) {}
+    
+    /* (non-Javadoc)
+     * @see java.awt.event.WindowListener#windowDeiconified(java.awt.event.WindowEvent)
+     */
     public void windowDeiconified(WindowEvent windowEvent) {}
+    
+    /* (non-Javadoc)
+     * @see java.awt.event.WindowListener#windowActivated(java.awt.event.WindowEvent)
+     */
     public void windowActivated(WindowEvent windowEvent) {}
+    
+    /* (non-Javadoc)
+     * @see java.awt.event.WindowListener#windowDeactivated(java.awt.event.WindowEvent)
+     */
     public void windowDeactivated(WindowEvent windowEvent) {}
 
 }

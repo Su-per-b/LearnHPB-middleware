@@ -5,7 +5,13 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.FlowLayout;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SimulationConfig.
+ */
 public class SimulationConfig extends JPanel {
+	
+	/** The text field. */
 	private JTextField textField;
 
 	/**

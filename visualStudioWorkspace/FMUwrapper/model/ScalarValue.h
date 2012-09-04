@@ -22,6 +22,7 @@ typedef struct ScalarValueStruct_ {
 
 /*******************************************************//**
  * Defines an alias representing the structure.
+ * TODO: Can this converted to a class
  *******************************************************/
 typedef struct  {
 	/*******************************************************//**

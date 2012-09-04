@@ -22,24 +22,52 @@ import com.sri.straylight.client.model.SimStateClient;
 
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TopPanelController.
+ */
 public class TopPanelController extends AbstractController {
 
+	/** The btn clear_. */
 	private final JButton btnClear_ = new JButton("Clear Console");
+	
+	/** The btn connect_. */
 	private final JButton btnConnect_ = new JButton("Connect");
+	
+	/** The btn xml parse_. */
 	private final JButton btnXmlParse_ = new JButton("XML Parse");
+	
+	/** The btn init_. */
 	private final JButton btnInit_ = new JButton("Init");
+	
+	/** The btn step_. */
 	private final JButton btnStep_ = new JButton("Step >|");
+	
+	/** The btn run_. */
 	private final JButton btnRun_ = new JButton("Run >");
+	
+	/** The btn stop_. */
 	private final JButton btnStop_ = new JButton("Stop []");
+	
+	/** The btn reset_. */
 	private final JButton btnReset_ = new JButton("Reset");
 
 
 
+	/** The simulation state_. */
 	private SimStateClient simulationState_ = SimStateClient.level_0_uninitialized;
+	
+	/** The buttons_. */
 	private Vector<JButton> buttons_;
 	
+	/** The state map_. */
 	Hashtable<SimStateClient, JButton[]> stateMap_ = new Hashtable<SimStateClient, JButton[]>();
 	
+	/**
+	 * Instantiates a new top panel controller.
+	 *
+	 * @param parentController the parent controller
+	 */
 	public TopPanelController (AbstractController parentController) {
 
 		super(parentController);
@@ -81,6 +109,9 @@ public class TopPanelController extends AbstractController {
 
 	}
 
+	/**
+	 * Setup fs m_.
+	 */
 	private void setupFSM_() {
 		
 		
@@ -119,6 +150,9 @@ public class TopPanelController extends AbstractController {
 	}
 
 
+	/**
+	 * Bind actions_.
+	 */
 	private void bindActions_() {
 
 		btnConnect_.addActionListener(new ActionListener() {
@@ -182,6 +216,11 @@ public class TopPanelController extends AbstractController {
 	}
 
 
+	/**
+	 * Request state change_.
+	 *
+	 * @param state_arg the state_arg
+	 */
 	private void requestStateChange_(SimStateClient state_arg)
 	{
 		EventBus.publish(
@@ -190,12 +229,22 @@ public class TopPanelController extends AbstractController {
 		
 	}
 	
+	/**
+	 * On sim state request.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=SimStateRequest.class)
 	public void onSimStateRequest(SimStateRequest event) {
 		simulationState_ = event.getPayload();
 		updateGUI_();
 	}
 	
+	/**
+	 * On sim state notify.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=SimStateNotify.class)
 	public void onSimStateNotify(SimStateNotify event) {
 		simulationState_ = event.getPayload();
@@ -203,6 +252,9 @@ public class TopPanelController extends AbstractController {
 	}
 
 
+	/**
+	 * Update gu i_.
+	 */
 	private void updateGUI_() {
 
 		int len = buttons_.size();

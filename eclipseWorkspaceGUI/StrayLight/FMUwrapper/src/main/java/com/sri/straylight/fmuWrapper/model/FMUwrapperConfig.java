@@ -10,20 +10,40 @@ import java.net.URL;
 
 import com.thoughtworks.xstream.XStream;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FMUwrapperConfig.
+ */
 public class FMUwrapperConfig {
 	
+	/** The Constant configFile_. */
 	private static final String configFile_ = "fmuwrapper-config.xml";
 	
 
+	/** The unzip folder relative path. */
 	public String unzipFolderRelativePath;
+	
+	/** The unzip folder absolute path. */
 	public String unzipFolderAbsolutePath;
+	
+	/** The fmu folder name. */
 	public String fmuFolderName;
+	
+	/** The fmu folder absolute path. */
 	public String fmuFolderAbsolutePath;
 	
+	/** The native lib folder relative path. */
 	public String nativeLibFolderRelativePath;
+	
+	/** The native lib folder absolute path. */
 	public String nativeLibFolderAbsolutePath;
 	
 
+	/**
+	 * Load.
+	 *
+	 * @return the fM uwrapper config
+	 */
 	public static FMUwrapperConfig load() {
 		
 		String theOs = System.getProperty("os.name");
@@ -60,6 +80,12 @@ public class FMUwrapperConfig {
 		
 	}
 	
+	/**
+	 * Convert relative to absolute.
+	 *
+	 * @param relativePath the relative path
+	 * @return the string
+	 */
 	public static String convertRelativeToAbsolute (String relativePath) {
 
 		
@@ -90,6 +116,9 @@ public class FMUwrapperConfig {
 	
 	
 	
+	/**
+	 * Make.
+	 */
 	public static void make() {
 		FMUwrapperConfig config = new FMUwrapperConfig();
 		

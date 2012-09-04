@@ -20,15 +20,31 @@ import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DebugConsoleController.
+ */
 public class DebugConsoleController  extends AbstractController {
 
 
+	/** The text pane_. */
 	private JTextPane textPane_ = new JTextPane();
+	
+	/** The start time_. */
 	private long startTime_ = 0;
+	
+	/** The doc_. */
 	private Document  doc_;
+	
+	/** The newline_. */
 	private final String newline_ = "\n";
 
 
+	/**
+	 * Instantiates a new debug console controller.
+	 *
+	 * @param parentController the parent controller
+	 */
 	public DebugConsoleController (AbstractController parentController) {
 		super(parentController);
 
@@ -47,35 +63,63 @@ public class DebugConsoleController  extends AbstractController {
 	}
 	
 	
+	/**
+	 * On sim state request.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=SimStateRequest.class)
 	public void onSimStateRequest(SimStateRequest event) {
 		outputText ("SimStateRequest: " + event.getPayload().toString());
 	}
 	
+	/**
+	 * On sim state request.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=SimStateNotify.class)
 	public void onSimStateRequest(SimStateNotify event) {
 		outputText ("SimStateNotify: " + event.getPayload().toString());
 	}
 	
 	
+	/**
+	 * On result event.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
 		outputText (event.resultOfStep.toString());
 	}
 	
 
+	/**
+	 * On message event.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=MessageEvent.class)
 	public void onMessageEvent(MessageEvent event) {
 		outputText (event.messageStruct.msgText);
 	}
 	
 	
+	/**
+	 * On clear debug console action.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=ClearDebugConsoleAction.class)
 	public void onClearDebugConsoleAction(ClearDebugConsoleAction event) {
 		textPane_.setText("");
 	}
 	
 	
+	/**
+	 * Reset.
+	 */
 	public void reset() {
 		
 		textPane_.setText("reset");
@@ -83,6 +127,11 @@ public class DebugConsoleController  extends AbstractController {
 	}
 	
 	
+	/**
+	 * Output text.
+	 *
+	 * @param txt the txt
+	 */
 	public void  outputText(String txt) {
 
 		long elapsedTimeMillis = System.currentTimeMillis()-startTime_;
@@ -108,6 +157,12 @@ public class DebugConsoleController  extends AbstractController {
 	}
 
 
+	/**
+	 * Inits the attributes.
+	 *
+	 * @param length the length
+	 * @return the simple attribute set[]
+	 */
 	protected SimpleAttributeSet[] initAttributes(int length) {
 
 		SimpleAttributeSet[] attrs = new SimpleAttributeSet[length];

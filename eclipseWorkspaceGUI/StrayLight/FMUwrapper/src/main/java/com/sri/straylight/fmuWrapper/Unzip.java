@@ -11,9 +11,20 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Unzip.
+ */
 public class Unzip {
 	
 	
+	/**
+	 * Copy input stream.
+	 *
+	 * @param in the in
+	 * @param out the out
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static final void copyInputStream(InputStream in, OutputStream out)
 			throws IOException {
 		byte[] buffer = new byte[1024];
@@ -25,6 +36,12 @@ public class Unzip {
 	}
 	
 
+	/**
+	 * Unzip.
+	 *
+	 * @param filename the filename
+	 * @param unZipFolder the un zip folder
+	 */
 	@SuppressWarnings("unchecked")
 	public static final void unzip(String filename, String unZipFolder) {
 		
@@ -104,6 +121,11 @@ public class Unzip {
 		
 	}
 	
+	/**
+	 * Make sure folder exists.
+	 *
+	 * @param filePath the file path
+	 */
 	public static final void makeSureFolderExists(String filePath) {
 
 		

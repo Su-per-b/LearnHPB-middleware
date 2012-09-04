@@ -12,27 +12,51 @@ import com.sri.straylight.client.ConnectTo;
 import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
 import com.thoughtworks.xstream.XStream;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ClientConfigXML.
+ */
 public class ClientConfigXML {
 	
+	/** The Constant configFile_. */
 	private static final String configFile_ = "client-config.xml";
 	
+	/** The Constant VERSION. */
 	public static final String VERSION = "0.3";
 
 	
+	/** The Constant unzipFolder. */
 	public static final String unzipFolder = "C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop";
+	
+	/** The Constant testFmuFile. */
 	public static final String testFmuFile = "E:\\SRI\\modelica-projects\\fmus\\no_licence_needed\\LearnGB_VAVReheat_ClosedLoop.fmu";
+	
+	/** The Constant nativeLibFolder. */
 	public static final String nativeLibFolder = "E:\\SRI\\straylight_repo\\visualStudioWorkspace\\bin\\Debug";
 	
 
+	/** The fmu file path. */
 	public String fmuFilePath = "";
+	
+	/** The window icon file name. */
 	public String windowIconFileName;
 
 	
+	/** The auto connect string. */
 	public String autoConnectString;
+	
+	/** The auto parse xml string. */
 	public String autoParseXMLString;
+	
+	/** The auto init string. */
 	public String autoInitString;
 	
 	
+	/**
+	 * Load.
+	 *
+	 * @return the client config
+	 */
 	public static ClientConfig load() {
 		
 		String theOs = System.getProperty("os.name");
@@ -81,6 +105,12 @@ public class ClientConfigXML {
 	
 	
 	
+	/**
+	 * Convert relative to absolute.
+	 *
+	 * @param relativePath the relative path
+	 * @return the string
+	 */
 	private static String convertRelativeToAbsolute (String relativePath) {
 
 		
@@ -111,6 +141,9 @@ public class ClientConfigXML {
 	
 	
 	
+	/**
+	 * Make.
+	 */
 	public static void make() {
 		ClientConfigXML config = new ClientConfigXML();
 		

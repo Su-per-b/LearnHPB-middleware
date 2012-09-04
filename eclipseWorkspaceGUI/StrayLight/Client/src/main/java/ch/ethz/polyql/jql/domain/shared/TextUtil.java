@@ -24,26 +24,57 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
- * Author: Michael Gfeller
+ * Author: Michael Gfeller.
  */
 public final class TextUtil {
+  
+  /** The Constant NEW_LINE. */
   private static final String NEW_LINE = System.getProperty( "line.separator" );
 
+  /**
+   * Instantiates a new text util.
+   */
   private TextUtil() { }
 
+  /**
+   * Checks if is empty.
+   *
+   * @param text the text
+   * @return true, if is empty
+   */
   public static boolean isEmpty( final String text ) {
     return (text == null) || ("".equals( text.trim() ));
   }
 
+  /**
+   * Empty if null.
+   *
+   * @param text the text
+   * @return the string
+   */
   public static String emptyIfNull( final String text ) {
     return (text == null) ? "" : text;
   }
 
+  /**
+   * Compare ignore case.
+   *
+   * @param text1 the text1
+   * @param text2 the text2
+   * @return the int
+   */
   public static int compareIgnoreCase( final String text1, final String text2 ) {
     return emptyIfNull( text1 ).compareToIgnoreCase( emptyIfNull( text2 ) );
   }
 
+  /**
+   * System dependent newline.
+   *
+   * @param text the text
+   * @return the string
+   */
   public static String systemDependentNewline( final String text ) {
     if (text == null) {
       return text;
@@ -52,6 +83,12 @@ public final class TextUtil {
     }
   }
 
+  /**
+   * Join.
+   *
+   * @param text the text
+   * @return the string
+   */
   public static String join( final List<String> text ) {
     return StringUtils.join( text, "\n" );
   }

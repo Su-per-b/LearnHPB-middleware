@@ -15,14 +15,25 @@ import com.sri.straylight.client.event.menu.Options_SelectSimulationEngine;
 import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.client.model.ClientConfigXML;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TopMenuController.
+ */
 public class TopMenuController  extends AbstractController  {
 
 
+	/** The config model_. */
 	private ClientConfigXML configModel_;
 	
+    /** The menu bar_. */
     private JMenuBar menuBar_;
     
 
+	/**
+	 * Instantiates a new top menu controller.
+	 *
+	 * @param parentController the parent controller
+	 */
 	public TopMenuController(AbstractController parentController) {
 		super(parentController);
 		
@@ -37,12 +48,20 @@ public class TopMenuController  extends AbstractController  {
 	
 	
 
+	/**
+	 * Gets the menu bar.
+	 *
+	 * @return the menu bar
+	 */
 	public JMenuBar getMenuBar() {
 		return menuBar_;
 	}
 	
 	
 	
+	/**
+	 * Inits the menu options_.
+	 */
 	private void initMenuOptions_() {
 		// Create a menu
 		JMenu menu = new JMenu("Options");
@@ -71,6 +90,9 @@ public class TopMenuController  extends AbstractController  {
 	}
 	
 	
+	/**
+	 * Inits the menu help_.
+	 */
 	private void initMenuHelp_() {
 	
 		// Create a menu
@@ -100,6 +122,11 @@ public class TopMenuController  extends AbstractController  {
 
 
 
+	/**
+	 * On menu event_ about_ help.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=About_Help.class)
 	public void onMenuEvent_About_Help(About_Help event) {
 		// new AboutDialog(mainView_.getJframe(), configModel_);

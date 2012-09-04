@@ -21,19 +21,37 @@ import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class InputFormView.
+ */
 public class InputFormView extends JPanel {
 
+	/** The table model_. */
 	private DefaultTableModel tableModel_;
+	
+	/** The table_. */
 	private  JTable table_;
 
+	/** The result input ary_. */
 	private Vector<String> resultInputAry_;
 
+	/** The btn submit_. */
 	private final JButton btnSubmit_ = new JButton("submit");
 
+	/** The input form controller_. */
 	private InputFormController inputFormController_;
+	
+	/** The input form data model_. */
 	private InputFormDataModel inputFormDataModel_;
 
 
+	/**
+	 * Instantiates a new input form view.
+	 *
+	 * @param inputFormController the input form controller
+	 * @param inputFormDataModel the input form data model
+	 */
 	public InputFormView(InputFormController inputFormController, InputFormDataModel inputFormDataModel) {
 
 		inputFormDataModel_ = inputFormDataModel;
@@ -74,6 +92,11 @@ public class InputFormView extends JPanel {
 
 
 
+	/**
+	 * Reset.
+	 *
+	 * @param xmlParsed the xml parsed
+	 */
 	public void reset(XMLparsed xmlParsed) {
 
 		inputFormDataModel_.xmlParsed = xmlParsed;
@@ -88,6 +111,9 @@ public class InputFormView extends JPanel {
 
 	}
 
+	/**
+	 * Bind actions_.
+	 */
 	private void bindActions_() {
 
 		btnSubmit_.addActionListener(new ActionListener() {
@@ -104,6 +130,9 @@ public class InputFormView extends JPanel {
 
 	// call this method whenever you want to notify
 	//the event listeners of the particular event
+	/**
+	 * Fire update request.
+	 */
 	private synchronized void fireUpdateRequest()	{
 
 
@@ -149,6 +178,11 @@ public class InputFormView extends JPanel {
 	}
 
 
+	/**
+	 * New result.
+	 *
+	 * @param resultInput the result input
+	 */
 	public void newResult(Vector<String> resultInput) {
 
 		

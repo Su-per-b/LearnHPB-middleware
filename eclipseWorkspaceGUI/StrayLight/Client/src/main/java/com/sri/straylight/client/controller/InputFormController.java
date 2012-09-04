@@ -17,18 +17,33 @@ import com.sri.straylight.client.view.InputFormView;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class InputFormController.
+ */
 public class InputFormController extends AbstractController {
 
 
 
+    /** The input form data model_. */
     private InputFormDataModel inputFormDataModel_;
     
+	/**
+	 * Instantiates a new input form controller.
+	 *
+	 * @param parentController the parent controller
+	 */
 	public InputFormController(AbstractController parentController) {
 		super(parentController);
 	}
 	
 
 
+	/**
+	 * Inits the.
+	 *
+	 * @param xmlParsed the xml parsed
+	 */
 	public void init(XMLparsed xmlParsed) {  
 		
 		
@@ -43,6 +58,11 @@ public class InputFormController extends AbstractController {
     }
 	
 	
+	/**
+	 * Reset.
+	 *
+	 * @param xmlParsed the xml parsed
+	 */
 	public void reset(XMLparsed xmlParsed) {  
 		//	xmlParsed_ = xmlParsed;
 		
@@ -52,6 +72,11 @@ public class InputFormController extends AbstractController {
 	
 	
 
+	/**
+	 * On result event.
+	 *
+	 * @param event the event
+	 */
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
 
@@ -70,6 +95,11 @@ public class InputFormController extends AbstractController {
 
 
 
+	/**
+	 * On data model update request.
+	 *
+	 * @param event the event
+	 */
 	public void onDataModelUpdateRequest(ScalarValueChangeRequest event) {
 		EventBus.publish(event);
 	}

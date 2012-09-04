@@ -17,11 +17,14 @@ namespace Straylight
 {
 	/*******************************************************//**
 	 * Scalar value data model.
+	 * After each simulations step the API is queried to find the
+	 * input, output and internal Scalar Values.  This Class is then
+	 * instantiated.
+	 * TODO: refactor this class to use HASH, MAP or Polymorphism
 	 *******************************************************/
 	class ScalarValueDataModel
 	{
 	public:
-		double time_;
 
 		/*******************************************************//**
 		 * Constructor.
@@ -35,10 +38,7 @@ namespace Straylight
 		 *******************************************************/
 		~ScalarValueDataModel(void);
 
-		/*******************************************************//**
-		 * Collection of scalar values.
-		 *******************************************************/
-		ScalarValueCollection * scalarValueCollection_;
+
 
 		/*******************************************************//**
 		 * Extracts this object.
@@ -48,20 +48,16 @@ namespace Straylight
 		 *******************************************************/
 		void extract(ScalarVariableCollection * scalarVariableCollection, Enu causality);
 
-		ScalarValueCollection * sValueCollectionAll_;
 
-		/*******************************************************//**
-		 * The value collection input.
-		 *******************************************************/
-		ScalarValueCollection * sValueCollectionInput_;
 
-		/*******************************************************//**
-		 * The value collection output.
-		 *******************************************************/
-		ScalarValueCollection * sValueCollectionOutput_;
-		ScalarValueCollection * sValueCollectionInternal_;
 
 	private:
+
+		/*******************************************************//**
+		 * Collection of scalar values.
+		 *******************************************************/
+		ScalarValueCollection * scalarValueCollection_;
+
 
 		/*******************************************************//**
 		 * Extracts the real.
@@ -85,8 +81,5 @@ namespace Straylight
 
 		double time_;
 
-		//void extractInteger(vector<ScalarVariableIntegerStruct*> scalarVariableList, Enu causality);
-		//void extractEnumeration(vector<ScalarVariableEnumerationStruct*> scalarVariableList, Enu causality);
-		//void extractString(vector<ScalarVariableStringStruct*> scalarVariableList, Enu causality);
 	};
 }

@@ -16,9 +16,16 @@ import com.google.gson.JsonSerializer;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueStruct;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ResultItemPrimitiveStructAdapter.
+ */
 public class ResultItemPrimitiveStructAdapter implements 
 JsonSerializer<ScalarValueStruct>, JsonDeserializer<ScalarValueStruct> {
 
+	/* (non-Javadoc)
+	 * @see com.google.gson.JsonSerializer#serialize(java.lang.Object, java.lang.reflect.Type, com.google.gson.JsonSerializationContext)
+	 */
 	@Override
     public JsonElement serialize(
     		ScalarValueStruct src, 
@@ -36,6 +43,9 @@ JsonSerializer<ScalarValueStruct>, JsonDeserializer<ScalarValueStruct> {
     
     
     
+    /* (non-Javadoc)
+     * @see com.google.gson.JsonDeserializer#deserialize(com.google.gson.JsonElement, java.lang.reflect.Type, com.google.gson.JsonDeserializationContext)
+     */
     @Override
     public ScalarValueStruct deserialize(
     		JsonElement jsonElement, 

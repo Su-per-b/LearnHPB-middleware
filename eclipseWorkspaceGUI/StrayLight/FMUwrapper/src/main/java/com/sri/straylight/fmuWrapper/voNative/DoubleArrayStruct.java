@@ -8,13 +8,25 @@ import com.sun.jna.Structure;
 import com.sun.jna.ptr.DoubleByReference;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DoubleArrayStruct.
+ */
 public class DoubleArrayStruct extends Structure {
 
-	  public int length;
-	  public DoubleByReference doubleArray;
+	  /** The length. */
+  	public int length;
+	  
+  	/** The double array. */
+  	public DoubleByReference doubleArray;
 	//  public static class ByReference extends DoubleArrayStruct implements Structure.ByReference { }
 	  
 
+	/**
+	 * Gets the array.
+	 *
+	 * @return the array
+	 */
 	public double[] getArray() {
 		
 		
