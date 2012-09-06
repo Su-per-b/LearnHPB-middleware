@@ -10,6 +10,8 @@ import com.sun.jna.Structure;
  */
 public class ScalarValueRealStruct extends Structure {
 	
+	public static class ByReference extends ScalarValueRealStruct implements Structure.ByReference { }
+	
 	/** The idx. */
 	public int idx;
 	
@@ -22,10 +24,9 @@ public class ScalarValueRealStruct extends Structure {
 	 *
 	 * @return the string
 	 */
-	public String getString() {
-		
-		
-		return "";
+	public String toString() {
+
+		return Double.toString(value);
 		
 	}
 	

@@ -14,9 +14,10 @@
 #include "TypeDefDataModel.h"
 #include "ScalarVariableCollection.h"
 #include "ScalarVariableDataModel.h"
-#include "ScalarValueDataModel.h"
+#include "ScalarValueResults.h"
 
 using namespace std;
+
 
 namespace Straylight
 {
@@ -31,14 +32,9 @@ namespace Straylight
 
 		void extract();
 
-		/*******************************************************//**
-		 * Gets result of step.
-		 *
-		 * @param	time	The time.
-		 *
-		 * @return	null if it fails, else the result of step.
-		 *******************************************************/
-		ResultOfStep* getResultOfStep(double time);
+
+
+
 
 		/*******************************************************//**
 		 * Sets scalar value real.
@@ -61,18 +57,37 @@ namespace Straylight
 		ScalarVariableDataModel * scalarVariableDataModel_;
 		void setScalarValues (ScalarValueRealStruct * scalarValueAry, int length);
 
+
+	/*******************************************************//**
+	 * Gets ScalarValueDataModel
+	 *
+	 * @param	time	The time value for this step of the simulation.
+	 *
+	 * @return	null if it fails, else the ScalarValueDataModel
+	 *******************************************************/
+	ScalarValueResults * getScalarValueResults(double time);
+
+
+
 	private:
 
+
 		/*******************************************************//**
-		 * Information describing the model.
+		 * The struct which contains most of the meta-data about the model
+		 * this is part of the Qtronic library
 		 *******************************************************/
 		ModelDescription* modelDescription_;
+
+		/*******************************************************//**
+		 * <summary>This value ISerializableused for debugging </summary>
+		 *******************************************************/
 		int maxInternalScalarVariables;
 
 		/*******************************************************//**
 		 * The fmu.
 		 *******************************************************/
 		FMU* fmu_;
+
 		fmiComponent fmiComponent_;
 	};
 };

@@ -11,42 +11,49 @@
 namespace Straylight
 {
 	/*******************************************************//**
-	 * Fm ulogger.
+	 * <summary> Fm ulogger.</summary>
+	 *
+	 * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
 	 *******************************************************/
 	class FMUlogger
 	{
-		//private member variables
-	private:
 
-		// public functions
 	public:
 
 		/*******************************************************//**
-		 * Default constructor.
+		 * <summary> Default constructor.</summary>
+		 *
+		 * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
 		 *******************************************************/
 		FMUlogger(void);
 
 		/*******************************************************//**
-		 * Destructor.
+		 * <summary> Destructor.</summary>
+		 *
+		 * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
 		 *******************************************************/
 		~FMUlogger(void);
 
 		/*******************************************************//**
-		 * Logs.
+		 * <summary> Logs.</summary>
 		 *
-		 * @param	c				The fmiComponent to process.
-		 * @param	instanceName	Name of the instance.
-		 * @param	status			The status.
-		 * @param	category		The category.
-		 * @param	message			The message.
+		 * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
+		 *
+		 * <param name="c">			   The fmiComponent to process.</param>
+		 * <param name="instanceName"> Name of the instance.</param>
+		 * <param name="status">	   The status.</param>
+		 * <param name="category">	   The category.</param>
+		 * <param name="message">	   The message.</param>
 		 *******************************************************/
 		static void log(fmiComponent c, fmiString instanceName, fmiStatus status,
 			fmiString category, fmiString message, ...);
 
 		/*******************************************************//**
-		 * Sets a fmu.
+		 * <summary> Sets a fmu.</summary>
 		 *
-		 * @param [in,out]	fmuArg	If non-null, the fmu argument.
+		 * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
+		 *
+		 * <param name="fmuArg"> [in,out] If non-null, the fmu argument.</param>
 		 *******************************************************/
 		static void setFMU(FMU* fmuArg);
 
@@ -54,37 +61,43 @@ namespace Straylight
 	private:
 
 		/*******************************************************//**
-		 * The fmu.
+		 * <summary> The fmu.</summary>
 		 *******************************************************/
 		static FMU * fmu; // the fmu to simulate
 
 		/*******************************************************//**
-		 * Fmi status to string.
+		 * <summary> Fmi status to string.</summary>
 		 *
-		 * @param	status	The status.
+		 * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
 		 *
-		 * @return	null if it fails, else.
+		 * <param name="status"> The status.</param>
+		 *
+		 * <returns> null if it fails, else.</returns>
 		 *******************************************************/
 		static const char* fmiStatusToString(fmiStatus status);
 
 		/*******************************************************//**
-		 * Gets a sv.
+		 * <summary> Gets a sv.</summary>
 		 *
-		 * @param [in,out]	fmu	If non-null, the fmu.
-		 * @param	type	   	The type.
-		 * @param	vr		   	The vr.
+		 * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
 		 *
-		 * @return	null if it fails, else the sv.
+		 * <param name="fmu">  [in,out] If non-null, the fmu.</param>
+		 * <param name="type"> The type.</param>
+		 * <param name="vr">   The vr.</param>
+		 *
+		 * <returns> null if it fails, else the sv.</returns>
 		 *******************************************************/
 		static ScalarVariable* getSV(FMU* fmu, char type, fmiValueReference vr);
 
 		/*******************************************************//**
-		 * Replace references in message.
+		 * <summary> Replace references in message.</summary>
 		 *
-		 * @param	msg			  	The message.
-		 * @param [in,out]	buffer	If non-null, the buffer.
-		 * @param	nBuffer		  	The buffer.
-		 * @param [in,out]	fmu   	If non-null, the fmu.
+		 * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
+		 *
+		 * <param name="msg">	  The message.</param>
+		 * <param name="buffer">  [in,out] If non-null, the buffer.</param>
+		 * <param name="nBuffer"> The buffer.</param>
+		 * <param name="fmu">	  [in,out] If non-null, the fmu.</param>
 		 *******************************************************/
 		static void replaceRefsInMessage(const char* msg, char* buffer, int nBuffer, FMU* fmu);
 	};

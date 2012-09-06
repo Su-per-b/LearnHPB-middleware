@@ -12,12 +12,30 @@
 
 namespace Straylight
 {
+
+
+
+
 	/*******************************************************//**
 	 * Collection of scalar values.
 	 *******************************************************/
 	class ScalarValueCollection
 	{
+	private:
+
+		vector<ScalarValueRealStruct*> real_;
+
+		vector<ScalarValueBooleanStruct*> boolean_;
+
 	public:
+
+		vector<ScalarValueRealStruct*> getReal() const { return real_; }
+		void setReal(vector<ScalarValueRealStruct*> val) { real_ = val; }
+
+		vector<ScalarValueBooleanStruct*> getBoolean() const { return boolean_; }
+		void setBoolean(vector<ScalarValueBooleanStruct*> val) { boolean_ = val; }
+
+
 
 		/*******************************************************//**
 		 * Default constructor.
@@ -30,20 +48,12 @@ namespace Straylight
 		 *
 		 * @return	null if it fails, else object converted to a structure.
 		 *******************************************************/
-		ScalarValueCollectionStruct * convertToStruct();
+		ScalarValueCollectionStruct * toStruct();
 
-		vector<ScalarValueRealStruct*> real;
-		vector<ScalarValueBooleanStruct*> boolean;
 
-		//vector<ScalarValueIntegerStruct*> integer;
-		//vector<ScalarValueEnumerationStruct*> enumeration;
-		//vector<ScalarValueStringStruct*> string;
 
 		ScalarValueRealStruct * getRealAsArray();
 		ScalarValueBooleanStruct * getBooleanAsArray();
-
-		//ScalarValueIntegerStruct * getIntegerAsArray();
-		//ScalarValueEnumerationStruct * getEnumerationAsArray();
-		//ScalarValueStringStruct * getStringAsArray();
+		void toString( std::string & stringRef);
 	};
 }

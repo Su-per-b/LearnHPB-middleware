@@ -24,9 +24,10 @@ namespace Straylight
 	 *******************************************************/
 	class MainController
 	{
-		//private member variables
+
 	private:
 
+				
 		/*******************************************************//**
 		 * Full pathname of the unzip folder file.
 		 *******************************************************/
@@ -43,9 +44,9 @@ namespace Straylight
 		char* dllFilePath_;
 
 		/*******************************************************//**
-		 * The fmu.
+		 * <summary> the Functional MOckup Unit to simulate </summary>
 		 *******************************************************/
-		FMU* fmu_;  // the fmu to simulate
+		FMU* fmu_;  
 
 		/*******************************************************//**
 		 * The time.
@@ -55,7 +56,7 @@ namespace Straylight
 		/*******************************************************//**
 		 * The fmi status.
 		 *******************************************************/
-		fmiStatus fmiStatus_;				// Zuo: add stauus for fmi
+		fmiStatus fmiStatus_;				
 
 		/*******************************************************//**
 		 * The steps.
@@ -65,7 +66,7 @@ namespace Straylight
 		/*******************************************************//**
 		 * The fmi component.
 		 *******************************************************/
-		fmiComponent fmiComponent_;                  // instance of the fmu
+		fmiComponent fmiComponent_;               
 
 		/*******************************************************//**
 		 * The is logging enabled.
@@ -89,7 +90,7 @@ namespace Straylight
 		 *
 		 * @param	parameter1	If non-null, the first parameter.
 		 *******************************************************/
-		void (*resultCallbackPtr_)(ResultOfStepStruct *);
+		void (*resultCallbackPtr_)(ScalarValueResultsStruct *);
 
 		/*******************************************************//**
 		 * The state.
@@ -120,10 +121,102 @@ namespace Straylight
 		 * The logger.
 		 *******************************************************/
 		Logger* logger_;
+		ScalarValueResults * scalarValueResults_;
 
-		// public functions
+
+
+		/*******************************************************//**
+		 * Loads dl lhelper.
+		 *
+		 * @param	parameter1	The first parameter.
+		 * @param	parameter2	If non-null, the second parameter.
+		 *
+		 * @return	The dl lhelper.
+		 *******************************************************/
+		int loadDLLhelper(const char* , FMU *);
+
+		/*******************************************************//**
+		 * Helper method that parse.
+		 *
+		 * @param	parameter1	The first parameter.
+		 *
+		 * @return	null if it fails, else.
+		 *******************************************************/
+		ModelDescription* parseHelper(const char*);
+
+		/*******************************************************//**
+		 * Gets XML file path.
+		 *
+		 * @return	null if it fails, else the XML file path.
+		 *******************************************************/
+		char* getXmlFilePath();
+
+		/*******************************************************//**
+		 * Gets the address.
+		 *
+		 * @param	parameter1	The first parameter.
+		 *
+		 * @return	null if it fails, else the address.
+		 *******************************************************/
+		void* getAdr(const char*);
+
+		/*******************************************************//**
+		 * Extracts the variables.
+		 *******************************************************/
+		void extractVariables();
+
+		/*******************************************************//**
+		 * Sets a state.
+		 *
+		 * @param	newState	State of the new.
+		 *******************************************************/
+		void setState_(SimStateNative newState);
+
+        /*******************************************************//**
+         * Executes the one step operation.
+         *
+         * @return	.
+         *******************************************************/
+        int doOneStep();
+
+		/*******************************************************//**
+		 * Executes the helper do step operation.
+		 *
+		 * @return	.
+		 *******************************************************/
+		int runHelperDoStep_();
+
+		/*******************************************************//**
+		 * Gets the instantiate slave.
+		 *
+		 * @return	.
+		 *******************************************************/
+		int instantiateSlave_();
+
+		/*******************************************************//**
+		 * Initializes the slave.
+		 *
+		 * @return	.
+		 *******************************************************/
+		int initializeSlave_();
+
+		/*******************************************************//**
+		 * Sets start values.
+		 *
+		 * @return	.
+		 *******************************************************/
+		int setStartValues_();
+
+		/*******************************************************//**
+		 * Sets state error.
+		 *
+		 * @param	message	The message.
+		 *******************************************************/
+		void setStateError_(const char * message);
+
 	public:
-
+				
+		
 		/*******************************************************//**
 		 * Default constructor.
 		 *******************************************************/
@@ -135,15 +228,26 @@ namespace Straylight
 		~MainController(void);
 
 		/*******************************************************//**
-		 * Connects the given message callback pointer.
+		 * <summary> Public accessor for scalarValueResults_ member variable</summary>
 		 *
-		 * @param	messageCallbackPtr	If non-null, the message callback pointer to connect.
+		 * <returns>Pointer to ScalarValueResults object</returns>
 		 *******************************************************/
-		void connect(
-			void (*messageCallbackPtr)(MessageStruct *),
-			void (*resultCallbackPtr)(ResultOfStepStruct *),
-			void (*stateChangeCallbackPtr)(SimStateNative )
-			);
+		ScalarValueResults * getScalarValueResults()  { return scalarValueResults_; }
+
+
+		ScalarValueResultsStruct * getTest();
+
+		/*******************************************************//**
+		 * <summary> This is the first function that must be called to start the simulamtion.</summary>
+		 *
+		 * <param name="messageCallbackPtr"> [in,out] If non-null, a pointer to a callback function
+		 * 									 which will be called when new messages are generated.</param>
+		 * <param name="resultCallbackPtr"> [in,out] If non-null, a pointer to a callback function
+		 * 									 which will be called when new results are generated.</param>
+		 * <param name="stateChangeCallbackPtr"> [in,out] If non-null, a pointer to a callback function
+		 * 									 which will be called when the systems state changes</param>
+		 *******************************************************/
+		void connect( void (*messageCallbackPtr)(MessageStruct *), void (*resultCallbackPtr)(ScalarValueResultsStruct *), void (*stateChangeCallbackPtr)(SimStateNative ) );
 
 		/*******************************************************//**
 		 * Request state change.
@@ -199,7 +303,7 @@ namespace Straylight
 		void printSummary();
 
 		/*******************************************************//**
-		 * Initialises this object.
+		 * Initializes this object.
 		 *
 		 * @return	.
 		 *******************************************************/
@@ -212,12 +316,6 @@ namespace Straylight
 		 *******************************************************/
 		void getModuleFolderPath(_TCHAR * szDir);
 
-		/*******************************************************//**
-		 * Gets result structure.
-		 *
-		 * @return	null if it fails, else the result structure.
-		 *******************************************************/
-		ResultOfStepStruct * getResultStruct();
 
 		/*******************************************************//**
 		 * Gets the state.
@@ -316,95 +414,8 @@ namespace Straylight
 		void setScalarValues (ScalarValueRealStruct * scalarValueAry, int length);
 
 		//private functions
-	private:
 
-		/*******************************************************//**
-		 * Loads dl lhelper.
-		 *
-		 * @param	parameter1	The first parameter.
-		 * @param	parameter2	If non-null, the second parameter.
-		 *
-		 * @return	The dl lhelper.
-		 *******************************************************/
-		int loadDLLhelper(const char* , FMU *);
 
-		/*******************************************************//**
-		 * Helper method that parse.
-		 *
-		 * @param	parameter1	The first parameter.
-		 *
-		 * @return	null if it fails, else.
-		 *******************************************************/
-		ModelDescription* parseHelper(const char*);
 
-		/*******************************************************//**
-		 * Gets XML file path.
-		 *
-		 * @return	null if it fails, else the XML file path.
-		 *******************************************************/
-		char* getXmlFilePath();
-
-		/*******************************************************//**
-		 * Gets the address.
-		 *
-		 * @param	parameter1	The first parameter.
-		 *
-		 * @return	null if it fails, else the address.
-		 *******************************************************/
-		void* getAdr(const char*);
-
-		/*******************************************************//**
-		 * Extracts the variables.
-		 *******************************************************/
-		void extractVariables();
-
-		/*******************************************************//**
-		 * Sets a state.
-		 *
-		 * @param	newState	State of the new.
-		 *******************************************************/
-		void setState_(SimStateNative newState);
-
-        /*******************************************************//**
-         * Executes the one step operation.
-         *
-         * @return	.
-         *******************************************************/
-        int doOneStep();
-
-		/*******************************************************//**
-		 * Executes the helper do step operation.
-		 *
-		 * @return	.
-		 *******************************************************/
-		int runHelperDoStep_();
-
-		/*******************************************************//**
-		 * Gets the instantiate slave.
-		 *
-		 * @return	.
-		 *******************************************************/
-		int instantiateSlave_();
-
-		/*******************************************************//**
-		 * Initializes the slave.
-		 *
-		 * @return	.
-		 *******************************************************/
-		int initializeSlave_();
-
-		/*******************************************************//**
-		 * Sets start values.
-		 *
-		 * @return	.
-		 *******************************************************/
-		int setStartValues_();
-
-		/*******************************************************//**
-		 * Sets state error.
-		 *
-		 * @param	message	The message.
-		 *******************************************************/
-		void setStateError_(const char * message);
 	};
 };

@@ -46,8 +46,25 @@ typedef struct  {
  *******************************************************/
 using namespace std;
 
+
+
+
+
 namespace Straylight
 {
+	class  ResultOfStep2
+	{
+	private:
+
+	public:
+
+
+		double time;
+
+
+	};
+
+
 	class  ResultOfStep
 	{
 	private:

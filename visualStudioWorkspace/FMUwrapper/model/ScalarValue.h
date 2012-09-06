@@ -14,15 +14,15 @@ using namespace std;
  *******************************************************/
 typedef struct ScalarValueStruct_ {
 	/*******************************************************//**
-	 * The index.
+	 * The index to 
 	 *******************************************************/
 	int idx;
 	const char * string;
 } ScalarValueStruct;
 
-/*******************************************************//**
- * Defines an alias representing the structure.
- * TODO: Can this converted to a class
+/*******************************************************
+ * Defines an alias representing the structure. to 
+ * TODO: Can this converted to a class to 
  *******************************************************/
 typedef struct  {
 	/*******************************************************//**
@@ -33,26 +33,16 @@ typedef struct  {
 } ScalarValueRealStruct;
 
 /*******************************************************//**
- * Defines an alias representing the structure.
+ * Defines an alias representing the structure.     
  *******************************************************/
 typedef struct  {
 	/*******************************************************//**
-	 * The index.
+	 * The index.  to
 	 *******************************************************/
 	int idx;
 	int value;
 } ScalarValueBooleanStruct;
 
-/*******************************************************//**
- * Defines an alias representing the structure.
- *******************************************************/
-typedef struct {
-	/*******************************************************//**
-	 * The real value.
-	 *******************************************************/
-	ScalarValueRealStruct * realValue;
-	ScalarValueBooleanStruct * booleanValue;
-} ScalarValueCollectionStruct;
 
 namespace Straylight
 {
@@ -64,8 +54,10 @@ namespace Straylight
 	public:
 		ScalarValue(int idx_local);
 		~ScalarValue(void);
+
 		string  getString();
 		fmiReal getRealNumber();
+		fmiBoolean getBoolean(void);
 
 		void setRealNumber(double value);
 

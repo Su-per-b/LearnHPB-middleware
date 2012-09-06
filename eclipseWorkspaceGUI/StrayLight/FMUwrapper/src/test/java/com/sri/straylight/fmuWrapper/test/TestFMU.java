@@ -21,6 +21,7 @@ import com.sri.straylight.fmuWrapper.event.SimStateServerNotify;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
 import com.sri.straylight.fmuWrapper.voManaged.ResultOfStep;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.SimStateServer;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 
@@ -181,11 +182,11 @@ public class TestFMU extends TestCase {
 		    String threadName = t.getName();
 		    
 		    assert (threadName.equals("name=AWT-EventQueue-0"));
-		    ResultOfStep resultOfStep = event.resultOfStep;
+		    ScalarValueResults resultOfStep = event.getScalarValueResults();
 		    
 
 		    
-		    String str1 = resultOfStep.inputToString();
+		    String str1 = resultOfStep.input.toString();
 		    System.out.println("input=" + str1);
 		    
 		    String str2 = resultOfStep.toString();

@@ -7,6 +7,12 @@
 
 namespace Straylight
 {
+
+
+
+
+
+
 	/*******************************************************//**
 	 * Scalar variable data model.
 	 *******************************************************/
@@ -25,11 +31,8 @@ namespace Straylight
 
 	private:
 
-		//vector<ScalarVariableRealStruct*> svVectorReal_;
-		//vector<ScalarVariableBooleanStruct*> svVectorBoolean_;
-		//vector<ScalarVariableIntegerStruct*> svVectorInteger_;
-		////vector<ScalarVariableEnumerationStruct*> svVectorEnumeration_;
-	//	vector<ScalarVariableStringStruct*> svVectorString_;
+
+
 	};
 
 /*******************************************************//**

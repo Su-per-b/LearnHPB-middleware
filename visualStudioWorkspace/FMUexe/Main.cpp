@@ -13,12 +13,18 @@ int _tmain(int argc, _TCHAR* argv[])
 	return 0;
 }
 
-void resultCallback(ResultOfStepStruct * resultOfStepStruct) {
-	 std::string str;
-	 resultOfStepStructToString(str, resultOfStepStruct);
+void resultCallback(ScalarValueResultsStruct * scalarValueResultsStruct) {
+	 
+	std::string str;
 
-	 printf ("result: %s \n", str.c_str());
+	//scalarValueResultsStruct->toString(str);
+
+
+	// resultOfStepStructToString(str, resultOfStepStruct);
+	// ScalarValueResultsStruct* result = getTest();
+	// printf ("result: %s \n", str.c_str());
 }
+
 
 void messageCallback(MessageStruct * messageStruct) {
 	//printf ("Main.exe messageCallback: %s \n", messageStruct->msgText);
@@ -103,31 +109,6 @@ void doubleToCommaString(char* buffer, double r){
 	if (comma) *comma = ',';
 }
 
-void resultOfStepStructToString(std::string & s, ResultOfStepStruct * resultOfStepStruct)
-{
-	std::stringstream ss;
-	ss << _T("Time: ") << resultOfStepStruct->time << _T("  - input:");
-
-	int len = resultOfStepStruct->inputLength;
-
-	for (int i = 0; i < len; i++)
-	{
-		double theDouble =  resultOfStepStruct->input[i];
-		ss << theDouble << _T(" ");
-	}
-
-	ss << _T("\n                    output:");
-
-	int len2 = resultOfStepStruct->outputLength;
-
-	for (int i = 0; i < len2; i++)
-	{
-		double theDouble =  resultOfStepStruct->output[i];
-		ss << theDouble << _T(" ");
-	}
-
-	s = ss.str();
-}
 
 void doubleToString(char* buffer, double x)
 {

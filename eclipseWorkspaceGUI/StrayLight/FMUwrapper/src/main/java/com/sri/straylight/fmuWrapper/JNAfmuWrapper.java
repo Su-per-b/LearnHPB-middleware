@@ -3,10 +3,12 @@
 package com.sri.straylight.fmuWrapper;
 
 
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.ResultOfStepStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
+import com.sri.straylight.fmuWrapper.voNative.ScalarValueResultsStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariablesAllStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sri.straylight.fmuWrapper.voNative.fmiStatus;
@@ -45,21 +47,7 @@ public interface JNAfmuWrapper extends Library {
 	 */
 	public int forceCleanup();
 	
-	//public ScalarVariableRealStruct getScalarVariableInputStructs();
-	//public ScalarVariableRealStruct getScalarVariableOutputStructs();
-	//public ScalarVariableRealStruct getScalarVariableInternalStructs();
-	
-	//public int getInputVariableCount();
-	//public int getOutputVariableCount();
-	//public int getInternalVariableCount();
-	
-	
-	//public ScalarVariableCollectionStruct  getScalarVariableCollectionStruct(); 
-	
-	
-	//public ScalarVariableRealStruct  testSVRealStruct();
-	//public ScalarVariableBooleanStruct  testSVBooleanStruct();
-	
+
 	/**
 	 * Gets the all scalar variables.
 	 *
@@ -164,7 +152,7 @@ public interface JNAfmuWrapper extends Library {
 		 * @param resultOfStepStruct the result of step struct
 		 * @return true, if successful
 		 */
-		public boolean resultCallback(ResultOfStepStruct resultOfStepStruct);
+		public boolean resultCallback(ScalarValueResultsStruct scalarValueResultsStruct);
 	 }
 	
 	/**
@@ -195,6 +183,12 @@ public interface JNAfmuWrapper extends Library {
 	public fmiStatus setScalarValueReal(int idx, double value);
 
 
+	
+	public ScalarValueResultsStruct  getTest();
+	
+	
+	
+	
 }
 
 

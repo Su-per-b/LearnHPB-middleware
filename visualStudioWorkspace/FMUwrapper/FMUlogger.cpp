@@ -4,40 +4,86 @@
 
 namespace Straylight
 {
+	#define MAX_MSG_SIZE 1000
+
 	/*******************************************************//**
-	 * The fm ulogger fmu.
+	 * <summary> The fmulogger fmu.</summary>
 	 *******************************************************/
 	FMU * FMUlogger::fmu;
 
 	/*******************************************************//**
-	 * Default constructor.
+	 * <summary> Default constructor.</summary>
+	 *
+	 * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
 	 *******************************************************/
 	FMUlogger::FMUlogger(void)
 	{
 	}
 
 	/*******************************************************//**
-	 * Destructor. Frees memory and releases FMU DLL.
+	 * <summary> Destructor.</summary>
+	 *
+	 * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
 	 *******************************************************/
 	FMUlogger::~FMUlogger(void)
 	{
 	}
 
 	/*******************************************************//**
-	 * Sets a fmu.
+	 * <summary> Logs.</summary>
 	 *
-	 * @param [in,out]	fmuArg	If non-null, the fmu argument.
+	 * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
+	 *
+	 * <param name="c">			   The fmiComponent to process.</param>
+	 * <param name="instanceName"> Name of the instance.</param>
+	 * <param name="status">	   The status.</param>
+	 * <param name="category">	   The category.</param>
+	 * <param name="message">	   The message.</param>
+	 *******************************************************/
+	void FMUlogger::log(fmiComponent c, fmiString instanceName, fmiStatus status,
+		fmiString category, fmiString message, ...) {
+			//printf("fmuLogger\n", 1);
+
+			char msg[MAX_MSG_SIZE];
+			char* copy;
+			va_list argp;
+
+			// Replace C format strings
+			va_start(argp, message);
+			vsprintf(msg, message, argp);
+
+			// Replace e.g. ## and #r12#
+			copy = strdup(msg);
+			replaceRefsInMessage(copy, msg, MAX_MSG_SIZE, fmu);
+			free(copy);
+
+			// Print the final message
+			if (!instanceName) instanceName = "?";
+			if (!category) category = "?";
+
+			Logger::instance->printDebug5("fmuLogger - status:%s - instanceName:%s - category:%s - msg:%s\n", fmiStatusToString(status), instanceName, category, msg);
+
+			//printf();
+	}
+	/*******************************************************//**
+	 * <summary> Sets a fmu.</summary>
+	 *
+	 * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
+	 *
+	 * <param name="fmuArg"> If non-null, the fmu argument.</param>
 	 *******************************************************/
 	void FMUlogger::setFMU(FMU* fmuArg) {
 		FMUlogger::fmu = fmuArg;
 	}
 
 	/*******************************************************//**
-	 * Fmi status to string.
+	 * <summary> Fmi status to string.</summary>
 	 *
-	 * @param	status	The status.
+	 * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
 	 *
-	 * @return	null if it fails, else.
+	 * <param name="status"> The status.</param>
+	 *
+	 * <returns> null if it fails, else.</returns>
 	 *******************************************************/
 	const char* FMUlogger::fmiStatusToString(fmiStatus status) {
 		switch (status){
@@ -52,13 +98,15 @@ namespace Straylight
 	}
 
 	/*******************************************************//**
-	 * Gets a sv.
+	 * <summary> Gets a sv.</summary>
 	 *
-	 * @param [in,out]	fmu	If non-null, the fmu.
-	 * @param	type	   	The type.
-	 * @param	vr		   	The vr.
+	 * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
 	 *
-	 * @return	null if it fails, else the sv.
+	 * <param name="fmu">  If non-null, the fmu.</param>
+	 * <param name="type"> The type.</param>
+	 * <param name="vr">   The vr.</param>
+	 *
+	 * <returns> null if it fails, else the sv.</returns>
 	 *******************************************************/
 	ScalarVariable* FMUlogger::getSV(FMU* fmu, char type, fmiValueReference vr) {
 		int i;
@@ -66,10 +114,10 @@ namespace Straylight
 		ScalarVariable** vars = fmu->modelDescription->modelVariables;
 		if (vr==fmiUndefinedValueReference) return NULL;
 		switch (type) {
-			case 'r': tp = elm_Real;    break;
-			case 'i': tp = elm_Integer; break;
-			case 'b': tp = elm_Boolean; break;
-			case 's': tp = elm_String;  break;
+		case 'r': tp = elm_Real;    break;
+		case 'i': tp = elm_Integer; break;
+		case 'b': tp = elm_Boolean; break;
+		case 's': tp = elm_String;  break;
 		}
 		for (i=0; vars[i]; i++) {
 			ScalarVariable* sv = vars[i];
@@ -80,12 +128,14 @@ namespace Straylight
 	}
 
 	/*******************************************************//**
-	 * Replace references in message.
+	 * <summary> Replace references in message.</summary>
 	 *
-	 * @param	msg			  	The message.
-	 * @param [in,out]	buffer	If non-null, the buffer.
-	 * @param	nBuffer		  	The buffer.
-	 * @param [in,out]	fmu   	If non-null, the fmu.
+	 * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
+	 *
+	 * <param name="msg">	  The message.</param>
+	 * <param name="buffer">  If non-null, the buffer.</param>
+	 * <param name="nBuffer"> The buffer.</param>
+	 * <param name="fmu">	  If non-null, the fmu.</param>
 	 *******************************************************/
 	void FMUlogger::replaceRefsInMessage(const char* msg, char* buffer, int nBuffer, FMU* fmu) {
 		int i=0; // position in msg
@@ -137,43 +187,4 @@ namespace Straylight
 		buffer[k] = '\0';
 	}
 
-/*******************************************************//**
- * A macro that defines maximum message size.
- *******************************************************/
-#define MAX_MSG_SIZE 1000
-
-	/*******************************************************//**
-	 * Logs.
-	 *
-	 * @param	c				The fmiComponent to process.
-	 * @param	instanceName	Name of the instance.
-	 * @param	status			The status.
-	 * @param	category		The category.
-	 * @param	message			The message.
-	 *******************************************************/
-	void FMUlogger::log(fmiComponent c, fmiString instanceName, fmiStatus status,
-		fmiString category, fmiString message, ...) {
-			//printf("fmuLogger\n", 1);
-
-			char msg[MAX_MSG_SIZE];
-			char* copy;
-			va_list argp;
-
-			// Replace C format strings
-			va_start(argp, message);
-			vsprintf(msg, message, argp);
-
-			// Replace e.g. ## and #r12#
-			copy = strdup(msg);
-			replaceRefsInMessage(copy, msg, MAX_MSG_SIZE, fmu);
-			free(copy);
-
-			// Print the final message
-			if (!instanceName) instanceName = "?";
-			if (!category) category = "?";
-
-			Logger::instance->printDebug5("fmuLogger - status:%s - instanceName:%s - category:%s - msg:%s\n", fmiStatusToString(status), instanceName, category, msg);
-
-			//printf();
-	}
 }

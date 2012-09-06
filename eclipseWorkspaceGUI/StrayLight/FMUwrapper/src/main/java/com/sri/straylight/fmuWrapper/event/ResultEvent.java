@@ -2,7 +2,7 @@ package com.sri.straylight.fmuWrapper.event;
 
 import java.util.EventObject;
 
-import com.sri.straylight.fmuWrapper.voManaged.ResultOfStep;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 
 
 
@@ -17,17 +17,23 @@ public class ResultEvent extends EventObject {
 	private static final long serialVersionUID = 1L;
 	
 	/** The result of step. */
-	public ResultOfStep resultOfStep;
-	//public String resultString ="";
+	private ScalarValueResults scalarValueResults_;
 	
-    //here's the constructor
+    public ScalarValueResults getScalarValueResults() {
+		return scalarValueResults_;
+	}
+
+
     /**
 	 * Instantiates a new result event.
 	 *
 	 * @param source the source
+     * @param scalarValueResults 
 	 */
-	public ResultEvent(Object source) {
+	public ResultEvent(Object source, ScalarValueResults scalarValueResults) {
         super(source);
+        
+        scalarValueResults_ = scalarValueResults;
     }
     
     

@@ -13,6 +13,7 @@ import javax.swing.ScrollPaneConstants;
 import com.sri.straylight.client.controller.InputDetailController;
 import com.sri.straylight.client.event.ScalarValueChangeRequest;
 import com.sri.straylight.fmuWrapper.voManaged.ResultOfStep;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueBooleanStruct;
@@ -167,12 +168,12 @@ public class InputDetailView extends JPanel  {
 	/**
 	 * Sets the result.
 	 *
-	 * @param resultOfStep the new result
+	 * @param scalarValueResults the new result
 	 */
-	public void setResult(ResultOfStep resultOfStep) {
+	public void setResult(ScalarValueResults scalarValueResults) {
 
 		
-		Vector<String> valueList = resultOfStep.getInputList();
+		Vector<String> valueList = scalarValueResults.input.getStringList();
 		int len = valueList.size();
 		
 		for (int i = 0; i < len; i++) {

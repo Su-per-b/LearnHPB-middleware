@@ -82,7 +82,7 @@ public class ResultsFormController extends AbstractController {
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
 
-		Vector<String> resultOutput = event.resultOfStep.getOutputList();
+		Vector<String> resultOutput = event.getScalarValueResults().output.getStringList();
 		
 		int len = resultOutput.size();
 		

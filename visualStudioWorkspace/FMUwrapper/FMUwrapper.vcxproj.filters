@@ -48,9 +48,6 @@
     <ClInclude Include=".\model\UnitDefFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include=".\model\MainDataModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include=".\model\structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -93,10 +90,13 @@
     <ClInclude Include=".\model\ScalarValueCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include=".\model\ScalarValueDataModel.h">
+    <ClInclude Include="controller\MainController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="controller\MainController.h">
+    <ClInclude Include="model\MainDataModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="model\ScalarValueResults.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -155,10 +155,10 @@
     <ClCompile Include=".\model\ScalarValueCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include=".\model\ScalarValueDataModel.cpp">
+    <ClCompile Include="controller\MainController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="controller\MainController.cpp">
+    <ClCompile Include="model\ScalarValueResults.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

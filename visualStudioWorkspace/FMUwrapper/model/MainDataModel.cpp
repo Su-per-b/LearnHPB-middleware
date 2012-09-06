@@ -31,30 +31,6 @@ namespace Straylight
 		scalarVariableDataModel_->extract(fmu_->modelDescription->modelVariables);
 	}
 
-	/*******************************************************//**
-	 * Gets result of step.
-	 *
-	 * @param	time	The time.
-	 *
-	 * @return	null if it fails, else the result of step.
-	 *******************************************************/
-	ResultOfStep * MainDataModel::getResultOfStep(double time)
-	{
-		//scalarVariableDataModel_->extract(time);
-
-		ResultOfStep * resultOfStep = new ResultOfStep(time);
-		resultOfStep->extractValues(scalarVariableDataModel_->svOutput_->real, enu_output);
-		resultOfStep->extractValues(scalarVariableDataModel_->svInput_->real, enu_input);
-
-		ScalarValueDataModel * scalarValueDataModel = new ScalarValueDataModel(time);
-
-		scalarValueDataModel->extract(scalarVariableDataModel_->svInput_, enu_input);
-		scalarValueDataModel->extract(scalarVariableDataModel_->svOutput_, enu_output);
-
-		//resultOfStep->extractValues(scalarVariableDataModel_->svInput_, enu_input);
-
-		return resultOfStep;
-	}
 
 	/*******************************************************//**
 	 * Sets scalar value real.
@@ -141,6 +117,8 @@ namespace Straylight
 		}
 	}
 
+
+
 	/*******************************************************//**
 	 * Sets scalar values.
 	 *
@@ -160,4 +138,20 @@ namespace Straylight
 			}
 		}
 	}
+
+
+
+	/*******************************************************//**
+	 * <summary> Gets scalar value results.</summary>
+	 *
+	 * <param name="time"> The time.</param>
+	 *
+	 * <returns> null if it fails, else the scalar value results.</returns>
+	 *******************************************************/
+	ScalarValueResults * MainDataModel::getScalarValueResults(double time)
+	{
+		ScalarValueResults * scalarValueResults = new ScalarValueResults(time, scalarVariableDataModel_);
+		return scalarValueResults;
+	}
+
 }

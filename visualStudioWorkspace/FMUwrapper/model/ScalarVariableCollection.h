@@ -5,6 +5,22 @@
 
 namespace Straylight
 {
+
+
+/*******************************************************//**
+* This struct is used to 
+ *******************************************************/
+typedef struct {
+
+	ScalarValueRealStruct * realValue;
+	int realSize;
+
+	ScalarValueBooleanStruct * booleanValue;
+	int booleanSize;
+
+} ScalarValueCollectionStruct;
+
+
 	/*******************************************************//**
 	 * <summary> Collection of scalar variables. This is essentially for storing Meta-Data 
 	 * 			 describing the input and output values</summary>
@@ -16,12 +32,12 @@ namespace Straylight
 	public:
 
 		/*******************************************************//**
-		 * Default constructor.
+		 * Default constructor t
 		 *******************************************************/
 		ScalarVariableCollection(void);
 
 		/*******************************************************//**
-		 * Destructor.
+		 * Destructor 
 		 *******************************************************/
 		~ScalarVariableCollection(void);
 
@@ -90,7 +106,7 @@ namespace Straylight
 		 *
 		 * @return	null if it fails, else object converted to a structure.
 		 *******************************************************/
-		ScalarVariableCollectionStruct * convertToStruct();
+		ScalarVariableCollectionStruct * toStruct();
 
 
 

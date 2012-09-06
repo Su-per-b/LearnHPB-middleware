@@ -18,6 +18,7 @@ import com.sri.straylight.client.event.SimStateRequest;
 import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 
 
 // TODO: Auto-generated Javadoc
@@ -91,7 +92,10 @@ public class DebugConsoleController  extends AbstractController {
 	 */
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
-		outputText (event.resultOfStep.toString());
+		
+		ScalarValueResults scalarValueResults = event.getScalarValueResults();
+		
+		outputText (scalarValueResults.toString());
 	}
 	
 

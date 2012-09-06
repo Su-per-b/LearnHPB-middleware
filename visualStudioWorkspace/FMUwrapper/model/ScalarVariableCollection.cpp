@@ -21,7 +21,8 @@ namespace Straylight
 	 *
 	 * @return	null if it fails, else object converted to a structure.
 	 *******************************************************/
-	ScalarVariableCollectionStruct * ScalarVariableCollection::convertToStruct() {
+	ScalarVariableCollectionStruct * ScalarVariableCollection::toStruct()
+	{
 		ScalarVariableCollectionStruct * svStruct = new ScalarVariableCollectionStruct();
 
 		svStruct->realValue = getRealAsArray();

@@ -77,6 +77,16 @@ namespace Straylight
 		return realNumber;
 	}
 
+	fmiBoolean ScalarValue::getBoolean(void)
+	{
+		fmiBoolean booleanValue;
+		status_ =  fmu_->getBoolean(fmiComponent_, &valueReference_, 1, &booleanValue);
+
+		return booleanValue;
+	}
+
+
+
 	/*******************************************************//**
 	 * Sets real number.
 	 *

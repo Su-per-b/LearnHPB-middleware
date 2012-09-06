@@ -88,9 +88,9 @@ ScalarVariablesAllStruct * getAllScalarVariables() {
 	Straylight::MainDataModel * model = mainController->getMainDataModel();
 
 	ScalarVariablesAllStruct * allScalarVariables = new ScalarVariablesAllStruct();
-	allScalarVariables->input = model->scalarVariableDataModel_->svInput_->convertToStruct();
-	allScalarVariables->output = model->scalarVariableDataModel_->svOutput_->convertToStruct();
-	allScalarVariables->internal = model->scalarVariableDataModel_->svInternal_->convertToStruct();
+	allScalarVariables->input = model->scalarVariableDataModel_->svInput_->toStruct();
+	allScalarVariables->output = model->scalarVariableDataModel_->svOutput_->toStruct();
+	allScalarVariables->internal = model->scalarVariableDataModel_->svInternal_->toStruct();
 
 	return allScalarVariables;
 }
@@ -111,7 +111,7 @@ int isSimulationComplete () {
  *******************************************************/
 void connect (
 	void (*messageCallbackPtr)(MessageStruct *),
-	void (*resultCallbackPtr)(ResultOfStepStruct *),
+	void (*resultCallbackPtr)(ScalarValueResultsStruct *),
 	void (*stateChangeCallbackPtr)(SimStateNative )
 	)
 {
@@ -144,15 +144,6 @@ int init ()
 	return mainController->init();
 }
 
-/*******************************************************//**
- * Gets result structure.
- *
- * @return	null if it fails, else the result structure.
- *******************************************************/
-ResultOfStepStruct * getResultStruct ()
-{
-	return mainController->getResultStruct();
-}
 
 /*******************************************************//**
  * Sets scalar value real.
@@ -185,3 +176,18 @@ void setScalarValues (ScalarValueRealStruct * scalarValueAry , int length) {
 
 		mainController->setScalarValues(scalarValueAry,length);
 }
+
+
+ScalarValueResults * getScalarValueResults()
+{
+	return mainController->getScalarValueResults();
+}
+
+
+extern "C" DllExport ScalarValueResultsStruct* getTest()
+{
+
+	return mainController->getTest();
+
+}
+

@@ -14,6 +14,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.voManaged.ResultOfStep;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -37,14 +38,19 @@ JsonSerializer<ResultEvent>, JsonDeserializer<ResultEvent> {
         
         //result.add("resultString", new JsonPrimitive(src.resultString));
         
+        
+        ScalarValueResults scalarValueResults = src.getScalarValueResults();
+        
         result.add(
         		"resultItem", 
-        		context.serialize(src.resultOfStep, src.resultOfStep.getClass())
+        		context.serialize(scalarValueResults, scalarValueResults.getClass())
         		);
         
         
         return result;
     }
+	
+	
     
     
     
@@ -60,13 +66,12 @@ JsonSerializer<ResultEvent>, JsonDeserializer<ResultEvent> {
         throws JsonParseException {
     	
         JsonObject jsonObject = jsonElement.getAsJsonObject();
-        
         JsonElement element = jsonObject.get("resultItem");
-        ResultEvent resultEvent = new ResultEvent(this);
         
-        //resultEvent.resultString = jsonObject.get("resultString").getAsString();
+        ScalarValueResults scalarValueResults = context.deserialize(element,ScalarValueResults.class);
         
-        resultEvent.resultOfStep = context.deserialize(element,ResultOfStep.class);
+        ResultEvent resultEvent = new ResultEvent(this, scalarValueResults);
+        
         
         return resultEvent;
 

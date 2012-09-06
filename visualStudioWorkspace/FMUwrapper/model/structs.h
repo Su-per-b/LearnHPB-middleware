@@ -153,6 +153,7 @@ typedef struct {
 	const char * declaredType;
 } TypeSpecEnumeration;
 
+
 /*******************************************************//**
  * Defines an alias representing the structure.
  *******************************************************/

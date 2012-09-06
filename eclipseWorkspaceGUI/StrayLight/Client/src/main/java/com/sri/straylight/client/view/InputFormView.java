@@ -185,9 +185,7 @@ public class InputFormView extends JPanel {
 	 */
 	public void newResult(Vector<String> resultInput) {
 
-		
 		resultInputAry_ = resultInput;
-		
 		int len = resultInput.size();
 
 

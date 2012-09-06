@@ -15,6 +15,7 @@ import com.sri.straylight.client.model.ClientConfigXML;
 import com.sri.straylight.client.model.InputFormDataModel;
 import com.sri.straylight.client.view.InputFormView;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 
 // TODO: Auto-generated Javadoc
@@ -80,13 +81,13 @@ public class InputFormController extends AbstractController {
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
 
-		Vector<String> resultInput = event.resultOfStep.getInputList();
-		int len = resultInput.size();
 		
-		 double[] resultInputAry_ = event.resultOfStep.getInput();
-		 InputFormView theView = (InputFormView) this.getView();
+		ScalarValueResults scalarValueResults = event.getScalarValueResults();
+		
+		Vector<String> stringList = scalarValueResults.input.getStringList();
+		InputFormView theView = (InputFormView) this.getView();
 		 
-		 theView.newResult(resultInput);
+		 theView.newResult(stringList);
 		 
 	}
 	

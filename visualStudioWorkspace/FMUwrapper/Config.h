@@ -8,30 +8,45 @@
 #include "stdafx.h"
 
 /*******************************************************//**
- * Defines an alias representing the default experiment structure.
+ * <summary> Defines an alias representing the default experiment structure.</summary>
+ *
+ * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
  *******************************************************/
 typedef struct DefaultExperimentStruct_ {
+
 	/*******************************************************//**
-	 * The start time.
+	 * <summary> The start time.</summary>
 	 *******************************************************/
 	double startTime;
+
+	/*******************************************************//**
+	 * <summary> Time of the stop.</summary>
+	 *******************************************************/
 	double stopTime;
 
 	/*******************************************************//**
-	 * The tolerance.
+	 * <summary> The tolerance.</summary>
 	 *******************************************************/
 	double tolerance;
 
-/*******************************************************//**
- * The default experiment structure.
- *******************************************************/
+
 } DefaultExperimentStruct;
 
+/*******************************************************//**
+ * <summary> Defines an alias representing the structure.</summary>
+ *
+ * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
+ *******************************************************/
 typedef struct {
+
 	/*******************************************************//**
-	 * The default experiment structure.
+	 * <summary> The default experiment structure.</summary>
 	 *******************************************************/
 	DefaultExperimentStruct * defaultExperimentStruct;
+
+	/*******************************************************//**
+	 * <summary> The step delta.</summary>
+	 *******************************************************/
 	double stepDelta;
 } ConfigStruct;
 
@@ -40,7 +55,9 @@ using namespace std;
 namespace Straylight
 {
 	/*******************************************************//**
-	 * Configuration.
+	 * <summary> Configuration.</summary>
+	 *
+	 * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
 	 *******************************************************/
 	class Config
 	{

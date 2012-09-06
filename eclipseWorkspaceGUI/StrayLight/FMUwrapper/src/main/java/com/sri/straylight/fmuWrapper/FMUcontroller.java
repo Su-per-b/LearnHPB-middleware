@@ -19,6 +19,8 @@ import com.sri.straylight.fmuWrapper.event.SimStateServerNotify;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
 import com.sri.straylight.fmuWrapper.voManaged.ResultOfStep;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
 import com.sri.straylight.fmuWrapper.voManaged.SimStateServer;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
@@ -26,9 +28,9 @@ import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.EnumTypeMapper;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.ResultOfStepStruct;
+import com.sri.straylight.fmuWrapper.voNative.ScalarValueCollectionStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
-import com.sri.straylight.fmuWrapper.voNative.ScalarValueStruct;
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
+import com.sri.straylight.fmuWrapper.voNative.ScalarValueResultsStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariablesAllStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sri.straylight.fmuWrapper.voNative.fmiStatus;
@@ -86,7 +88,7 @@ public class FMUcontroller  {
 	}
 	
 	/**
-	 * Instantiates a new fM ucontroller.
+	 * Instantiates a new FMUcontroller.
 	 */
 	public FMUcontroller() {
 		fmuWrapperConfig_ = FMUwrapperConfig.load();
@@ -133,13 +135,15 @@ public class FMUcontroller  {
 	private JNAfmuWrapper.ResultCallbackInterface resultCallbackFunc_ = 
 			new JNAfmuWrapper.ResultCallbackInterface() {
 
-		public boolean resultCallback(ResultOfStepStruct resultOfStepStruct) {
+		public boolean resultCallback(ScalarValueResultsStruct scalarValueResultsStruct) {
 			
+			//ScalarValueResultsStruct res = jnaFMUWrapper_.getTest();
+			ScalarValueResults scalarValueResults = new ScalarValueResults(scalarValueResultsStruct);
 			
-			ResultOfStep resultOfStep = new ResultOfStep (resultOfStepStruct);
+			//ResultOfStep resultOfStep = new ResultOfStep (resultOfStepStruct);
 
-			ResultEvent event = new ResultEvent(this);
-			event.resultOfStep = resultOfStep;
+			ResultEvent event = new ResultEvent(this, scalarValueResults);
+		//	event.resultOfStep = resultOfStep;
 			
 			EventBus.publish(event);
 			return true;                  
@@ -267,11 +271,8 @@ public class FMUcontroller  {
 	 * @throws Exception the exception
 	 */
 	public void connect() throws IOException {
-
 		
 		checkConfig();
-		
-		
 		
 		//System.setProperty("java.library.path", "fmuWrapperConfig_.nativeLibFolderAbsolutePath");
 		System.setProperty("jna.library.path", fmuWrapperConfig_.nativeLibFolderAbsolutePath);

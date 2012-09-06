@@ -72,7 +72,7 @@ public class InputDetailController extends AbstractController {
 
 		
 		InputDetailView theView = (InputDetailView) this.getView();
-		theView.setResult( event.resultOfStep );
+		theView.setResult( event.getScalarValueResults() );
 		
 		
 		

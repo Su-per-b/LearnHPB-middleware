@@ -14,6 +14,7 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 
 
@@ -95,12 +96,13 @@ public class ResultsTableController extends AbstractController {
 	 */
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
-
-		Vector<String> resultOuput = event.resultOfStep.getOutputList();
 		
-		double time = event.resultOfStep.getTime();
+		ScalarValueResults scalarValueResults = event.getScalarValueResults();
+		
+		Vector<String> resultOuput = scalarValueResults.output.getStringList();
+		double time = event.getScalarValueResults().getTime();
+		
 		resultOuput.insertElementAt(Double.toString(time), 0);
-				
 		dataModel_.insertRow(0,resultOuput);
 	}
 	

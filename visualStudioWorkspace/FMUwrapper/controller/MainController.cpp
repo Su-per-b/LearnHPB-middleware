@@ -20,17 +20,14 @@
 
 namespace Straylight
 {
-	/*******************************************************//**
-	 * Default constructor.
-	 *******************************************************/
+
 	MainController::MainController()
 	{
 		logger_ = new Logger();
+
 	}
 
-	/*******************************************************//**
-	 * Destructor. Frees memory and releases FMU DLL.
-	 *******************************************************/
+
 	MainController::~MainController(void)
 	{
 		printf(_T("executing deconstructor"));
@@ -50,18 +47,9 @@ namespace Straylight
 		delete Logger::instance;
 	}
 
-	/*******************************************************//**
-	 * Connects the given message callback pointer.
-	 *
-	 * @param	messageCallbackPtr	If non-null, the message callback pointer to connect.
-	 *
-	 * @return	.
-	 *******************************************************/
-	void MainController:: connect(
-		void (*messageCallbackPtr)(MessageStruct *),
-		void (*resultCallbackPtr)(ResultOfStepStruct *),
-		void (*stateChangeCallbackPtr)(SimStateNative )
-		) {
+
+	void MainController::connect( void (*messageCallbackPtr)(MessageStruct *), void (*resultCallbackPtr)(ScalarValueResultsStruct *), void (*stateChangeCallbackPtr)(SimStateNative ) )
+	{
 			fmu_ = new FMU();
 			Logger::instance->registerMessageCallback(messageCallbackPtr);
 
@@ -104,16 +92,12 @@ namespace Straylight
 				nSteps_ = 0;
 
 				int result3 = initializeSlave_();
-				//int result4 = setStartValues_();
-				//setState_(simStateNative_2_xmlParse_completed);
-				//setState_(simStateNative_3_init_initializedSlaves);
 
 				mainDataModel_->setStartValues();
 				setState_(simStateNative_7_reset_completed);
 
-				resultOfStep_ = mainDataModel_->getResultOfStep(time_);
-				ResultOfStepStruct *  resultOfStepStruct = resultOfStep_->toStruct();
-				resultCallbackPtr_(resultOfStepStruct);
+				ScalarValueResults * scalarValueResults = mainDataModel_->getScalarValueResults(time_);
+				resultCallbackPtr_(scalarValueResults->toStruct());
 
 				setState_(simStateNative_3_ready);
 			}
@@ -482,17 +466,26 @@ namespace Straylight
 	 *
 	 * @return	.
 	 *******************************************************/
+	
 	int MainController::setStartValues_() {
 		mainDataModel_->setStartValues();
-		resultOfStep_ = mainDataModel_->getResultOfStep(time_);
 
-		ResultOfStepStruct *  resultOfStepStruct = resultOfStep_->toStruct();
-		resultCallbackPtr_(resultOfStepStruct);
+	//	resultOfStep_ = mainDataModel_->getResultOfStep(time_);
+
+		scalarValueResults_ = mainDataModel_->getScalarValueResults(time_);
+
+		ScalarValueResultsStruct *  scalarValueResultsStruct = scalarValueResults_->toStruct();
+		resultCallbackPtr_(scalarValueResultsStruct);
 
 		setState_( simStateNative_3_ready );
 
 		return 0;
 	}
+
+
+
+
+
 
 	/*******************************************************//**
 	 * Gets the is simulation complete.
@@ -516,8 +509,9 @@ namespace Straylight
 			}
 
 			runHelperDoStep_();
-			ResultOfStepStruct *  resultOfStepStruct = getResultStruct();
-			resultCallbackPtr_(resultOfStepStruct);
+
+			//ScalarValueResultsStruct *  scalarValueResultsStruct = getResultStruct();
+			resultCallbackPtr_(scalarValueResults_->toStruct());
 		}
 
 		if (state_ == simStateNative_5_stop_requested) {
@@ -542,14 +536,6 @@ namespace Straylight
 		return getDescription(fmu_->modelDescription,  sv );
 	}
 
-	/*******************************************************//**
-	 * Gets result structure.
-	 *
-	 * @return	null if it fails, else the result structure.
-	 *******************************************************/
-	ResultOfStepStruct * MainController::getResultStruct() {
-		return resultOfStep_->toStruct();
-	}
 
 	/*******************************************************//**
 	 * Print summary.
@@ -587,11 +573,17 @@ namespace Straylight
 		}
 
 		time_ = min(time_+getStepDelta(), getStopTime());
-		resultOfStep_ = mainDataModel_->getResultOfStep(time_);
+
+	//	resultOfStep_ = mainDataModel_->getResultOfStep(time_);
+		scalarValueResults_ = mainDataModel_->getScalarValueResults(time_);
+
+		
 
 		nSteps_++;
 		return 0;
 	}
+
+
 
 	/*******************************************************//**
 	 * Executes the one step operation.
@@ -614,8 +606,7 @@ namespace Straylight
 		if(result) {
 			return 1;
 		} else {
-			ResultOfStepStruct *  resultOfStepStruct = getResultStruct();
-			resultCallbackPtr_(resultOfStepStruct);
+			resultCallbackPtr_(scalarValueResults_->toStruct());
 			return 0;
 		}
 	}
@@ -660,4 +651,14 @@ namespace Straylight
 			mainDataModel_->setScalarValues(scalarValueAry, length);
 		}
 	}
+
+	ScalarValueResultsStruct * MainController::getTest()
+	{
+
+		ScalarValueResults * scalarValueResults = mainDataModel_->getScalarValueResults(time_);
+		ScalarValueResultsStruct * res = scalarValueResults->toStruct();
+
+		return res;
+	}
+
 }
