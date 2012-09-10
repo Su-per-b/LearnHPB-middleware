@@ -61,7 +61,7 @@ namespace Straylight
 			if (!instanceName) instanceName = "?";
 			if (!category) category = "?";
 
-			Logger::instance->printDebug5("fmuLogger - status:%s - instanceName:%s - category:%s - msg:%s\n", fmiStatusToString(status), instanceName, category, msg);
+			Logger::getInstance()->printDebug5("fmuLogger - status:%s - instanceName:%s - category:%s - msg:%s\n", fmiStatusToString(status), instanceName, category, msg);
 
 			//printf();
 	}

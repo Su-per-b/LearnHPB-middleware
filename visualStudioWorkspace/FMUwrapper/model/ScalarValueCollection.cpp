@@ -59,9 +59,9 @@ namespace Straylight
 
 		for(int i=0; i<real_.size(); i++){
 		   ScalarValueRealStruct * realStruct = real_[i];  //Copy the vector to the string
-		   sstream << realStruct->value;
-
+		   sstream << realStruct->value << _T(" ");
 		}
+
 
 		stringRef = sstream.str();
 

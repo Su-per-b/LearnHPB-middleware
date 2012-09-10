@@ -11,6 +11,7 @@ import java.util.Vector;
 
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
+import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
@@ -18,8 +19,6 @@ import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateServerNotify;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
-import com.sri.straylight.fmuWrapper.voManaged.ResultOfStep;
-import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
 import com.sri.straylight.fmuWrapper.voManaged.SimStateServer;
@@ -27,8 +26,6 @@ import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.EnumTypeMapper;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
-import com.sri.straylight.fmuWrapper.voNative.ResultOfStepStruct;
-import com.sri.straylight.fmuWrapper.voNative.ScalarValueCollectionStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueResultsStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariablesAllStruct;
@@ -140,10 +137,8 @@ public class FMUcontroller  {
 			//ScalarValueResultsStruct res = jnaFMUWrapper_.getTest();
 			ScalarValueResults scalarValueResults = new ScalarValueResults(scalarValueResultsStruct);
 			
-			//ResultOfStep resultOfStep = new ResultOfStep (resultOfStepStruct);
-
 			ResultEvent event = new ResultEvent(this, scalarValueResults);
-		//	event.resultOfStep = resultOfStep;
+			//ResultEvent event = new ResultEvent(this);
 			
 			EventBus.publish(event);
 			return true;                  
@@ -239,6 +234,7 @@ public class FMUcontroller  {
 	public void init() {
 		jnaFMUWrapper_.init();
 		//notifyStateChange_(SimStateServer.simStateServer_3_init_completed);
+		notifyStateChange_(SimStateServer.simStateServer_3_ready); 
 	}
 
 
@@ -389,6 +385,15 @@ public class FMUcontroller  {
 
 
 	
+	@EventSubscriber(eventClass=ResultEvent.class)
+	public void onResultEvent(ResultEvent event) {
+
+
+		ScalarValueResults scalarValueResults = event.getScalarValueResults();
+		
+		int x = 0;
+		
+	}
 
 	
 

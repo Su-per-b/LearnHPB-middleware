@@ -33,7 +33,7 @@ typedef struct {
 	 * instantiated.
 	 * TODO: refactor this class to use HASH, MAP or Polymorphism
 	 *******************************************************/
-	class ScalarValueResults
+	class DllApi ScalarValueResults
 	{
 	public:
 
@@ -49,19 +49,12 @@ typedef struct {
 		 *******************************************************/
 		~ScalarValueResults(void);
 
-
-
 		void extractAll(ScalarVariableDataModel* pScalarVariableDataModel_);
-
-
 		ScalarValueCollection * getScalarValueCollectionInput() const { return scalarValueCollectionInput_; }
-
 		ScalarValueCollection * getScalarValueCollectionOutput() const { return scalarValueCollectionOutput_; }
-
 		ScalarValueResultsStruct *  toStruct();
 
-
-		void toString(std::string & s);
+		void toString(char* buffer, int len);
 
 	private:
 
@@ -69,8 +62,6 @@ typedef struct {
 		 * <summary>Creates the scalarValueCollection objects.</summary>
 		 *******************************************************/
 		void extract();
-
-
 
 		/*******************************************************//**
 		 * Extracts the real.

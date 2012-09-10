@@ -22,7 +22,7 @@ namespace Straylight
 	/*******************************************************//**
 	 * Main controller.
 	 *******************************************************/
-	class MainController
+	 class DllApi MainController
 	{
 
 	private:
@@ -36,7 +36,7 @@ namespace Straylight
 		/*******************************************************//**
 		 * Full pathname of the XML file.
 		 *******************************************************/
-		char* xmlFilePath_;
+		const char* xmlFilePath_;
 
 		/*******************************************************//**
 		 * Full pathname of the DLL file.
@@ -92,6 +92,9 @@ namespace Straylight
 		 *******************************************************/
 		void (*resultCallbackPtr_)(ScalarValueResultsStruct *);
 
+        void (*resultClassCallbackPtr_)(ScalarValueResults *);
+
+
 		/*******************************************************//**
 		 * The state.
 		 *******************************************************/
@@ -121,7 +124,7 @@ namespace Straylight
 		 * The logger.
 		 *******************************************************/
 		Logger* logger_;
-		ScalarValueResults * scalarValueResults_;
+	//	ScalarValueResults * scalarValueResults_;
 
 
 
@@ -149,7 +152,7 @@ namespace Straylight
 		 *
 		 * @return	null if it fails, else the XML file path.
 		 *******************************************************/
-		char* getXmlFilePath();
+		const char* getXmlFilePath();
 
 		/*******************************************************//**
 		 * Gets the address.
@@ -200,12 +203,7 @@ namespace Straylight
 		 *******************************************************/
 		int initializeSlave_();
 
-		/*******************************************************//**
-		 * Sets start values.
-		 *
-		 * @return	.
-		 *******************************************************/
-		int setStartValues_();
+
 
 		/*******************************************************//**
 		 * Sets state error.
@@ -213,6 +211,9 @@ namespace Straylight
 		 * @param	message	The message.
 		 *******************************************************/
 		void setStateError_(const char * message);
+
+
+		ScalarValueResults * scalarValueResults_;
 
 	public:
 				
@@ -232,8 +233,7 @@ namespace Straylight
 		 *
 		 * <returns>Pointer to ScalarValueResults object</returns>
 		 *******************************************************/
-		ScalarValueResults * getScalarValueResults()  { return scalarValueResults_; }
-
+	//	ScalarValueResults * getScalarValueResults()  { return scalarValueResults_; }
 
 		ScalarValueResultsStruct * getTest();
 
@@ -248,6 +248,11 @@ namespace Straylight
 		 * 									 which will be called when the systems state changes</param>
 		 *******************************************************/
 		void connect( void (*messageCallbackPtr)(MessageStruct *), void (*resultCallbackPtr)(ScalarValueResultsStruct *), void (*stateChangeCallbackPtr)(SimStateNative ) );
+
+
+
+		void setResultClassCallback( void (*resultClassCallbackPtr)(ScalarValueResults *) );
+
 
 		/*******************************************************//**
 		 * Request state change.
@@ -412,6 +417,10 @@ namespace Straylight
 		 * @param	length		  	The length.
 		 *******************************************************/
 		void setScalarValues (ScalarValueRealStruct * scalarValueAry, int length);
+
+
+		ScalarValueResults * getScalarValueResults();
+
 
 		//private functions
 

@@ -41,7 +41,7 @@ namespace Straylight
 						typeDefinitionReal->start == valueDefined)
 					{
 						if (typeDefinitionReal->start > typeDefinitionReal->max) {
-							Logger::instance->printErrorInt
+							Logger::getInstance()->printErrorInt
 								( "TypeDefDataModel::extract() start value above maximum idx:%s\n", i);
 						}
 					}

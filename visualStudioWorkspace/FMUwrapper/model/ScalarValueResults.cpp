@@ -23,6 +23,10 @@ namespace Straylight
 
 	ScalarValueResults::~ScalarValueResults(void)
 	{
+		delete scalarValueCollectionInput_;
+		delete scalarValueCollectionOutput_;
+		delete scalarVariableDataModel_;
+
 	}
 
 
@@ -76,7 +80,7 @@ namespace Straylight
 			ScalarValueBooleanStruct * scalarValueBooleanStruct = new ScalarValueBooleanStruct();
 
 			scalarValueBooleanStruct->idx = scalarValue->getIdx();
-			scalarValueBooleanStruct->value = scalarValue->getRealNumber();
+			scalarValueBooleanStruct->value = scalarValue->getBoolean();
 
 			booleanList.push_back(scalarValueBooleanStruct);
 
@@ -104,20 +108,26 @@ namespace Straylight
 		return struct1;
 	}
 
-	void ScalarValueResults::toString( std::string & stringRef )
+	void ScalarValueResults::toString( char* buffer, int len )
 	{
+
+
 		std::stringstream ss;
-		ss << _T("Time: ") << time_ << _T("  - input:");
+		ss << _T("Time: ") << time_ << _T("\n    --=input:");
 
 		std::string strInput;
 		scalarValueCollectionInput_->toString(strInput);
-		ss << strInput << _T(" ");
+		ss << strInput << _T("\n    --=output:");
 
 		std::string strOutput;
 		scalarValueCollectionOutput_->toString(strOutput);
-		ss << strOutput << _T(" ");
+		ss << strOutput << _T("\n");
 
-		stringRef = ss.str();
+		string str4 =  ss.str();
+
+		strncpy(buffer, str4.c_str(), len-1); // copy things, but don't overrun buffer
+		buffer[len - 1] = '\0'; // 0 terminates the c-string
+
 
 	}
 

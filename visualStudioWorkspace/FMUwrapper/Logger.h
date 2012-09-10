@@ -11,15 +11,22 @@
 #include "enums.h"
 #include "Utils.h"
 
+
+
 namespace Straylight
 {
+
+
+
 	/*******************************************************//**
 	 * Logger.
 	 *******************************************************/
-	class Logger
+	 class DllApi Logger
 	{
 		//private member variables
 	private:
+
+		static bool instanceFlag;
 
 		/*******************************************************//**
 		 * Message callback pointer.
@@ -27,11 +34,17 @@ namespace Straylight
 		 * @param	parameter1	If non-null, the first parameter.
 		 *******************************************************/
 		void (*messageCallbackPtr_)(MessageStruct *);
-		int debug;  // Control for debug information
-		int debugvs;  // Control for debug information to Output window in Visual Studio
+		int debug_;  // Control for debug information
+		int debugvs_;  // Control for debug information to Output window in Visual Studio
+
+				static Logger* instance_;
 
 		// public functions
 	public:
+
+		int getDebugvs() const { return debugvs_; }
+		void setDebugvs(int val) { debugvs_ = val; }
+
 
 		/*******************************************************//**
 		 * Default constructor.
@@ -46,7 +59,9 @@ namespace Straylight
 		/*******************************************************//**
 		 * The instance.
 		 *******************************************************/
-		static Logger* instance;
+
+		static Logger* getInstance();
+
 
 		void registerMessageCallback(void (*callbackPtrArg)(MessageStruct *));
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Utils.h";
+#include "Utils.h"
 
 namespace Straylight
 {
@@ -10,7 +10,7 @@ namespace Straylight
 	 * @param	valueChar		   	The value character.
 	 * @param [in,out]	valueStatus	If non-null, the value status.
 	 *
-	 * @return	.
+	 * @return
 	 *******************************************************/
 	double Utils::charToDouble(const char * valueChar, ValueStatus * valueStatus) {
 		double valueDouble = 0.0;

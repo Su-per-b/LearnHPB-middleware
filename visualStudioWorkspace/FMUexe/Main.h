@@ -5,6 +5,10 @@
 #include <ResultOfStep.h>
 #include <ScalarValue.h>
 
+
+
+using namespace Straylight;
+
 void test1();
 
 void test2();

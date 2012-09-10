@@ -23,7 +23,16 @@ public class ResultEvent extends EventObject {
 		return scalarValueResults_;
 	}
 
-
+    /**
+	 * Instantiates a new result event.
+	 *
+	 * @param source the source
+     * @param scalarValueResults 
+	 */
+	public ResultEvent(Object source) {
+        super(source);
+    }
+	
     /**
 	 * Instantiates a new result event.
 	 *

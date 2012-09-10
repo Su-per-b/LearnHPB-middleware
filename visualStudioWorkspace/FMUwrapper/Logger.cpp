@@ -8,17 +8,22 @@ namespace Straylight
 	/*******************************************************//**
 	 * The logger instance.
 	 *******************************************************/
-	Logger* Logger::instance;
+	bool Logger::instanceFlag = false;
+	Logger* Logger::instance_ = NULL;
 
 	/*******************************************************//**
 	 * Default constructor.
 	 *******************************************************/
 	Logger::Logger(void)
 	{
+
+	//	if (instance_ != NULL) return;
+
 		messageCallbackPtr_ = NULL;
-		debug = 1;  // Control for debug information
-		debugvs = 0;  // Control for debug information to Output window in Visual Studio
-		instance = this;
+		debug_ = 1;  // Control for debug information
+		debugvs_ = 0;  // Control for debug information to Output window in Visual Studio
+
+		//instance_ = this;
 	}
 
 	/*******************************************************//**
@@ -26,6 +31,22 @@ namespace Straylight
 	 *******************************************************/
 	Logger::~Logger(void)
 	{
+		instanceFlag = false;
+	}
+
+	Logger* Logger::getInstance()  { 
+
+		if(! instanceFlag)
+		{
+			instance_ = new Logger();
+			instanceFlag = true;
+			return instance_;
+		}
+		else
+		{
+			return instance_;
+		}
+
 	}
 
 	/*******************************************************//**
@@ -57,7 +78,7 @@ namespace Straylight
 	 *******************************************************/
 	void Logger::setDebug( )
 	{
-		debug = 1;
+		debug_ = 1;
 	}
 
 	/*******************************************************//**
@@ -131,17 +152,17 @@ namespace Straylight
 			messageCallbackPtr_(messageStruct);
 		}
 
-		if (debug > 0)
+		if (debug_ > 0)
 		{
-			fprintf(stdout, _T("%s\n"), msg);
+			fprintf(stdout,  msg);
 		}
 
-		if (debugvs > 0)
+		if (debugvs_ > 0)
 		{
 			OutputDebugString(msg);
-		}
 
-		fflush(stdout);
+		}
+			fflush(stdout);
 	}
 
 	/*******************************************************//**
@@ -187,7 +208,7 @@ namespace Straylight
 			messageCallbackPtr_(messageStruct);
 		}
 
-		if (debugvs > 0)
+		if (debugvs_ > 0)
 		{
 			OutputDebugString(msg);
 		}

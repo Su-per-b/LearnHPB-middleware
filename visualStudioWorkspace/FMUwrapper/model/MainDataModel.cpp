@@ -8,7 +8,7 @@ namespace Straylight
 	MainDataModel::MainDataModel()
 	{
 		maxInternalScalarVariables = 1000;
-		Logger::instance->printDebug("MainController::staticLogger");
+		Logger::getInstance()->printDebug("MainController::staticLogger");
 
 		typeDefDataModel_ = new TypeDefDataModel();
 		scalarVariableDataModel_ = new ScalarVariableDataModel();
@@ -56,21 +56,21 @@ namespace Straylight
 		status1 = scalarValue->getStatus();
 
 		if (status1 == fmiFatal || status1 == fmiError ) {
-			Logger::instance->printError(_T("MainController::changeInput - error reading initial real value: " ));
+			Logger::getInstance()->printError(_T("MainController::changeInput - error reading initial real value: " ));
 			return status1;
 		} else {
 			scalarValue->setRealNumber(value);
 			status2 = scalarValue->getStatus();
 
 			if (status1 == fmiFatal || status1 == fmiError ) {
-				Logger::instance->printError(_T("MainController::changeInput - error writing real value:" ));
+				Logger::getInstance()->printError(_T("MainController::changeInput - error writing real value:" ));
 				return status2;
 			} else {
 				realNumber3 = scalarValue->getRealNumber();
 				status3 = scalarValue->getStatus();
 
 				if (status1 == fmiFatal || status1 == fmiError ) {
-					Logger::instance->printError(_T("MainController::changeInput - error reading real value after written: " ));
+					Logger::getInstance()->printError(_T("MainController::changeInput - error reading real value after written: " ));
 				}
 
 				return status3;
@@ -110,9 +110,9 @@ namespace Straylight
 			ValueStatus status = (ValueStatus) svStruct->typeSpecReal->startValueStatus;
 
 			if(status == valueDefined) {
-				setScalarValueReal(svStruct->idx, svStruct->typeSpecReal->start);
+				setScalarValueRealMin(svStruct->idx, svStruct->typeSpecReal->start);
 			} else {
-				Logger::instance->printError("No start value defined for input varable");
+				Logger::getInstance()->printError("No start value defined for input varable");
 			}
 		}
 	}
@@ -134,7 +134,7 @@ namespace Straylight
 			if (status == fmiOK) {
 				//Logger::instance->printDebug("setScalarValueReal fmiOK \n");
 			} else {
-				Logger::instance->printError("setScalarValueReal ERROR \n");
+				Logger::getInstance()->printError("setScalarValueReal ERROR \n");
 			}
 		}
 	}
@@ -153,5 +153,30 @@ namespace Straylight
 		ScalarValueResults * scalarValueResults = new ScalarValueResults(time, scalarVariableDataModel_);
 		return scalarValueResults;
 	}
+
+	fmiStatus MainDataModel::setScalarValueRealMin( int idx, double value )
+	{
+		ScalarValue * scalarValue = new ScalarValue(idx);
+		fmiReal realNumber;
+
+		fmiStatus status;
+		scalarValue->setRealNumber(value);
+		status = scalarValue->getStatus();
+
+			if (status == fmiOK) {
+				//Logger::getInstance()->printDebug("setScalarValueReal fmiOK");
+			} else {
+				Logger::getInstance()->printError("setScalarValueRealMin ERROR");
+			}
+
+		return status;
+	}
+
+
+
+
+
+
+
 
 }

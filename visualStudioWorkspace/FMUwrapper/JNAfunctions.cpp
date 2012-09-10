@@ -5,6 +5,8 @@
  *******************************************************/
 #include "JNAfunctions.h"
 
+
+
 /*******************************************************//**
  * Request state change.
  *
@@ -171,7 +173,7 @@ void setScalarValues (ScalarValueRealStruct * scalarValueAry , int length) {
 			ScalarValueRealStruct st = scalarValueAry[i];
 			scalarValueList.push_back(st);
 
-			Logger::instance->printDebug(_T("setScalarValues\n"));
+			Logger::getInstance()->printDebug(_T("setScalarValues\n"));
 		}
 
 		mainController->setScalarValues(scalarValueAry,length);

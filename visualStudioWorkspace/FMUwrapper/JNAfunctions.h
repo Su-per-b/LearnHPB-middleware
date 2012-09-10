@@ -144,6 +144,7 @@ extern "C" DllExport void requestStateChange (SimStateNative newState);
  *******************************************************/
 extern "C" DllExport fmiStatus setScalarValueReal (int idx, double value);
 
+
 /*******************************************************//**
  * Sets scalar values.
  *
@@ -154,5 +155,7 @@ extern "C" DllExport  void setScalarValues (ScalarValueRealStruct * scalarValueA
 
 
 extern "C" DllExport ScalarValueResultsStruct* getTest();
+
+
 
 

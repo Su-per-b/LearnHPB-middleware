@@ -5,6 +5,8 @@
 
 #pragma once
 
+//#define DllImport   __declspec( dllimport )
+
 #include "targetver.h"
 
 #include <stdio.h>

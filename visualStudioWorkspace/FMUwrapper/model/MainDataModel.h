@@ -1,8 +1,8 @@
 /*******************************************************//**
- * @file	model\MainDataModel.h
- *
- * Declares the main data model class.
- *******************************************************/
+* @file	model\MainDataModel.h
+*
+* Declares the main data model class.
+*******************************************************/
 #pragma once
 
 #include "stdafx.h"
@@ -18,11 +18,10 @@
 
 using namespace std;
 
-
 namespace Straylight
 {
 	/*******************************************************//**
-	 * Main data model.
+	 * <summary> Main data model.</summary>
 	 *******************************************************/
 	class MainDataModel
 	{
@@ -32,18 +31,14 @@ namespace Straylight
 
 		void extract();
 
-
-
-
-
 		/*******************************************************//**
-		 * Sets scalar value real.
-		 *
-		 * @param	idx  	The index.
-		 * @param	value	The value.
-		 *
-		 * @return	.
-		 *******************************************************/
+		* Sets scalar value real.
+		*
+		* @param	idx  	The index.
+		* @param	value	The value.
+		*
+		* @return	.
+		*******************************************************/
 		fmiStatus setScalarValueReal(int idx, double value);
 
 		void setFMU(FMU* fmu);
@@ -51,43 +46,42 @@ namespace Straylight
 		void setStartValues();
 
 		/*******************************************************//**
-		 * The type def data model.
-		 *******************************************************/
+		* The type def data model.
+		*******************************************************/
 		TypeDefDataModel * typeDefDataModel_;
 		ScalarVariableDataModel * scalarVariableDataModel_;
 		void setScalarValues (ScalarValueRealStruct * scalarValueAry, int length);
 
-
-	/*******************************************************//**
-	 * Gets ScalarValueDataModel
-	 *
-	 * @param	time	The time value for this step of the simulation.
-	 *
-	 * @return	null if it fails, else the ScalarValueDataModel
-	 *******************************************************/
-	ScalarValueResults * getScalarValueResults(double time);
-
-
+		/*******************************************************//**
+		* Gets ScalarValueDataModel
+		*
+		* @param	time	The time value for this step of the simulation.
+		*
+		* @return	null if it fails, else the ScalarValueDataModel
+		*******************************************************/
+		ScalarValueResults * getScalarValueResults(double time);
 
 	private:
 
-
 		/*******************************************************//**
-		 * The struct which contains most of the meta-data about the model
-		 * this is part of the Qtronic library
-		 *******************************************************/
+		* The struct which contains most of the meta-data about the model
+		* this is part of the Qtronic library
+		*******************************************************/
 		ModelDescription* modelDescription_;
 
 		/*******************************************************//**
-		 * <summary>This value ISerializableused for debugging </summary>
-		 *******************************************************/
+		* <summary>This value ISerializableused for debugging </summary>
+		*******************************************************/
 		int maxInternalScalarVariables;
 
 		/*******************************************************//**
-		 * The fmu.
-		 *******************************************************/
+		* The fmu.
+		*******************************************************/
 		FMU* fmu_;
 
 		fmiComponent fmiComponent_;
+
+		fmiStatus setScalarValueRealMin(int idx, double value);
+
 	};
 };

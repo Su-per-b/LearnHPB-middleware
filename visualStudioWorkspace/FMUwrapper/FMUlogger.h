@@ -15,7 +15,7 @@ namespace Straylight
 	 *
 	 * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
 	 *******************************************************/
-	class FMUlogger
+	class DllApi FMUlogger
 	{
 
 	public:

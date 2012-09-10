@@ -12,12 +12,9 @@ import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.fmuWrapper.FMUcontroller;
-import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
 import com.sri.straylight.fmuWrapper.event.SimStateServerNotify;
-import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
+import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
 import com.sri.straylight.fmuWrapper.voManaged.SimStateServer;
-import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
-import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -34,7 +31,7 @@ public class MultiThreaded extends TestCase {
 	/** The next state expected. */
 	private static SimStateServer nextStateExpected;
 	
-	/** The fmu controller_. */
+	/** This is the rug that really ties the room together. */
 	private FMUcontroller fmuController_;
 	
 	

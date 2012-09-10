@@ -8,21 +8,13 @@
 int _tmain(int argc, _TCHAR* argv[])
 {
 	test2();
-	getch();
+	_getch();
 
 	return 0;
 }
 
 void resultCallback(ScalarValueResultsStruct * scalarValueResultsStruct) {
-	 
 	std::string str;
-
-	//scalarValueResultsStruct->toString(str);
-
-
-	// resultOfStepStructToString(str, resultOfStepStruct);
-	// ScalarValueResultsStruct* result = getTest();
-	// printf ("result: %s \n", str.c_str());
 }
 
 
@@ -35,34 +27,16 @@ void fmuStateCallback(SimStateNative simStateNative) {
 	printf ("Main.exe simStateNative: %s \n", _T("simStateNative"));
 }
 
-void test1() {
-	connect(&messageCallback, &resultCallback, &fmuStateCallback);
 
-	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v2_0forTestingDataType_VAVReheat_ClosedLoop2"));
-
-	int result = init();
-
-	if(result) {
-		return;
-	}
-
-	//setScalarValueReal(56106,300.2);
-
-	run();
-
-	requestStateChange (simStateNative_7_reset_requested);
-	run();
-
-	//reset();
-}
 
 void test2 () {
+
+
 	connect(&messageCallback, &resultCallback, &fmuStateCallback);
 
-	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v2_0forTestingDataType_VAVReheat_ClosedLoop2"));
 
+	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1"));
 	ScalarVariablesAllStruct * s4 = getAllScalarVariables();
-
 	int result = init();
 
 	if(result) {
@@ -105,6 +79,7 @@ void test3 () {
 void doubleToCommaString(char* buffer, double r){
 	char* comma;
 	sprintf(buffer, _T("%.16g"), r);
+
 	comma = strchr(buffer, '.');
 	if (comma) *comma = ',';
 }

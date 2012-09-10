@@ -7,6 +7,8 @@
 
 #define DllExport   __declspec( dllexport )
 
+#define DllApi   __declspec( dllexport )
+
 // Including SDKDDKVer.h defines the highest available Windows platform.
 
 // If you wish to build your application for a previous Windows platform, include WinSDKVer.h and
