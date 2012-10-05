@@ -2,6 +2,9 @@ package com.sri.straylight.fmuWrapper.voNative;
 
 
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import com.sun.jna.Structure;
 
 // TODO: Auto-generated Javadoc
@@ -25,8 +28,10 @@ public class ScalarValueRealStruct extends Structure {
 	 * @return the string
 	 */
 	public String toString() {
-
-		return Double.toString(value);
+		
+		BigDecimal bd = new BigDecimal(value).setScale(3, RoundingMode.HALF_UP);
+		
+		return bd.toString();
 		
 	}
 	

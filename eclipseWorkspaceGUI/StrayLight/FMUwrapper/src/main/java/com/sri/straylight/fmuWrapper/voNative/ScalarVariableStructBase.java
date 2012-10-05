@@ -1,5 +1,7 @@
 package com.sri.straylight.fmuWrapper.voNative;
 
+import java.text.DecimalFormat;
+
 import com.sun.jna.Structure;
 
 // TODO: Auto-generated Javadoc
@@ -51,6 +53,12 @@ public class ScalarVariableStructBase extends Structure {
 		Enu theEnum  = p.getForValue (variability);
 		
 		return theEnum;
+	}
+	
+	public String doubleToString(double inValue){
+		DecimalFormat threeDec = new DecimalFormat("0.000");
+		String shortString = (threeDec.format(inValue));
+		return shortString;
 	}
 	
 }

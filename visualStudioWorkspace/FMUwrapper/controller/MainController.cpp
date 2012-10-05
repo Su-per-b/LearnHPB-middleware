@@ -23,7 +23,7 @@ namespace Straylight
 
 	MainController::MainController()
 	{
-		logger_ = new Logger();
+		//logger_ = new Logger();
 		resultCallbackPtr_ = NULL;
 		resultClassCallbackPtr_ = NULL;
 	}
@@ -43,7 +43,7 @@ namespace Straylight
 		freeElement(fmu_->modelDescription);
 
 		delete fmu_;
-		delete logger_;
+		delete Logger::getInstance();
 	}
 
 
@@ -61,15 +61,12 @@ namespace Straylight
 			mainDataModel_ = new MainDataModel();
 			mainDataModel_->setFMU(fmu_);
 
+
 			setState_( simStateNative_0_uninitialized );
 	}
 
 	void MainController::setResultClassCallback( void (*resultClassCallbackPtr)(ScalarValueResults *) ) {
-
-
 		resultClassCallbackPtr_ = resultClassCallbackPtr;
-
-
 	}
 
 
@@ -246,7 +243,7 @@ namespace Straylight
 
 		unzipFolderPath_ = (char *) calloc(sizeof(char), len1 + 1);
 		lstrcpy(unzipFolderPath_, unzipfolder);
-		Logger::getInstance()->printDebug2(_T("MainController::parseXML unzipFolderPath_ %s\n"), unzipFolderPath_);
+		Logger::getInstance()->printDebug2(_T("MainController::xmlParse unzipFolderPath_ %s\n"), unzipFolderPath_);
 
 		//construct the path to the XML file and
 		// store as member variable
@@ -254,30 +251,29 @@ namespace Straylight
 		xmlFilePath_ = (char *) calloc(sizeof(char), len2 + 1);
 
 
-	//	sprintf(xmlFilePath_, _T("%s%s"), unzipfolder, XML_FILE_STR);
-
 		std::stringstream xmlFilePathStringStream;
 		xmlFilePathStringStream << unzipfolder << XML_FILE_STR;
-
-
 		string theStr = xmlFilePathStringStream.str();
 
 		xmlFilePath_ = theStr.c_str();
 
-		Logger::getInstance()->printDebug2(_T("xmlFilePath_ %s\n"), xmlFilePath_);
-
+		Logger::getInstance()->printDebug2(_T("xmlFilePath_ = %s\n"), xmlFilePath_);
 
 
 		fmu_->modelDescription = parse(xmlFilePath_);
 
 		if (fmu_->modelDescription == NULL) {
-			Logger::getInstance()->printfError(_T("Error - MainController::parseXML xmlFilePath_ %s\n"), xmlFilePath_);
+			Logger::getInstance()->printfError(_T("Error - MainController::xmlParse xmlFilePath_ %s\n"), xmlFilePath_);
 			return 1;
 		} else {
-			Logger::getInstance()->printDebug2(_T("MainController::parseXML xmlFilePath_ %s\n"), xmlFilePath_);
-			configStruct_ =  Config::make(fmu_);
+
+			Config * config = Config::getInstance();
+			config->parseFmu(fmu_);
+			configStruct_ =  config->toStruct();
 
 			mainDataModel_->extract();
+
+			Logger::getInstance()->printDebug(_T("MainController::xmlParse xmlFilePath_ complete \n"));
 
 			setState_( simStateNative_2_xmlParse_completed );
 			return 0;

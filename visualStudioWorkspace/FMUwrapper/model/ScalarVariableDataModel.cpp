@@ -101,25 +101,7 @@ namespace Straylight
 				{
 					ScalarVariableEnumerationStruct * svs = ScalarVariableFactory::makeEnumeration(scalarVariable, i);
 
-					/*
-					if (svs->typeSpecEnumeration->declaredType != NULL) {
-					int count = typeDefVectorEnumeration_.size();
 
-					for(int i = 0; i < count; i++) {
-					TypeDefinitionEnumeration * td = typeDefVectorEnumeration_[i];
-
-					if (!strcmp(td->name, svs->name)) {
-					svs->typeSpecEnumeration = new TypeSpecEnumeration();
-
-					svs->typeSpecEnumeration->enumerationItemAry = td->itemArray;
-					svs->typeSpecEnumeration->max = td->max;
-					svs->typeSpecEnumeration->maxValueStatus = td->maxValueStatus;
-					svs->typeSpecEnumeration->min = td->minValueStatus;
-					svs->typeSpecEnumeration->minValueStatus = td->minValueStatus;
-					}
-					}
-					}
-					*/
 
 					switch (svs->causality) {
 						case enu_input :

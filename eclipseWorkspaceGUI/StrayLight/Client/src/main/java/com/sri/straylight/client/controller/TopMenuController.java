@@ -12,8 +12,8 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.menu.About_Help;
 import com.sri.straylight.client.event.menu.Options_SelectSimulationEngine;
-import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.client.model.ClientConfigXML;
+import com.sri.straylight.fmuWrapper.framework.AbstractController;
 
 // TODO: Auto-generated Javadoc
 /**

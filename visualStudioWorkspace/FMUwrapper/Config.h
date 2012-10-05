@@ -32,6 +32,7 @@ typedef struct DefaultExperimentStruct_ {
 
 } DefaultExperimentStruct;
 
+
 /*******************************************************//**
  * <summary> Defines an alias representing the structure.</summary>
  *
@@ -48,7 +49,11 @@ typedef struct {
 	 * <summary> The step delta.</summary>
 	 *******************************************************/
 	double stepDelta;
+
+
 } ConfigStruct;
+
+
 
 using namespace std;
 
@@ -59,9 +64,44 @@ namespace Straylight
 	 *
 	 * <remarks> Raj Dye raj@pcdigi.com, 9/4/2012.</remarks>
 	 *******************************************************/
-	class Config
+	class DllApi Config
 	{
+
+	private:
+
+		Config(void);
+
+		static bool instanceFlag;
+		static Config* instance_;
+
+		DefaultExperimentStruct * defaultExperimentStruct_;
+		double stepDelta_;
+
+		bool autoCorrect_;
+
+		
 	public:
-		static ConfigStruct *  make(FMU* fmuPointer);
+
+		~Config(void);
+
+		bool getAutoCorrect() const { return autoCorrect_; }
+		void setAutoCorrect(bool val) { autoCorrect_ = val; }
+
+		DefaultExperimentStruct * getDefaultExperimentStruct() const { return defaultExperimentStruct_; }
+		void setDefaultExperimentStruct(DefaultExperimentStruct * val) { defaultExperimentStruct_ = val; }
+
+		int getStepDelta() const { return stepDelta_; }
+		void setStepDelta(int val) { stepDelta_ = val; }
+
+		static Config* getInstance();
+
+		ConfigStruct * toStruct();
+        void parseFmu(FMU* fmuPointer);
+
 	};
+
+
+
+
+
 };

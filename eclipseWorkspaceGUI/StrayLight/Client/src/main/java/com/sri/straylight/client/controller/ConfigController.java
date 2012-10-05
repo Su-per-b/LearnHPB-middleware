@@ -19,10 +19,10 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.SimStateNotify;
 import com.sri.straylight.client.event.SimStateRequest;
-import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.client.model.SimStateClient;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeRequest;
+import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 
 // TODO: Auto-generated Javadoc
@@ -98,7 +98,6 @@ public class ConfigController extends AbstractController {
 		configStruct_ = configStruct;
 		
 		txtStartTime_ = new JFormattedTextField(new Double(0.0));
-	//	txtStartTime_.setEnabled(false);
 		txtStopTime_ = new JFormattedTextField(new Double(0.0));
 		txtStepDelta_ = new JFormattedTextField(new Double(0.0));
 		

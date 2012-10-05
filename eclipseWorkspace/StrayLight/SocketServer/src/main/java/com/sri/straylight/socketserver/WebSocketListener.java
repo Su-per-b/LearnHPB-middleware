@@ -5,25 +5,29 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import org.bushe.swing.event.annotation.EventSubscriber;
 import org.eclipse.jetty.websocket.WebSocket;
 
 import com.google.gson.Gson;
-import com.sri.straylight.fmuWrapper.FMU;
-import com.sri.straylight.fmuWrapper.event.FMUeventDispatacher;
-import com.sri.straylight.fmuWrapper.event.FMUeventListener;
-import com.sri.straylight.fmuWrapper.event.FMUstateEvent;
+import com.sri.straylight.fmuWrapper.FMUcontroller;
+
 import com.sri.straylight.fmuWrapper.event.InitializedEvent;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.event.SimStateServerNotify;
+import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
 import com.sri.straylight.fmuWrapper.serialization.GsonController;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
+import com.sri.straylight.fmuWrapper.voManaged.SimStateServer;
+import com.sri.straylight.socketserver.controller.SimulationController;
 
 
 
 
-public class WebSocketListener implements WebSocket.OnTextMessage, WebSocket.OnControl, FMUeventListener {
+public class WebSocketListener implements WebSocket.OnTextMessage, WebSocket.OnControl  {
 
 	private Connection connection;
-	public static FMU fmu_;
+	public static FMUcontroller fmu_;
 	
     public static String unzipFolder = "C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop";
     public static String testFmuFile = "E:\\SRI\\modelica-projects\\fmus\\no_licence_needed\\LearnGB_VAVReheat_ClosedLoop.fmu";
@@ -31,13 +35,19 @@ public class WebSocketListener implements WebSocket.OnTextMessage, WebSocket.OnC
     
 	private final Set<WebSocketListener> webSockets = new CopyOnWriteArraySet<WebSocketListener>();
 	
-	public FMUeventDispatacher fmuEventDispatacher;
-	
+
+
+	private SimulationController simulationController_;
 	
     public WebSocketListener() {
-    	fmuEventDispatacher = new FMUeventDispatacher();
+    	
+    	simulationController_ = new SimulationController();
+    	simulationController_.start();
     }
-	
+    
+    
+
+
 	public void onOpen(Connection connection) {
 		// Client (Browser) WebSockets has opened a connection.
 		// 1) Store the opened connection
@@ -68,7 +78,7 @@ public class WebSocketListener implements WebSocket.OnTextMessage, WebSocket.OnC
 		} catch (IOException x) {
 			// Error was detected, close the ChatWebSocket client side
 			this.connection.disconnect();
-			fmu_.forceCleanup();
+			//fmu_.forceCleanup();
 		}
 		
 	}
@@ -83,17 +93,21 @@ public class WebSocketListener implements WebSocket.OnTextMessage, WebSocket.OnC
 			
 			
 			//on my machine it will be E:\\SRI\\straylight_repo\\eclipseWorkspace\\StrayLight\\SocketServer\\target\\classes
-			File file = new File(WebSocketListener.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+			//File file = new File(WebSocketListener.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 			
-			String path = file.getPath() + nativeLibFolder;
-
-			fmu_ = new FMU(testFmuFile, path);
+			//String path = file.getPath() + nativeLibFolder;
 			
-			fmu_.fmuEventDispatacher.addListener(this);
+		//	FMUwrapperConfig fmuWrapperConfig = new FMUwrapperConfig();
 			
-    		fmu_.init_1();
-    		fmu_.init_2(unzipFolder);
-    		fmu_.init_3();
+			
+		//	fmu_ = new FMUcontroller();
+			
+			
+			//fmu_.fmuEventDispatacher.addListener(this);
+			
+    		//fmu_.init_1();
+    	//	fmu_.init_2(unzipFolder);
+    	//fmu_.init_3();
     		
 		} else if (data.equals("run")) {
 			
@@ -107,11 +121,14 @@ public class WebSocketListener implements WebSocket.OnTextMessage, WebSocket.OnC
     
     public void onResultEvent(ResultEvent event) {
     	
-    	event.resultItem.string = "";
-    	Gson gson = GsonController.getInstance().getGson();
     	
-    	String jsonString = gson.toJson(event);
-    	sendMessage(jsonString);
+    	ScalarValueResults scalarValueResults = event.getScalarValueResults();
+    	
+    	//event.resultItem.string = "";
+    	//Gson gson = GsonController.getInstance().getGson();
+    	
+    	//String jsonString = gson.toJson(event);
+    	//sendMessage(jsonString);
     }
    
     public void onMessageEvent(MessageEvent event) {
@@ -119,10 +136,10 @@ public class WebSocketListener implements WebSocket.OnTextMessage, WebSocket.OnC
     	sendMessage(jsonString);
     }
     
-    public void onFMUstateEvent(FMUstateEvent event) {
-    	String jsonString = GsonController.getInstance().getGson().toJson(event);
-    	sendMessage(jsonString);
-    }
+//    public void onFMUstateEvent(FMUstateEvent event) {
+//    	String jsonString = GsonController.getInstance().getGson().toJson(event);
+//    	sendMessage(jsonString);
+//    }
     
     public void onInitializedEvent(InitializedEvent event) {
     	
@@ -133,11 +150,11 @@ public class WebSocketListener implements WebSocket.OnTextMessage, WebSocket.OnC
 
 	
 	public void onClose(int closeCode, String message) {
-		// Remove ChatWebSocket in the global list of ChatWebSocket
-		// instance.
-
+//		// Remove ChatWebSocket in the global list of ChatWebSocket
+//		// instance.
+//
 		webSockets.remove(this);
-		fmu_.forceCleanup();
+//		fmu_.forceCleanup();
 	}
 	
 }

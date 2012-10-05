@@ -5,7 +5,7 @@
 
 	<groupId>com.sri</groupId>
 	<artifactId>StrayLight</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<packaging>pom</packaging>
 
 	<name>StrayLight</name>
@@ -54,7 +54,6 @@
 			<url>http://jwebsocket.googlecode.com/svn/repo</url>
 		</repository>
 
-
 	</repositories>
 
 	<dependencies>
@@ -84,14 +83,17 @@
 			<version>1.6.4</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.bushe</groupId>
+			<artifactId>eventbus</artifactId>
+			<version>1.4</version>
+		</dependency>
+		
 	</dependencies>
 
 
 	<build>
-
 		<plugins>
-
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -101,12 +103,7 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
-
-
-
-
 		</plugins>
-
 	</build>
 
 	<modules>

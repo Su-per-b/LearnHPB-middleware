@@ -16,8 +16,8 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.SimStateNotify;
 import com.sri.straylight.client.event.SimStateRequest;
-import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.client.model.SimStateClient;
+import com.sri.straylight.fmuWrapper.framework.AbstractController;
 
 
 
@@ -237,7 +237,11 @@ public class TopPanelController extends AbstractController {
 	@EventSubscriber(eventClass=SimStateRequest.class)
 	public void onSimStateRequest(SimStateRequest event) {
 		simulationState_ = event.getPayload();
+		
+
 		updateGUI_();
+		
+
 	}
 	
 	/**
@@ -263,12 +267,16 @@ public class TopPanelController extends AbstractController {
 		}
 		
 		JButton[] activeButtons = stateMap_.get(simulationState_);
-		int len2 = activeButtons.length;
-		for (int j = 0; j < len2; j++) {
-			activeButtons[j].setEnabled(true);
+		
+		if (activeButtons != null) {
+			
+			int len2 = activeButtons.length;
+			for (int j = 0; j < len2; j++) {
+				activeButtons[j].setEnabled(true);
+			}
 		}
 		
-		
+
 		return;
 		
 	}

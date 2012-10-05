@@ -6,10 +6,10 @@ import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.ScalarValueChangeRequest;
-import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.client.view.InputDetailView;
 import com.sri.straylight.client.view.InputFormView;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 
 // TODO: Auto-generated Javadoc

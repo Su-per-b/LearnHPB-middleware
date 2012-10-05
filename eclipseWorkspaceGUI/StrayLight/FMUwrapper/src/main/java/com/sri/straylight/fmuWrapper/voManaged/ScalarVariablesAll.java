@@ -29,7 +29,7 @@ public class ScalarVariablesAll {
 
 		input = new ScalarVariableCollection(struct.input);
 		output = new ScalarVariableCollection(struct.output);
-		internal = new ScalarVariableCollection(struct.internal);
+		internal = new ScalarVariableCollection(struct.internal, 100);
 		 
 	}
 	

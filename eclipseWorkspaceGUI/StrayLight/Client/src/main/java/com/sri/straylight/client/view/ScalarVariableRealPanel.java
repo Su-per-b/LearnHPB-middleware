@@ -81,6 +81,10 @@ public class ScalarVariableRealPanel extends JPanel {
 	/** The lbl description_. */
 	private JLabel lblDescription_;
 	
+	private JLabel lblValueReference_;
+	
+	
+	
 	/**
 	 * Create the panel.
 	 *
@@ -125,45 +129,44 @@ public class ScalarVariableRealPanel extends JPanel {
 		textField_.setColumns(10);
 		
 		lblDescription_ = new JLabel("{Description Not Set}");
+		
+		lblValueReference_ = new JLabel("{Value Reference}");
+		lblValueReference_.setFont(new Font("SansSerif", Font.PLAIN, 12));
 
 
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+							.addComponent(separator, GroupLayout.PREFERRED_SIZE, 417, GroupLayout.PREFERRED_SIZE)
+							.addGroup(groupLayout.createSequentialGroup()
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+									.addGroup(groupLayout.createSequentialGroup()
+										.addComponent(textField_, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(lblStart_)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(lblNominal_))
+									.addGroup(groupLayout.createSequentialGroup()
+										.addComponent(lblName_)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(lblEqual)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(lblValue_)))
+								.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(btnSubmit_)))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(18)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(lblMin_)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(slider_, GroupLayout.PREFERRED_SIZE, 349, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(lblMax_))
-								.addComponent(lblDescription_, GroupLayout.PREFERRED_SIZE, 408, GroupLayout.PREFERRED_SIZE)))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(separator, GroupLayout.PREFERRED_SIZE, 417, GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addGroup(groupLayout.createSequentialGroup()
-											.addComponent(textField_, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(lblStart_)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(lblNominal_))
-										.addGroup(groupLayout.createSequentialGroup()
-											.addComponent(lblName_)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(lblEqual)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(lblValue_)))
-									.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addComponent(btnSubmit_)))))
-					.addContainerGap(47, Short.MAX_VALUE))
+							.addComponent(lblMin_)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(slider_, GroupLayout.PREFERRED_SIZE, 349, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblMax_))
+						.addComponent(lblValueReference_, GroupLayout.PREFERRED_SIZE, 293, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblDescription_, GroupLayout.PREFERRED_SIZE, 408, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(385, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -185,19 +188,23 @@ public class ScalarVariableRealPanel extends JPanel {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(26)
 							.addComponent(btnSubmit_)))
-					.addPreferredGap(ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+					.addGap(22)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblMin_)
-						.addComponent(lblMax_)
-						.addComponent(slider_, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblMin_)
+								.addComponent(slider_, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addComponent(lblValueReference_, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblMax_))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblDescription_)
-					.addContainerGap())
+					.addContainerGap(19, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
 
 
-		setMaximumSize( new Dimension(400, 120) );
+		setMaximumSize( new Dimension(400, 170) );
 
 	}
 
@@ -229,9 +236,13 @@ public class ScalarVariableRealPanel extends JPanel {
 		lblNominal_.setText("  Nominal: " + nominalStr);
 		lblNominal_.setToolTipText("Nominal Value: " + nominalStr);
 
+		String valueReferenceStr = String.valueOf(sv.valueReference);
+		
+		lblValueReference_.setText("Value Reference: " + valueReferenceStr);
+		lblValueReference_.setToolTipText("Value Reference: " + valueReferenceStr);
+		
 		slider_.setMinimum((int)sv.typeSpecReal.min);
 		slider_.setMaximum((int)sv.typeSpecReal.max);
-
 
 		doubleInputVerifier_ = DoubleInputVerifier.getInstance("##0.00##");
 		doubleInputVerifier_.setRange(sv.typeSpecReal.min, sv.typeSpecReal.max);

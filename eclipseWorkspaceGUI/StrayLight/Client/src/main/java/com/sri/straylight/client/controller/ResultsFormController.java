@@ -12,8 +12,9 @@ import javax.swing.table.DefaultTableModel;
 
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.framework.AbstractController;
+import com.sri.straylight.client.view.JTableEx;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 
 
@@ -24,12 +25,12 @@ import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 public class ResultsFormController extends AbstractController {
 	
     /** The table_. */
-    private  JTable table_;
+    private  JTableEx table_;
     
     /** The table model_. */
     private DefaultTableModel tableModel_;
 	
-    
+  
 	/**
 	 * Instantiates a new results form controller.
 	 *
@@ -58,7 +59,7 @@ public class ResultsFormController extends AbstractController {
 		);
 		
 
-		table_ = new JTable(tableModel_);
+		table_ = new JTableEx(tableModel_);
 		table_.setPreferredScrollableViewportSize(new Dimension(700, 600));
 		table_.setFillsViewportHeight(true);
 		
@@ -92,8 +93,15 @@ public class ResultsFormController extends AbstractController {
 			//double sv =  ary[i];
 			String str = resultOutput.get(i);
 			
-			tableModel_.setValueAt(str, i, 1);
+			try {
+				tableModel_.setValueAt(str, i, 1);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}
 		}
+		
+		table_.updateLayout();
 		
 	}
 	

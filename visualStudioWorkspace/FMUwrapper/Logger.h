@@ -37,24 +37,27 @@ namespace Straylight
 		int debug_;  // Control for debug information
 		int debugvs_;  // Control for debug information to Output window in Visual Studio
 
-				static Logger* instance_;
-
-		// public functions
-	public:
-
-		int getDebugvs() const { return debugvs_; }
-		void setDebugvs(int val) { debugvs_ = val; }
-
+		static Logger* instance_;
 
 		/*******************************************************//**
 		 * Default constructor.
 		 *******************************************************/
 		Logger(void);
 
+
+		// public functions
+	public:
+
 		/*******************************************************//**
 		 * Destructor.
 		 *******************************************************/
 		~Logger(void);
+
+		int getDebugvs() const { return debugvs_; }
+		void setDebugvs(int val) { debugvs_ = val; }
+
+
+
 
 		/*******************************************************//**
 		 * The instance.

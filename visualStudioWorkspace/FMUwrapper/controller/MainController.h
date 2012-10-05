@@ -120,12 +120,6 @@ namespace Straylight
 		 *******************************************************/
 		MainDataModel * mainDataModel_;
 
-		/*******************************************************//**
-		 * The logger.
-		 *******************************************************/
-		Logger* logger_;
-	//	ScalarValueResults * scalarValueResults_;
-
 
 
 		/*******************************************************//**
@@ -215,9 +209,12 @@ namespace Straylight
 
 		ScalarValueResults * scalarValueResults_;
 
+
+
+
 	public:
 				
-		
+
 		/*******************************************************//**
 		 * Default constructor.
 		 *******************************************************/

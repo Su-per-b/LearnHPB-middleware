@@ -6,6 +6,7 @@
 #pragma once
 #include "structs.h"
 #include "Logger.h"
+#include "Config.h"
 
 namespace Straylight
 {

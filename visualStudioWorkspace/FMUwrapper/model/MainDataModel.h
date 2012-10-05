@@ -25,11 +25,36 @@ namespace Straylight
 	 *******************************************************/
 	class MainDataModel
 	{
+
+
+	private:
+
+		/*******************************************************//**
+		* The struct which contains most of the meta-data about the model
+		* this is part of the Qtronic library
+		*******************************************************/
+		ModelDescription* modelDescription_;
+
+		/*******************************************************//**
+		* <summary>This value ISerializableused for debugging </summary>
+		*******************************************************/
+		int maxInternalScalarVariables;
+
+		/*******************************************************//**
+		* The fmu.
+		*******************************************************/
+		FMU* fmu_;
+
+		fmiComponent fmiComponent_;
+
+		fmiStatus setScalarValueRealMin(int idx, double value);
+
 	public:
 		MainDataModel();
 		~MainDataModel(void);
 
 		void extract();
+
 
 		/*******************************************************//**
 		* Sets scalar value real.
@@ -61,27 +86,6 @@ namespace Straylight
 		*******************************************************/
 		ScalarValueResults * getScalarValueResults(double time);
 
-	private:
-
-		/*******************************************************//**
-		* The struct which contains most of the meta-data about the model
-		* this is part of the Qtronic library
-		*******************************************************/
-		ModelDescription* modelDescription_;
-
-		/*******************************************************//**
-		* <summary>This value ISerializableused for debugging </summary>
-		*******************************************************/
-		int maxInternalScalarVariables;
-
-		/*******************************************************//**
-		* The fmu.
-		*******************************************************/
-		FMU* fmu_;
-
-		fmiComponent fmiComponent_;
-
-		fmiStatus setScalarValueRealMin(int idx, double value);
 
 	};
 };

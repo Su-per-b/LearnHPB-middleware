@@ -55,6 +55,7 @@ public class XMLparsed  {
 		inputVars = scalarVariablesAll.input.realValue;
 		outputVars = scalarVariablesAll.output.realValue;
 		internalVars = scalarVariablesAll.internal.realValue;
+			
 	}
 
 	
@@ -93,20 +94,8 @@ public class XMLparsed  {
 	 * @return the output form column names
 	 */
 	public String[] getOutputFormColumnNames() {
-
-		String[] columnNames  = {
-				"name",
-				"value",
-				"type",
-				"start",
-				"nominal",
-				"min",
-				"max",
-				"causality",
-				"variability",
-				"description"
-		};
 		
+		String[] columnNames = ScalarVariableRealStruct.getColumnNamesArray();
 		return columnNames;
 	}
 	
@@ -137,18 +126,7 @@ public class XMLparsed  {
 	 */
 	public String[] getInputFormColumnNames() {
 
-		String[] columnNames  = {
-				"name",
-				"value",
-				"start",
-				"nominal",
-				"min",
-				"max",
-				"causality",
-				"variability",
-				"description"
-		};
-		
+		String[] columnNames = ScalarVariableRealStruct.getColumnNamesArray();
 		return columnNames;
 	}
 	
@@ -190,20 +168,7 @@ public class XMLparsed  {
 
 		for (int i = 0; i < len; i++) {
 			ScalarVariableRealStruct sv = outputVars[i];
-			String[] row  = {
-					sv.name,
-					"{not set}",
-					"Real",
-					Double.toString(sv.typeSpecReal.start),
-					Double.toString(sv.typeSpecReal.nominal),
-					Double.toString(sv.typeSpecReal.min),
-					Double.toString(sv.typeSpecReal.max),
-					sv.getCausalityEnum().toString(),
-					sv.getVariabilityEnum().toString(),
-					sv.description
-			};
-			
-			data[i] = row;
+			data[i] = sv.toStringArray();
 		}
 
 		return data;
@@ -251,19 +216,7 @@ public class XMLparsed  {
 
 		for (int i = 0; i < len; i++) {
 			ScalarVariableRealStruct sv = inputVars[i];
-			String[] row  = {
-				sv.name,
-				"{unknown}",
-				Double.toString(sv.typeSpecReal.start),
-				Double.toString(sv.typeSpecReal.nominal),
-				Double.toString(sv.typeSpecReal.min),
-				Double.toString(sv.typeSpecReal.max),
-				sv.getCausalityEnum().toString(),
-				sv.getVariabilityEnum().toString(),
-				sv.description
-			};
-			
-			data[i] = row;
+			data[i] = sv.toStringArray();
 		}
 
 		return data;

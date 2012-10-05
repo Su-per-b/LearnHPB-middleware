@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+import java.util.concurrent.ExecutionException;
 
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
@@ -140,7 +141,16 @@ public class FMUcontroller  {
 			ResultEvent event = new ResultEvent(this, scalarValueResults);
 			//ResultEvent event = new ResultEvent(this);
 			
-			EventBus.publish(event);
+			
+			try {
+				EventBus.publish(event);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			
+			
 			return true;                  
 		}
 	};
@@ -330,8 +340,7 @@ public class FMUcontroller  {
 			
 			EventBus.publish(new ConfigChangeNotify(configStruct_));
 		}
-		
-		
+
 	}
 
 

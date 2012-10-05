@@ -8,18 +8,21 @@ import java.awt.BorderLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 
+import org.bushe.swing.event.EventBus;
+import org.bushe.swing.event.EventServiceLocator;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.SimStateNotify;
 import com.sri.straylight.client.event.menu.About_Help;
 import com.sri.straylight.client.event.menu.Options_SelectSimulationEngine;
-import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.client.model.ClientConfig;
 import com.sri.straylight.client.model.ClientConfigXML;
 import com.sri.straylight.client.model.SimStateClient;
 import com.sri.straylight.client.view.MainView;
 import com.sri.straylight.client.view.SimulationEngineDialog;
+import com.sri.straylight.fmuWrapper.event.ExceptionThrowingEventService;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
+import com.sri.straylight.fmuWrapper.framework.AbstractController;
 
 // TODO: Auto-generated Javadoc
 /**

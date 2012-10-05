@@ -8,14 +8,21 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.framework.AbstractController;
+import com.sri.straylight.client.view.JTableEx;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
+import java.awt.Component;
 
 
 // TODO: Auto-generated Javadoc
@@ -25,11 +32,10 @@ import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 public class ResultsTableController extends AbstractController {
 	
     /** The table_. */
-    private  JTable table_;
+    private  JTableEx table_;
     
     /** The data model_. */
     private DefaultTableModel dataModel_;
-    
     
 	/**
 	 * Instantiates a new results table controller.
@@ -57,7 +63,7 @@ public class ResultsTableController extends AbstractController {
 		
 		dataModel_ = new DefaultTableModel(data,xmlParsed.getOutputColumnNames());
 		
-		table_ = new JTable(dataModel_);
+		table_ = new JTableEx(dataModel_);
 		table_.setPreferredScrollableViewportSize(new Dimension(700, 600));
 		table_.setFillsViewportHeight(true);
 		
@@ -69,6 +75,7 @@ public class ResultsTableController extends AbstractController {
 	    panel.add(scrollPaneTable);
 	    
 	    setView_(panel);
+	    table_.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	    
     }
 	
@@ -96,15 +103,22 @@ public class ResultsTableController extends AbstractController {
 	 */
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
+
 		
-		ScalarValueResults scalarValueResults = event.getScalarValueResults();
+		ScalarValueResults  scalarValueResults = event.getScalarValueResults();
 		
 		Vector<String> resultOuput = scalarValueResults.output.getStringList();
 		double time = event.getScalarValueResults().getTime();
 		
 		resultOuput.insertElementAt(Double.toString(time), 0);
 		dataModel_.insertRow(0,resultOuput);
+		
+		table_.updateLayout();
 	}
+	
+	
+	
+
 	
 	
 }

@@ -15,8 +15,8 @@ import javax.swing.table.DefaultTableModel;
 
 import com.sri.straylight.client.controller.InputFormController;
 import com.sri.straylight.client.event.ScalarValueChangeRequest;
-import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.client.model.InputFormDataModel;
+import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
@@ -31,7 +31,7 @@ public class InputFormView extends JPanel {
 	private DefaultTableModel tableModel_;
 	
 	/** The table_. */
-	private  JTable table_;
+	private  JTableEx table_;
 
 	/** The result input ary_. */
 	private Vector<String> resultInputAry_;
@@ -70,7 +70,7 @@ public class InputFormView extends JPanel {
 		this.setPreferredSize(new Dimension(704, 300));
 		this.setLayout(new GridLayout(2, 1, 0, 0));
 
-		table_ = new JTable(tableModel_);
+		table_ = new JTableEx(tableModel_);
 		table_.setPreferredScrollableViewportSize(new Dimension(700, 600));
 		table_.setFillsViewportHeight(true);
 
@@ -196,7 +196,11 @@ public class InputFormView extends JPanel {
 			tableModel_.setValueAt(str, i, 1);
 		}
 
+		table_.updateLayout();
+		
+		
 
+		
 	}
 
 

@@ -16,14 +16,9 @@ namespace Straylight
 	 *******************************************************/
 	Logger::Logger(void)
 	{
-
-	//	if (instance_ != NULL) return;
-
 		messageCallbackPtr_ = NULL;
 		debug_ = 1;  // Control for debug information
 		debugvs_ = 0;  // Control for debug information to Output window in Visual Studio
-
-		//instance_ = this;
 	}
 
 	/*******************************************************//**
@@ -198,7 +193,10 @@ namespace Straylight
 		sprintf (msg, str1, str2);
 
 		fprintf(stderr, _T("*** Error:%s\n"), msg);
+	//	fprintf(stdout, _T("*** Error:%s\n"), msg);
+
 		fflush(stderr);
+	//	fflush(stdout);
 
 		if (messageCallbackPtr_ != NULL) {
 			MessageStruct * messageStruct = new MessageStruct;

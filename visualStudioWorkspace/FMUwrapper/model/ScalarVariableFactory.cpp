@@ -62,6 +62,46 @@ namespace Straylight
 		svStruct->typeSpecReal->max = getElementAttributeReal(scalarVariable->typeSpec,&maxValueStatus, att_max);
 		svStruct->typeSpecReal->maxValueStatus = maxValueStatus;
 
+		bool autCorrectFlag = Config::getInstance()->getAutoCorrect();
+
+		if (svStruct->typeSpecReal->nominalValueStatus == valueDefined &&
+			svStruct->typeSpecReal->maxValueStatus == valueDefined)
+		{
+			if (svStruct->typeSpecReal->nominal > svStruct->typeSpecReal->max) {
+
+				Logger::getInstance()->printErrorInt
+				( "ScalarVariableFactory::makeReal() nominal value above maximum valueReference:%s", svStruct->valueReference);
+				Logger::getInstance()->printDebugDouble("svStruct->typeSpecReal->nominal: %s\n", svStruct->typeSpecReal->nominal);
+				Logger::getInstance()->printDebugDouble("svStruct->typeSpecReal->max: %s\n", svStruct->typeSpecReal->max);
+
+				if (autCorrectFlag) {
+					Logger::getInstance()->printDebug("***CORRECTING***");
+					svStruct->typeSpecReal->max = svStruct->typeSpecReal->nominal;
+				}
+			}
+		}
+
+
+		if (svStruct->typeSpecReal->nominalValueStatus == valueDefined &&
+			svStruct->typeSpecReal->minValueStatus == valueDefined)
+		{
+			if (svStruct->typeSpecReal->nominal < svStruct->typeSpecReal->min) {
+
+				Logger::getInstance()->printErrorInt
+				( "ScalarVariableFactory::makeReal() nominal value below minimum valueReference:%s", svStruct->valueReference);
+
+				Logger::getInstance()->printDebugDouble("svStruct->typeSpecReal->nominal: %s\n", svStruct->typeSpecReal->nominal);
+				Logger::getInstance()->printDebugDouble("svStruct->typeSpecReal->min: %s\n", svStruct->typeSpecReal->min);
+
+				if (autCorrectFlag) {
+					Logger::getInstance()->printDebug("***CORRECTING***");
+					svStruct->typeSpecReal->min = svStruct->typeSpecReal->nominal;
+				}
+
+			}
+		}
+
+
 		if (svStruct->typeSpecReal->minValueStatus == valueDefined &&
 			svStruct->typeSpecReal->startValueStatus == valueDefined)
 		{
@@ -70,18 +110,73 @@ namespace Straylight
 				Logger::getInstance()->printDebugDouble("svStruct->typeSpecReal->min: %s\n", svStruct->typeSpecReal->min);
 
 				Logger::getInstance()->printErrorInt
-				( "ScalarVariableFactory::makeReal() start value below minimum valueReference:%s\n", svStruct->valueReference);
+				( "ScalarVariableFactory::makeReal() start value below minimum valueReference:%s", svStruct->valueReference);
+
+				if (autCorrectFlag) {
+					Logger::getInstance()->printDebug("***CORRECTING***");
+					svStruct->typeSpecReal->min = svStruct->typeSpecReal->start;
+				}
+
 			}
+		} else if (svStruct->typeSpecReal->startValueStatus == valueDefined &&
+			svStruct->typeSpecReal->minValueStatus != valueDefined ) {
+
+				Logger::getInstance()->printErrorInt
+					( "ScalarVariableFactory::makeReal() start value defined, but min NOT defined valueReference:%s", svStruct->valueReference);
+
+				if (autCorrectFlag) {
+					Logger::getInstance()->printDebug("***CORRECTING***");
+
+					if (svStruct->typeSpecReal->start < 0) {
+						svStruct->typeSpecReal->min = svStruct->typeSpecReal->start;
+					} else {
+						svStruct->typeSpecReal->min = 0.0;
+					}
+
+				}
+
 		}
+
+
 
 		if (svStruct->typeSpecReal->maxValueStatus == valueDefined &&
 			svStruct->typeSpecReal->startValueStatus == valueDefined)
 		{
 			if (svStruct->typeSpecReal->start > svStruct->typeSpecReal->max) {
+
+				Logger::getInstance()->printDebugDouble("svStruct->typeSpecReal->start: %s\n", svStruct->typeSpecReal->start);
+				Logger::getInstance()->printDebugDouble("svStruct->typeSpecReal->min: %s\n", svStruct->typeSpecReal->max);
+
 				Logger::getInstance()->printErrorInt
-					( "ScalarVariableFactory::makeReal() start value above maximum valueReference:%s\n", svStruct->valueReference);
+					( "ScalarVariableFactory::makeReal() start value above maximum valueReference:%s", svStruct->valueReference);
+
+				if (autCorrectFlag) {
+					Logger::getInstance()->printDebug("***CORRECTING***");
+					svStruct->typeSpecReal->max = svStruct->typeSpecReal->start;
+				}
+
 			}
+		} else if (svStruct->typeSpecReal->startValueStatus == valueDefined &&
+			svStruct->typeSpecReal->maxValueStatus != valueDefined ) {
+
+				Logger::getInstance()->printErrorInt
+					( "ScalarVariableFactory::makeReal() start value defined, but max NOT defined valueReference:%s", svStruct->valueReference);
+
+				if (autCorrectFlag) {
+					Logger::getInstance()->printDebug("***CORRECTING***");
+
+					if (svStruct->typeSpecReal->start > 0) {
+						svStruct->typeSpecReal->max = svStruct->typeSpecReal->start;
+					} else {
+						svStruct->typeSpecReal->max = 0.0;
+					}
+
+				}
+
 		}
+
+
+
 
 		return svStruct;
 	}

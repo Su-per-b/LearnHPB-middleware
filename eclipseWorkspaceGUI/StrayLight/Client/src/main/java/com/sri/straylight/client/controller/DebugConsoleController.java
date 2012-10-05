@@ -15,9 +15,9 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 import com.sri.straylight.client.event.ClearDebugConsoleAction;
 import com.sri.straylight.client.event.SimStateNotify;
 import com.sri.straylight.client.event.SimStateRequest;
-import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 
 

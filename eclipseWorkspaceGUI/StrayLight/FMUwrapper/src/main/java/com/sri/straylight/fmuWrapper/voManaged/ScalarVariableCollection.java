@@ -31,7 +31,7 @@ public class ScalarVariableCollection {
 	public ScalarVariableStringStruct[] stringValue;
 	
 	/** The max array size. */
-	public int maxArraySize = 100;
+	public int maxArraySize = 0;
 	
 	/** The total size. */
 	public int totalSize;
@@ -46,10 +46,19 @@ public class ScalarVariableCollection {
 	 * Instantiates a new scalar variable collection.
 	 *
 	 * @param struct the struct
+	 * @param maxArraySize TODO
+	 * @param maxArraySize TODO
 	 */
+	public ScalarVariableCollection(ScalarVariableCollectionStruct.ByReference struct, int maxArraySize) {
+		init(struct,maxArraySize);
+	}
+	
 	public ScalarVariableCollection(ScalarVariableCollectionStruct.ByReference struct) {
-		// TODO Auto-generated constructor stub
-		
+		init(struct,0);
+	}
+	
+
+	private void init(ScalarVariableCollectionStruct.ByReference struct, int maxArraySize) {
 		realValue = struct.getRealAsArray(maxArraySize);
 		
 		if (realValue != null) {
@@ -84,9 +93,9 @@ public class ScalarVariableCollection {
 		add(integerValue);
 		add(enumerationValue);
 		add(stringValue);
-		
-		
+	
 	}
+	
 	
 	
 	/**

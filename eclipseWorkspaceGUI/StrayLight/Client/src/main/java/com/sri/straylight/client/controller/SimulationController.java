@@ -9,10 +9,10 @@ import com.sri.straylight.client.event.InputChangeRequest;
 import com.sri.straylight.client.event.ScalarValueChangeRequest;
 import com.sri.straylight.client.event.SimStateNotify;
 import com.sri.straylight.client.event.SimStateRequest;
-import com.sri.straylight.client.framework.AbstractController;
 import com.sri.straylight.client.model.ClientConfig;
 import com.sri.straylight.client.model.ClientConfigXML;
 import com.sri.straylight.client.model.SimStateClient;
+import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 

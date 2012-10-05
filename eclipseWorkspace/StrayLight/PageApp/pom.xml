@@ -9,14 +9,19 @@
 	<parent>
 		<artifactId>StrayLight</artifactId>
 		<groupId>com.sri</groupId>
-  		<version>0.0.2</version>
+  		<version>0.0.3</version>
 	</parent>
 
 	<artifactId>PageApp</artifactId>
 	<name>PageApp</name>
 
 	<packaging>war</packaging>
-
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jetty.version>8.0.4.v20111024</jetty.version>
+	</properties>
+	
 	<dependencies>
 	
 	
