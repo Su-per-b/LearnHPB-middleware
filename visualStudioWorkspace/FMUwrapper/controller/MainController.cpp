@@ -76,44 +76,84 @@ namespace Straylight
 	 * @param	newState	State of the new.
 	 *******************************************************/
 	void MainController::requestStateChange (SimStateNative newState) {
+		
 		switch (newState) {
-		case simStateNative_5_stop_requested :
-			if (state_ == simStateNative_4_run_started) {
-				state_ = newState;
-			}
-			break;
-		case simStateNative_5_step_requested :
-			if (state_ == simStateNative_3_ready) {
-				state_ = simStateNative_5_step_requested;
-				doOneStep();
-				setState_(simStateNative_3_ready);
+
+
+		case simStateNative_3_init_requested :
+			if (state_ == simStateNative_2_xmlParse_completed) {
+				int result = init();
+
+				if (0 == result) { 
+					setState_(simStateNative_3_ready);
+				} else {
+					setStateError_(_T("Could not init after XML parse\n"));
+				}
+
+			} else if (state_ == simStateNative_7_terminate_completed) {
+				
+				mainDataModel_->setStartValues();
+				int result = initializeSlave_();
+
+				if (0 == result) { 
+					setState_(simStateNative_3_ready);
+				} else {
+					setStateError_(_T("Could not init after terminate\n"));
+				}
+
 			}
 
+
+
 			break;
-		case simStateNative_7_reset_requested :
+
+		case simStateNative_5_stop_requested :
+			if (state_ == simStateNative_4_run_started) {
+				setState_(simStateNative_5_stop_requested);
+			}
+			break;
+
+		case simStateNative_5_step_requested :
+			if (state_ == simStateNative_3_ready) {
+				setState_(simStateNative_5_step_requested);
+				
+				int result = doOneStep();
+
+				if (0 == result) { 
+					setState_(simStateNative_5_step_completed);
+					setState_(simStateNative_3_ready);
+				} else {
+					setStateError_(_T("Could not step\n"));
+				}
+			}
+			break;
+
+		case simStateNative_7_terminate_requested :
+
 			if (state_ == simStateNative_4_run_completed ||
 				state_ == simStateNative_3_ready
 				) {
-				time_ = 0;
-				nSteps_ = 0;
 
-				int result3 = initializeSlave_();
+				setState_(simStateNative_7_terminate_requested);
+				int result = terminateSlave_();
 
-				mainDataModel_->setStartValues();
-				setState_(simStateNative_7_reset_completed);
-
-				scalarValueResults_ = mainDataModel_->getScalarValueResults(time_);
-
-				if (resultCallbackPtr_ != NULL) {
-					resultCallbackPtr_(scalarValueResults_->toStruct());
+				if (0 == result) { 
+					setState_(simStateNative_7_terminate_completed);
+				} else {
+					setStateError_(_T("Could not terminate\n"));
 				}
 
-				if (resultCallbackPtr_ != NULL) {
-					resultClassCallbackPtr_(scalarValueResults_);
-				}
-				
+			}
+			break;
 
-				setState_(simStateNative_3_ready);
+		case simStateNative_7_reset_requested :
+
+			if (state_ == simStateNative_4_run_completed ||
+				state_ == simStateNative_3_ready
+				) {
+
+				setState_(simStateNative_7_reset_requested);
+				resetSlave_();
 			}
 
 			break;
@@ -320,12 +360,13 @@ namespace Straylight
 
 		int result3 = initializeSlave_();
 
-		if (result3 == 0) {
-			setState_( simStateNative_3_ready );
-		}
+
 
 		return result3;
 	}
+
+
+
 
 	/*********************************************//**
 	/*
@@ -387,6 +428,8 @@ namespace Straylight
 		fmu_->getString = (fGetString) getAdr( "fmiGetString");
 		fmu_->doStep = (fDoStep) getAdr("fmiDoStep");
 		fmu_->terminateSlave = (fTerminateSlave) getAdr("fmiTerminateSlave");
+		
+		//resetSlave does not seem to be implented 
 		fmu_->resetSlave = (fResetSlave) getAdr("fmiResetSlave");
 
 		setState_( simStateNative_3_init_dllLoaded );
@@ -496,6 +539,60 @@ namespace Straylight
 		}
 	}
 
+
+
+	int MainController::terminateSlave_() {
+		Logger::getInstance()->printDebug(_T("-=MainController::terminateSlave_()=-\n"));
+
+		fmiStatus fmiFlag;
+
+		fmiFlag =  fmu_->terminateSlave(fmiComponent_);
+
+		return 0;
+	}
+
+
+	/*******************************************************//**
+	 * Resets the slave.
+	 *
+	 * @return	.
+	 *******************************************************/
+	int MainController::resetSlave_() {
+		Logger::getInstance()->printDebug(_T("-=MainController::resetSlave_=-\n"));
+
+		time_ = 0;
+		nSteps_ = 0;
+
+		fmiStatus fmiFlag;
+
+		fmiFlag =  fmu_->terminateSlave(fmiComponent_);
+
+
+		if (fmiFlag == fmiOK) {
+			Logger::getInstance()->printDebug(_T("terminateSlave() successful\n"));
+			setState_( simStateNative_3_init_initializedSlaves );
+
+		} else if (fmiFlag == fmiWarning) {
+			Logger::getInstance()->printError(_T("terminateSlave() WARNING\n"));
+		} else {
+
+			setStateError_(_T("Could not reset Terminate Slave upon reset request\n"));
+			return 1;
+		}
+
+
+		int result2 = instantiateSlave_();
+		if (result2) return result2;
+
+		mainDataModel_->setStartValues();
+		int result3 = initializeSlave_();
+
+		if (result3 == 0) {
+			setState_(simStateNative_7_reset_completed);
+			setState_( simStateNative_3_ready );
+		}
+
+	}
 
 
 	/*******************************************************//**
@@ -626,13 +723,9 @@ namespace Straylight
 		}
 
 		int result = runHelperDoStep_();
+		return result;
 
-		if(result) {
-			return 1;
-		} else {
-			//resultCallbackPtr_(scalarValueResults_->toStruct());
-			return 0;
-		}
+
 	}
 
 	/*******************************************************//**

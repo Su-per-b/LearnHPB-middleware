@@ -13,6 +13,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<slf4jVersion>1.7.1</slf4jVersion>
 	</properties>
 
 
@@ -72,10 +73,18 @@
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.6.4</version>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4jVersion}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4jVersion}</version>
+		</dependency>
+		
+
+		
 		<dependency>
 			<groupId>org.bushe</groupId>
 			<artifactId>eventbus</artifactId>

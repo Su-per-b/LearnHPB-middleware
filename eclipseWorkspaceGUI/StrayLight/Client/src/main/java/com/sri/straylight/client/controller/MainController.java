@@ -150,7 +150,7 @@ public class MainController extends AbstractController {
 	@EventSubscriber(eventClass=SimStateNotify.class)
     public void onSimStateNotify(SimStateNotify event) {
 		
-		if (event.getPayload() == SimStateClient.level_6_reset_completed) {
+		if (event.getPayload() == SimStateClient.level_7_reset_completed) {
 			
 			resultsTableController_.reset();
 			debugConsoleController_.reset();

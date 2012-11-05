@@ -4,7 +4,7 @@
 
 namespace Straylight
 {
-	#define MAX_MSG_SIZE 1000
+	#define MAX_MSG_SIZE 4096
 
 	/*******************************************************//**
 	 * <summary> The fmulogger fmu.</summary>

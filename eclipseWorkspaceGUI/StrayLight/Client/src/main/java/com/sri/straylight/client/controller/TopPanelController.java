@@ -3,6 +3,7 @@ package com.sri.straylight.client.controller;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Hashtable;
@@ -14,6 +15,7 @@ import javax.swing.JPanel;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
+import com.sri.straylight.client.event.ClearDebugConsoleAction;
 import com.sri.straylight.client.event.SimStateNotify;
 import com.sri.straylight.client.event.SimStateRequest;
 import com.sri.straylight.client.model.SimStateClient;
@@ -29,16 +31,16 @@ import com.sri.straylight.fmuWrapper.framework.AbstractController;
 public class TopPanelController extends AbstractController {
 
 	/** The btn clear_. */
-	private final JButton btnClear_ = new JButton("Clear Console");
+	private final JButton btnClear_ = new JButton("Clear -");
 	
 	/** The btn connect_. */
-	private final JButton btnConnect_ = new JButton("Connect");
+	private final JButton btnConnect_ = new JButton("Connect ~");
 	
 	/** The btn xml parse_. */
-	private final JButton btnXmlParse_ = new JButton("XML Parse");
+	private final JButton btnXmlParse_ = new JButton("XML Parse {}");
 	
 	/** The btn init_. */
-	private final JButton btnInit_ = new JButton("Init");
+	private final JButton btnInit_ = new JButton("Init ^");
 	
 	/** The btn step_. */
 	private final JButton btnStep_ = new JButton("Step >|");
@@ -49,8 +51,11 @@ public class TopPanelController extends AbstractController {
 	/** The btn stop_. */
 	private final JButton btnStop_ = new JButton("Stop []");
 	
+	/** The btn terminate_. */
+	private final JButton btnTerminate_ = new JButton("Terminate .");
+	
 	/** The btn reset_. */
-	private final JButton btnReset_ = new JButton("Reset");
+	//private final JButton btnReset_ = new JButton("Reset .^");
 
 
 
@@ -89,15 +94,20 @@ public class TopPanelController extends AbstractController {
 		buttons_.add(btnRun_);
 		buttons_.add(btnStep_);
 		buttons_.add(btnStop_);
-		buttons_.add(btnReset_);
+		buttons_.add(btnTerminate_);
+		//buttons_.add(btnReset_);
 		buttons_.add(btnClear_);
 
 		//Array<SimStateClient>[] states = {}
 		
 		int len = buttons_.size();
 		
+		Insets insets = new Insets(0, 2, 0, 2);
+		
 		for (int i = 0; i < len; i++) {
-			panel.add(buttons_.get(i));
+			JButton b = buttons_.get(i);
+			b.setMargin(insets);
+			panel.add(b);
 		}
 		
 		setupFSM_();
@@ -110,12 +120,12 @@ public class TopPanelController extends AbstractController {
 	}
 
 	/**
-	 * Setup fs m_.
+	 * Setup the Finite State Machine functionality.
 	 */
 	private void setupFSM_() {
 		
 		
-		JButton[] ary  = {btnConnect_};
+		//JButton[] ary  = {btnConnect_};
 		
 		stateMap_.put(
 				SimStateClient.level_0_uninitialized,
@@ -124,26 +134,32 @@ public class TopPanelController extends AbstractController {
 		
 		stateMap_.put(
 				SimStateClient.level_1_connect_completed,
-				new JButton[]{btnXmlParse_}
+				new JButton[]{btnXmlParse_, btnClear_}
 				);
 		
 		stateMap_.put(
 				SimStateClient.level_2_xmlParse_completed,
-				new JButton[]{btnInit_}
+				new JButton[]{btnInit_, btnClear_}
 				);
 		
 		stateMap_.put(
 				SimStateClient.level_3_ready,
-				new JButton[]{btnRun_, btnStep_, btnReset_}
+				new JButton[]{btnRun_, btnStep_,  btnTerminate_, btnClear_}
 				);
 		
 		stateMap_.put(
 				SimStateClient.level_4_run_started,
 				new JButton[]{btnStop_}
 				);
+		
 		stateMap_.put(
 				SimStateClient.level_4_run_completed,
-				new JButton[]{btnReset_}
+				new JButton[]{ btnTerminate_}
+				);
+		
+		stateMap_.put(
+				SimStateClient.level_7_terminate_completed,
+				new JButton[]{btnInit_, btnClear_}
 				);
 
 		
@@ -206,16 +222,46 @@ public class TopPanelController extends AbstractController {
 		}
 				);
 		
+		btnTerminate_.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				requestStateChange_(SimStateClient.level_7_terminate_requested);
+			}
+		}
+				);
+		
+/*
 		btnReset_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				requestStateChange_(SimStateClient.level_6_reset_requested);
+				requestStateChange_(SimStateClient.level_7_reset_requested);
 			}
 		}
 				);
 
+*/
+		
+		btnClear_.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				fireClear();
+			}
+		}
+				);
+		
+		
+		
+
 	}
 
-
+	private void fireClear()
+	{
+		EventBus.publish(
+				new ClearDebugConsoleAction()
+				);	
+		
+	}
+	
+	
+	
+	
 	/**
 	 * Request state change_.
 	 *

@@ -162,7 +162,10 @@ public class SimulationController extends AbstractController  {
 				fmuConnect_.xmlParse();
 				break;
 			case level_3_init_requested :
-				fmuConnect_.init();
+				
+				//fmuConnect_.init();
+				fmuConnect_.requestStateChange(SimStateNative.simStateNative_3_init_requested);
+				
 				break;
 			case level_4_run_requested :
 				fmuConnect_.run();
@@ -174,8 +177,11 @@ public class SimulationController extends AbstractController  {
 			case level_5_step_requested:
 				fmuConnect_.requestStateChange(SimStateNative.simStateNative_5_step_requested);
 				break;
-			case level_6_reset_requested:
+			case level_7_reset_requested:
 				fmuConnect_.requestStateChange(SimStateNative.simStateNative_7_reset_requested);
+				break;
+			case level_7_terminate_requested:
+				fmuConnect_.requestStateChange(SimStateNative.simStateNative_7_terminate_requested);
 				break;
 		}
     }

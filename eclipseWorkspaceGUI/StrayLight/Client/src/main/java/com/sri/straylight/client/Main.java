@@ -1,5 +1,7 @@
 package com.sri.straylight.client;
 
+import java.io.InputStream;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -38,7 +40,13 @@ public class Main {
         		System.setProperty(EventServiceLocator.SERVICE_NAME_EVENT_BUS,
         				ExceptionThrowingEventService.class.getName());
         		
-            	DOMConfigurator.configure("log4j.xml");
+        		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        		//InputStream is = classLoader.getResourceAsStream("log4j.xml");
+        		
+        		//	DOMConfigurator.configure("log4j.xml");
+            	//
+            	
+            	DOMConfigurator.configure(Main.class.getResource("/log4j.xml"));
             	Logger  logger = Logger.getLogger(EventService.class.getCanonicalName());
             	
             	logger.setLevel(Level.WARN);

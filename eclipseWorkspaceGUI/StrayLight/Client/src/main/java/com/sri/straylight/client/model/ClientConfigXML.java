@@ -6,6 +6,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import com.sri.straylight.client.ConnectTo;
@@ -63,22 +66,18 @@ public class ClientConfigXML {
 		System.out.println( "ClientConfig detected operating system : " + theOs);
 		
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		InputStream is = classLoader.getResourceAsStream(configFile_);
 		
-		URL configFileUrl = classLoader.getResource(configFile_);
-
 		XStream xStream = new XStream();
 		xStream.alias("config", com.sri.straylight.client.model.ClientConfigXML.class);
 		ClientConfigXML configXML;
 		
 		try {
 			
-			String filePath = configFileUrl.getFile();
-			FileInputStream fi = new FileInputStream (filePath);
-			
-			Object object = xStream.fromXML(fi);
+			Object object = xStream.fromXML(is);
 					
 			configXML = (ClientConfigXML)object;
-			fi.close();
+			is.close();
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

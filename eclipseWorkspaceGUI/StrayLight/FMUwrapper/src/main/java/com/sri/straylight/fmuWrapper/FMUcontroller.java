@@ -171,25 +171,43 @@ public class FMUcontroller  {
 	 * On sim state native.
 	 *
 	 * @param simStateNative the sim state native
+	 * TODO:(raj) get rid of all these switch blocks of code
+	 * and replace with a public / private state notification system
 	 */
 	public void onSimStateNative(SimStateNative simStateNative)
 	{
 
-		if (simStateNative == SimStateNative.simStateNative_4_run_started) {
-			notifyStateChange_(SimStateServer.simStateServer_4_run_started);
-		} else if (simStateNative == SimStateNative.simStateNative_4_run_completed) {
-			notifyStateChange_(SimStateServer.simStateServer_4_run_completed);
-		}else if (simStateNative == SimStateNative.simStateNative_e_error) {
-			notifyStateChange_(SimStateServer.simStateServer_e_error);
-		} else if (simStateNative == SimStateNative.simStateNative_3_ready) {
-			notifyStateChange_(SimStateServer.simStateServer_3_ready); 
-		} else if (simStateNative == SimStateNative.simStateNative_2_xmlParse_completed) {
-			onXMLparseCompleted();
-		} else if (simStateNative == SimStateNative.simStateNative_7_reset_completed) {
-			onXMLparseCompleted();
-			notifyStateChange_(SimStateServer.simStateServer_6_reset_completed); 
+		switch (simStateNative) {
+		
+			case simStateNative_e_error:
+				notifyStateChange_(SimStateServer.simStateServer_e_error);
+				break;
+			case simStateNative_2_xmlParse_completed:  
+				onXMLparseCompleted();
+				break;
+			case simStateNative_3_ready:  
+				notifyStateChange_(SimStateServer.simStateServer_3_ready);
+				break;
+			case simStateNative_4_run_started:  
+				notifyStateChange_(SimStateServer.simStateServer_4_run_started);
+	        	break;
+			case simStateNative_4_run_completed:  
+				notifyStateChange_(SimStateServer.simStateServer_4_run_completed);
+				break;
+			case simStateNative_5_step_completed:  
+				notifyStateChange_(SimStateServer.simStateServer_5_step_completed);
+				break;
+			case simStateNative_7_terminate_completed:  
+				notifyStateChange_(SimStateServer.simStateServer_7_terminate_completed);
+				break;
+			case simStateNative_7_reset_completed:  
+				//onXMLparseCompleted();
+				notifyStateChange_(SimStateServer.simStateServer_7_reset_completed); 
+				break;
 		}
 		
+		
+
 		simStateNative_ = simStateNative;
 		
 	}
@@ -244,7 +262,7 @@ public class FMUcontroller  {
 	public void init() {
 		jnaFMUWrapper_.init();
 		//notifyStateChange_(SimStateServer.simStateServer_3_init_completed);
-		notifyStateChange_(SimStateServer.simStateServer_3_ready); 
+		//notifyStateChange_(SimStateServer.simStateServer_3_ready); 
 	}
 
 

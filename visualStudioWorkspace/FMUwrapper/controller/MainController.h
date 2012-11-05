@@ -172,31 +172,46 @@ namespace Straylight
         /*******************************************************//**
          * Executes the one step operation.
          *
-         * @return	.
+         * @return	0 success, 1 failure
          *******************************************************/
         int doOneStep();
 
 		/*******************************************************//**
 		 * Executes the helper do step operation.
 		 *
-		 * @return	.
+		 * @return	0 success, 1 failure
 		 *******************************************************/
 		int runHelperDoStep_();
 
 		/*******************************************************//**
 		 * Gets the instantiate slave.
 		 *
-		 * @return	.
+		 * @return	0 success, 1 failure
 		 *******************************************************/
 		int instantiateSlave_();
 
 		/*******************************************************//**
 		 * Initializes the slave.
 		 *
-		 * @return	.
+		 *@return	0 success, 1 failure
 		 *******************************************************/
 		int initializeSlave_();
 
+
+		/*******************************************************//**
+		 * Resets the slave.
+		 *
+		 * @return	0 success, 1 failure
+		 *******************************************************/
+		int resetSlave_();
+
+
+		/*******************************************************//**
+		 * Terminates the slave.
+		 *
+		 * @return	0 success, 1 failure
+		 *******************************************************/
+		int  terminateSlave_();
 
 
 		/*******************************************************//**

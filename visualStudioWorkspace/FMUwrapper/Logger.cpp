@@ -5,6 +5,8 @@
 
 namespace Straylight
 {
+	#define MAX_MSG_SIZE 4096
+
 	/*******************************************************//**
 	 * The logger instance.
 	 *******************************************************/
@@ -123,7 +125,7 @@ namespace Straylight
 	 *******************************************************/
 	void Logger::printDebug5(const char* str1, const char* str2, const char* str3,
 		const char* str4, const char* str5) {
-			char msg[256];
+			char msg[MAX_MSG_SIZE];
 
 			sprintf (msg, str1, str2, str3, str4, str5);
 			printDebugHelper(_T("%s\n"), msg);
@@ -136,7 +138,7 @@ namespace Straylight
 	 * @param	str2	The second string.
 	 *******************************************************/
 	void Logger::printDebugHelper(const char* str1, const char* str2 ) {
-		char msg[256];
+		char msg[MAX_MSG_SIZE];
 		sprintf (msg, str1, str2);
 
 		if (messageCallbackPtr_ != NULL) {
@@ -176,7 +178,7 @@ namespace Straylight
 	 * @param	i  	Zero-based index of the.
 	 *******************************************************/
 	void Logger::printErrorInt(const char* msg, int i) {
-		char str[256];
+		char str[MAX_MSG_SIZE];
 		Utils::intToString(str, i);
 
 		printfError(msg, str);
@@ -189,7 +191,7 @@ namespace Straylight
 	 * @param	str2	The second string.
 	 *******************************************************/
 	void Logger::printfError(const char* str1, const char* str2){
-		char msg[256];
+		char msg[MAX_MSG_SIZE];
 		sprintf (msg, str1, str2);
 
 		fprintf(stderr, _T("*** Error:%s\n"), msg);

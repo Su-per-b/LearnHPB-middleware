@@ -20,11 +20,11 @@
 
 	<dependencies>
 
-	    <dependency>
-	        <groupId>commons-lang</groupId>
-	        <artifactId>commons-lang</artifactId>
-	        <version>2.4</version>
-	    </dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.4</version>
+		</dependency>
 
 
 		<dependency>
@@ -58,23 +58,23 @@
 			<artifactId>guava</artifactId>
 			<version>11.0.2</version>
 		</dependency>
-		
-		            
+
+
 		<dependency>
 			<groupId>org.apache.directory.studio</groupId>
 			<artifactId>org.apache.commons.logging</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-            
-            
+
+
 		<dependency>
 			<groupId>commons-validator</groupId>
 			<artifactId>commons-validator</artifactId>
 			<version>1.4.0</version>
 		</dependency>
-	    
-    
-            
+
+
+
 		<dependency>
 			<groupId>com.jgoodies</groupId>
 			<artifactId>forms</artifactId>
@@ -82,28 +82,28 @@
 		</dependency>
 
 
-		
 
-            
+
+
 		<dependency>
 			<groupId>com.miglayout</groupId>
 			<artifactId>miglayout</artifactId>
 			<version>3.7.4</version>
 		</dependency>
-            
+
 	</dependencies>
 
 
 
 	<build>
-	
+
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-	    
+
 
 		<plugins>
 
@@ -117,6 +117,17 @@
 						<goals>
 							<goal>shade</goal>
 						</goals>
+						<configuration>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<manifestEntries>
+										<Main-Class>com.sri.straylight.client.Main</Main-Class>
+										<Build-Number>0.45</Build-Number>
+									</manifestEntries>
+								</transformer>
+							</transformers>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

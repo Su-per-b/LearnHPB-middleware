@@ -11,76 +11,54 @@ import com.sri.straylight.fmuWrapper.voNative.JnaEnum;
  */
 public enum SimStateServer implements JnaEnum<SimStateServer>  {
 	
-	/** The sim state server_0_uninitialized. */
+	/** uninitialized. */
 	simStateServer_0_uninitialized,
 	
-	/** The sim state server_1_connect_requested. */
+	/** connect */
 	simStateServer_1_connect_requested,
-	
-	/** The sim state server_1_connect_completed. */
 	simStateServer_1_connect_completed,
 	
-	/** The sim state server_2_xml parse_requested. */
+	/** XML parse */
 	simStateServer_2_xmlParse_requested,
-	
-	/** The sim state server_2_xml parse_completed. */
 	simStateServer_2_xmlParse_completed,
 	
-	/** The sim state server_3_init_requested. */
+	/** init */
 	simStateServer_3_init_requested,
-	
-	/** The sim state server_3_init_dll loaded. */
 	simStateServer_3_init_dllLoaded,
-	
-	/** The sim state server_3_init_instantiated slaves. */
 	simStateServer_3_init_instantiatedSlaves,
-	
-	/** The sim state server_3_init_initialized slaves. */
 	simStateServer_3_init_initializedSlaves,
 	
-	/** The sim state server_3_ready. */
+	/** ready */
 	simStateServer_3_ready,
 	
-	/** The sim state server_4_run_requested. */
+	/** run */
 	simStateServer_4_run_requested,
-	
-	/** The sim state server_4_run_started. */
 	simStateServer_4_run_started,
-	
-	/** The sim state server_4_run_completed. */
 	simStateServer_4_run_completed,
-	
-	/** The sim state server_4_run_cleanedup. */
 	simStateServer_4_run_cleanedup,
 	
-	/** The sim state server_5_stop_requested. */
+	/** stop. */
 	simStateServer_5_stop_requested,
-	
-	/** The sim state server_5_stop_completed. */
 	simStateServer_5_stop_completed,
 	
-	/** The sim state server_5_step_requested. */
+	/** step */
 	simStateServer_5_step_requested,
-	
-	/** The sim state server_5_step_completed. */
 	simStateServer_5_step_completed,
 	
-	/** The sim state server_6_pause_requested. */
+	/** pause */
 	simStateServer_6_pause_requested,
-	
-	/** The sim state server_6_pause_completed. */
 	simStateServer_6_pause_completed,
 	
-	/** The sim state server_6_reset_requested. */
-	simStateServer_6_reset_requested,
+	/** terminate */
+	simStateServer_7_terminate_requested,
+	simStateServer_7_terminate_completed,
 	
-	/** The sim state server_6_reset_completed. */
-	simStateServer_6_reset_completed,
+	/** reset */
+	simStateServer_7_reset_requested,
+	simStateServer_7_reset_completed,
 	
 	/** The sim state server_7_resume_requested. */
 	simStateServer_7_resume_requested,
-	
-	/** The sim state server_7_resume_completed. */
 	simStateServer_7_resume_completed,
 	
 	/** The sim state server_e_error. */

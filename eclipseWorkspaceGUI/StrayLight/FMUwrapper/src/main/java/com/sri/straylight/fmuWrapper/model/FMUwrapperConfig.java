@@ -6,7 +6,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+
 
 import com.thoughtworks.xstream.XStream;
 
@@ -50,17 +52,19 @@ public class FMUwrapperConfig {
 		System.out.println( "FMUwrapperConfig detected operating system : " + theOs);
 		
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		InputStream is = classLoader.getResourceAsStream(configFile_);
 		
-		URL configFileUrl = classLoader.getResource(configFile_);
-
 		XStream xStream = new XStream();
 		xStream.alias("config", com.sri.straylight.fmuWrapper.model.FMUwrapperConfig.class);
 		FMUwrapperConfig config;
 		
 		try {
-			FileInputStream fi = new FileInputStream (configFileUrl.getFile());
-			config = (FMUwrapperConfig)xStream.fromXML(fi);
-			fi.close();
+			
+			Object object = xStream.fromXML(is);
+			
+			config = (FMUwrapperConfig)object;
+			is.close();
+
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -71,6 +75,8 @@ public class FMUwrapperConfig {
 			e.printStackTrace();
 			return null;
 		}
+		
+		
 		
 		config.unzipFolderAbsolutePath = convertRelativeToAbsolute(config.unzipFolderRelativePath);
 		config.fmuFolderAbsolutePath = config.unzipFolderAbsolutePath + "\\" + config.fmuFolderName;

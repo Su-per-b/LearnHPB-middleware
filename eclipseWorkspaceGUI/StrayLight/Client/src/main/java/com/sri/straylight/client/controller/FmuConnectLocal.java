@@ -196,12 +196,23 @@ public class FmuConnectLocal implements  IFmuConnect {
 		case simStateServer_4_run_started:
 			clientState = SimStateClient.level_4_run_started;
 			break;
-		case simStateServer_6_reset_completed:
-			clientState = SimStateClient.level_6_reset_completed;
+		case simStateServer_5_step_completed:
+			clientState = SimStateClient.level_5_step_completed;
 			break;
-		default:
+		case simStateServer_7_terminate_completed:
+			clientState = SimStateClient.level_7_terminate_completed;
+			break;
+		case simStateServer_7_reset_completed:
+			clientState = SimStateClient.level_7_reset_completed;
+			break;
+			
+		case simStateServer_e_error:
 			clientState = SimStateClient.level_e_error;
 			break;
+			
+		default:
+			throw new IllegalStateException("serverState not defined");
+
 		}
 
 		

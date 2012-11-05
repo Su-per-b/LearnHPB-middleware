@@ -5,6 +5,9 @@ run SwingGUI shade
 ** copy testkeys to E:\SRI\straylight_repo\eclipseWorkspaceGUI\StrayLight\SwingGUI\target
 ** cd E:\SRI\straylight_repo\eclipseWorkspaceGUI\StrayLight\SwingGUI\target
 ** run: jarsigner -keystore testKeys SwingGUI-0.0.2.jar jdc
+
+jarsigner -keystore testKeys Client-0.0.3.jar jdc
+
 ** password: jollyroger
 
 ** copy the SwingGUI-0.0.2.jar file to E:\SRI\straylight_repo\eclipseWorkspace\StrayLight\PageApp\src\main\webapp
