@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.event.ClearDebugConsoleAction;
+import com.sri.straylight.client.event.ClearViewAction;
 import com.sri.straylight.client.event.SimStateNotify;
 import com.sri.straylight.client.event.SimStateRequest;
 import com.sri.straylight.client.model.SimStateClient;
@@ -85,6 +85,14 @@ public class TopPanelController extends AbstractController {
 		panel.setMaximumSize(new Dimension(32767, 60));
 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panel.setAlignmentY(Component.TOP_ALIGNMENT);
+		
+		
+		btnConnect_.setName("TopPanel.Button_Connect");
+		btnXmlParse_.setName("TopPanel.Button_XML_Parse");
+		btnInit_.setName("TopPanel.Button_Init");
+		btnRun_.setName("TopPanel.Button_Run");
+		btnStep_.setName("TopPanel.Button_Step");
+		
 		
 		buttons_ = new Vector<JButton>();
 	
@@ -172,8 +180,18 @@ public class TopPanelController extends AbstractController {
 	private void bindActions_() {
 
 		btnConnect_.addActionListener(new ActionListener() {
+			
+			
 			public void actionPerformed(ActionEvent ae) {
+
+		        
+		        
 				requestStateChange_(SimStateClient.level_1_connect_requested);
+				
+				int x = 1;
+				
+				
+				
 			}
 		}
 				);
@@ -209,6 +227,7 @@ public class TopPanelController extends AbstractController {
 
 		btnRun_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				
 				requestStateChange_(SimStateClient.level_4_run_requested);
 			}
 		}
@@ -254,7 +273,7 @@ public class TopPanelController extends AbstractController {
 	private void fireClear()
 	{
 		EventBus.publish(
-				new ClearDebugConsoleAction()
+				new ClearViewAction()
 				);	
 		
 	}
@@ -283,11 +302,9 @@ public class TopPanelController extends AbstractController {
 	@EventSubscriber(eventClass=SimStateRequest.class)
 	public void onSimStateRequest(SimStateRequest event) {
 		simulationState_ = event.getPayload();
-		
-
+	
 		updateGUI_();
 		
-
 	}
 	
 	/**

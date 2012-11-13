@@ -17,12 +17,12 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
-import com.sri.straylight.fmuWrapper.event.SimStateServerNotify;
+import com.sri.straylight.fmuWrapper.event.SimStateWrapperNotify;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
-import com.sri.straylight.fmuWrapper.voManaged.SimStateServer;
+import com.sri.straylight.fmuWrapper.voManaged.SimStateWrapper;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.EnumTypeMapper;
@@ -57,15 +57,19 @@ public class FMUcontroller  {
 	/** The sim state native_. */
 	private SimStateNative simStateNative_;
 
-
-
+	private SimStateWrapper simStateWrapper_;
+	
 	/**
 	 * Gets the fmu state.
 	 *
 	 * @return the fmu state
 	 */
-	public SimStateNative getFmuState() {
+	public SimStateNative getSimStateNative() {
 		return simStateNative_;
+	}
+	
+	public SimStateWrapper getSimStateWrapper() {
+		return simStateWrapper_;
 	}
 
 
@@ -76,14 +80,19 @@ public class FMUcontroller  {
 
 	
 	/**
-	 * Instantiates a new fM ucontroller.
+	 * Instantiates a new fMu controller.
 	 *
 	 * @param fmuWrapperConfig the fmu wrapper config
 	 */
 	public FMUcontroller(FMUwrapperConfig fmuWrapperConfig) {
+		
+		simStateNative_ = SimStateNative.simStateNative_0_uninitialized;
+		simStateWrapper_ = SimStateWrapper.simStateServer_0_uninitialized;
+		
 		fmuWrapperConfig_ = fmuWrapperConfig;
 		AnnotationProcessor.process(this);
 	}
+	
 	
 	/**
 	 * Instantiates a new FMUcontroller.
@@ -101,10 +110,10 @@ public class FMUcontroller  {
 	 *
 	 * @param state_arg the state_arg
 	 */
-	private void notifyStateChange_(SimStateServer state_arg)
+	private void notifyStateChange_(SimStateWrapper state_arg)
 	{
 		EventBus.publish(
-				new SimStateServerNotify(this, state_arg)
+				new SimStateWrapperNotify(this, state_arg)
 				);	
 		
 	}
@@ -118,9 +127,8 @@ public class FMUcontroller  {
 		public boolean messageCallback(MessageStruct messageStruct) {
 
 
-			MessageEvent event = new MessageEvent(this);
-			event.messageStruct = messageStruct;
-
+			MessageEvent event = new MessageEvent(this, messageStruct);
+			
 			EventBus.publish(event);
 
 			
@@ -179,30 +187,35 @@ public class FMUcontroller  {
 
 		switch (simStateNative) {
 		
-			case simStateNative_e_error:
-				notifyStateChange_(SimStateServer.simStateServer_e_error);
-				break;
-			case simStateNative_2_xmlParse_completed:  
-				onXMLparseCompleted();
+			case simStateNative_2_xmlParse_completed:
+				simStateWrapper_ = SimStateWrapper.simStateServer_2_xmlParse_completed;
+				notifyStateChange_(SimStateWrapper.simStateServer_2_xmlParse_completed);
 				break;
 			case simStateNative_3_ready:  
-				notifyStateChange_(SimStateServer.simStateServer_3_ready);
+				simStateWrapper_ = SimStateWrapper.simStateServer_3_ready;
+				notifyStateChange_(SimStateWrapper.simStateServer_3_ready);
 				break;
 			case simStateNative_4_run_started:  
-				notifyStateChange_(SimStateServer.simStateServer_4_run_started);
+				simStateWrapper_ = SimStateWrapper.simStateServer_4_run_started;
+				notifyStateChange_(SimStateWrapper.simStateServer_4_run_started);
 	        	break;
 			case simStateNative_4_run_completed:  
-				notifyStateChange_(SimStateServer.simStateServer_4_run_completed);
+				simStateWrapper_ = SimStateWrapper.simStateServer_4_run_completed;
+				notifyStateChange_(SimStateWrapper.simStateServer_4_run_completed);
 				break;
 			case simStateNative_5_step_completed:  
-				notifyStateChange_(SimStateServer.simStateServer_5_step_completed);
+				//notifyStateChange_(SimStateServer.simStateServer_5_step_completed);
 				break;
-			case simStateNative_7_terminate_completed:  
-				notifyStateChange_(SimStateServer.simStateServer_7_terminate_completed);
+			case simStateNative_7_terminate_completed: 
+				simStateWrapper_ = SimStateWrapper.simStateServer_7_terminate_completed;
+				notifyStateChange_(SimStateWrapper.simStateServer_7_terminate_completed);
 				break;
 			case simStateNative_7_reset_completed:  
-				//onXMLparseCompleted();
-				notifyStateChange_(SimStateServer.simStateServer_7_reset_completed); 
+				simStateWrapper_ = SimStateWrapper.simStateServer_7_reset_completed;
+				notifyStateChange_(SimStateWrapper.simStateServer_7_reset_completed); 
+				break;
+			case simStateNative_e_error:
+				notifyStateChange_(SimStateWrapper.simStateServer_e_error);
 				break;
 		}
 		
@@ -224,14 +237,6 @@ public class FMUcontroller  {
 	}
 	
 	
-	/**
-	 * On xm lparse completed.
-	 */
-	private void onXMLparseCompleted() {
-		
-		return;
-
-	}
 
 
 	/**
@@ -249,21 +254,11 @@ public class FMUcontroller  {
 		
 		XMLparsedEvent event = new XMLparsedEvent(this, xmlParsed, configStruct_);
 		EventBus.publish(event);
-		
-		notifyStateChange_(SimStateServer.simStateServer_2_xmlParse_completed);
 
 	}
 
 	
 
-	/**
-	 * Inits the.
-	 */
-	public void init() {
-		jnaFMUWrapper_.init();
-		//notifyStateChange_(SimStateServer.simStateServer_3_init_completed);
-		//notifyStateChange_(SimStateServer.simStateServer_3_ready); 
-	}
 
 
 	/**
@@ -279,13 +274,7 @@ public class FMUcontroller  {
 		if (!exists) {
 			throw new IOException ("FMUwrapper.dll not found in: " + fmuWrapperConfig_.nativeLibFolderAbsolutePath);
 		}
-		
-		
-		
-		
-		
-		
-		
+
 	}
 
 
@@ -313,25 +302,8 @@ public class FMUcontroller  {
 				stateChangeCallbackFunc_
 				);
 		
-		notifyStateChange_(SimStateServer.simStateServer_1_connect_completed);
+		notifyStateChange_(SimStateWrapper.simStateServer_1_connect_completed);
 	}
-
-
-
-	/**
-	 * Unzip.
-	 */
-	public void unzip() {
-//
-//		String name = new File(fmuFilePath_).getName();
-//		name = name.substring(0, name.length()-4); 
-//
-//		unzipfolder_ = Main.config.unzipFolderBase + File.separator + name;
-//		Unzip.unzip(fmuFilePath_, unzipfolder_);
-	}
-
-
-
 
 
 	/**
@@ -340,8 +312,6 @@ public class FMUcontroller  {
 	public void run() {
 		jnaFMUWrapper_.run();
 	}
-
-
 
 
 	/**
@@ -356,12 +326,13 @@ public class FMUcontroller  {
 		
 		if (result == 0) {
 			
-			EventBus.publish(new ConfigChangeNotify(configStruct_));
+			EventBus.publish(new ConfigChangeNotify(this,configStruct_));
 		}
 
 	}
 
 
+	
 	/**
 	 * Request state change.
 	 *
@@ -391,12 +362,7 @@ public class FMUcontroller  {
 	public void setScalarValues(Vector<ScalarValueRealStruct> scalarValueList) {
 
 		int len = scalarValueList.size();
-		
-
-		
 		ScalarValueRealStruct[] ary4 = (ScalarValueRealStruct[]) new ScalarValueRealStruct().toArray(len);
-		
-		
 		
 		for (int i = 0; i < len; i++) {
 			ScalarValueRealStruct struct = scalarValueList.get(i);
@@ -409,20 +375,22 @@ public class FMUcontroller  {
 		
 	}
 	
+	
+	
 
-
+/*
 	
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
 
 
-		ScalarValueResults scalarValueResults = event.getScalarValueResults();
+		ScalarValueResults scalarValueResults = event.getPayload();
 		
 		int x = 0;
 		
 	}
 
-	
+	*/
 
 
 }

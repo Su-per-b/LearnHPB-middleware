@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2006 Harri Kaimio
+  
+  This file is part of Photovault.
+
+  Photovault is free software; you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  Photovault is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Photovault; if not, write to the Free Software Foundation,
+  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+-->
+<testcase>
+    <id>
+        test_query_single_date
+    </id>
+    <component> 
+        imginfo
+    </component>
+    <summary>
+        Single date query test
+    </summary>
+    <description>
+        Action:
+        
+        1. Add the date test pictures to database
+        2. Search pictures from date 31.12.2004
+        3. Search with date "January 2005"
+        4. Search with date "31.12.2004 - 15.1.2005"
+        5. Search with date "January 2005 - February 2005"
+        
+    </description>
+    <expectedresult>
+        <![CDATA[
+        1. Pictures added
+        2. Picture 1 found
+        3. Picture 2 found
+        4. Picture 1 found
+        5. Pictures 2 & 3 found
+        ]]>
+    </expectedresult>
+</testcase>

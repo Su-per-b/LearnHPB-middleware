@@ -1,0 +1,63 @@
+<!--
+  Copyright (c) 2006 Harri Kaimio
+  
+  This file is part of Photovault.
+
+  Photovault is free software; you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  Photovault is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Foobar; if not, write to the Free Software Foundation,
+  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+-->
+
+<!--
+Define here all used connections.
+One defined connection should be defined as the default one,
+by set default-connection="true" - this could be done at runtime too.
+
+It is possible to set user/password at
+runtime or let login different users at runtime using the same
+database. Use different PBKey with same jcdAlias name but
+different user/password.
+
+Ditto it is possible to add jdbc-connection-descriptor at runtime
+using the MetadataManager.
+-->
+
+
+    <!-- this connection was used as the default one within OJB -->
+    <jdbc-connection-descriptor
+   		jcd-alias="pv"
+   		platform="MySQL"
+   		jdbc-level="2.0"
+   		driver="com.mysql.jdbc.Driver"
+   		protocol="jdbc"
+   		subprotocol="mysql"
+   		dbalias="///pv"
+   		batch-mode="false"
+     >
+
+        <connection-pool
+            maxActive="21"
+            validationQuery="" />
+
+        <sequence-manager className="org.apache.ojb.broker.util.sequence.SequenceManagerHighLowImpl">
+            <attribute attribute-name="grabSize" attribute-value="20"/>
+        </sequence-manager>
+        <object-cache class="org.apache.ojb.broker.cache.ObjectCacheDefaultImpl">
+          <attribute attribute-name="cacheExcludes" attribute-value=""/>
+          <attribute attribute-name="timeout" attribute-value="-1"/>
+          <attribute attribute-name="autoSync" attribute-value="true"/>
+          <attribute attribute-name="cachingKeyType" attribute-value="0"/>
+          <attribute attribute-name="useSoftReferences" attribute-value="true"/>
+        </object-cache>
+   </jdbc-connection-descriptor>
+

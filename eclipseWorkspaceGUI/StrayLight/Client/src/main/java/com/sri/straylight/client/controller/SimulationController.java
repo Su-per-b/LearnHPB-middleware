@@ -5,12 +5,10 @@ import java.util.Vector;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.event.InputChangeRequest;
 import com.sri.straylight.client.event.ScalarValueChangeRequest;
 import com.sri.straylight.client.event.SimStateNotify;
 import com.sri.straylight.client.event.SimStateRequest;
 import com.sri.straylight.client.model.ClientConfig;
-import com.sri.straylight.client.model.ClientConfigXML;
 import com.sri.straylight.client.model.SimStateClient;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
@@ -52,8 +50,11 @@ public class SimulationController extends AbstractController  {
         }
 	}
 	
+	
+	
 
 
+	
 	/**
 	 * Connect_.
 	 */
@@ -77,7 +78,17 @@ public class SimulationController extends AbstractController  {
 				break;
     	}
     	
-    	fmuConnect_.connect();
+    	
+    	
+    	try {
+			fmuConnect_.connect();
+			
+			int x = 0;
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 	
 	
@@ -90,14 +101,8 @@ public class SimulationController extends AbstractController  {
 	 */
 	@EventSubscriber(eventClass=ScalarValueChangeRequest.class)
     public void onInputChangeRequest(ScalarValueChangeRequest event) {
-		//double v = event.value;
-		
-		
 		Vector<ScalarValueRealStruct> list = event.getPayload();
-		
-		
 		fmuConnect_.changeScalarValues(list);
-		
 	}
 	
 	
@@ -109,7 +114,6 @@ public class SimulationController extends AbstractController  {
 	@EventSubscriber(eventClass=SimStateNotify.class)
     public void onSimStateNotify(SimStateNotify event) {
 		simulationStateClient_ = event.getPayload();
-		
 		
 
         
@@ -149,6 +153,9 @@ public class SimulationController extends AbstractController  {
 	 */
 	@EventSubscriber(eventClass=SimStateRequest.class)
     public void onSimStateRequest(SimStateRequest event) {
+		
+		
+		
 		SimStateClient state = event.getPayload();
 		
 		if (simulationStateClient_ == state)

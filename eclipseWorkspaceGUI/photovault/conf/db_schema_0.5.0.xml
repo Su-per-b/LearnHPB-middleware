@@ -1,0 +1,339 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "http://db.apache.org/torque/dtd/database.dtd">
+<!--
+  Copyright (c) 2006 Harri Kaimio
+  
+  This file is part of Photovault.
+
+  Photovault is free software; you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  Photovault is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Foobar; if not, write to the Free Software Foundation,
+  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+-->
+
+<!-- This is the definition of database schma used bu Photovault. -->
+  <database name="pv_test">
+    <table name="collection_photos">
+      <column name="collection_id" primaryKey="true" required="true" type="INTEGER" size="11"  autoIncrement="false"/>
+      <column name="photo_id" primaryKey="true" required="true" type="INTEGER" size="11" autoIncrement="false"/>
+
+      <!-- For future use -->
+      <column name="cp_desc" primaryKey="false" required="false" type="LONGVARCHAR" size="65535" autoIncrement="false"/>
+      <column name="cp_string1" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+      <column name="cp_string2" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+      <column name="cp_string3" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+      <column name="cp_string4" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+      <column name="cp_float1" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <column name="cp_float2" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <column name="cp_float3" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <column name="cp_float4" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      
+      <!--unique name="PRIMARY">
+        <unique-column name="collection_id"/>
+        <unique-column name="photo_id"/>
+      </unique-->
+    </table>
+    <table name="image_instances">
+      <column name="volume_id" primaryKey="true" required="true" type="VARCHAR" size="30" autoIncrement="false"/>
+      <column name="fname" primaryKey="true" required="true" type="VARCHAR" size="255" autoIncrement="false"/>
+      <column name="instance_uuid" primaryKey="false" required="false" type="VARCHAR" size="36" autoIncrement="false"/>      
+      <column name="photo_id" primaryKey="false" required="true" type="INTEGER" size="11" autoIncrement="false"/>
+      <column name="width" primaryKey="false" required="false" type="INTEGER" size="11" autoIncrement="false"/>
+      <column name="height" primaryKey="false" required="false" type="INTEGER" size="11" autoIncrement="false"/>
+      <column name="rotated" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <column name="instance_type" primaryKey="false" required="true" type="VARCHAR" size="9" default="original" autoIncrement="false"/>
+
+      <column name="hash" primaryKey="false" required="false" type="VARBINARY" size="16" autoIncrement="false"/>
+      <column name="rawconv_id" primaryKey="false" required="false" type="INTEGER" size="11" autoIncrement="false"/>      
+      <column name="channel_map" primaryKey="false" required="false" type="LONGVARBINARY" size="65535" autoIncrement="false"/>      
+      <!-- size of the file -->
+      <column name="file_size" primaryKey="false" required="false" type="BIGINT" autoIncrement="false"/>
+      <!-- last modification time of the file -->
+      <column name="mtime" primaryKey="false" required="false" type="BIGINT" autoIncrement="false"/>
+      <!-- time the consisteny between database record and actual image file was checked last time -->
+      <column name="check_time" primaryKey="false" required="false" type="TIMESTAMP" size="19" autoIncrement="false"/>
+
+      <!-- Cropping applied to this instance -->
+      <column name="crop_xmin" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false" defaultValue="0.0"/>
+      <column name="crop_ymin" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false" defaultValue="0.0"/>
+      <column name="crop_xmax" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false" defaultValue="1.0"/>
+      <column name="crop_ymax" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false" defaultValue="1.0"/>
+      
+      <!-- Columns for reserved for future use -->
+      <column name="instance_string1" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+      <column name="instance_string2" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+      <column name="instance_string3" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+      <column name="instance_string4" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+      <column name="instance_float1" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <column name="instance_float2" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <column name="instance_float3" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <column name="instance_float4" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <index name="instance_hash_index">
+        <index-column name="hash"/>
+      </index>
+      
+      <!--unique name="PRIMARY">
+        <unique-column name="volume_id"/>
+        <unique-column name="fname"/>
+      </unique-->
+      
+    </table>
+    <table name="OJB_DLIST">
+      <column name="ID" primaryKey="true" required="true" type="INTEGER" size="11"  autoIncrement="false"/>
+      <column name="SIZE_" primaryKey="false" required="false" type="INTEGER" size="11" autoIncrement="false"/>
+      <!--unique name="PRIMARY">
+        <unique-column name="ID"/>
+      </unique-->
+    </table>
+    <table name="OJB_DLIST_ENTRIES">
+      <column name="ID" primaryKey="true" required="true" type="INTEGER" size="11"  autoIncrement="false"/>
+      <column name="DLIST_ID" primaryKey="false" required="true" type="INTEGER" size="11"  autoIncrement="false"/>
+      <column name="POSITION_" primaryKey="false" required="false" type="INTEGER" size="11" autoIncrement="false"/>
+      <column name="OID_" primaryKey="false" required="false" type="LONGVARBINARY" size="2147483647" autoIncrement="false"/>
+      <!--unique name="PRIMARY">
+        <unique-column name="ID"/>
+      </unique-->
+    </table>
+    <table name="OJB_DMAP">
+      <column name="ID" primaryKey="true" required="true" type="INTEGER" size="11"  autoIncrement="false"/>
+      <column name="SIZE_" primaryKey="false" required="false" type="INTEGER" size="11" autoIncrement="false"/>
+      <!--unique name="PRIMARY">
+        <unique-column name="ID"/>
+      </unique-->
+    </table>
+    <table name="OJB_DMAP_ENTRIES">
+      <column name="ID" primaryKey="true" required="true" type="INTEGER" size="11"  autoIncrement="false"/>
+      <column name="DMAP_ID" primaryKey="false" required="true" type="INTEGER" size="11" autoIncrement="false"/>
+      <column name="KEY_OID" primaryKey="false" required="false" type="LONGVARBINARY" size="2147483647" autoIncrement="false"/>
+      <column name="VALUE_OID" primaryKey="false" required="false" type="LONGVARBINARY" size="2147483647" autoIncrement="false"/>
+      <!--unique name="PRIMARY">
+        <unique-column name="ID"/>
+      </unique-->
+    </table>
+    <table name="OJB_DSET">
+      <column name="ID" primaryKey="true" required="true" type="INTEGER" size="11" autoIncrement="false"/>
+      <column name="SIZE_" primaryKey="false" required="false" type="INTEGER" size="11" autoIncrement="false"/>
+      <!--unique name="PRIMARY">
+        <unique-column name="ID"/>
+      </unique-->
+    </table>
+    <table name="OJB_DSET_ENTRIES">
+      <column name="ID" primaryKey="true" required="true" type="INTEGER" size="11" autoIncrement="false"/>
+      <column name="DLIST_ID" primaryKey="false" required="true" type="INTEGER" size="11" autoIncrement="false"/>
+      <column name="POSITION_" primaryKey="false" required="false" type="INTEGER" size="11" autoIncrement="false"/>
+      <column name="OID_" primaryKey="false" required="false" type="LONGVARBINARY" size="2147483647" autoIncrement="false"/>
+      <!--unique name="PRIMARY">
+        <unique-column name="ID"/>
+      </unique-->
+    </table>
+    <table name="OJB_HL_SEQ">
+      <column name="TABLENAME" primaryKey="true" required="true" type="VARCHAR" size="175" autoIncrement="false"/>
+      <column name="MAX_KEY" primaryKey="false" required="false" type="INTEGER" size="11" autoIncrement="false"/>
+      <column name="GRAB_SIZE" primaryKey="false" required="false" type="INTEGER" size="11" autoIncrement="false"/>
+      <column name="VERSION" primaryKey="false" required="false" type="INTEGER" size="11" autoIncrement="false"/>
+      <!--unique name="PRIMARY">
+        <unique-column name="TABLENAME"/>
+        <unique-column name="FIELDNAME"/>
+      </unique-->
+    </table>
+    <table name="OJB_LOCKENTRY">
+      <column name="OID_" primaryKey="true" required="true" type="VARCHAR" size="250" autoIncrement="false"/>
+      <column name="TX_ID" primaryKey="true" required="true" type="VARCHAR" size="50" autoIncrement="false"/>
+      <column name="TIMESTAMP_" primaryKey="false" required="false" type="TIMESTAMP" size="19" default="CURRENT_TIMESTAMP" autoIncrement="false"/>
+      <column name="ISOLATIONLEVEL" primaryKey="false" required="false" type="INTEGER" size="11" autoIncrement="false"/>
+      <column name="LOCKTYPE" primaryKey="false" required="false" type="INTEGER" size="11" autoIncrement="false"/>
+      <!--unique name="PRIMARY">
+        <unique-column name="OID_"/>
+        <unique-column name="TX_ID"/>
+      </unique-->
+    </table>
+    <table name="OJB_NRM">
+      <column name="NAME" primaryKey="true" required="true" type="VARCHAR" size="250" autoIncrement="false"/>
+      <column name="OID_" primaryKey="false" required="false" type="LONGVARBINARY" size="2147483647" autoIncrement="false"/>
+      <!--unique name="PRIMARY">
+        <unique-column name="NAME"/>
+      </unique-->
+    </table>
+    <table name="photo_collections">
+      <column name="collection_id" primaryKey="true" required="true" type="INTEGER" size="11"  autoIncrement="false"/>
+      <column name="collection_uuid" primaryKey="false" required="false" type="VARCHAR" size="36" autoIncrement="false"/>
+      <column name="parent" primaryKey="false" required="false" type="INTEGER" size="11" autoIncrement="false"/>
+      <column name="collection_name" primaryKey="false" required="true" type="VARCHAR" size="30" autoIncrement="false"/>
+      <column name="collection_desc" primaryKey="false" required="false" type="LONGVARCHAR" size="65535" autoIncrement="false"/>
+      <column name="create_time" primaryKey="false" required="false" type="TIMESTAMP" size="19" autoIncrement="false"/>
+      <column name="last_modified" primaryKey="false" required="false" type="TIMESTAMP" size="19" autoIncrement="false"/>
+      
+      <!-- Columns for reserved for future use -->
+      <column name="collection_string1" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+      <column name="collection_string2" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+      <column name="collection_string3" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+      <column name="collection_string4" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+      <column name="collection_float1" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <column name="collection_float2" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <column name="collection_float3" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <column name="collection_float4" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      
+<!--unique name="PRIMARY">
+        <unique-column name="collection_id"/>
+      </unique-->
+      <!--index name="collection_desc">
+        <index-column name="collection_desc"/>
+      </index-->
+    </table>
+    <table name="photos">
+      <column name="photo_id" primaryKey="true" required="true" type="INTEGER" size="11" autoIncrement="false"/>
+      <column name="photo_uuid" primaryKey="false" required="false" type="VARCHAR" size="36" autoIncrement="false"/>      
+      <column name="shoot_time" primaryKey="false" required="false" type="TIMESTAMP" size="19" autoIncrement="false"/>
+      <column name="time_accuracy" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <column name="shooting_place" primaryKey="false" required="false" type="VARCHAR" size="30" autoIncrement="false"/>
+      <column name="photographer" primaryKey="false" required="false" type="VARCHAR" size="30" autoIncrement="false"/>
+      <column name="f_stop" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <column name="focal_length" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <column name="shutter_speed" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <column name="camera" primaryKey="false" required="false" type="VARCHAR" size="30" autoIncrement="false"/>
+      <column name="lens" primaryKey="false" required="false" type="VARCHAR" size="30" autoIncrement="false"/>
+      <column name="film" primaryKey="false" required="false" type="VARCHAR" size="30" autoIncrement="false"/>
+      <column name="film_speed" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <column name="pref_rotation" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <!-- Clip rectangle specification. Reserved for future use -->
+      
+      <column name="clip_xmin" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false" defaultValue="0.0"/>
+      <column name="clip_ymin" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false" defaultValue="0.0"/>
+      <column name="clip_xmax" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false" defaultValue="1.0"/>
+      <column name="clip_ymax" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false" defaultValue="1.0"/>
+      
+      <column name="orig_fname" primaryKey="false" required="false" type="VARCHAR" size="30" autoIncrement="false"/>
+      <column name="description" primaryKey="false" required="false" type="LONGVARCHAR" size="65535" autoIncrement="false"/>
+      <column name="photo_quality" primaryKey="false" required="false" type="INTEGER" size="11" autoIncrement="false"/>
+      <column name="last_modified" primaryKey="false" required="false" type="TIMESTAMP" size="19" autoIncrement="false"/>
+      <column name="tech_notes" primaryKey="false" required="false" type="LONGVARCHAR" size="65535" autoIncrement="false"/>
+      
+      <column name="rawconv_id" primaryKey="false" required="false" type="INTEGER" size="11" autoIncrement="false"/>      
+      <column name="channel_map" primaryKey="false" required="false" type="LONGVARBINARY" size="65535" autoIncrement="false"/>      
+      
+      <!-- MD5 hash code of the original image file -->
+      <column name="hash" primaryKey="false" required="false" type="VARBINARY" size="16" autoIncrement="false"/>
+      
+      <!-- Columns reserved for future use, to avoid disrupting schema changes -->
+      <column name="photo_string1" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+      <column name="photo_string2" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+      <column name="photo_string3" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+      <column name="photo_string4" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+      <column name="photo_float1" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <column name="photo_float2" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <column name="photo_float3" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <column name="photo_float4" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+      <!--unique name="PRIMARY">
+        <unique-column name="photo_id"/>
+      </unique-->
+      <!--index name="shooting_place">
+        <index-column name="shooting_place"/>
+        <index-column name="description"/>
+      </index-->
+    </table>
+    <table name="volumes">
+      <column name="volume_id" primaryKey="true" required="true" type="VARCHAR" size="30" autoIncrement="false"/>
+      <column name="root_path" primaryKey="false" required="true" type="VARCHAR" size="255" autoIncrement="false"/>
+      <!--unique name="PRIMARY">
+        <unique-column name="volume_id"/>
+      </unique-->
+    </table>
+    
+    <table name="dcraw_settings" 
+           description="Settings used to convert a raw image using dcraw" >
+        <column name="rawconv_id" primaryKey="true" required="true" type="INTEGER" 
+                size="11" autoIncrement="false"
+                description="ID of this conversion"/>
+        <column name="whitepoint" primaryKey="false" required="true" type="INTEGER" 
+                size="11" autoIncrement="false"
+                description="Pixel value that is considered white if no EV correction is applied"/>
+        <column name="blackpoint" primaryKey="false" required="true" type="INTEGER" 
+                default="0" size="11" autoIncrement="false"
+                description="Pixel value that is considered black"/>
+        <column name="ev_corr" primaryKey="false" required="true" type="FLOAT" 
+                size="12" autoIncrement="false"
+                description="Exposure correction in f-stops"/>
+        <column name="hlight_corr" primaryKey="false" required="true" type="FLOAT" 
+                size="12" autoIncrement="false"
+                description="Highlight compression, how many f-stops actul white point will differ from linear"/>
+        <column name="embedded_profile" primaryKey="false" required="true" type="BIT"
+                size="1" autoIncrement="false"
+                description="Whether conversion uses ICC profile embedded to the raw file"/>
+        <column name="profile_id" primaryKey="false" required="false" type="INTEGER" 
+                size="11" autoIncrement="false"
+                description="ID of the matching ICC profile (in table icc_profiles)"/>        
+        <column name="wb_type" primaryKey="false" required="true" type="INTEGER" 
+                size="11" autoIncrement="false"
+                description="White balance setting type. See Javadoc for RawConversionSettings for details"/>
+        <column name="r_g_ratio" primaryKey="false" required="true" type="FLOAT" 
+                size="12" autoIncrement="false"
+                description="Ratio of red and green channel multipliers"/>
+        <column name="b_g_ratio" primaryKey="false" required="true" type="FLOAT" 
+                size="12" autoIncrement="false"
+                description="Ratio of blue and green channel multipliers"/>
+        <column name="dl_r_g_ratio" primaryKey="false" required="true" type="FLOAT" 
+                size="12" autoIncrement="false"
+                description="Ratio of red and green channel multipliers for daylight"/>
+        <column name="dl_b_g_ratio" primaryKey="false" required="true" type="FLOAT" 
+                size="12" autoIncrement="false"
+                description="Ratio of blue and green channel multipliers for daylight"/>
+        <!-- Columns reserved for future use, to avoid disrupting schema changes -->
+        <column name="raw_string1" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+        <column name="raw_string2" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+        <column name="raw_string3" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+        <column name="raw_string4" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+        <column name="raw_float1" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+        <column name="raw_float2" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+        <column name="raw_float3" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+        <column name="raw_float4" primaryKey="false" required="false" type="FLOAT" size="12" autoIncrement="false"/>
+        
+    </table>
+    
+    <table name="icc_profiles" description="Known ICC profiles">
+        <column name="profile_id" primaryKey="true" required="true" 
+                type="INTEGER" size="11" autoIncrement="false"/>
+        <column name="profile_uuid" primaryKey="false" required="false" 
+                type="VARCHAR" size="36" autoIncrement="false"/>
+        <column name="profile_name" primaryKey="false" required="true"
+                type="VARCHAR" size="50" autoIncrement="false"/>
+        <column name="profile_desc" primaryKey="false" required="false"
+                type="LONGVARCHAR"/>
+        <column name="src_type" primaryKey="false" required="false"
+                type="INTEGER" size="11"/>
+        <column name="target_type" primaryKey="false" required="false"
+                type="INTEGER" size="11"/>
+        <column name="gamma" primaryKey="false" required="false"
+                type="FLOAT" size="12"/>
+        <column name="hash" primaryKey="false"  type="VARBINARY" size="16" 
+                required="false"/>
+    </table>
+    
+    <table name="icc_instances" description="ICC profile files">
+        <column name="profile_id" primaryKey="true" required="true"
+                type="INTEGER" size="11" autoIncrement="false"/>
+        <column name="volume_id" primaryKey="true" required="true" type="VARCHAR" 
+                size="30" autoIncrement="false"/>
+        <column name="fname" description="Name of the volume file"
+                type="VARCHAR" size="255" required="false"/>
+    </table>
+    
+    <!--
+    Information about the database instance. This table is assumed to contain only 1 row
+    that describes this database
+    -->
+    <table name="database_info">
+        <!-- Random 128 bit identifier for this instance. Stored as a hexadecimal string -->
+        <column name="database_id" primaryKey="true" required="true" type="VARCHAR" size="32"/>
+        <column name="schema_version" type="INTEGER"/>
+        <column name="create_time" type="TIMESTAMP"/>
+    </table>
+  </database>

@@ -4,23 +4,24 @@ package com.sri.straylight.client.controller;
 
 
 import java.awt.BorderLayout;
+import java.awt.Container;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 
-import org.bushe.swing.event.EventBus;
-import org.bushe.swing.event.EventServiceLocator;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.event.SimStateNotify;
+import com.sri.straylight.client.event.ViewInitialized;
 import com.sri.straylight.client.event.menu.About_Help;
 import com.sri.straylight.client.event.menu.Options_SelectSimulationEngine;
 import com.sri.straylight.client.model.ClientConfig;
 import com.sri.straylight.client.model.ClientConfigXML;
-import com.sri.straylight.client.model.SimStateClient;
+import com.sri.straylight.client.view.BaseView;
 import com.sri.straylight.client.view.MainView;
+import com.sri.straylight.client.view.OutputView;
 import com.sri.straylight.client.view.SimulationEngineDialog;
-import com.sri.straylight.fmuWrapper.event.ExceptionThrowingEventService;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 
@@ -38,22 +39,19 @@ public class MainController extends AbstractController {
 	private SimulationController simulationController_;
 	
 	/** The debug console controller_. */
-	private DebugConsoleController debugConsoleController_;
+	private ConsoleController consoleController_;
 	
 	/** The input form controller_. */
-	private InputFormController inputFormController_;
-	
-	/** The input detail controller_. */
-	private InputDetailController inputDetailController_;
+	private InputController inputController_;
 	
 	/** The results table controller_. */
-	private ResultsTableController resultsTableController_;
+	private ResultsLogController resultsLogController_;
 	
 	/** The internal table controller_. */
 	private InternalTableController internalTableController_;
 	
 	/** The results form controller_. */
-	private ResultsFormController resultsFormController_;
+	private OutputController outputController_;
 	
 	/** The top menu controller_. */
 	private TopMenuController topMenuController_;
@@ -73,6 +71,9 @@ public class MainController extends AbstractController {
 	/** The instance. */
 	public static MainController instance;
 	
+	
+	private Vector<BaseView> views_;
+	
 	/**
 	 * Instantiates a new main controller.
 	 */
@@ -85,20 +86,19 @@ public class MainController extends AbstractController {
 
 		topPanelController_  = new TopPanelController(this);
 		simulationController_ = new SimulationController(this, configModel_);
-		debugConsoleController_ = new DebugConsoleController(this);
-		inputFormController_ = new InputFormController(this);
-		inputDetailController_ = new InputDetailController(this);
-		resultsTableController_ = new ResultsTableController(this);
-		resultsFormController_ = new ResultsFormController(this);
-		internalTableController_ = new InternalTableController(this);
+		consoleController_ = new ConsoleController(this);
+		inputController_ = new InputController(this);
+		
+		resultsLogController_ = new ResultsLogController(this);
+		outputController_ = new OutputController(this);
+		
 		topMenuController_ = new TopMenuController(this);
 		configController_ = new ConfigController(this);
 	
-		
 		mainView_.add(topPanelController_.getView(), BorderLayout.NORTH);
 
 		tabbedPane_ = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_.addTab("Debug Console", null, debugConsoleController_.getView(), null);
+		tabbedPane_.addTab("Console", null, consoleController_.getView(), null);
 
 		mainView_.add(tabbedPane_, BorderLayout.CENTER);
 
@@ -112,6 +112,8 @@ public class MainController extends AbstractController {
 		
 		instance = this;
 		
+		views_ = new Vector<BaseView>();
+
 	}
 	
 
@@ -125,6 +127,7 @@ public class MainController extends AbstractController {
 		  new SimulationEngineDialog((MainView) getView(), configModel_);
 	}
 
+	
 	/**
 	 * On select simulation engine.
 	 *
@@ -132,8 +135,6 @@ public class MainController extends AbstractController {
 	 */
 	@EventSubscriber(eventClass=About_Help.class)
 	public void onSelectSimulationEngine(About_Help event) {
-		  
-		
 		JOptionPane.showMessageDialog(
 				mainView_, 
 				"Version: " + ClientConfigXML.VERSION,
@@ -141,81 +142,51 @@ public class MainController extends AbstractController {
 				JOptionPane.INFORMATION_MESSAGE
 				);
 	}
+
 	
-	/**
-	 * On sim state notify.
-	 *
-	 * @param event the event
-	 */
-	@EventSubscriber(eventClass=SimStateNotify.class)
-    public void onSimStateNotify(SimStateNotify event) {
+
+	private void addTab_(BaseView view) {
 		
-		if (event.getPayload() == SimStateClient.level_7_reset_completed) {
-			
-			resultsTableController_.reset();
-			debugConsoleController_.reset();
-		}
-
+		tabbedPane_.addTab(
+				view.getTitle(),
+				null, 
+				view, 
+				null);
+		
+		
 	}
 	
 	
 	
-	/**
-	 * On xm lparsed event.
-	 *
-	 * @param event the event
-	 */
-	@EventSubscriber(eventClass=XMLparsedEvent.class)
-	public void onXMLparsedEvent(XMLparsedEvent event) {
-		  
-
-		if (tabbedPane_.getTabCount() < 2) {
-			
-			configController_.init(event.metaDataStruct);
-			inputFormController_.init(event.xmlParsed);
-			
-			inputDetailController_.init(event.xmlParsed);
-			
-			resultsFormController_.init(event.xmlParsed);
-			resultsTableController_.init(event.xmlParsed);
-			internalTableController_.init(event.xmlParsed);
-			
-			tabbedPane_.addTab(
-					"Configuration",
-					null, 
-					configController_.getView(), 
-					null);
-			tabbedPane_.addTab(
-					"Input Form",
-					null, 
-					inputFormController_.getView(), 
-					null);
-			
-			tabbedPane_.addTab(
-					"Input Detail",
-					null, 
-					inputDetailController_.getView(), 
-					null);		
-			tabbedPane_.addTab(
-					"Results Form",
-					null, 
-					resultsFormController_.getView(), 
-					null);
-			tabbedPane_.addTab(
-					"Results Table ",
-					null, 
-					resultsTableController_.getView(), 
-					null);
-			tabbedPane_.addTab(
-					"Internal Table " ,
-					null, 
-					internalTableController_.getView(), 
-					null);
-		} else{
-			inputFormController_.reset(event.xmlParsed);
+	@EventSubscriber(eventClass=ViewInitialized.class)
+	public void onViewInitialized(ViewInitialized event) {
+		
+		BaseView view = event.getPayload();
+		boolean isViewInitialized = views_.contains(view);
+		
+		if (!isViewInitialized) {
+			views_.add(view);
 		}
-
+		
+		if (views_.size() > 3) {
+			SwingUtilities.invokeLater(new Runnable() {
+			    public void run() {
+			    	initTabs_();
+			    }
+			});
+		}
 	}
+
+
+	private void initTabs_() {
+		addTab_(configController_.getView());
+		addTab_(inputController_.getView());
+		addTab_(outputController_.getView());
+		addTab_(resultsLogController_.getView());
+	}
+	
+	
+
 	
 
 }

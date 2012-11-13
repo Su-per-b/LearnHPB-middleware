@@ -1,0 +1,7 @@
+<packager-module version="1.0">
+  <property name="archive" value="swing-worker"/>
+  <resource url="https://swingworker.dev.java.net/files/documents/2810/105148/swing-worker-1.2.jar"
+	    sha1="34b72b73cdd56143c259ea98d6e23afc025c2725"
+	    tofile="artifacts/jars/swingworker.jar">
+  </resource>
+</packager-module>

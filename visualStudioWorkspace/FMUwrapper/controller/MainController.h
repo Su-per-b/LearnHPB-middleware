@@ -199,14 +199,6 @@ namespace Straylight
 
 
 		/*******************************************************//**
-		 * Resets the slave.
-		 *
-		 * @return	0 success, 1 failure
-		 *******************************************************/
-		int resetSlave_();
-
-
-		/*******************************************************//**
 		 * Terminates the slave.
 		 *
 		 * @return	0 success, 1 failure

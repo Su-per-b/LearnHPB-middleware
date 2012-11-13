@@ -8,7 +8,7 @@
 	<parent>
 		<artifactId>StrayLight</artifactId>
 		<groupId>com.sri</groupId>
-		<version>0.0.3</version>
+		<version>0.0.4</version>
 	</parent>
 
 	<artifactId>FMUwrapper</artifactId>
@@ -56,6 +56,19 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>4.1.3.Final</version>
+		</dependency>
+		
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+		</dependency>
+            
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>20030203.000129</version>
 		</dependency>
 		
 	</dependencies>

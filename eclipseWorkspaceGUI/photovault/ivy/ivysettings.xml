@@ -1,0 +1,28 @@
+<ivysettings>
+  <!-- conf defaultResolver="jboss-rep"/ -->
+  <settings defaultResolver="default" />
+  <resolvers>
+    <chain name="public">
+      <!-- First, check if we have the local module definition available -->
+      <packager name="local-modules" 
+		buildRoot="${user.home}/.ivy2/packager/build"
+		resourceCache="${user.home}/.ivy2/packager/cache">
+	<ivy pattern="file://${ivy.settings.dir}/local-repo/[organization]/[module]-[revision]-ivy.xml"/>
+	<artifact pattern="file://${ivy.settings.dir}/local-repo/[organization]/[module]-[revision]-packager.xml"/>
+      </packager>
+      <packager name="roundup" 
+		buildRoot="${user.home}/.ivy2/packager/build" 
+		resourceCache="${user.home}/.ivy2/packager/cache">
+	<ivy pattern="http://ivyroundup.googlecode.com/svn/trunk/repo/modules/[organisation]/[module]/[revision]/ivy.xml"/>
+	<artifact pattern="http://ivyroundup.googlecode.com/svn/trunk/repo/modules/[organisation]/[module]/[revision]/packager.xml"/>
+      </packager>
+    </chain>
+  </resolvers>
+  <include url="${ivy.default.settings.dir}/ivysettings-shared.xml"/>
+  <include url="${ivy.default.settings.dir}/ivysettings-local.xml"/>
+  <include url="${ivy.default.settings.dir}/ivysettings-main-chain.xml"/>
+  <include url="${ivy.default.settings.dir}/ivysettings-default-chain.xml"/>
+  <modules>
+    <module organisation="org.apache.commons" name="*" resolver="roundup"/>
+  </modules>
+</ivysettings>

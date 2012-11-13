@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2009 Harri Kaimio
+
+  This file is part of Photovault.
+
+  Photovault is free software; you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  Photovault is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Photovault; if not, write to the Free Software Foundation,
+  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+-->
+
+<packager-module version="1.0">
+  <property name="archive" value="jna-3.0.9"/>
+  <resource url="https://jxlayer.dev.java.net/bin/jxlayer.jar"
+	    sha1="03b058533964d3f5156405eb18affd94b5932147"
+        tofile="artifacts/jars/jxlayer.jar"/>
+  <resource url="https://jxlayer.dev.java.net/bin/jxlayer-doc.zip"
+	    sha1="5d584a8da7af08c3c5fc4099a54e616a6f252242"
+        tofile="artifacts/javadocs/jxlayer.zip"/>
+
+  <build>
+  </build>
+</packager-module>

@@ -1,0 +1,31 @@
+Image export
+
+Requirements
+
+* Exporting the original image
+It must be possible to export the original image from database
+
+* Exporting with edits applied
+It must be possible to export the image with all edits applied
+
+* Exporting in free resolution
+User must be able to select the resolution of exported image
+
+** Keeping aspect ratio
+Photovalut must be able to calculate the correct width/height of hte
+image based on image's aspect ration if one of these is given
+
+** Not keeping the aspect ratio
+Photovault must allow user to set width and height freely if so
+requested
+
+* Setting JPEG quality
+User must be able to set up the quality of JPEG compression
+
+* Exporting multiple images
+User must be able to export all selected images with a single command
+
+* Error handling
+
+** Photovault must create an error message if the exported image could not be saved
+

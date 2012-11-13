@@ -79,7 +79,6 @@ namespace Straylight
 		
 		switch (newState) {
 
-
 		case simStateNative_3_init_requested :
 			if (state_ == simStateNative_2_xmlParse_completed) {
 				int result = init();
@@ -91,7 +90,7 @@ namespace Straylight
 				}
 
 			} else if (state_ == simStateNative_7_terminate_completed) {
-				
+
 				mainDataModel_->setStartValues();
 				int result = initializeSlave_();
 
@@ -100,7 +99,6 @@ namespace Straylight
 				} else {
 					setStateError_(_T("Could not init after terminate\n"));
 				}
-
 			}
 
 
@@ -142,21 +140,9 @@ namespace Straylight
 				} else {
 					setStateError_(_T("Could not terminate\n"));
 				}
-
 			}
 			break;
 
-		case simStateNative_7_reset_requested :
-
-			if (state_ == simStateNative_4_run_completed ||
-				state_ == simStateNative_3_ready
-				) {
-
-				setState_(simStateNative_7_reset_requested);
-				resetSlave_();
-			}
-
-			break;
 		}
 	}
 
@@ -216,7 +202,6 @@ namespace Straylight
 	 *******************************************************/
 	void MainController::setConfig(ConfigStruct * configStruct) {
 		configStruct_ = configStruct;
-		//metaDataStruct_->stepDelta = 1.0;
 	}
 
 	/*******************************************************//**
@@ -354,13 +339,8 @@ namespace Straylight
 		int result2 = instantiateSlave_();
 		if (result2) return result2;
 
-
-
 		mainDataModel_->setStartValues();
-
 		int result3 = initializeSlave_();
-
-
 
 		return result3;
 	}
@@ -520,16 +500,15 @@ namespace Straylight
 	 * @return	.
 	 *******************************************************/
 	int MainController::initializeSlave_() {
+		
 		Logger::getInstance()->printDebug(_T("-=MainController::initializeSlave_=-\n"));
 
-
-		fmiStatus fmiFlag;
-
-
+		time_ = getStartTime();
 		double stopTime = getStopTime();
-		fmiFlag =  fmu_->initializeSlave(fmiComponent_, time_, fmiTrue, stopTime);
 
-		if (fmiFlag > fmiWarning) {
+		fmiStatus status =  fmu_->initializeSlave(fmiComponent_, time_, fmiTrue, stopTime);
+
+		if (status > fmiWarning) {
 			setStateError_(_T("Could not initialize slaves\n"));
 			return 1;
 		} else {
@@ -552,47 +531,7 @@ namespace Straylight
 	}
 
 
-	/*******************************************************//**
-	 * Resets the slave.
-	 *
-	 * @return	.
-	 *******************************************************/
-	int MainController::resetSlave_() {
-		Logger::getInstance()->printDebug(_T("-=MainController::resetSlave_=-\n"));
 
-		time_ = 0;
-		nSteps_ = 0;
-
-		fmiStatus fmiFlag;
-
-		fmiFlag =  fmu_->terminateSlave(fmiComponent_);
-
-
-		if (fmiFlag == fmiOK) {
-			Logger::getInstance()->printDebug(_T("terminateSlave() successful\n"));
-			setState_( simStateNative_3_init_initializedSlaves );
-
-		} else if (fmiFlag == fmiWarning) {
-			Logger::getInstance()->printError(_T("terminateSlave() WARNING\n"));
-		} else {
-
-			setStateError_(_T("Could not reset Terminate Slave upon reset request\n"));
-			return 1;
-		}
-
-
-		int result2 = instantiateSlave_();
-		if (result2) return result2;
-
-		mainDataModel_->setStartValues();
-		int result3 = initializeSlave_();
-
-		if (result3 == 0) {
-			setState_(simStateNative_7_reset_completed);
-			setState_( simStateNative_3_ready );
-		}
-
-	}
 
 
 	/*******************************************************//**
@@ -617,19 +556,14 @@ namespace Straylight
 			}
 
 			runHelperDoStep_();
-
-
-
-
-
 		}
+
 
 		if (state_ == simStateNative_5_stop_requested) {
 			setState_(simStateNative_3_ready);
 		} else {
 			printSummary();
 			setState_(simStateNative_4_run_completed);
-			//cleanup();
 		}
 	}
 
@@ -681,9 +615,6 @@ namespace Straylight
 			Logger::getInstance()->printError("MainController::doOneStep_ resulted in error");
 			return 1;
 		}
-
-		time_ = min(time_+getStepDelta(), getStopTime());
-
 		scalarValueResults_ = mainDataModel_->getScalarValueResults(time_);
 
 
@@ -701,6 +632,8 @@ namespace Straylight
 
 
 		nSteps_++;
+		time_ = min(time_+getStepDelta(), getStopTime());
+
 		return 0;
 	}
 

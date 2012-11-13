@@ -1,0 +1,15 @@
+<packager-module version="1.0">
+  <property name="jar" value="xmpcore"/>
+  <resource url="https://swing-layout.dev.java.net/files/documents/2752/70790/swing-layout-1.0.3.jar"
+	    sha1="7c0f5ee4ae72624d53bf5d42c6e0136e39d43dda"
+	    tofile="artifacts/jars/swing-layout.jar">
+  </resource>
+  <resource url="https://swing-layout.dev.java.net/files/documents/2752/70791/swing-layout-1.0.3-doc.zip"
+	    sha1="7081015e2772706d2b4db16e5bf55c51b787e4f8"
+	    tofile="artifacts/javadocs/swing-layout.zip">
+  </resource>
+  <resource url="https://swing-layout.dev.java.net/files/documents/2752/70793/swing-layout-1.0.3-src.zip"
+	    sha1="4b2a60a49499adebbebf7031e56bb3ee814bb215"
+	    tofile="artifacts/sources/swing-layout.zip">
+  </resource>
+</packager-module>

@@ -6,4 +6,5 @@ public class Config {
 	public String testFmuFile;
 	public String dllFolder;
 	
+	public static Config instance;
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2006 Harri Kaimio
+  
+  This file is part of Photovault.
+
+  Photovault is free software; you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  Photovault is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Photovault; if not, write to the Free Software Foundation,
+  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+-->
+
+<!-- 
+Test case for verifying basic delete functionality
+-->
+
+<testcase>
+    <id>test_import_jpeg</id>
+    <component>imginfo</component>
+    <summary>
+        Verify that importing JPEG photos works
+    </summary>
+    <description>
+        1. Import JPEG photo from File Import photo
+        2. Set all parameters in property window
+        3. Verify that the photo can be found from Photovault
+        4. Stop Photovault and start again
+        5. Verify that photo and all properties are the same as before
+    </description>
+    <expectedresult>
+        1. Import status dialog is displayed
+        2. Property window is shown and disappears after pressing OK
+        3. Photo found
+        4. Photovault starts
+        5. Photo and  its properties intact
+    </expectedresult>
+</testcase> 

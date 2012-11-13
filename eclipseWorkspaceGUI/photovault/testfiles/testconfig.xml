@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databases>
+    <databases>
+        <database name="paav_junit" dbName="pv_junit" host="">
+            <volumes>
+                <volume name="junitVolume" basedir="test_volume/junitVolume"/>
+            </volumes>
+        </database>
+    </databases>	
+</databases>

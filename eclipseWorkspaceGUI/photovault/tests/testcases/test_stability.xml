@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2006 Harri Kaimio
+  
+  This file is part of Photovault.
+
+  Photovault is free software; you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  Photovault is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Photovault; if not, write to the Free Software Foundation,
+  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+-->
+
+<!-- 
+Test case for verifying basic delete functionality
+-->
+
+<testcase>
+    <id>test_stability</id>
+    <component>imginfo</component>
+    <summary>
+        Do robustness test round for Photovault.
+    </summary>
+    <description>
+        Open Photovault database with enough images. Use it for about 30 
+	minutes. Do at least following operations:
+	 
+	 * Open at least 100 images for viewing, including several big images
+
+	 * View images with "fit to window" and different zoom levels
+	 
+	 * Open some images in different window
+
+	 * Crop images
+
+	 * Adjust resolution of some images
+
+	 * Import a directory
+
+	 * Update volumes, browse files at same time
+
+	 
+    </description>
+    <expectedresult>
+    	All operations work with sufficient performance, no unexpected 
+	errors.
+    </expectedresult>
+</testcase> 
+	

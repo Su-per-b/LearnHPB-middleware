@@ -33,6 +33,8 @@ public class ConfigHelper {
 			Config config = (Config)xStream.fromXML(fi);
 			fi.close();
 			
+			Config.instance = config;
+			
 			return config;
 			
 		} catch (FileNotFoundException e) {
@@ -74,6 +76,7 @@ public class ConfigHelper {
 			e.printStackTrace();
 		}
 		
+		Config.instance = config;
 		
 	}
 	

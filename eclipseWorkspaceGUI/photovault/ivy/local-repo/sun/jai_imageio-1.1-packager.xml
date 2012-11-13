@@ -1,0 +1,9 @@
+<packager-module version="1.0">
+  <resource url="http://download.java.net/media/jai-imageio/builds/release/1.1/jai_imageio-1_1-lib-linux-i586.tar.gz"
+	    sha1="eb8736228431575954ebecf6104d20c73f0131a5">
+  </resource>
+  
+  <build>
+    <move file="archive/jai_imageio-1_1/lib/jai_imageio.jar" todir="artifacts/jars"/>
+  </build>
+</packager-module>

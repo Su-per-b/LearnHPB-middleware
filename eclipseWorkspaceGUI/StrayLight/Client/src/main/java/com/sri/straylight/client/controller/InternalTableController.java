@@ -3,12 +3,14 @@ package com.sri.straylight.client.controller;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
+import org.bushe.swing.event.EventBus;
+
+import com.sri.straylight.client.event.ViewInitialized;
+import com.sri.straylight.client.view.BaseView;
 import com.sri.straylight.client.view.JTableEx;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
@@ -17,7 +19,7 @@ import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 /**
  * The Class InternalTableController.
  */
-public class InternalTableController  extends AbstractController {
+public class InternalTableController  extends BaseController {
 	
 	
     /** The table_. */
@@ -36,22 +38,19 @@ public class InternalTableController  extends AbstractController {
 		super(parentController);	
 	}
 	
+
 	
-	/**
-	 * Inits the.
-	 *
-	 * @param initializedStruct the initialized struct
-	 */
-	public void init(XMLparsed initializedStruct) {  
-		
-	    JPanel panel = new JPanel();
+	
+	protected void init_( XMLparsed xmlParsed) {  
+
+	    BaseView theView = new BaseView("Internal", 5);
 	    
-	    panel.setPreferredSize(new Dimension(704, 500));
-	    panel.setLayout(new GridLayout(1, 1, 0, 0));
+	    theView.setPreferredSize(new Dimension(704, 500));
+	    theView.setLayout(new GridLayout(1, 1, 0, 0));
 	    
 		dataModel_ = new DefaultTableModel (
-			initializedStruct.getInternalData(),
-			initializedStruct.getInternalColumnNames()
+				xmlParsed.getInternalData(),
+				xmlParsed.getInternalColumnNames()
 		);
 		
 		table_ = new JTableEx(dataModel_);
@@ -62,11 +61,16 @@ public class InternalTableController  extends AbstractController {
 	    JScrollPane scrollPaneTable = new JScrollPane(table_);
 	    scrollPaneTable.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 	    scrollPaneTable.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-	    panel.add(scrollPaneTable);
+	    theView.add(scrollPaneTable);
 
-	    setView_(panel);
+	    setView_(theView);
 	    
 	    table_.updateLayout();
+	    
+	    ViewInitialized e = new ViewInitialized(this, theView);
+	    EventBus.publish(e);
+
     }
-    
+
+	
 }

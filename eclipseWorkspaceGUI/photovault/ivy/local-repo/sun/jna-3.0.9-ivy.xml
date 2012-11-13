@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2009 Harri Kaimio
+
+  This file is part of Photovault.
+
+  Photovault is free software; you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  Photovault is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Photovault; if not, write to the Free Software Foundation,
+  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+-->
+
+<!--
+    IVY file to download & build JNA
+  -->
+<ivy-module version="2.0">
+  <info organisation="sun" module="jna" revision="3.0.9">
+    <license name="LGPL"/>
+    <description homepage="http://jna.dev.java.net">
+      JNA provides Java programs easy access to native shared libraries (DLLs on
+      Windows) without writing anything but Java code—no JNI or native code is
+      required. This functionality is comparable to Windows' Platform/Invoke
+      and Python's ctypes. Access is dynamic at runtime without code generation.
+
+      JNA allows you to call directly into native functions using natural Java
+      method invocation. The Java call looks just like it does in native code.
+      Most calls require no special handling or configuration; no boilerplate
+      or generated code is required.
+
+      The JNA library uses a small native library stub to dynamically invoke
+      native code. The developer uses a Java interface to describe functions
+      and structures in the target native library. This makes it quite easy
+      to take advantage of native platform features without incurring the high
+      overhead of configuring and building JNI code for multiple platforms.
+
+      While some attention is paid to performance, correctness and ease of use
+      take priority.
+    </description>
+  </info>
+    <configurations>
+      <conf name="default"/>
+    </configurations>
+
+    <publications>
+      <artifact name="jna" type="jar" ext="jar"/>
+    </publications>
+</ivy-module>

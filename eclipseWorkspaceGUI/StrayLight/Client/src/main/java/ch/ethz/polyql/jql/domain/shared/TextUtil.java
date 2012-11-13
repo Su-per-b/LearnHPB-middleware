@@ -90,7 +90,9 @@ public final class TextUtil {
    * @return the string
    */
   public static String join( final List<String> text ) {
+	  
     return StringUtils.join( text, "\n" );
+    
   }
 
 }

@@ -7,7 +7,7 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 
 
-	test3();
+	//test3();
 
 	return 0;
 }
@@ -38,47 +38,49 @@ void resultCallbackClass(ScalarValueResults * scalarValueResults) {
 
 }
 
+/*
 
 
 void test2()
 {
 
-	Config::getInstance()->setAutoCorrect(true);
-	MainController * mainController = new MainController();
+Config::getInstance()->setAutoCorrect(true);
+MainController * mainController = new MainController();
 
-	Logger * logger = Logger::getInstance();
-	logger->setDebugvs(1);
+Logger * logger = Logger::getInstance();
+logger->setDebugvs(1);
 
-	mainController->connect(&messageCallback, &resultCallback, &fmuStateCallback);
-	mainController->setResultClassCallback(&resultCallbackClass);
+mainController->connect(&messageCallback, &resultCallback, &fmuStateCallback);
+mainController->setResultClassCallback(&resultCallbackClass);
 
-	mainController->xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1"));
-	mainController->init();
-	mainController->run();
+mainController->xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1"));
+mainController->init();
+mainController->run();
 
 }
 
 
 void test3()
 {
-	Config::getInstance()->setAutoCorrect(true);
-	MainController * mainController = new MainController();
-	Logger * logger = Logger::getInstance();
-	logger->setDebugvs(1);
+Config::getInstance()->setAutoCorrect(true);
+MainController * mainController = new MainController();
+Logger * logger = Logger::getInstance();
+logger->setDebugvs(1);
 
-	mainController->connect(&messageCallback, &resultCallback, &fmuStateCallback);
-	mainController->setResultClassCallback(&resultCallbackClass);
-	mainController->xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1"));
+mainController->connect(&messageCallback, &resultCallback, &fmuStateCallback);
+mainController->setResultClassCallback(&resultCallbackClass);
+mainController->xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1"));
 
-	mainController->init();
+mainController->init();
 
-	mainController->requestStateChange(simStateNative_5_step_requested);
-	mainController->requestStateChange(simStateNative_5_step_requested);
+mainController->requestStateChange(simStateNative_5_step_requested);
+mainController->requestStateChange(simStateNative_5_step_requested);
 
 }
 
 
 
+*/
 
 
 

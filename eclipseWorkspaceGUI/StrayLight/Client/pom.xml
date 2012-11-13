@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>StrayLight</artifactId>
 		<groupId>com.sri</groupId>
-		<version>0.0.3</version>
+		<version>0.0.4</version>
 	</parent>
 	<artifactId>Client</artifactId>
 	<name>Client</name>
@@ -19,25 +19,19 @@
 
 
 	<dependencies>
-
+	
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-			<version>2.4</version>
+			<version>2.6</version>
 		</dependency>
-
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
+		
+           
 
 		<dependency>
 			<groupId>com.sri</groupId>
 			<artifactId>FMUwrapper</artifactId>
-			<version>0.0.3</version>
+			<version>0.0.4</version>
 		</dependency>
 
 		<dependency>
@@ -74,15 +68,11 @@
 		</dependency>
 
 
-
 		<dependency>
 			<groupId>com.jgoodies</groupId>
 			<artifactId>forms</artifactId>
 			<version>1.2.1</version>
 		</dependency>
-
-
-
 
 
 		<dependency>
@@ -91,6 +81,14 @@
 			<version>3.7.4</version>
 		</dependency>
 
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+		</dependency>
+		
+		
 	</dependencies>
 
 

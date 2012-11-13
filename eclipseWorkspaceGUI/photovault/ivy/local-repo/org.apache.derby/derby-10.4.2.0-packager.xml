@@ -1,0 +1,8 @@
+<packager-module version="1.0">
+  <resource url="http://mirror.eunet.fi/apache/db/derby/db-derby-10.4.2.0/db-derby-10.4.2.0-lib.zip"
+	    sha1="6ae857c14c386d6702e115c44406a8023086fd3c"/>
+
+  <build>
+    <move file="archive/db-derby-10.4.2.0-lib/lib/derby.jar" todir="artifacts/jars"/>
+  </build>
+</packager-module>

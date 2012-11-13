@@ -1,0 +1,11 @@
+<ivy-module version="2.0">
+  <info organisation="com.drewnoakes" module="metadata-extractor" revision="2.4.0-beta-1">
+    <license name="Public domain"/>
+    <description homepage="http://www.drewnoakes.com/code/exif/">
+      Drew Noakes' metadata extractin library
+    </description>
+  </info>
+    <configurations>
+      <conf name="default"/>
+    </configurations>
+</ivy-module>

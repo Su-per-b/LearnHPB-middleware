@@ -2,6 +2,7 @@ package com.sri.straylight.client.controller;
 
 
 
+import java.net.URISyntaxException;
 import java.util.Vector;
 
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
@@ -17,19 +18,15 @@ public interface IFmuConnect {
 
 	/**
 	 * Connect.
+	 * @throws URISyntaxException 
 	 */
-	public void connect();
+	public void connect() throws Exception;
 	
 	/**
 	 * Xml parse.
 	 */
 	public void xmlParse();
-	
-	/**
-	 * Inits the.
-	 */
-	public void init();
-	
+
 	/**
 	 * Run.
 	 */

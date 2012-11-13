@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<photovault-config>
+    <databases>
+        <database name="testdb" dbName="habadabaduu" host="">
+            <volumes>
+                <volume name="junitVolume" basedir="test_volume/junitVolume"/>
+            </volumes>
+        </database>
+    </databases>	
+</photovault-config>

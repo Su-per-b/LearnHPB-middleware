@@ -13,7 +13,6 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
-import com.sri.straylight.fmuWrapper.voManaged.ResultOfStep;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 
 // TODO: Auto-generated Javadoc
@@ -39,7 +38,7 @@ JsonSerializer<ResultEvent>, JsonDeserializer<ResultEvent> {
         //result.add("resultString", new JsonPrimitive(src.resultString));
         
         
-        ScalarValueResults scalarValueResults = src.getScalarValueResults();
+        ScalarValueResults scalarValueResults = src.getPayload();
         
         result.add(
         		"resultItem", 

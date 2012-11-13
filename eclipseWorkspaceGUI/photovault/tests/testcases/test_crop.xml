@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2006 Harri Kaimio
+  
+  This file is part of Photovault.
+
+  Photovault is free software; you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  Photovault is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Photovault; if not, write to the Free Software Foundation,
+  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+-->
+
+<testcase>
+    <id>
+        test_crop
+    </id>
+    <component>
+        SWING_UI
+    </component>
+    <summary>
+        Crop image
+    </summary>
+    <description>
+        <![CDATA[
+        1. Select a photo
+        2. Press the crop button in toolbar
+        3. Crop & rotate the image
+        4. Press enter
+        5. Press crop button again
+        6. Rotate a bit mode, press OK in crop dialog
+        7. Press crop again, crop a bit mode & press Escape
+        8. Press crop again, crop a bit mode & press Cancel in crop dialog
+        9. Rotate the image 90 degrees
+        ]]>
+    </description>
+    <expectedresult>
+        <![CDATA[
+        1. Photo selected
+        2. Photovault enters crop mode, crop dialog shown
+        3. crop rectangle show cropping
+        4. Photo shown as cropped, leaves crop mode
+        5. Enters crop mode
+        6. Leaves crop mode shows new crop in window & thumbnail
+        7. Leaves crop mode with previous crop
+        8. Leaves crop mode with previous crop
+        9. Rotation done correctly
+        ]]>
+    </expectedresult>
+</testcase>

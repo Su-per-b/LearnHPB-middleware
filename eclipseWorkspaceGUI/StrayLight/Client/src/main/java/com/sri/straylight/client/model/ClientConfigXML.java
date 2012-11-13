@@ -25,25 +25,14 @@ public class ClientConfigXML {
 	private static final String configFile_ = "client-config.xml";
 	
 	/** The Constant VERSION. */
-	public static final String VERSION = "0.3";
+	public static final String VERSION = "Alpha 0.4";
 
 	
-	/** The Constant unzipFolder. */
-	public static final String unzipFolder = "C:\\Temp\\LearnGB_0v2_VAVReheat_ClosedLoop";
-	
-	/** The Constant testFmuFile. */
-	public static final String testFmuFile = "E:\\SRI\\modelica-projects\\fmus\\no_licence_needed\\LearnGB_VAVReheat_ClosedLoop.fmu";
-	
-	/** The Constant nativeLibFolder. */
-	public static final String nativeLibFolder = "E:\\SRI\\straylight_repo\\visualStudioWorkspace\\bin\\Debug";
-	
-
 	/** The fmu file path. */
 	public String fmuFilePath = "";
 	
 	/** The window icon file name. */
 	public String windowIconFileName;
-
 	
 	/** The auto connect string. */
 	public String autoConnectString;
@@ -90,7 +79,7 @@ public class ClientConfigXML {
 		}
 		
 		ClientConfig clientConfig = new ClientConfig();
-		clientConfig.connectTo = ConnectTo.connecTo_file;
+		//clientConfig.connectTo = ConnectTo.connecTo_localhost;
 
 		clientConfig.windowIconUrl = classLoader.getResource(configXML.windowIconFileName);
 		clientConfig.autoConnectFlag = Boolean.valueOf(configXML.autoConnectString);

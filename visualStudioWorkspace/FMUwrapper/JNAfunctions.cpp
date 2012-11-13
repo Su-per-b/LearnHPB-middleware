@@ -14,12 +14,6 @@
  *******************************************************/
 void requestStateChange (SimStateNative simStateNative) {
 	mainController->requestStateChange(simStateNative);
-
-/*******************************************************//**
- * Gets the configuration.
- *
- * @return	null if it fails, else the configuration.
- *******************************************************/
 }
 
 /*******************************************************//**
@@ -36,6 +30,8 @@ int setConfig(ConfigStruct * configStruct) {
 
 	return 0;
 }
+
+
 
 /*******************************************************//**
  * Executes the message callback c action.
@@ -138,15 +134,6 @@ void xmlParse (char * unzipFolder)
 	int result = mainController->xmlParse(unzipFolder);
 }
 
-/*******************************************************//**
- * Initialises this object.
- *
- * @return	.
- *******************************************************/
-int init ()
-{
-	return mainController->init();
-}
 
 
 /*******************************************************//**

@@ -2,18 +2,19 @@ package com.sri.straylight.client.controller;
 
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Vector;
 
 import org.bushe.swing.event.EventBus;
+import org.bushe.swing.event.annotation.AnnotationProcessor;
+import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.google.gson.Gson;
-import com.sri.straylight.fmuWrapper.event.InitializedEvent;
+import com.sri.straylight.client.model.SimStateClient;
+import com.sri.straylight.fmuWrapper.event.BaseEvent;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
-import com.sri.straylight.fmuWrapper.event.ResultEvent;
-import com.sri.straylight.fmuWrapper.event.SimStateServerNotify;
-import com.sri.straylight.fmuWrapper.serialization.GsonController;
-import com.sri.straylight.fmuWrapper.serialization.SerializeableObject;
+import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
+import com.sri.straylight.fmuWrapper.serialization.JsonController;
+import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
+import com.sri.straylight.fmuWrapper.voManaged.SimStateWrapper;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageType;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
@@ -34,11 +35,11 @@ public class FmuConnectRemote implements IFmuConnect {
 
     /** The websocket connection_. */
     private WebSocket websocketConnection_;
-   // private final String websocketServerUrl_ = "ws://localhost:8081/";
-   // private final String websocketServerUrlRemote_ = "ws://wintermute.straylightsim.com:8081/";
+
 	
     /** The url string_. */
    private final String urlString_;
+
 
     /**
      * Instantiates a new fmu connect remote.
@@ -47,9 +48,76 @@ public class FmuConnectRemote implements IFmuConnect {
      */
     public FmuConnectRemote(String hostName) {
     	
+    	AnnotationProcessor.process(this);
+    	
     	urlString_ = "ws://" + hostName + ":8081/";	
+    	try {
+    		initSocketClient_();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+    	
     }
     
+    
+	/**
+	 * On sim state notify.
+	 *
+	 * @param event the event
+	 */
+	@EventSubscriber(eventClass=com.sri.straylight.fmuWrapper.event.SimStateWrapperNotify.class)
+	public void onSimStateNotify(com.sri.straylight.fmuWrapper.event.SimStateWrapperNotify event) {
+
+		SimStateWrapper serverState = event.getPayload();
+		SimStateClient clientState;
+
+		switch (serverState) {
+		case simStateServer_1_connect_completed:
+			clientState = SimStateClient.level_1_connect_completed;
+			break;
+		case simStateServer_2_xmlParse_completed:
+			clientState = SimStateClient.level_2_xmlParse_completed;
+			break;
+		case simStateServer_3_ready:
+			clientState = SimStateClient.level_3_ready;
+			break;
+		case simStateServer_4_run_completed:
+			clientState = SimStateClient.level_4_run_completed;
+			break;
+		case simStateServer_4_run_started:
+			clientState = SimStateClient.level_4_run_started;
+			break;
+		case simStateServer_5_step_completed:
+			clientState = SimStateClient.level_5_step_completed;
+			break;
+		case simStateServer_7_terminate_completed:
+			clientState = SimStateClient.level_7_terminate_completed;
+			break;
+		case simStateServer_7_reset_completed:
+			clientState = SimStateClient.level_7_reset_completed;
+			break;
+			
+		case simStateServer_e_error:
+			clientState = SimStateClient.level_e_error;
+			break;
+			
+		default:
+			throw new IllegalStateException("serverState not defined");
+
+		}
+
+		
+		com.sri.straylight.client.event.SimStateNotify event2 = 
+				new com.sri.straylight.client.event.SimStateNotify(this, clientState);
+
+
+		EventBus.publish(event2);
+
+	}
+	
+	
 	/* (non-Javadoc)
 	 * @see com.sri.straylight.client.controller.IFmuConnect#setConfig(com.sri.straylight.fmuWrapper.voNative.ConfigStruct)
 	 */
@@ -69,6 +137,15 @@ public class FmuConnectRemote implements IFmuConnect {
 	 */
 	public void requestStateChange(SimStateNative newState) {
 		
+		
+		SimStateNativeRequest event = new SimStateNativeRequest(this, newState);
+		
+		try {
+			websocketConnection_.send(event.toJson());
+		} catch (WebSocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	
 	}
 	
@@ -81,20 +158,98 @@ public class FmuConnectRemote implements IFmuConnect {
 		
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.sri.straylight.client.controller.IFmuConnect#connect()
-	 */
-	public void connect() {
+	
+	private void initSocketClient_() throws Exception {
+		
 
+        URI uri = new URI(urlString_);
+        websocketConnection_ = new WebSocketConnection(uri);
+        
+        WebSocketEventHandler webSocketEventHandler = new WebSocketEventHandler() {
+        	
+        	
+            public void onOpen()
+            {
+
+            	MessageEvent event = new MessageEvent(
+            			this, 
+            			"WebSocket Connection open", 
+            			MessageType.messageType_info);
+            	
+
+            	EventBus.publish(event);	
+            	
+            }
+                  
+            
+            
+            public void onMessage(WebSocketMessage msg)
+            {
+            	
+
+            	String jsonString = msg.getText();
+            	JsonSerializable deserializedObject = JsonController.getInstance().fromJson(jsonString);
+
+            	System.out.println(jsonString);
+            	
+            	if (deserializedObject instanceof BaseEvent) {
+            		EventBus.publish(deserializedObject);
+            	}
+            	
+            }
+            
+            
+                            
+
+
+
+
+			public void onClose()
+            {
+
+            	MessageEvent event = new MessageEvent(
+            			this, 
+            			"WebSocket Connection closed", 
+            			MessageType.messageType_info);
+            	
+            	EventBus.publish(event);
+            }
+            
+            
+            
+            
+        };
+        
+        
+        AnnotationProcessor.process(webSocketEventHandler);
+        websocketConnection_.setEventHandler(webSocketEventHandler);	
+        	
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.sri.straylight.client.controller.IFmuConnect#init()
+	 * @see com.sri.straylight.client.controller.IFmuConnect#connect()
 	 */
-	public void init() {
-
+	public void connect() throws Exception {
+		
+        
+        
+    	MessageEvent event = new MessageEvent(
+    			this, 
+    			"Connecting to remote host at: " + urlString_, 
+    			MessageType.messageType_info);
+    	
+    	EventBus.publish(event);
+    	
+    	
+        // Establish WebSocket Connection
+        websocketConnection_.connect();
+        
+        
 	}
+	
+	
 
+	
 	/**
 	 * Resume.
 	 */
@@ -108,267 +263,8 @@ public class FmuConnectRemote implements IFmuConnect {
     public void xmlParse() {
 
     	
-		try {
-
-			try {
-		        URI uri = new URI(urlString_);
-		        websocketConnection_ = new WebSocketConnection(uri);
-		        
-		        // Register Event Handlers
-		        websocketConnection_.setEventHandler(new WebSocketEventHandler() {
-	                public void onOpen()
-	                {
-
-	                	MessageEvent event = new MessageEvent(
-	                			this, 
-	                			"WebSocket Connection open", 
-	                			MessageType.messageType_info);
-	                	
-
-	                	EventBus.publish(event);	
-	                }
-	                                
-	                public void onMessage(WebSocketMessage message)
-	                {
-	                	Gson gson = GsonController.getInstance().getGson();
-	                	String jsonString = message.getText();
-
-	              
-	                	SerializeableObject obj = gson.fromJson(jsonString, SerializeableObject.class);
-
-	                	
-	                	try {
-	                		Class<?> cl = Class.forName(obj.type);
-	                		
-		                	if (cl == MessageEvent.class) {
-		                		
-		                		MessageEvent event = gson.fromJson(jsonString, MessageEvent.class);
-		                		EventBus.publish(event);
-			                	
-		                	} else if (cl == ResultEvent.class) {
-		                		
-		                		ResultEvent event = gson.fromJson(jsonString, ResultEvent.class);
-		                		EventBus.publish(event);
-			                	
-		                	} else if (cl == SimStateServerNotify.class) {
-		                		
-		                		SimStateServerNotify event = gson.fromJson(jsonString, SimStateServerNotify.class);
-		                		EventBus.publish(event);
-			                	
-		                	} else if (cl == InitializedEvent.class) {
-		                		
-		                		InitializedEvent event = gson.fromJson(jsonString, InitializedEvent.class);
-		                		EventBus.publish(event);
-			                	
-		                	}
-	                	}
-	                	catch (ClassNotFoundException ex) {
-	                		ex.printStackTrace();
-	    			        String msg = ex.getClass().getSimpleName() + ": " + ex.getMessage();
-	    			        System.out.println(msg);
-	                	}
-
-	                	
-
-	                	System.out.println(jsonString);
-
-	                }
-	                                
-	                public void onClose()
-	                {
-
-	                	MessageEvent event = new MessageEvent(
-	                			this, 
-	                			"WebSocket Connection closed", 
-	                			MessageType.messageType_info);
-	                	
-	                	EventBus.publish(event);
-	                }
-	        });
-		        
-		        
-            	MessageEvent event = new MessageEvent(
-            			this, 
-            			"Connecting to remote host at: " + urlString_, 
-            			MessageType.messageType_info);
-            	
-            	EventBus.publish(event);
-            	
-            	
-		        // Establish WebSocket Connection
-		        websocketConnection_.connect();
-		        
-		        // Send UTF-8 Text
-		        websocketConnection_.send("init");
-		        
-		        // Close WebSocket Connection
-		        //websocket.close();
-			}
-			catch (WebSocketException wse) {
-			    wse.printStackTrace();
-
-				String msg = wse.getClass().getSimpleName() + ": " + wse.getMessage();
-				
-	        	MessageEvent event = new MessageEvent(this, msg, MessageType.messageType_error);
-	        	EventBus.publish(event);
-				
-
-			        
-			}
-			catch (URISyntaxException use) {
-			        use.printStackTrace();
-				String msg = use.getClass().getSimpleName() + ": " + use.getMessage();
-				System.out.println(msg);
-				
-
-			}
-			
-		} catch (Exception ex) {
-			
-			String msg = ex.getClass().getSimpleName() + ": " + ex.getMessage();
-			System.out.println(msg);
-			
-        	MessageEvent event = new MessageEvent(this, msg, MessageType.messageType_error);
-        	EventBus.publish(event);
-        	
-		}
-    	
     }
-    /*
-    public void init( ) {
-    	
-    	fmuEventDispatacher_ = new FMUeventDispatacher();
-    	fmuEventDispatacher_.addListener(l);
-    	
-		try {
-
-			try {
-		        URI uri = new URI(urlString_);
-		        websocketConnection_ = new WebSocketConnection(uri);
-		        
-		        // Register Event Handlers
-		        websocketConnection_.setEventHandler(new WebSocketEventHandler() {
-	                public void onOpen()
-	                {
-
-	                	MessageEvent event = new MessageEvent(
-	                			this, 
-	                			"WebSocket Connection open", 
-	                			MessageType.messageType_info);
-	                	
-
-	                	fmuEventDispatacher_.fireEvent(event);
-
-	                }
-	                                
-	                public void onMessage(WebSocketMessage message)
-	                {
-	                	Gson gson = GsonController.getInstance().getGson();
-	                	String jsonString = message.getText();
-
-	              
-	                	SerializeableObject obj = gson.fromJson(jsonString, SerializeableObject.class);
-
-	                	
-	                	try {
-	                		Class<?> cl = Class.forName(obj.type);
-	                		
-		                	if (cl == MessageEvent.class) {
-		                		
-		                		MessageEvent event = gson.fromJson(jsonString, MessageEvent.class);
-			                	fmuEventDispatacher_.fireEvent(event);
-			                	
-		                	} else if (cl == ResultEvent.class) {
-		                		
-		                		ResultEvent event = gson.fromJson(jsonString, ResultEvent.class);
-			                	fmuEventDispatacher_.fireEvent(event);
-			                	
-		                	} else if (cl == SimulationStateEvent.class) {
-		                		
-		                		SimulationStateEvent event = gson.fromJson(jsonString, SimulationStateEvent.class);
-			                	fmuEventDispatacher_.fireEvent(event);
-			                	
-		                	} else if (cl == InitializedEvent.class) {
-		                		
-		                		InitializedEvent event = gson.fromJson(jsonString, InitializedEvent.class);
-			                	fmuEventDispatacher_.fireEvent(event);
-			                	
-		                	}
-	                	}
-	                	catch (ClassNotFoundException ex) {
-	                		ex.printStackTrace();
-	    			        String msg = ex.getClass().getSimpleName() + ": " + ex.getMessage();
-	    			        System.out.println(msg);
-	                	}
-
-	                	
-
-	                	System.out.println(jsonString);
-
-	                }
-	                                
-	                public void onClose()
-	                {
-
-	                	MessageEvent event = new MessageEvent(
-	                			this, 
-	                			"WebSocket Connection closed", 
-	                			MessageType.messageType_info);
-	                	
-	                	fmuEventDispatacher_.fireEvent(event);
-	                }
-	        });
-		        
-		        
-            	MessageEvent event = new MessageEvent(
-            			this, 
-            			"Connecting to remote host at: " + urlString_, 
-            			MessageType.messageType_info);
-            	
-            	fmuEventDispatacher_.fireEvent(event);
-            	
-            	
-		        // Establish WebSocket Connection
-		        websocketConnection_.connect();
-		        
-		        // Send UTF-8 Text
-		        websocketConnection_.send("init");
-		        
-		        // Close WebSocket Connection
-		        //websocket.close();
-			}
-			catch (WebSocketException wse) {
-			    wse.printStackTrace();
-
-				String msg = wse.getClass().getSimpleName() + ": " + wse.getMessage();
-				
-	        	MessageEvent event = new MessageEvent(this, msg, MessageType.messageType_error);
-	        	fmuEventDispatacher_.fireEvent(event);
-				
-
-			        
-			}
-			catch (URISyntaxException use) {
-			        use.printStackTrace();
-				String msg = use.getClass().getSimpleName() + ": " + use.getMessage();
-				System.out.println(msg);
-				
-
-			}
-			
-		} catch (Exception ex) {
-			
-			String msg = ex.getClass().getSimpleName() + ": " + ex.getMessage();
-			System.out.println(msg);
-			
-        	MessageEvent event = new MessageEvent(this, msg, MessageType.messageType_error);
-        	fmuEventDispatacher_.fireEvent(event);
-        	
-		} 
-        
-    	
-    }
-     */
+ 
     
     /* (non-Javadoc)
      * @see com.sri.straylight.client.controller.IFmuConnect#run()

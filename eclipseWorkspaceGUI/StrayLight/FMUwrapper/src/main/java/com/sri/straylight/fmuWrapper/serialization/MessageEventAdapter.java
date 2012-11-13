@@ -36,7 +36,7 @@ JsonSerializer<MessageEvent>, JsonDeserializer<MessageEvent> {
         result.add("type", new JsonPrimitive(src.getClass().getCanonicalName()));
         result.add(
         		"messageStruct", 
-        		context.serialize(src.messageStruct, src.messageStruct.getClass())
+        		context.serialize(src.getPayload(), src.getPayload().getClass())
         		);
 
         return result;
@@ -59,9 +59,10 @@ JsonSerializer<MessageEvent>, JsonDeserializer<MessageEvent> {
         
         JsonElement element = jsonObject.get("messageStruct");
 
-        MessageEvent messageEvent = new MessageEvent(this);
-        messageEvent.messageStruct = context.deserialize(element,MessageStruct.class);
         
+        MessageStruct messageStruct = context.deserialize(element,MessageStruct.class);
+        MessageEvent messageEvent = new MessageEvent(this, messageStruct);
+       
         return messageEvent;
 
     }

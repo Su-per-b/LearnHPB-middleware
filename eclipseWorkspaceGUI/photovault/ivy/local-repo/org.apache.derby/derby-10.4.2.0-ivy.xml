@@ -1,0 +1,15 @@
+<!--
+    IVY file to download & build Java Advanced Imaging
+  -->
+<ivy-module version="2.0">
+  <info organisation="org.apache.derby" module="derby" revision="10.4.2.0">
+    <license name="Apache License, v2.0"/>
+    <description homepage="http://db.apache.org/derby">
+      Derby is an embedded database engine writen in Java
+    </description>
+  </info>
+    <configurations>
+      <conf name="default"/>
+    </configurations>
+
+</ivy-module>

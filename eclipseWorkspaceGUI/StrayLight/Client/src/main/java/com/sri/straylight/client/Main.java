@@ -1,14 +1,11 @@
 package com.sri.straylight.client;
 
-import java.io.InputStream;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.bushe.swing.event.EventService;
 import org.bushe.swing.event.EventServiceExistsException;
 import org.bushe.swing.event.EventServiceLocator;
-
 
 import com.sri.straylight.client.controller.MainController;
 import com.sri.straylight.fmuWrapper.event.ExceptionThrowingEventService;
@@ -41,6 +38,7 @@ public class Main {
         				ExceptionThrowingEventService.class.getName());
         		
         		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        		
         		//InputStream is = classLoader.getResourceAsStream("log4j.xml");
         		
         		//	DOMConfigurator.configure("log4j.xml");

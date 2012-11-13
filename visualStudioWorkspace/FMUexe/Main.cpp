@@ -7,7 +7,7 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	test2();
+	//test2();
 	_getch();
 
 	return 0;
@@ -27,54 +27,58 @@ void fmuStateCallback(SimStateNative simStateNative) {
 	printf ("Main.exe simStateNative: %s \n", _T("simStateNative"));
 }
 
+/*
 
 
 void test2 () {
 
 
-	connect(&messageCallback, &resultCallback, &fmuStateCallback);
+connect(&messageCallback, &resultCallback, &fmuStateCallback);
 
 
-	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1"));
-	ScalarVariablesAllStruct * s4 = getAllScalarVariables();
-	int result = init();
+xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1"));
+ScalarVariablesAllStruct * s4 = getAllScalarVariables();
+int result = init();
 
-	if(result) {
-		return;
-	}
+if(result) {
+return;
+}
 
-	run();
+run();
 }
 
 void test3 () {
-	connect(&messageCallback, &resultCallback, &fmuStateCallback);
+connect(&messageCallback, &resultCallback, &fmuStateCallback);
 
-	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v2_0forTestingDataType_VAVReheat_ClosedLoop2"));
+xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v2_0forTestingDataType_VAVReheat_ClosedLoop2"));
 
-	ScalarVariablesAllStruct * s4 = getAllScalarVariables();
+ScalarVariablesAllStruct * s4 = getAllScalarVariables();
 
-	int result = init();
+//int result = init();
+requestStateChange()
 
-	if(result) {
-		return;
-	}
 
-	ScalarValueRealStruct *ary = new ScalarValueRealStruct[100];
-
-	ScalarValueRealStruct * sVal_1 = new ScalarValueRealStruct();
-	sVal_1->idx =1;
-	sVal_1->value = 11.1;
-
-	ary[0] = *sVal_1;
-
-	ScalarValueRealStruct * sVal_2 = new ScalarValueRealStruct();
-	sVal_2->idx =1;
-	sVal_2->value = 12.2;
-
-	ary[1] = *sVal_2;
-
-	setScalarValues(ary,2);
+//if(result) {
+return;
 }
+
+ScalarValueRealStruct *ary = new ScalarValueRealStruct[100];
+
+ScalarValueRealStruct * sVal_1 = new ScalarValueRealStruct();
+sVal_1->idx =1;
+sVal_1->value = 11.1;
+
+ary[0] = *sVal_1;
+
+ScalarValueRealStruct * sVal_2 = new ScalarValueRealStruct();
+sVal_2->idx =1;
+sVal_2->value = 12.2;
+
+ary[1] = *sVal_2;
+
+setScalarValues(ary,2);
+}
+*/
 
 void doubleToCommaString(char* buffer, double r){
 	char* comma;

@@ -1,0 +1,13 @@
+<packager-module version="1.0">
+  <property name="archive" value="jai-1_1_3"/>
+  <resource url="http://download.java.net/media/jai/builds/release/1_1_3/jai-1_1_3-lib.zip"
+	    sha1="71e8ef10830b0d08c55f7d5d45697ed1d602e473">
+    <include name="${archive}/jai_core.jar"/>
+    <include name="${archive}/jai_codec.jar"/>
+  </resource>
+  
+  <build>
+    <move file="archive/${archive}/lib/jai_core.jar" todir="artifacts/jars"/>
+    <move file="archive/${archive}/lib/jai_codec.jar" todir="artifacts/jars"/>
+  </build>
+</packager-module>

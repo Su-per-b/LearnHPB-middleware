@@ -1,0 +1,11 @@
+<!--
+    IVY file to download & build Java Advanced Imaging
+  -->
+<ivy-module version="2.0">
+  <info organisation="abbot" module="abbot" revision="1.0.2">
+    <license name="CPL"/>
+    <description homepage="http://abbot.sourceforge.net">
+      Abbot UI testing framework
+    </description>
+    </info>    
+</ivy-module>

@@ -1,0 +1,21 @@
+<packager-module version="1.0">
+  <property name="name" value="${ivy.packager.module}"/>
+  <property name="version" value="${ivy.packager.revision}"/>
+  <property name="zipname" value="${name}${version}"/>
+  <resource url="http://puzzle.dl.sourceforge.net/sourceforge/${name}/${zipname}.zip" 
+	    sha1="701578302e244e5173dca3040cce0774a5c39645">
+    <include name="${zipname}/junit.jar"/>
+    <include name="${zipname}/src.jar"/>
+    <include name="${zipname}/javadoc/**/*"/>
+  </resource>
+
+  <build>
+    <move file="archive/${zipname}/junit.jar" tofile="artifacts/jars/${name}.jar"/>
+    <move file="archive/${zipname}/src.jar" tofile="artifacts/sources/${name}.jar"/>
+    <zip destfile="artifacts/javadocs/${name}.zip">
+      <fileset dir="archive/${zipname}/javadoc/">
+	<include name="**/*"/>
+      </fileset>
+    </zip>
+  </build>
+</packager-module>

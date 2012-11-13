@@ -1,0 +1,759 @@
+<!--
+  Copyright (c) 2006 Harri Kaimio
+  
+  This file is part of Photovault.
+
+  Photovault is free software; you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  Photovault is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Photovault; if not, write to the Free Software Foundation,
+  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+-->
+<project name="Photovault" default="dist" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+    <description>
+        Photovault image organization system
+    </description>
+    <!-- set global properties for this build -->
+    <property name="src" location="src/main/java"/>
+    <property name="nsis-src" value="src/main/win32/installer"/>
+    <property name="dist"  location="dist"/>
+    <property name="lib"  location="lib"/>
+    <property name="basedir" location="."/>
+    <property name="junittest.properties" value="junittest.properties"/>
+    <property name="junittest.configfile" value="conf/junittest_config.xml"/>
+    <property file="build.properties"/> 
+    <property name="ivy.jar.dir" location="ivy"/>
+
+  
+  <!-- Coberture class definition -->
+    <path id="cobertura-path">
+        <path location="${lib}/cobertura/cobertura.jar" />
+        <path location="${lib}/log4j.jar"/>
+        <path location="${lib}/cobertura/asm-2.2.1.jar"/>
+        <path location="${lib}/cobertura/asm-tree-2.2.1.jar"/>
+        <path location="${lib}/cobertura/jakarta-oro-2.0.8.jar"/>
+    </path>
+    <taskdef classpathref="cobertura-path" resource="tasks.properties"/>
+  
+    <path id="runtime.path">
+        <fileset id="runtime.fileset" dir="${build.lib.dir}">
+            <include name="*"/>
+        </fileset>
+    </path>
+    <path id="project.class.path">
+        <fileset dir="${build.lib.dir}">
+            <include name="**/*.jar"/>
+            <exclude name="**/checkstyle*.jar"/>
+        </fileset>
+        <pathelement path="${java.class.path}/"/>
+        <pathelement path="${build.classes.dir}"/>
+        <pathelement path="${build.resource.dir}"/>
+        <pathelement path="conf"/>
+        <pathelement path="src/main/resources"/>
+    </path>
+    <path id="debug.sourcepath" >
+        <pathelement path="src/main/java"/>
+        <pathelement path="src/test/java"/>
+    </path>
+    <property environment="env"/>
+  
+  <!-- Hibernate tools task definitions -->
+    <target name="-hibernate-tool-task">
+        <path id="toolslib">
+            <path location="lib/hibernate-tools.jar" />
+            <path location="lib/hibernate3.jar" />
+            <path location="lib/freemarker.jar" />
+            <path location="lib/derby.jar" />
+            <path location="lib/log4j.jar" />
+            <path location="lib/commons-logging.jar" />
+            <path refid="project.class.path" />
+        </path>
+        <taskdef name="hibernatetool" 
+         classname="org.hibernate.tool.ant.HibernateToolTask" 
+         classpathref="toolslib" />
+    </target>
+    <target name="check-svn" description="Check whether Subversion is installed">
+        <available property="svn.installed" file="svn" filepath="${env.PATH}"/>
+        <echo message="Subversion installed: ${svn.installed}"/>
+    </target>
+    <target name="init-svn" if="svn.installed" depends="check-svn" 
+    description="Initialize Subversion state related variables">
+    <!-- Get SCM information & store it into buildinfo.properties -->
+        <exec executable="svnversion" outputproperty="svnrevision" failifexecutionfails="false">
+            <arg line="."/>
+        </exec>
+        <echo message="SVN revision: ${svnrevision}"/>
+        <echo message="SVN URL: ${svn.info.url}"/>
+    </target>
+
+
+    <target name="init-ivy">
+        <path id="ivy.lib.path">
+            <fileset dir="${ivy.jar.dir}" includes="*.jar"/>
+
+        </path>
+        <taskdef resource="org/apache/ivy/ant/antlib.xml"
+                 uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+    </target>
+
+
+    <target name="/noresolve" description="Do not try to resolve library dependencies (if e.g. Internet connection is not available)">
+        <property name="no.resolve" value="1"/>
+    </target>
+
+    <target name="resolve"  depends="init-ivy"
+        description="retrieve dependencies wth Ivy" unless="no.resolve">
+        <ivy:settings file="ivy/ivysettings.xml" />
+        <ivy:retrieve type="jar" pattern="${ivy.lib.dir}/[artifact].[ext]"/>
+        <ivy:report todir="reports/ivy" />
+    </target>
+
+
+    <target name="init" depends="resolve">
+    <!-- Create the time stamp -->
+        <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.classes.dir}"/>
+        <mkdir dir="${build.resource.dir}"/>
+        <copy file="conf/buildinfo.template.properties" 
+	    tofile="conf/buildinfo.properties"
+	    overwrite="true">
+            <filterset>
+                <filter token="svnrevision" value="${svnrevision}"/>
+                <filter token="svn.info.url" value="${svn.info.url}"/>
+                <filter token="build.time" value="${DSTAMP}_${TSTAMP}"/>
+                <filter token="build.user" value="${user.name}"/>
+            </filterset>
+        </copy>
+        <property file="conf/buildinfo.properties"/>
+    </target>
+    <target name="compile" depends="init"
+        description="Compile the source" >
+
+
+    <!-- Compile the java code from ${src} into ${build} -->
+        <javac srcdir="${src}" destdir="${build.classes.dir}" debug="on" classpathref="project.class.path"/>
+        <copy todir="${build.resource.dir}">
+            <fileset dir="${src}">
+                <include name="**/*.betwixt"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="dist" depends="compile"
+        description="Build Photovault JAR files" >
+    
+    <!-- Create the distribution directory -->
+        <mkdir dir="${dist}/photovault-latest"/>
+        <delete>
+            <fileset dir="${dist}/photovault-latest" includes="**/*"/>
+        </delete>
+
+
+    <!-- Convert the CLASSPATH from Ant path structure to a form that can be 
+    passed to MANIFEST Class-Path property -->
+        <pathconvert property="runtime-path" pathsep=" ">
+            <path refid="runtime.path">
+            </path>
+            <mapper type="flatten"/>
+        </pathconvert>    
+
+    <!-- Create the jar file  -->
+        <jar jarfile="${dist}/photovault-latest/photovault.jar">
+            <manifest>
+                <attribute name="Main-Class" value="org.photovault.swingui.Photovault"/>
+                <attribute name="Built-By" value="${user.name}"/>
+                <attribute name="Implementation-Version" value="build_${DSTAMP}"/>
+                <attribute name="Class-Path" value="${runtime-path}"/>
+                <attribute name="SVN-revision" value="${svnrevision}"/>
+                <attribute name="Build-time" value="${DSTAMP}_${TSTAMP}"/>
+            </manifest>
+            <fileset dir="${build.classes.dir}">
+                <exclude name="**/Test*.class"/>
+            </fileset>
+            <fileset dir="${build.resource.dir}">
+            </fileset>
+      
+      <!-- Include resources into the JAR -->
+            <fileset dir="conf" includes="*"/>
+            <fileset dir="src/main/resources" includes="*"/>
+        </jar>
+    
+    <!-- Copy needed JAR files to distribution directory -->
+        <copy todir="${dist}/photovault-latest">
+            <fileset refid="runtime.fileset"/>
+        </copy>
+    </target>
+    <target name="win32-installer" depends="dist"
+    description="Creates a WIN32 installer using NSIS">
+        <fail message="The 'nsiscompiler' property must contain absolute path of NSIS compiler">
+            <condition>
+                <not>
+                    <isset property="nsiscompiler"/>
+                </not>
+            </condition>
+        </fail>
+      <!-- Laynch4j task definition for creating windows .exe -->
+        <taskdef name="launch4j"
+        classname="net.sf.launch4j.ant.Launch4jTask"
+        classpath="${launch4j.dir}/launch4j.jar
+        :${launch4j.dir}/lib/xstream.jar" />
+        <mkdir dir="${dist}/win32/installer"/>
+        <copy file="${nsis-src}/photovault_installer.template.nsi" 
+        tofile="${nsis-src}/photovault_installer.nsi"
+        overwrite="true">
+            <filterset>
+                <filtersfile file="conf/buildinfo.properties"/>
+            <!-- TODO: This should not be hard coded 
+            <filter token="version" value="0.5.0-dev"/>
+            <filter token="svnrevision" value="${svnrevision}"/> -->
+                <filter token="basedir" value="${basedir}"/>
+            </filterset>
+        </copy>
+        <copy file="src/main/win32/pv_launch4j.template.xml" 
+        tofile="src/main/win32/pv_launch4j.xml"
+        overwrite="true">
+            <filterset>
+                <filtersfile file="conf/buildinfo.properties"/>
+            <!--filter token="svnrev" value="${svn.info.rev}"/-->
+            </filterset>
+        </copy>
+        <launch4j configFile="src/main/win32/pv_launch4j.xml" 
+        outfile="dist\win32\photovault.exe"
+        jar="dist\photovault-latest\photovault.jar" />
+        <exec executable="${nsiscompiler}">
+            <arg line="${nsis-src}/photovault_installer.nsi"/>
+        </exec>
+    </target>
+    <target name="testng" depends="dist" description="TestNG test">
+        <taskdef  resource="testngtasks" classpath="lib/testng-jdk15.jar"/>
+        <testng outputDir="${reports.test}/testresults"
+                workingdir="${basedir}"
+                haltOnFailure="false" verbose="5"
+                reporter="org.testng.reporters.JUnitXMLReporter">
+            <jvmarg value="${run.jvmargs}"/>
+            <jvmarg value="-Xdebug"/>
+            <jvmarg value="-Xnoagent"/>
+            <jvmarg value="-Djava.compiler=none"/>
+            <jvmarg value="-Dbasedir=${basedir}"/>
+            
+            <!--jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/-->
+            <classpath>
+                <path refid="project.class.path"/>
+                <pathelement location="${build.classes.dir}"/>
+                <pathelement location="${conf.dir}"/>
+            </classpath>
+            <classfileset dir="${build.classes.dir}">
+                <include name="**/Test**.class"/>
+            </classfileset>
+        </testng>
+    </target>
+    <target name="testng.debug.single" depends="dist" description="TestNG debug single file">
+        <taskdef  resource="testngtasks" classpath="lib/testng-jdk15.jar"/>
+        <nbjpdastart name="${classname}" addressproperty="jpda.address" transport="dt_socket">
+            <classpath refid="project.class.path"/>
+            <sourcepath>
+                <path refid="debug.sourcepath"/>
+            </sourcepath>
+        </nbjpdastart>
+        <echo message="selected_file: ${selected_file}"/>
+        <testng outputDir="${reports.test}/testresults"
+                workingdir="${basedir}"
+                haltOnFailure="true" verbose="5">
+            <jvmarg value="${run.jvmargs}"/>
+            <jvmarg value="-Xdebug"/>
+            <jvmarg value="-Xnoagent"/>
+            <jvmarg value="-Djava.compiler=none"/>
+            <jvmarg value="-Djna.library.path=/usr/local/lib:/usr/lib"/>
+            <jvmarg value="-Dbasedir=${basedir}"/>
+            <jvmarg value="-Dlog4j.configuration=photovault_log4j.properties"/>
+            <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
+            <classpath>
+                <path refid="project.class.path"/>
+                <pathelement location="${build.classes.dir}"/>
+                <pathelement location="${conf.dir}"/>
+            </classpath>
+            <classfileset dir="${build.classes.dir}">
+                <include name="${selected_file}.class"/>
+            </classfileset>
+        </testng>
+    </target>
+
+    <!-- Profile single test case in Netbeans-->
+    <target name="testng.profile.single" depends="dist" description="Profile in Netbeans profiler">
+        <fail unless="netbeans.home">This target can only run inside the NetBeans IDE.
+        </fail>
+        <taskdef  resource="testngtasks" classpath="lib/testng.jar"/>
+        <!-- Start the profiler & waint for Java VM -->
+        <nbprofiledirect>
+            <classpath refid="project.class.path"/>
+        </nbprofiledirect>
+        <!-- Start application. Use basically the same command as for running the application -->
+        <testng outputDir="${reports.test}/testresults"
+                workingdir="${basedir}"
+                haltOnFailure="true" verbose="2">
+            <jvmarg value="${run.jvmargs}"/>
+            <jvmarg value="-Dbasedir=${basedir}"/>
+            <jvmarg value="${profiler.info.jvmargs.agent}"/>
+            <classpath>
+                <path refid="project.class.path"/>
+                <pathelement location="${build.classes.dir}"/>
+                <pathelement location="${conf.dir}"/>
+            </classpath>
+            <classfileset dir="${build.classes.dir}">
+                <include name="${selected_file}.class"/>
+            </classfileset>
+        </testng>
+    </target>
+    <target name="test" depends="dist" description="Run JUnit tests">
+        <delete dir="./${reports.test}/testresults"/>
+        <mkdir dir="./${reports.test}/testresults"/>
+        <mkdir dir="./build/test_volume"/>
+        <junit fork="yes" dir="${basedir}" showoutput="yes" printsummary="yes">
+            <sysproperty key="photovault.propFname" value="${junittest.properties}"/>
+            <sysproperty key="photovault.configfile" value="${junittest.configfile}"/>
+            <sysproperty key="basedir" value="${basedir}"/>
+            <formatter type="xml"/>
+            <formatter usefile="false" type="brief"/>
+            <classpath>
+                <path refid="project.class.path"/>
+                <pathelement location="${build.dir}"/>
+                <pathelement location="${conf.dir}"/>
+            </classpath>
+        <!--<test name="imginfo.PhotoInfoTest" outfile="${reports.test}/imginfo"/>-->
+            <batchtest todir="${reports.test}/testresults">
+                <fileset dir="build">
+                    <include name="**/Test_*.class"/>
+              <!-- Exlude inner classes since these do not contain any test cases -->
+                    <exclude name="**/*$$*.class"/>
+                </fileset>
+            </batchtest>
+        </junit>
+
+      <!-- Create a summary report -->
+        <junitreport todir="${reports.test}">
+            <fileset dir="${reports.test}/testresults">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="./${reports.test}/html"/>
+        </junitreport>
+    </target>
+    
+    <!-- Instrument all with Cobertura -->
+    <target name="cobertura-prepare" depends="dist">
+        <cobertura-instrument todir="${build.cobertura.dir}">
+            <fileset dir="${build.classes.dir}/">
+                <include name="**/*.class"/>
+            </fileset>
+        </cobertura-instrument>
+    </target>
+    <target name="test-coverage" depends="clean,dist,cobertura-prepare">
+        <taskdef  resource="testngtasks" classpath="lib/testng.jar"/>
+        <testng outputDir="${reports.test}/testresults"
+                workingdir="${basedir}"
+                haltOnFailure="false" verbose="2"
+                reporter="org.testng.reporters.JUnitXMLReporter">
+            <jvmarg value="${run.jvmargs}"/>
+            <jvmarg value="-Xdebug"/>
+            <jvmarg value="-Xnoagent"/>
+            <jvmarg value="-Djava.compiler=none"/>
+            <jvmarg value="-Dbasedir=${basedir}"/>
+            
+            <!--jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/-->
+            <classpath>
+                <pathelement location="${build.cobertura.dir}"/>
+                <path refid="project.class.path"/>
+                <!--path refid="cobertura-path"/-->
+                <pathelement location="${build.classes.dir}"/>
+                <pathelement location="${conf.dir}"/>
+            </classpath>
+            <classfileset dir="build">
+                <include name="**/Test**.class"/>
+            </classfileset>
+        </testng>
+        <cobertura-report srcdir="${src}" destdir="reports/cobertura"/>
+        <cobertura-report format="xml" srcdir="${src}" destdir="reports/cobertura"/>
+    </target>
+    
+    <!-- Run Findbugs on Photovault .jar -->
+    <target name="findbugs" depends="dist">
+        <taskdef name="findbugs" 
+                 classname="edu.umd.cs.findbugs.anttask.FindBugsTask"
+                 classpath="${findbugs.home}/lib/findbugs-ant.jar"/>
+        <findbugs home="${findbugs.home}"
+              output="xml"
+              outputFile="reports/photovault-fb.xml" >
+            <auxClasspath>
+                <path refid="project.class.path"/>
+            </auxClasspath>
+            <sourcePath path="${src}" />
+            <class location="${dist}/photovault-latest/photovault.jar" />
+        </findbugs>
+    </target>
+
+    
+    <!-- Checkstyle target -->
+    <target name="checkstyle">
+        <checkstyle config="conf/sun_checks.xml">
+            <fileset dir="src" includes="**/*.java"/>
+            <formatter type="plain"/>
+            <formatter type="xml" toFile="build/checkstyle_errors.xml"/>
+        </checkstyle>
+    </target>
+    <path id="emma.lib" >
+        <pathelement location="lib/emma.jar" />
+        <pathelement location="lib/emma_ant.jar" />
+    </path>
+    <taskdef resource="emma_ant.properties" classpathref="emma.lib" />
+    <target name="junit-coverage" depends="dist"
+            description="Measures unit test coverage using Emma">
+        <path id="instrpath">
+            <pathelement path="build"/>
+        </path>
+        <delete dir="${build.instr.dir}"/>
+        <mkdir dir="${build.instr.dir}"/>
+        <delete file="${coverage.dir}/metadata.emma"/>
+        <emma enabled="true" >
+            <instr instrpathref="instrpath" destdir="${build.instr.dir}"	
+                    metadatafile="${coverage.dir}/metadata.emma"
+                    merge="true">
+                <filter excludes="*.Test_*"/>
+            </instr>
+        </emma>
+        <delete dir="./${reports.test}/testresults"/>
+        <mkdir dir="./${reports.test}/testresults"/>
+        <junit fork="yes" dir="${basedir}" printsummary="yes">
+            <jvmarg value="-Demma.coverage.out.file=${coverage.dir}/coverage.emma" />
+            <jvmarg value="-Demma.coverage.out.merge=false" />
+            <jvmarg value="-Xmx${heap.max_size}M"/>
+            <sysproperty key="photovault.propFname" value="${junittest.properties}"/>
+            <sysproperty key="basedir" value="${basedir}"/>
+            <formatter type="xml"/>
+            <classpath>
+                <pathelement location="${build.instr.dir}"/>
+                <path refid="project.class.path"/>
+                <pathelement location="${build.dir}"/>
+                <pathelement location="${conf.dir}"/>
+            </classpath>
+            <!--<test name="imginfo.PhotoInfoTest" outfile="${reports.test}/imginfo"/>-->
+            <batchtest todir="${reports.test}/testresults">
+                <fileset dir="build">
+                    <include name="**/Test_*.class"/>
+                    <!-- Exlude inner classes sinc ethese do not contain any test cases -->
+                    <exclude name="**/*$$*.class"/>
+                </fileset>
+            </batchtest>
+        </junit>
+        <emma enabled="true">
+            <report sourcepath="${src}">
+                <fileset dir="${basedir}/${coverage.dir}" >
+                    <include name="*.emma" />
+                </fileset>
+                <txt outfile="${basedir}/${coverage.dir}/coverage.txt" />
+                <html outfile="${basedir}/${coverage.dir}/coverage.html" />
+            </report>
+        </emma>
+      <!-- Create a summary report -->
+        <junitreport todir="${reports.test}">
+            <fileset dir="${reports.test}/testresults">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="./${reports.test}/html"/>
+        </junitreport>
+    </target>
+    <target name="run" depends="dist" description="Run Photovault">
+        <java fork="true" classname="org.photovault.swingui.Photovault">
+            <!-- Use large enough heap to fit also big images -->
+            <jvmarg value="-Xmx${heap.max_size}M"/>
+            <jvmarg value="${run.jvmargs}"/>
+            <classpath>
+                <path refid="project.class.path"/>
+            </classpath>
+        </java>
+    </target>
+    <target name="with.clover">
+        <clover-setup/>
+    </target>
+    <target name="clover.html">
+        <clover-html-report outdir="reports/clover_html"
+                          testresultsdir="reports/testresults"
+                          title="Photovault"/>
+    </target>
+    <target name="clover.clean">
+        <clover-clean/>
+    </target>
+    <target name="run-coverage" depends="dist">
+        <path id="instrpath">
+            <pathelement path="${build.classes.dir}"/>
+        </path>
+        <delete dir="${build.instr.dir}"/>
+        <mkdir dir="${build.instr.dir}"/>
+        <delete file="${coverage.dir}/metadata.emma"/>
+        <emma enabled="true" >
+            <instr instrpathref="instrpath" destdir="${build.instr.dir}"	
+                    metadatafile="${coverage.dir}/metadata.emma"
+                    merge="true">
+                <filter excludes="*.Test_*"/>
+            </instr>
+        </emma>
+        <delete dir="./${reports.test}/testresults"/>
+        <mkdir dir="./${reports.test}/testresults"/>
+        <java fork="true" classname="org.photovault.swingui.Photovault">
+            <!-- Use large enough heap to fit also big images -->
+            <jvmarg value="-Xmx${heap.max_size}M"/>
+            <jvmarg value="${run.jvmargs}"/>
+            <jvmarg value="-Demma.coverage.out.file=${coverage.dir}/coverage.emma" />
+            <jvmarg value="-Demma.coverage.out.merge=true" />
+            <classpath>
+                <pathelement location="${build.instr.dir}"/>
+                <path refid="project.class.path"/>
+                <pathelement location="${build.classes.dir}"/>
+                <pathelement location="${conf.dir}"/>
+            </classpath>
+        </java>
+        <emma enabled="true">
+            <report sourcepath="${src}">
+                <fileset dir="${basedir}/${coverage.dir}" >
+                    <include name="*.emma" />
+                </fileset>
+                <txt outfile="${basedir}/${coverage.dir}/coverage.txt" />
+                <html outfile="${basedir}/${coverage.dir}/coverage.html" />
+            </report>
+        </emma>
+    </target>
+    <target name="debug" depends="compile" if="netbeans.home" description="Debug in Netbeans">
+        <nbjpdastart name="Photovault" addressproperty="jpda.address" transport="dt_socket">
+            <classpath refid="project.class.path"/>
+            <sourcepath>
+                <path refid="debug.sourcepath"/>
+            </sourcepath>
+        </nbjpdastart>
+        <java fork="true" classname="org.photovault.swingui.Photovault">
+            <jvmarg value="-Xmx${heap.max_size}M"/>
+    <!--<jvmarg value="-XX:+PrintGCDetails"/>-->
+            <jvmarg value="${run.jvmargs}"/>
+            <jvmarg value="-Xdebug"/>
+            <jvmarg value="-Xnoagent"/>
+            <jvmarg value="-Dswing.defaultlaf=com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"/>
+            <jvmarg value="-Djna.dump_memory=true"/>
+            <jvmarg value="-Djava.compiler=none"/>
+            <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
+            <classpath refid="project.class.path"/>
+        </java>
+    </target>
+    <target name="debug-selected-files" depends="compile" if="netbeans.home" description="Debug a single file in Netbeans">
+        <fail unless="classname">Must set property 'classname'
+        </fail>
+        <nbjpdastart name="${classname}" addressproperty="jpda.address" transport="dt_socket">
+            <classpath refid="project.class.path"/>
+            <sourcepath>
+                <path refid="debug.sourcepath"/>
+            </sourcepath>
+        </nbjpdastart>
+        <java classname="${classname}" fork="true">
+            <jvmarg value="${run.jvmargs}"/>
+            <jvmarg value="-Xdebug"/>
+            <jvmarg value="-Xnoagent"/>
+            <jvmarg value="-Djava.compiler=none"/>
+            <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
+            <classpath refid="project.class.path"/>
+        </java>
+    </target>
+
+     <!-- Profile Photovault in Netbeans 5 -->
+    <target name="profile" depends="dist" description="Profile in Netbeans profiler">
+        <fail unless="netbeans.home">This target can only run inside the NetBeans IDE.
+        </fail>
+        <!-- Start the profiler & waint for Java VM -->
+        <nbprofiledirect>
+            <classpath refid="project.class.path"/>
+        </nbprofiledirect>
+        <!-- Start application. Use basically the same command as for running the application -->
+        <java fork="true" classname="org.photovault.swingui.Photovault" jvm="${profiler.info.jvm}">
+            <!-- Use large enough heap to fit also big images -->
+            <jvmarg value="-Xmx${heap.max_size}M"/>
+            <jvmarg value="${run.jvmargs}"/>
+            <jvmarg value="${profiler.info.jvmargs.agent}"/>
+            <classpath>
+                <path refid="project.class.path"/>
+            </classpath>
+        </java>
+    </target>
+    <target name="doc" description="Create Javadoc documentation">
+        <javadoc packagenames = "*"
+             destdir="docs/api"
+	     sourcepath="${src}"
+             author="true"
+             version="true"
+             use="true"
+             windowtitle="Photovault API documentation">
+            <classpath refid="project.class.path"/>
+            <doctitle><![CDATA[<h1>Photovault</h1>]]>
+            </doctitle>
+            <bottom><![CDATA[<i>Copyright &#169; 2007 Harri Kaimio</i>]]>
+            </bottom>
+            <tag name="todo" scope="all" description="To do:" />
+            <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
+        </javadoc>
+    </target>
+    <target name="hibernate.hbm" depends="dist,-hibernate-tool-task" description="Create Hibernate HBM file based on current mapping">
+        <hibernatetool destdir="build/hibernate">
+            <classpath refid="runtime.path"/>
+            <annotationconfiguration
+              configurationfile="conf/hibernate.cfg.xml"/>
+            <hbm2hbmxml/>
+            <hbm2ddl export="false" outputfilename="sql.ddl"/>
+        </hibernatetool>
+    </target>
+    <target name="clean"
+        description="clean up" >    
+    <!-- Delete the ${build} and ${dist} directory trees -->
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist}"/>
+    </target>
+    <target name="dist-bin-tgz" depends="dist"
+    description="Creates the binary distribution">
+        <property name="version" value="${build.major}.${build.minor}.${build.patch}${build.version_shorttag}"/>
+        <property name="tardir" value="photovault-${build.major}.${build.minor}.${build.patch}${build.version_shorttag}"/>
+        <tar destfile="${dist}/photovault-${version}.tar.gz" compression="gzip">
+            <tarfileset dir="${dist}/photovault-latest" prefix="${tardir}/lib">
+              <!-- Exclude JAI libraries since their license is not GPL compatible -->
+                <exclude name="**/jai_core.jar"/>
+                <exclude name="**/jai_codec.jar"/>
+            </tarfileset>
+            <tarfileset dir="." prefix="${tardir}">
+                <include name="relnotes.txt"/>
+                <include name="LICENSE.txt"/>
+            </tarfileset>
+            <tarfileset dir="." fullpath="${tardir}/photovault" mode="755">
+                <include name="photovault.sh"/>
+            </tarfileset>
+          <!-- Copy dcraw executables for all supported platforms to distribution 
+               directory -->
+            <tarfileset dir="${build.lib.dir}/linux-i386" prefix="${tardir}/lib/linux-i386" mode="755">
+                <include name="dcraw*"/>
+            </tarfileset>
+            <tarfileset dir="${build.lib.dir}/win32-x86" prefix="${tardir}/lib/win32-x86">
+                <include name="dcraw*"/>
+            </tarfileset>
+        </tar>
+    </target>
+    <target name="dist-src-tgz" depends="dist"
+    description="Creates the source distribution tar file">
+        <property name="version" value="${build.major}.${build.minor}.${build.patch}${build.version_shorttag}"/>
+        <property name="tardir" value="photovault-${build.major}.${build.minor}.${build.patch}"/>
+        <tar destfile="${dist}/photovault-src-${version}.tar.gz" compression="gzip">
+            <tarfileset dir="src" prefix="${tardir}/src">
+                <exclude name="**/.svn"/>
+            </tarfileset>
+            <tarfileset dir="lib" prefix="${tardir}/lib">
+                <exclude name="**/.svn"/>
+                <exclude name="**/jai_core.jar"/>
+                <exclude name="**/jai_codec.jar"/>
+            </tarfileset>
+            <tarfileset dir="conf" prefix="${tardir}/conf">
+                <exclude name="**/.svn"/>
+            </tarfileset>
+            <tarfileset dir="." prefix="${tardir}">
+                <include name="relnotes.txt"/>
+                <include name="LICENSE.txt"/>
+                <include name="build.xml"/>
+                <include name="build.properties"/>
+                <include name="forrest.properties"/>
+            </tarfileset>
+        </tar>
+    </target>
+    <target name="dist-testfiles-tgz" depends="dist"
+    description="Crates the test file distribution tar file">
+        <property name="version" value="${build.major}.${build.minor}.${build.patch}${build.version_shorttag}"/>
+        <property name="tardir" value="photovault-${build.major}.${build.minor}.${build.patch}"/>
+        <tar destfile="${dist}/photovault-testfiles-${version}.tar.gz" compression="gzip">
+            <tarfileset dir="tests" prefix="${tardir}/tests">
+                <exclude name="**/.svn"/>
+            </tarfileset>
+            <tarfileset dir="testfiles" prefix="${tardir}/testfiles">
+                <exclude name="**/.svn"/>
+            </tarfileset>
+            <tarfileset dir="." prefix="${tardir}">
+                <include name="relnotes.txt"/>
+                <include name="LICENSE.txt"/>
+            </tarfileset>
+        </tar>
+    </target>
+    <target name="osx-installer" depends="dist"
+          description="Creates a MacOS X .dmg package. Works only in Mac">
+        <fail message=".DMG installer can be created only in Mac.">
+            <condition>
+                <not>
+                    <os family="mac"/>
+                </not>
+            </condition>
+        </fail>
+        <mkdir dir="${dist}/osx"/>
+        <delete>
+            <fileset dir="${dist}/osx" includes="**/*"/>
+        </delete>
+      
+      <!-- Create the application bundle directory hiearchy -->
+        <mkdir dir="${dist}/osx/Photovault.app/Contents"/>
+        <mkdir dir="${dist}/osx/Photovault.app/Contents/MacOS"/>
+        <mkdir dir="${dist}/osx/Photovault.app/Contents/Resources"/>
+        <mkdir dir="${dist}/osx/Photovault.app/Contents/Resources/Java"/>
+      
+      <!-- Copy Photovault to bundle -->
+        <copy todir="${dist}/osx/Photovault.app/Contents/Resources/Java">
+            <fileset dir="${dist}/photovault-latest">
+                <exclude name="**/jai_core.jar"/>
+                <exclude name="**/jai_codec.jar"/>
+            </fileset>
+        </copy>
+      <!-- Copy dcraw -->
+        <copy file="${build.lib.dir}/macosx/dcrawU" 
+            todir="${dist}/osx/Photovault.app/Contents/Resources/Java"/>
+        <chmod file="${dist}/osx/Photovault.app/Contents/Resources/Java/dcrawU"
+            perm="755"/>            
+      <!-- Copy Java framework files -->
+        <copy file="/System/Library/Frameworks/JavaVM.framework/Versions/A/Resources/MacOS/JavaApplicationStub"
+            todir="${dist}/osx/Photovault.app/Contents/MacOS"/>
+        <chmod file="${dist}/osx/Photovault.app/Contents/MacOS/JavaApplicationStub"
+            perm="755"/>
+        <copy file="/Developer/Applications/Java Tools/Jar Bundler.app/Contents/Resources/GenericJavaApp.icns"
+            todir="${dist}/osx/Photovault.app/Contents/Resources"/>
+      <!-- Create Info.plist with correct version information -->
+        <copy file="conf/Info.plist.template" 
+            tofile="${dist}/osx/Photovault.app/Contents/Info.plist"
+            overwrite="true">
+            <filterset>
+                <filtersfile file="conf/buildinfo.properties"/>
+            </filterset>
+        </copy>
+        <echo file="${dist}/osx/Photovault.app/Contents/PkgInfo"
+            message="APPL/????"/>
+      
+      <!-- Create the disk image file -->
+        <exec executable="hdiutil">
+            <arg value="create"/>
+            <arg value="-srcfolder"/>
+            <arg value="${dist}/osx/Photovault.app"/>
+            <arg value="${dist}/osx/Photovault.dmg"/>
+        </exec>
+    </target>
+    <target name="dist-files" depends="win32-installer,dist-bin-tgz,dist-src-tgz,dist-testfiles-tgz"
+    description="Creates the distribution packages"/>
+    <target name="create-ddl" depends="dist">
+        <mkdir dir="${build.dir}/generated"/>
+        <hibernatetool destdir="${build.dir}/generated">
+            <annotationconfiguration 
+                configurationfile="conf/hibernate.cfg.xml"/>
+            <hbm2ddl export="false" outputfilename="sql.ddl"/>
+        </hibernatetool>
+    </target>
+</project>

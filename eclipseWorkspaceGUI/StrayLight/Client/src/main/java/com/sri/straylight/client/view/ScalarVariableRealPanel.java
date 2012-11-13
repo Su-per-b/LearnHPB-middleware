@@ -24,8 +24,10 @@ import javax.swing.event.ChangeListener;
 
 import com.sri.straylight.client.event.ScalarValueChangeRequest;
 import com.sri.straylight.client.model.DoubleInputVerifier;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
+import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -61,7 +63,7 @@ public class ScalarVariableRealPanel extends JPanel {
 	private JTextField textField_;
 
 	/** The scalar value real struct_. */
-	private ScalarValueRealStruct scalarValueRealStruct_;
+	private ScalarValueReal scalarValueReal_;
 	
 	/** The btn submit_. */
 	private JButton btnSubmit_;
@@ -73,7 +75,7 @@ public class ScalarVariableRealPanel extends JPanel {
 	private boolean isTextFieldInitialized_ = false;
 	
 	/** The input detail view_. */
-	private InputDetailView inputDetailView_;
+	private InputView inputFormView_;
 	
 	/** The scalar variable real struct_. */
 	private ScalarVariableRealStruct scalarVariableRealStruct_;
@@ -88,11 +90,11 @@ public class ScalarVariableRealPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 *
-	 * @param inputDetailView the input detail view
+	 * @param inputFormView the input detail view
 	 */
-	public ScalarVariableRealPanel(InputDetailView inputDetailView) {
+	public ScalarVariableRealPanel(InputView inputFormView) {
 		
-		inputDetailView_ = inputDetailView;
+		inputFormView_ = inputFormView;
 				
 		Font normalFont = new Font("sansserif", Font.PLAIN, 12);
 		Font boldFont = new Font("sansserif", Font.BOLD, 12);
@@ -107,7 +109,7 @@ public class ScalarVariableRealPanel extends JPanel {
 		lblMax_.setFont(normalFont);
 
 
-		JSeparator separator = new JSeparator();
+		//JSeparator separator = new JSeparator();
 		slider_ = new JSlider();
 
 		lblStart_ = new JLabel("Start");
@@ -123,7 +125,6 @@ public class ScalarVariableRealPanel extends JPanel {
 
 		btnSubmit_ = new JButton("Submit");
 		btnSubmit_.setEnabled(false);
-
 
 		textField_ = new JTextField();
 		textField_.setColumns(10);
@@ -141,7 +142,7 @@ public class ScalarVariableRealPanel extends JPanel {
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-							.addComponent(separator, GroupLayout.PREFERRED_SIZE, 417, GroupLayout.PREFERRED_SIZE)
+							//.addComponent(separator, GroupLayout.PREFERRED_SIZE, 417, GroupLayout.PREFERRED_SIZE)
 							.addGroup(groupLayout.createSequentialGroup()
 								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 									.addGroup(groupLayout.createSequentialGroup()
@@ -172,7 +173,7 @@ public class ScalarVariableRealPanel extends JPanel {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(separator, GroupLayout.PREFERRED_SIZE, 6, GroupLayout.PREFERRED_SIZE)
+					//.addComponent(separator, GroupLayout.PREFERRED_SIZE, 6, GroupLayout.PREFERRED_SIZE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(11)
@@ -204,7 +205,7 @@ public class ScalarVariableRealPanel extends JPanel {
 		setLayout(groupLayout);
 
 
-		setMaximumSize( new Dimension(400, 170) );
+		//setMaximumSize( new Dimension(400, 170) );
 
 	}
 
@@ -220,7 +221,9 @@ public class ScalarVariableRealPanel extends JPanel {
 		lblName_.setText(sv.name);
 		lblName_.setToolTipText("Name: " + sv.name);
 
-		String minStr = String.valueOf(sv.typeSpecReal.min);
+		TypeSpecReal typeSpecReal = sv.typeSpecReal;
+		String minStr = String.valueOf(typeSpecReal.min);
+		
 		lblMin_.setText(minStr);
 		lblMin_.setToolTipText("Minimum Value: " + minStr);
 
@@ -321,7 +324,7 @@ public class ScalarVariableRealPanel extends JPanel {
 		scalarValueList.add(scalarValue);
 		
 		ScalarValueChangeRequest event = new ScalarValueChangeRequest(this, scalarValueList);
-		inputDetailView_.onDataModelUpdateRequest(event);
+		inputFormView_.onDataModelUpdateRequest(event);
 		
 		btnSubmit_.setEnabled(false);
 		
@@ -334,12 +337,9 @@ public class ScalarVariableRealPanel extends JPanel {
 
 		int newIntValue = slider_.getValue();
 		double newDoubleValue = (double) newIntValue;
-		
 
-		btnSubmit_.setEnabled(newDoubleValue != scalarValueRealStruct_.value);
+		btnSubmit_.setEnabled(newDoubleValue != scalarValueReal_.getValue());
 			
-
-
 		String newStringValue = String.valueOf(newDoubleValue);
 		textField_.setText(newStringValue);
 
@@ -352,14 +352,21 @@ public class ScalarVariableRealPanel extends JPanel {
 	public void submitTextFieldChange() {
 
 		String newStringValue = textField_.getText();
-		double newDoubleValue = Double.parseDouble(newStringValue);
+		Double newDoubleValue = 0.0;
+		
+		try {
+			newDoubleValue = Double.parseDouble(newStringValue);
+			
+		} catch (NumberFormatException e){
+			
+		}
 
-		int valueInt = (int) newDoubleValue;
+
+		int valueInt = newDoubleValue.intValue();
 		slider_.setValue(valueInt);
-		btnSubmit_.setEnabled(newDoubleValue != scalarValueRealStruct_.value);
 		
+		btnSubmit_.setEnabled(newDoubleValue != scalarValueReal_.getValue());
 		
-
 	}
 
 
@@ -368,15 +375,15 @@ public class ScalarVariableRealPanel extends JPanel {
 	 *
 	 * @param scalarValueRealStruct the new value
 	 */
-	public void setValue(ScalarValueRealStruct scalarValueRealStruct) {
+	public void setValue(ScalarValueReal scalarValueReal) {
 
-		scalarValueRealStruct_ = scalarValueRealStruct;
+		scalarValueReal_ = scalarValueReal;
+		String valueStr = scalarValueReal_.toString();
 		
-		String valueStr = String.valueOf(scalarValueRealStruct.value);
-		int valueInt = (int) scalarValueRealStruct.value;
+		Double doubleValue = scalarValueReal_.getValue();
+		int valueInt = doubleValue.intValue();
 		
 		lblValue_.setText(valueStr);
-
 
 		if (!isTextFieldInitialized_) {
 			isTextFieldInitialized_ = true;

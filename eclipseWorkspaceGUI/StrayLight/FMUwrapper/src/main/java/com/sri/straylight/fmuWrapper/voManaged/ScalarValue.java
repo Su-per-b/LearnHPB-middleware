@@ -1,37 +1,36 @@
 package com.sri.straylight.fmuWrapper.voManaged;
 
-import com.sri.straylight.fmuWrapper.voNative.ScalarValueStruct;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+import com.sri.straylight.fmuWrapper.serialization.JsonController;
+import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
+
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class ScalarValue.
  */
-public class ScalarValue {
-	
-	/** The idx. */
-	public int idx;
+public class ScalarValue<T> extends BaseScalarValue {
+		
 	
 	/** The string. */
-	public String string;
+	private T value_;
 	
 	
 	/**
 	 * Instantiates a new scalar value.
 	 */
-	public ScalarValue() {
-		
+	public ScalarValue(int i, T v) {
+		super(i);
+		value_ = v;
 	}
 	
 	
-	/**
-	 * Instantiates a new scalar value.
-	 *
-	 * @param struct the struct
-	 */
-	public ScalarValue(ScalarValueStruct struct) {
-		this.idx = struct.idx;
-		this.string = struct.string;
-	}
+
 	
+
+
+
 	
 }

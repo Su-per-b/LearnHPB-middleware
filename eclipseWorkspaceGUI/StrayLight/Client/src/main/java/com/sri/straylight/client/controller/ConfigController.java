@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultFormatter;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
@@ -19,9 +20,12 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.SimStateNotify;
 import com.sri.straylight.client.event.SimStateRequest;
+import com.sri.straylight.client.event.ViewInitialized;
 import com.sri.straylight.client.model.SimStateClient;
+import com.sri.straylight.client.view.BaseView;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeRequest;
+import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 
@@ -29,7 +33,7 @@ import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 /**
  * The Class ConfigController.
  */
-public class ConfigController extends AbstractController {
+public class ConfigController extends BaseController {
 	
 	
 	/** The txt start time_. */
@@ -78,14 +82,16 @@ public class ConfigController extends AbstractController {
 		
 		btnApply_.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-            	//btnApply_.setEnabled(false);
+            	
+        		setEnabled(false);
+        		
             	updateDataModel_();
-            	EventBus.publish(new ConfigChangeRequest(configStruct_));
+            	EventBus.publish(new ConfigChangeRequest(this,configStruct_));
              }
            }
         );
-		
 	}
+	
 	
 
 	/**
@@ -93,7 +99,7 @@ public class ConfigController extends AbstractController {
 	 *
 	 * @param configStruct the config struct
 	 */
-	public void init(ConfigStruct configStruct) {
+	private void init_(ConfigStruct configStruct) {
 		
 		configStruct_ = configStruct;
 		
@@ -113,28 +119,43 @@ public class ConfigController extends AbstractController {
 		txtStopTime_.setFormatterFactory(fmtFactory);
 		txtStepDelta_.setFormatterFactory(fmtFactory);
 		
-		lblStartTime_.setEnabled(false);
-		JPanel panel = new JPanel();
+	
+		BaseView theView = new BaseView("Config", 1);
+		theView.setLayout(new MigLayout("", "[][grow][290.00,grow]", "[][]"));
+		
+		theView.add(lblStartTime_, "cell 0 0,alignx trailing");
+		theView.add(txtStartTime_, "cell 1 0,growx");
+		
+		theView.add(lblStopTime_, "cell 0 1,alignx trailing");
+		theView.add(txtStopTime_, "cell 1 1,growx");
 
-		
-		panel.setLayout(new MigLayout("", "[][grow][290.00,grow]", "[][]"));
-		
-		panel.add(lblStartTime_, "cell 0 0,alignx trailing");
-		panel.add(txtStartTime_, "cell 1 0,growx");
-		
-		panel.add(lblStopTime_, "cell 0 1,alignx trailing");
-		panel.add(txtStopTime_, "cell 1 1,growx");
+		theView.add(lblStepDelta_, "cell 0 2,alignx trailing");
+		theView.add(txtStepDelta_, "cell 1 2,growx");	
 
-		panel.add(lblStepDelta_, "cell 0 2,alignx trailing");
-		panel.add(txtStepDelta_, "cell 1 2,growx");	
-
-		panel.add(btnApply_, "cell 1 4");
+		theView.add(btnApply_, "cell 1 4");
 		
-		setView_(panel);
+		setView_(theView);
 		bindActions_();
 		
 		updateGUI_();
-	}
+	    
+	    ViewInitialized e = new ViewInitialized(this, theView);
+	    EventBus.publish(e);
+	    
+    }
+	
+	
+	
+	@EventSubscriber(eventClass=XMLparsedEvent.class)
+	public void onXMLparsedEvent(final XMLparsedEvent event) { 
+		
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+				init_(event.metaDataStruct);
+		    }
+		});
+		
+    }
 	
 	
 	/**
@@ -142,12 +163,38 @@ public class ConfigController extends AbstractController {
 	 *
 	 * @param event the event
 	 */
-	@EventSubscriber(eventClass=ConfigChangeRequest.class)
+	@EventSubscriber(eventClass=SimStateRequest.class)
 	public void onSimStateRequest(SimStateRequest event) {
-		btnApply_.setEnabled(false);
+		setEnabled(false);
+	}
+	
+	
+	
+	public void setEnabled (boolean isEnabled) {
+		
+		btnApply_.setEnabled(isEnabled);
+		lblStartTime_.setEnabled(isEnabled);
+		lblStopTime_.setEnabled(isEnabled);
+		lblStepDelta_.setEnabled(isEnabled);
+		
+		if (null != txtStartTime_) {
+			txtStartTime_.setEnabled(isEnabled);
+			txtStopTime_.setEnabled(isEnabled);
+			txtStepDelta_.setEnabled(isEnabled);
+		}
+	}
+	
+	
+	
+	
+	@EventSubscriber(eventClass=SimStateNotify.class)
+	public void onSimStateNotify(SimStateNotify event) {
+	
 		simulationState_ = event.getPayload();
 		updateGUIFromState_();
+		
 	}
+	
 	
 	/**
 	 * On sim state notify.
@@ -155,9 +202,9 @@ public class ConfigController extends AbstractController {
 	 * @param event the event
 	 */
 	@EventSubscriber(eventClass=ConfigChangeNotify.class)
-	public void onSimStateNotify(SimStateNotify event) {
-		btnApply_.setEnabled(true);
-		simulationState_ = event.getPayload();
+	public void onConfigChangeNotify(ConfigChangeNotify event) {
+
+		configStruct_ = event.getPayload();
 		updateGUIFromState_();
 	}
 
@@ -166,12 +213,11 @@ public class ConfigController extends AbstractController {
 	 * Update gui from state_.
 	 */
 	private void updateGUIFromState_() {
-		//if (simulationState_ == SimStateClient.)
-		
-		if (simulationState_ == SimStateClient.level_2_xmlParse_completed) {
-			
-		}
-		
+
+		boolean isEnabled = (simulationState_ == SimStateClient.level_2_xmlParse_completed ||
+				simulationState_ == SimStateClient.level_7_terminate_completed
+				);
+		setEnabled(isEnabled);
 	}
 	
 	

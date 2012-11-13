@@ -1,0 +1,30 @@
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>0</headerType>
+  <jar>dist\win32\photovault.jar</jar>
+  <outfile>dist\win32\photovault.exe</outfile>
+  <errTitle></errTitle>
+  <jarArgs></jarArgs>
+  <chdir></chdir>
+  <customProcName>true</customProcName>
+  <stayAlive>true</stayAlive>
+  <icon></icon>
+  <jre>
+    <path></path>
+    <minVersion>1.5.0</minVersion>
+    <maxHeapSize>@heap.max_size@</maxHeapSize>
+    <args>@run.jvmargs@ -Dpv.basedir="%EXEDIR%"</args>
+  </jre>
+  <versionInfo>
+    <fileVersion>@build.major@.@build.minor@.@build.patch@.0</fileVersion>
+    <txtFileVersion>@build.version@ (@build.version_tag@)</txtFileVersion>
+    <fileDescription>Photovault @build.version@ (@build.version_tag@)</fileDescription>
+    <copyright>(c) 2006 Harri Kaimio</copyright>
+    <productVersion>@build.major@.@build.minor@.@build.patch@.0</productVersion>
+    <txtProductVersion>Photovault @build.version@-@build.version_shorttag@</txtProductVersion>
+    <productName>Photovault</productName>
+    <companyName>Harri Kaimio</companyName>
+    <internalName>photovault</internalName>
+    <originalFilename>photovault.exe</originalFilename>
+  </versionInfo>
+</launch4jConfig>

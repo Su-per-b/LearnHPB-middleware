@@ -6,19 +6,10 @@ import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 /**
  * The Class ConfigChangeNotify.
  */
-public class ConfigChangeNotify {
+public class ConfigChangeNotify extends BaseEvent<ConfigStruct> {
 	
-	/** The payload. */
-	public ConfigStruct payload;
-	
-	/**
-	 * Instantiates a new config change notify.
-	 *
-	 * @param configStruct the config struct
-	 */
-	public ConfigChangeNotify(ConfigStruct configStruct) {
-		payload = configStruct;
-	}
-
+	public ConfigChangeNotify(Object source, ConfigStruct configStruct) {
+        super(source, configStruct);
+    }
 	
 }

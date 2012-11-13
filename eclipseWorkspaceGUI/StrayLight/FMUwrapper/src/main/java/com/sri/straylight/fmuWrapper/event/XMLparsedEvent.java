@@ -35,8 +35,4 @@ public class XMLparsedEvent extends EventObject {
         metaDataStruct = metaDataStruct_arg; 
     }
 
-
-    
-
-	
 }

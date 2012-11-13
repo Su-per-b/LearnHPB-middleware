@@ -1,0 +1,7 @@
+<packager-module version="1.0">
+  <property name="archive" value="metadata-extractor"/>
+  <resource url="http://www.drewnoakes.com/code/exif/releases/metadata-extractor-2.4.0-beta-1.jar"
+	    sha1="f1c0f6c2ebfbe2b11dd04559ad438728e4636d53"
+	    tofile="artifacts/jars/metadata-extractor.jar">
+  </resource>
+</packager-module>

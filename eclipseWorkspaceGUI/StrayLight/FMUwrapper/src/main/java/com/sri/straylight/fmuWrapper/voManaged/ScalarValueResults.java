@@ -4,9 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-import com.sri.straylight.fmuWrapper.voNative.ScalarValueCollectionStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueResultsStruct;
-import com.sun.jna.Structure;
 
 public class ScalarValueResults {
 	
@@ -25,18 +23,8 @@ public class ScalarValueResults {
 	
 	
 	public String toString() {
-		
-		
-		
-		
-		//convertToString(output.realValueAry);
-		
-		
-	//	Vector<String> strList = getOutputList();
-		//String str = "time: " + Double.toString(time);
-		String str = output.toString();
-				
-		//strList.insertElementAt(timeStr,0);
+
+		String str = "time: " + Double.toString(time_) + " " +  output.toString();
 
 		return str;
 	}

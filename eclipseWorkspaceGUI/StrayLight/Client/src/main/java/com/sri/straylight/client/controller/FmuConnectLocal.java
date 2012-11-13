@@ -15,7 +15,7 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 import com.sri.straylight.client.model.SimStateClient;
 import com.sri.straylight.fmuWrapper.FMUcontroller;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeRequest;
-import com.sri.straylight.fmuWrapper.voManaged.SimStateServer;
+import com.sri.straylight.fmuWrapper.voManaged.SimStateWrapper;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
@@ -31,13 +31,11 @@ public class FmuConnectLocal implements  IFmuConnect {
 	private FMUcontroller fmu_;
 	
 	/** The task xm lconnect_. */
-	private TaskConnect taskXMLconnect_;
+	private TaskConnect taskConnect_;
 	
 	/** The task xm lparse_. */
 	private TaskXMLparse taskXMLparse_;
 	
-	/** The task init_. */
-	private TaskInit taskInit_;
 	
 	/** The task run_. */
 	private TaskRun taskRun_;
@@ -93,8 +91,8 @@ public class FmuConnectLocal implements  IFmuConnect {
 	 * @see com.sri.straylight.client.controller.IFmuConnect#connect()
 	 */
 	public void connect() {
-		taskXMLconnect_ = new TaskConnect();
-		taskXMLconnect_.execute();
+		taskConnect_ = new TaskConnect();
+		taskConnect_.execute();
 	}
 
 
@@ -106,22 +104,20 @@ public class FmuConnectLocal implements  IFmuConnect {
 		taskXMLparse_.execute();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.sri.straylight.client.controller.IFmuConnect#init()
-	 */
-	public void init() {
-		taskInit_ = new TaskInit();
-		taskInit_.execute();
-	}
+
 
 
 	/* (non-Javadoc)
 	 * @see com.sri.straylight.client.controller.IFmuConnect#run()
 	 */
 	public void run() {
+		
 		taskRun_ = new TaskRun();
 		taskRun_.execute();
+		
 	}
+	
+	
 	
 	/* (non-Javadoc)
 	 * @see com.sri.straylight.client.controller.IFmuConnect#requestStateChange(com.sri.straylight.fmuWrapper.voNative.SimStateNative)
@@ -135,15 +131,6 @@ public class FmuConnectLocal implements  IFmuConnect {
 		}
 	}
 	
-
-	/**
-	 * Resume.
-	 */
-	public void resume() {
-		taskRequestStateChange_ = new TaskRequestStateChange();
-		taskRequestStateChange_.setState(SimStateNative.simStateNative_7_resume_requested); 
-		taskRequestStateChange_.execute();
-	}
 
 	/* (non-Javadoc)
 	 * @see com.sri.straylight.client.controller.IFmuConnect#setConfig(com.sri.straylight.fmuWrapper.voNative.ConfigStruct)
@@ -161,7 +148,11 @@ public class FmuConnectLocal implements  IFmuConnect {
  */
 @EventSubscriber(eventClass=ConfigChangeRequest.class)
 	public void onConfigChangeRequest(ConfigChangeRequest event) {
-		fmu_.setConfig(event.payload);
+	
+		ConfigStruct configStruct = event.getPayload();
+	
+		fmu_.setConfig(configStruct);
+		
 		//fmu_.inputChange(event.idx, event.value);
 	}
 	
@@ -174,10 +165,10 @@ public class FmuConnectLocal implements  IFmuConnect {
 	 *
 	 * @param event the event
 	 */
-	@EventSubscriber(eventClass=com.sri.straylight.fmuWrapper.event.SimStateServerNotify.class)
-	public void onSimStateNotify(com.sri.straylight.fmuWrapper.event.SimStateServerNotify event) {
+	@EventSubscriber(eventClass=com.sri.straylight.fmuWrapper.event.SimStateWrapperNotify.class)
+	public void onSimStateNotify(com.sri.straylight.fmuWrapper.event.SimStateWrapperNotify event) {
 
-		SimStateServer serverState = event.getPayload();
+		SimStateWrapper serverState = event.getPayload();
 		SimStateClient clientState;
 
 		switch (serverState) {
@@ -279,7 +270,7 @@ public class FmuConnectLocal implements  IFmuConnect {
 	/**
 	 * The Class TaskConnect.
 	 */
-	private class TaskConnect extends SwingWorker<Void, EventObject>   
+	private class TaskConnect extends SwingWorker<Void, Void>   
 	{
 
 		/* (non-Javadoc)
@@ -299,66 +290,18 @@ public class FmuConnectLocal implements  IFmuConnect {
 				ex.printStackTrace();
 			}
 			
-			
-			
 			return null;
 		}
+		
+		
 		
 		/* (non-Javadoc)
 		 * @see javax.swing.SwingWorker#done()
 		 */
 		@Override
 		public void done() {
-			
-            // TODO enable button, change text here
-			try {
-				super.get();
-			} catch (InterruptedException | ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
             synchronized(MainController.instance) {
-            	taskXMLconnect_ = null;
-            }
-          }
-	}
-	
-	/**
-	 * The Class TaskInit.
-	 */
-	private class TaskInit extends SwingWorker<Void, EventObject>   
-	{
-
-		/* (non-Javadoc)
-		 * @see javax.swing.SwingWorker#doInBackground()
-		 */
-		@Override
-		public Void doInBackground()
-		{
-			fmu_.init();
-			return null;
-
-		}
-		
-		/* (non-Javadoc)
-		 * @see javax.swing.SwingWorker#done()
-		 */
-		@Override
-		public void done() {
-			
-            // TODO enable button, change text here
-			try {
-				super.get();
-			} catch (InterruptedException | ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-            synchronized(MainController.instance) {
-            	taskInit_ = null;
+            	taskConnect_ = null;
             }
           }
 	}

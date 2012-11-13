@@ -43,7 +43,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
     private static Log log = LogFactory.getLog(AbstractController.class);
 
     /** The view. */
-    private Container view;
+    protected Container view;
     
     /** The parent controller. */
     private AbstractController parentController;

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>English</string>
+    <key>CFBundleExecutable</key>
+    <string>JavaApplicationStub</string>
+    <key>CFBundleGetInfoString</key>
+    <string>0.4.0 Copyrght (c) 2007 Harri Kaimio</string>
+    <key>CFBundleIconFile</key>
+    <string>GenericJavaApp.icns</string>
+    <key>CFBundleIdentifier</key>
+    <string>org.photovault.50</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>0.5.0</string>
+    <key>CFBundleName</key>
+    <string>Photovault</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>0.4.0</string>
+    <key>CFBundleSignature</key>
+    <string>????</string>
+    <key>CFBundleVersion</key>
+    <string>0.4.0</string>
+    <key>Java</key>
+    <dict>
+        <key>JVMVersion</key>
+        <string>1.5*</string>
+        <key>MainClass</key>
+        <string>org.photovault.swingui.Photovault</string>
+	<key>ClassPath</key>
+	<string>$JAVAROOT/photovault.jar</string>
+        <key>VMOptions</key>
+	<string>-Xmx512M</string>
+	<key>Properties</key>
+	<dict>
+	    <key>apple.laf.useScreenMenuBar</key>
+	    <string>true</string>
+	</dict>
+    </dict>
+    <key>LSHasLocalizedDisplayName</key>
+    <true/>
+    <key>NSHumanReadableCopyright</key>
+    <string>Copyright 2007 Harri Kaimio. Released under GPL.</string>
+    <key>NSJavaPath</key>
+    <array/>
+</dict>
+</plist>

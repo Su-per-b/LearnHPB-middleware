@@ -1,0 +1,19 @@
+<packager-module version="1.0">
+  <property name="name" value="${ivy.packager.module}"/>
+  <property name="version" value="${ivy.packager.revision}"/>
+  <property name="zipname" value="apache-sanselan-incubating-${version}"/>
+  <property name="dirname" value="${name}-${version}-incubator"/>
+
+  <resource url="http://www.nic.funet.fi/pub/mirrors/apache.org/commons/sanselan/binaries/apache-sanselan-incubating-0.97-bin.tar.gz"
+	    sha1="e603646e2afae671b1095e9283118fb1227c5fd7">
+    <include name="${dirname}/${name}-${version}-incubator.jar"/>
+    <include name="${dirname}/${name}-${version}-incubator-javadoc.jar"/>
+    <include name="${dirname}/${name}-${version}-incubator-sources.jar"/>
+  </resource>
+
+  <build>
+    <move file="archive/${dirname}/${name}-${version}-incubator.jar" tofile="artifacts/jars/${name}.jar"/>
+    <move file="archive/${dirname}/${name}-${version}-incubator-javadoc.jar" tofile="artifacts/javadocs/${name}.jar"/>
+    <move file="archive/${dirname}/${name}-${version}-incubator-sources.jar" tofile="artifacts/sources/${name}.jar"/>
+  </build>
+</packager-module>

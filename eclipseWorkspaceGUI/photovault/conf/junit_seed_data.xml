@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2006 Harri Kaimio
+  
+  This file is part of Photovault.
+
+  Photovault is free software; you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  Photovault is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Foobar; if not, write to the Free Software Foundation,
+  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+-->
+
+<!--
+    Initial data that is loaded to database for JUnit test cases.
+    
+    Contents of this file is loaded using Apache DDLUtils.
+-->
+
+
+<data>
+    <!--
+    Test_PhotoFolder#testPhotoretrieval
+    -->
+    <photo_collections collection_uuid="c09bb1bf-58b3-4216-9294-569c50721360" 
+        parent_uuid="939db304-2dec-4a59-ae24-8e1a6b165105" 
+        collection_name="testPhotoRetrieval" 
+        collection_desc="Folder for testPhotoRetrieval"/>
+    <photos photo_uuid="f5d73748-0fb4-40ab-bd05-d3740fb30783"
+    time_accuracy="0"
+    f_stop="1.2"
+    focal_length="20"
+    shutter_speed="1"
+    film_speed="200"
+    pref_rotation="0"
+    photo_quality="1"
+    description="testPhotoRetrieval1"
+    />
+    <photos photo_uuid="f5d73748-0fb4-40ab-bd05-d3740fb30745"
+        time_accuracy="0"
+        f_stop="2.8"
+        focal_length="20"
+        shutter_speed="1"
+        film_speed="200"
+        pref_rotation="0"
+        photo_quality="1"
+        description="testPhotoRetrieval2"
+    />
+    
+    <version_histories uuid="f5d73748-0fb4-40ab-bd05-d3740fb30783"
+        class_discriminator="photo"
+    />    
+    <version_histories uuid="f5d73748-0fb4-40ab-bd05-d3740fb30745"
+        class_discriminator="photo"
+    />
+    
+    <collection_photos 
+        collection_uuid="c09bb1bf-58b3-4216-9294-569c50721360" 
+        photo_uuid="f5d73748-0fb4-40ab-bd05-d3740fb30783"/>
+    <collection_photos 
+        collection_uuid="c09bb1bf-58b3-4216-9294-569c50721360" 
+        photo_uuid="f5d73748-0fb4-40ab-bd05-d3740fb30745"/>
+    
+    <!-- Test_PhotoFolder#testSubfolders -->
+    <photo_collections 
+        collection_uuid="e356990e-a100-41d4-9b18-2b1410051801" 
+        parent_uuid="939db304-2dec-4a59-ae24-8e1a6b165105" 
+        collection_name="subfolderTest" 
+        collection_desc="Folder for testSubfolders"/>
+    <photo_collections 
+        collection_uuid="a275b958-aeb9-4075-b6db-69db8a7101c2" 
+        parent_uuid="e356990e-a100-41d4-9b18-2b1410051801" 
+        collection_name="Subfolder1" 
+        collection_desc="Folder for testSubfolders"/>
+    <photo_collections 
+        collection_uuid="5fdcab2b-082c-4900-8da7-febaa275ec54" 
+        parent_uuid="e356990e-a100-41d4-9b18-2b1410051801" 
+        collection_name="Subfolder2" 
+        collection_desc="Folder for testSubfolders"/>
+    <photo_collections 
+        collection_uuid="ab893ace-765d-4c26-9e43-eaa9a4f95fda" 
+        parent_uuid="e356990e-a100-41d4-9b18-2b1410051801" 
+        collection_name="Subfolder3" 
+        collection_desc="Folder for testSubfolders"/>
+    <photo_collections 
+        collection_uuid="f73d5b23-e399-42be-b5c6-e8dfac08e706" 
+        parent_uuid="e356990e-a100-41d4-9b18-2b1410051801" 
+        collection_name="Subfolder4" 
+        collection_desc="Folder for testSubfolders"/>
+    <icc_profiles profile_id="1" profile_name="Test 1"
+        profile_desc="Seed profile"/>
+    <icc_instances profile_id="1" volume_id="photos" fname="nonexistent.icc"/>
+    
+    
+</data>

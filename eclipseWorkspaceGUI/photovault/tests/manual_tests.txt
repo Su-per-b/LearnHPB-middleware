@@ -1,0 +1,18 @@
+* Folders
+
+** Folder addition
+Add a photo to a folder. Check that it is visible in it.
+
+** Folder creation
+Create a new folder. Try to add a new photo to it
+
+* Image import
+
+** Batch import
+Import a batch of images. Enter image information using tab to change
+form field to field. Verify that not modified information
+(e.g. shooting date) are preserved.
+
+** Batch import memory consumption
+Import a large batch of 100 images. Verify that other functionality
+(image viewing) works properly without memory leaks

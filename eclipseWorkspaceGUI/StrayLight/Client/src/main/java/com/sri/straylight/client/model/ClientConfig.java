@@ -19,10 +19,8 @@ public class ClientConfig {
 	/** The auto init flag. */
 	public boolean autoInitFlag;
 	
-	
-	
 	/** The connect to. */
-	public ConnectTo connectTo;
+	public ConnectTo connectTo = ConnectTo.connecTo_file;
 	
 	/** The window icon url. */
 	public URL windowIconUrl;

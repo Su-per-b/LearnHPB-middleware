@@ -1,0 +1,7 @@
+<packager-module version="1.0">
+  <property name="jar" value="xmpcore"/>
+  <resource url="http://www.photovault.org/raw-attachment/wiki/Dev/xmpcore-4.4.2.jar"
+	    sha1="31c744a60ec8e9d716f1c095e5941ad1c149b55e"
+	    tofile="artifacts/jars/xmpcore.jar">
+  </resource>
+</packager-module>

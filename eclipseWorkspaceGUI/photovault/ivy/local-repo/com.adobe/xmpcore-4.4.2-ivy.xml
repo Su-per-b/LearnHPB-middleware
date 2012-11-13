@@ -1,0 +1,15 @@
+<!--
+    IVY file to download & build XMP SDK
+  -->
+<ivy-module version="2.0">
+  <info organisation="com.adobe" module="xmpcore" revision="4.4.2">
+    <license name="BSD License"/>
+    <description homepage="http://www.adobe.com/devnet/xmp/sdk/eula.html">
+      XMP is generic format for describing metadata related to digital media
+    </description>
+  </info>
+  <configurations>
+    <conf name="default"/>
+  </configurations>
+
+</ivy-module>

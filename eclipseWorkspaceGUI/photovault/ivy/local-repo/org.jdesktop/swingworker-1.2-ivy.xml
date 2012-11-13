@@ -1,0 +1,15 @@
+<!--
+    IVY file to download & build Java Advanced Imaging
+  -->
+<ivy-module version="2.0">
+  <info organisation="org.jdesktop" module="swingworker" revision="1.2">
+    <license name="BSD"/>
+    <description homepage="http://swingworker.dev.java.net">
+      SwingWorker back port
+    </description>
+  </info>
+    <configurations>
+      <conf name="default"/>
+    </configurations>
+
+</ivy-module>

@@ -1,0 +1,28 @@
+# This is the main photovault configuration file
+#Copy this template to photovault.properties and edit to match your configuration
+
+# Configurations
+photovault.configNames = pv_test photovault
+
+# This is needed for each configuration
+
+# Database setup
+# Name of the database. This must match the jcd-alias field in OJB configuration
+photovault.conf.pv_test.dbname=pv_test
+
+# Volumes used for the photos
+
+# Default volume
+photovault.conf.pv_test.defaultVolume=harriDefVolume
+photovault.conf.pv_test.volumes.harriDefVolume.rootPath=/home/harri/projects/photovault/testdb
+
+# Database setup
+# Name of the database. This must match the jcd-alias field in OJB configuration
+photovault.conf.photovault.dbname=photovault
+
+# Volumes used for the photos
+
+# Default volume
+photovault.conf.photovault.defaultVolume=harriDefVolume
+photovault.conf.photovault.volumes.harriDefVolume.rootPath=/nonexistingvolume
+

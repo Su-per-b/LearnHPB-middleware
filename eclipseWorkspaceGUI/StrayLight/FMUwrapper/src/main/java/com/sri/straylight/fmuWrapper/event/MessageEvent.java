@@ -14,26 +14,23 @@ import com.sri.straylight.fmuWrapper.voNative.MessageType;
 /**
  * The Class MessageEvent.
  */
-public class MessageEvent extends EventObject {
+public class MessageEvent extends BaseEvent<MessageStruct> {
 
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-	
-	/** The message struct. */
-	public MessageStruct messageStruct;
-	
-    //here's the constructor
+
     /**
      * Instantiates a new message event.
      *
      * @param source the source
      */
-    public MessageEvent(Object source) {
+    public MessageEvent(Object source, MessageStruct payload) {
         super(source);
-        
+        setPayload( payload );
     }
     
+    
+    
+
     /**
      * Instantiates a new message event.
      *
@@ -42,13 +39,18 @@ public class MessageEvent extends EventObject {
      * @param messageType the message type
      */
     public MessageEvent(Object source, String msgText, MessageType messageType) {
-        super(source);
-        
-        messageStruct = new MessageStruct();
-    	messageStruct.msgText = msgText;
-    	messageStruct.setMessageTypeEnum(messageType);
-        
+    	super(source);
+
+        MessageStruct payload = new MessageStruct();
+        payload.msgText = msgText;
+        payload.setMessageTypeEnum(messageType);
+    	
+        setPayload( payload );
     }
+    
+    
+
+    
     
 }
 

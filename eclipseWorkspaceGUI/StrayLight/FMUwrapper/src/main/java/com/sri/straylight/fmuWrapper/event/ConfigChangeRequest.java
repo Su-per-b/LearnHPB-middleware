@@ -6,19 +6,10 @@ import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 /**
  * The Class ConfigChangeRequest.
  */
-public class ConfigChangeRequest {
+public class ConfigChangeRequest extends BaseEvent<ConfigStruct> {
 	
-	/** The payload. */
-	public ConfigStruct payload;
-	
-	/**
-	 * Instantiates a new config change request.
-	 *
-	 * @param configStruct the config struct
-	 */
-	public ConfigChangeRequest(ConfigStruct configStruct) {
-		payload = configStruct;
-	}
+	public ConfigChangeRequest(Object source, ConfigStruct configStruct) {
+        super(source, configStruct);
+    }
 
-	
 }

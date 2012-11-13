@@ -1,0 +1,19 @@
+<!--
+    IVY file to download & build Java Advanced Imaging
+  -->
+<ivy-module version="2.0">
+  <info organisation="sun" module="jai" revision="1.1.3">
+    <license name="Proprietary"/>
+    <description homepage="http://jai.dev.java.net">
+      Java advanced imaging library
+    </description>
+  </info>
+    <configurations>
+      <conf name="default"/>
+    </configurations>
+
+    <publications>
+      <artifact name="jai_codec" type="jar" ext="jar"/>
+      <artifact name="jai_core" type="jar" ext="jar"/>
+    </publications>
+</ivy-module>

@@ -1,0 +1,22 @@
+<ivy-module version="2.0">
+
+    <info organisation="org.apache.commons.sanselan" module="sanselan" revision="0.97">
+        <license name="BSD like" 
+		 url="http://commons.apache.org/sanselan"/>
+        <description homepage="http://commons.apache.org/sanselan">
+	  Sanselan is a pure Java libary for reading and writing image files 
+	  in different formats
+        </description>
+    </info>
+
+    <configurations>
+        <conf name="default" description="Default configuration"/>
+    </configurations>
+
+    <publications>
+        <artifact name="sanselan" ext="jar"/>
+        <artifact name="sanselan" type="javadoc" ext="jar"/>
+        <artifact name="sanselan" type="source" ext="jar"/>
+    </publications>
+
+</ivy-module>

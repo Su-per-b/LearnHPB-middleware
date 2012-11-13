@@ -120,12 +120,7 @@ extern "C" DllExport void connect(
  *******************************************************/
 extern "C" DllExport void xmlParse(char *);
 
-/*******************************************************//**
- * Initialises this object.
- *
- * @return	.
- *******************************************************/
-extern "C" DllExport int init();
+
 
 /*******************************************************//**
  * Request state change.

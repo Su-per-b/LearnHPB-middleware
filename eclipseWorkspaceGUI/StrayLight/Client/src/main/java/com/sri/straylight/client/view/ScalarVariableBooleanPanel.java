@@ -51,7 +51,7 @@ public class ScalarVariableBooleanPanel extends JPanel {
 	 *
 	 * @param inputDetailView the input detail view
 	 */
-	public ScalarVariableBooleanPanel(InputDetailView inputDetailView) {
+	public ScalarVariableBooleanPanel(InputView inputView) {
 		
 				
 		Font normalFont = new Font("sansserif", Font.PLAIN, 12);

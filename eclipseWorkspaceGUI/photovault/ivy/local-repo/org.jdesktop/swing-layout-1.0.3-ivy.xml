@@ -1,0 +1,28 @@
+<!--
+    IVY file to download & build Swing Layout
+  -->
+<ivy-module version="2.0">
+  <info organisation="org.jdesktop" module="swing-layout" revision="1.0.3">
+    <license name="LGPL"/>
+    <description homepage="http://swing-layout.dev.java.net">
+      Swing Layout Extensions goal is to make it easy to create professional cross platform layouts with Swing. This project has an eye towards the needs of GUI builders, such as NetBeans. This project consists of the following pieces:
+
+      * Ability to get the baseline for components.
+      * Ability to get the preferred gap between components.
+      * A new LayoutManager that utilizes both of these concepts and is tuned toward a free-form drag and drop layout model as can be provided by GUI builders. 
+
+      A demo of NetBeans utilizing this work can be found at http://www.netbeans.org/files/documents/4/475/matisse.html.
+
+      As with other swing-labs projects this is exploratory work, parts of this that are successful will be pulled into future JDKs. The baseline work has already been pulled into 1.6
+    </description>
+  </info>
+    <configurations>
+      <conf name="default"/>
+    </configurations>
+
+    <publications>
+      <artifact name="swing-layout" type="jar" ext="jar"/>
+      <artifact name="swing-layout" type="source" ext="zip"/>
+      <artifact name="swing-layout" type="javadoc" ext="zip"/>
+    </publications>
+</ivy-module>

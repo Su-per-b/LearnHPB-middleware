@@ -1,0 +1,8 @@
+<packager-module version="1.0">
+  <property name="jar" value="ddlutils"/>
+  <resource url="http://www.eu.apache.org/dist/db/ddlutils/ddlutils-1.0/binaries/DdlUtils-1.0.jar"
+	    sha1="3fce2b7af1588768d08e25cf2a91551b8c7f2e01"
+	    tofile="artifacts/jars/ddlutils.jar">
+  </resource>
+  
+</packager-module>

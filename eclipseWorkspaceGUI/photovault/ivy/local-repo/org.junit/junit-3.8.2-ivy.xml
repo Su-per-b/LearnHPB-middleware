@@ -1,0 +1,21 @@
+<ivy-module version="2.0">
+
+    <info organisation="org.junit" module="junit" revision="3.8.2">
+        <license name="Common Public License 1.0"/>
+        <description homepage="http://www.junit.org/">
+	  Junit is the standard Java unit testing framework.
+        </description>
+    </info>
+
+    <configurations>
+        <conf name="default" description="Default configuration"/>
+    </configurations>
+
+    <publications>
+        <artifact name="junit" ext="jar"/>
+        <artifact name="junit" type="source" ext="jar"/>
+        <artifact name="junit" type="javadoc" ext="zip"/>
+    </publications>
+
+</ivy-module>
+

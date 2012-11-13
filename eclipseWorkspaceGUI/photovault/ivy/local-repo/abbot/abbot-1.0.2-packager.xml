@@ -1,0 +1,9 @@
+<packager-module version="1.0">
+  <property name="archive" value="swing-worker"/>
+  <resource url="http://garr.dl.sourceforge.net/sourceforge/abbot/abbot-1.0.2.zip"
+	    sha1="d65e3a440b03a72bd5c5b126667854457ba50014">
+  </resource>
+  <build>
+    <move file="archive/abbot-1.0.2/lib/abbot.jar" todir="artifacts/jars"/>
+  </build>
+</packager-module>

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2006 Harri Kaimio
+  
+  This file is part of Photovault.
+
+  Photovault is free software; you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  Photovault is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Foobar; if not, write to the Free Software Foundation,
+  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+-->
+
+<!-- This is a sample metadata repository for the ObJectBridge System.
+     Use this file as a template for building your own mappings-->
+
+<!-- defining entities for include-files -->
+<!DOCTYPE descriptor-repository SYSTEM "repository.dtd" [
+<!ENTITY database SYSTEM "repository_database.xml">
+<!ENTITY internal SYSTEM "repository_internal.xml">
+]>
+
+
+<descriptor-repository version="1.0" isolation-level="read-uncommitted">
+
+    <!-- include all used database connections -->
+    &database;
+
+    <!-- include ojb internal mappings here -->
+    &internal;
+
+    <!-- include user defined mappings here -->
+
+  <!-- PhotoFolder mappings -->
+
+  <class-descriptor class="org.photovault.folder.PhotoFolder" table="photo_collections">
+
+    <!-- one of (field-descriptor extent-class) -->
+    <field-descriptor name="folderId" column="collection_id" jdbc-type="INTEGER" primarykey="true" autoincrement="true">
+    </field-descriptor>
+    <field-descriptor name="uuid" column="collection_uuid" jdbc-type="VARCHAR"
+        conversion="org.photovault.imginfo.String2UUIDConversion">
+    </field-descriptor>
+    <field-descriptor name="name" column="collection_name" jdbc-type="VARCHAR">
+    </field-descriptor>
+    <field-descriptor name="description" column="COLLECTION_DESC" jdbc-type="VARCHAR">
+    </field-descriptor>
+    <field-descriptor name="parentId" column="parent" jdbc-type="INTEGER">
+    </field-descriptor>
+    <reference-descriptor name="parent" class-ref="org.photovault.folder.PhotoFolder">
+      <documentation>Parent of this folder</documentation>
+      <foreignkey field-ref="parentId">
+      </foreignkey>
+    </reference-descriptor>
+    <collection-descriptor name="subfolders" 
+        element-class-ref="org.photovault.folder.PhotoFolder" 
+        orderby="name" 
+        sort="ASC" 
+        auto-retrieve="true"
+        auto-update="none"
+        auto-delete="none"
+        proxy="true">
+      <inverse-foreignkey field-ref="parentId">
+      </inverse-foreignkey>
+    </collection-descriptor>
+    <collection-descriptor name="photos" 
+        element-class-ref="org.photovault.imginfo.PhotoInfo" 
+        collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
+        indirection-table="collection_photos" 
+        auto-retrieve="true"
+        auto-update="none"
+        auto-delete="none"        
+        proxy="true">
+      <fk-pointing-to-this-class column="collection_id">
+      </fk-pointing-to-this-class>
+      <fk-pointing-to-element-class column="photo_id">
+      </fk-pointing-to-element-class>
+    </collection-descriptor>
+  </class-descriptor>
+
+  <!-- ImageInstance mappings -->
+  <class-descriptor class="org.photovault.imginfo.ImageInstance" table="image_instances" row-reader="org.photovault.imginfo.ImageInstanceRowReader">
+    <field-descriptor name="volumeId" column="volume_id" jdbc-type="VARCHAR" primarykey="true" nullable="false">
+      <documentation></documentation>
+    </field-descriptor>
+    <field-descriptor name="uuid" column="instance_uuid" jdbc-type="VARCHAR"
+        conversion="org.photovault.imginfo.String2UUIDConversion">
+    </field-descriptor>
+    <field-descriptor name="fname" column="fname" jdbc-type="VARCHAR" primarykey="true" nullable="false">
+    </field-descriptor>
+    <field-descriptor name="photoUid" column="photo_id" jdbc-type="INTEGER">
+    </field-descriptor>
+    <field-descriptor name="instanceType" column="instance_type" jdbc-type="VARCHAR" conversion="org.photovault.imginfo.OJBInstanceTypeConversion">
+    </field-descriptor>
+    <field-descriptor name="width" column="width" jdbc-type="INTEGER">
+    </field-descriptor>
+    <field-descriptor name="height" column="height" jdbc-type="INTEGER">
+    </field-descriptor>
+    <field-descriptor name="rotated" column="rotated" jdbc-type="FLOAT">
+    </field-descriptor>
+    <field-descriptor name="cropMinX" column="crop_xmin" jdbc-type="FLOAT">
+    </field-descriptor>
+    <field-descriptor name="cropMaxX" column="crop_xmax" jdbc-type="FLOAT">
+    </field-descriptor>
+    <field-descriptor name="cropMinY" column="crop_ymin" jdbc-type="FLOAT">
+    </field-descriptor>
+    <field-descriptor name="cropMaxY" column="crop_ymax" jdbc-type="FLOAT">
+    </field-descriptor>
+    <field-descriptor name="hash" column="hash" jdbc-type="VARBINARY">        
+    </field-descriptor>
+    <field-descriptor name="fileSize" column="file_size" jdbc-type="BIGINT">
+    </field-descriptor>
+    <field-descriptor name="mtime" column="mtime" jdbc-type="BIGINT">
+    </field-descriptor>
+    <field-descriptor name="checkTime" column="check_time" jdbc-type="TIMESTAMP" 
+        conversion="org.photovault.imginfo.Timestamp2DateConversion">
+    </field-descriptor>
+    <field-descriptor name="rawSettingsId" column="rawconv_id" jdbc-type="INTEGER">
+    </field-descriptor>
+    <reference-descriptor name="rawSettings" class-ref="org.photovault.dcraw.RawConversionSettings">
+      <documentation>Raw conversion settings for this photo</documentation>
+      <foreignkey field-ref="rawSettingsId">
+      </foreignkey>
+    </reference-descriptor>
+    <field-descriptor name="channelMap" column="channel_map" jdbc-type="LONGVARBINARY" 
+        conversion="org.photovault.image.ChannelMapOJBConversion">
+    </field-descriptor>
+  </class-descriptor>
+
+  <!-- PhotoInfo mappings -->
+  <class-descriptor class="org.photovault.imginfo.PhotoInfo" table="photos">
+    <field-descriptor name="uid" column="photo_id" jdbc-type="INTEGER" primarykey="true" autoincrement="true">
+    </field-descriptor>
+    <field-descriptor name="uuid" column="photo_uuid" jdbc-type="VARCHAR"
+        conversion="org.photovault.imginfo.String2UUIDConversion">
+    </field-descriptor>
+    <field-descriptor name="shootingPlace" column="shooting_place" jdbc-type="VARCHAR">
+    </field-descriptor>
+    <field-descriptor name="photographer" column="photographer" jdbc-type="VARCHAR">
+    </field-descriptor>
+    <field-descriptor name="FStop" column="f_stop" jdbc-type="FLOAT">
+    </field-descriptor>
+    <field-descriptor name="focalLength" column="focal_length" jdbc-type="FLOAT">
+    </field-descriptor>
+    <field-descriptor name="shootTime" column="shoot_time" jdbc-type="TIMESTAMP" conversion="org.photovault.imginfo.Timestamp2DateConversion">
+    </field-descriptor>
+    <field-descriptor name="timeAccuracy" column="time_accuracy" jdbc-type="DOUBLE">
+    </field-descriptor>
+    <field-descriptor name="shutterSpeed" column="shutter_speed" jdbc-type="DOUBLE">
+    </field-descriptor>
+    <field-descriptor name="camera" column="camera" jdbc-type="VARCHAR">
+    </field-descriptor>
+    <field-descriptor name="lens" column="lens" jdbc-type="VARCHAR" length="30">
+    </field-descriptor>
+    <field-descriptor name="film" column="film" jdbc-type="VARCHAR">
+    </field-descriptor>
+    <field-descriptor name="filmSpeed" column="film_speed" jdbc-type="INTEGER">
+    </field-descriptor>
+    <field-descriptor name="prefRotation" column="pref_rotation" jdbc-type="DOUBLE">
+    </field-descriptor>
+    <field-descriptor name="cropMinX" column="clip_xmin" jdbc-type="FLOAT">
+    </field-descriptor>
+    <field-descriptor name="cropMaxX" column="clip_xmax" jdbc-type="FLOAT">
+    </field-descriptor>
+    <field-descriptor name="cropMinY" column="clip_ymin" jdbc-type="FLOAT">
+    </field-descriptor>
+    <field-descriptor name="cropMaxY" column="clip_ymax" jdbc-type="FLOAT">
+    </field-descriptor>
+    <field-descriptor name="description" column="description" jdbc-type="VARCHAR">
+    </field-descriptor>
+    <field-descriptor name="techNotes" column="tech_notes" jdbc-type="VARCHAR">
+    </field-descriptor>
+    <field-descriptor name="quality" column="photo_quality" jdbc-type="INTEGER">
+    </field-descriptor>
+    <field-descriptor name="lastModified" column="last_modified" jdbc-type="TIMESTAMP"  conversion="org.photovault.imginfo.Timestamp2DateConversion">
+    </field-descriptor>
+    <field-descriptor name="origFname" column="orig_fname" jdbc-type="VARCHAR">
+    </field-descriptor>
+    <field-descriptor name="origInstanceHash" column="hash" jdbc-type="VARBINARY">
+    </field-descriptor>
+    <field-descriptor name="rawSettingsId" column="rawconv_id" jdbc-type="INTEGER">
+    </field-descriptor>
+    <reference-descriptor name="rawSettings" class-ref="org.photovault.dcraw.RawConversionSettings">
+      <documentation>Raw conversion settings for this photo</documentation>
+      <foreignkey field-ref="rawSettingsId">
+      </foreignkey>
+    </reference-descriptor>
+    <field-descriptor name="channelMap" column="channel_map" jdbc-type="LONGVARBINARY" 
+        conversion="org.photovault.image.ChannelMapOJBConversion">
+    </field-descriptor>
+ 
+    <!-- instances collection 
+    Instances are aggregates of PhotoInfo object so we can use the default 
+    collection implementation which deleted objects that are deleted from the 
+    collection
+    -->
+    <collection-descriptor name="instances" 
+        element-class-ref="org.photovault.imginfo.ImageInstance"         
+        auto-retrieve="true"
+        auto-update="none"
+        auto-delete="none">
+      <inverse-foreignkey field-ref="photoUid">
+      </inverse-foreignkey>
+    </collection-descriptor>
+    <!-- folders collection 
+    This is an m:n mappin so we will use manageable collections.
+    -->
+    <collection-descriptor name="folders" 
+        element-class-ref="org.photovault.folder.PhotoFolder" 
+        indirection-table="collection_photos" 
+        collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
+        auto-retrieve="true"
+        auto-update="none"
+        auto-delete="none"        
+        proxy="true">
+      <fk-pointing-to-this-class column="photo_id"/>
+      <fk-pointing-to-element-class column="collection_id"/>
+    </collection-descriptor>
+
+
+  </class-descriptor>
+  
+  <class-descriptor class="org.photovault.dcraw.RawConversionSettings"
+                    table="dcraw_settings">
+      <field-descriptor name="rawSettingId" column="rawconv_id" primarykey="true"
+                        jdbc-type="INTEGER" autoincrement="true"/>
+      <field-descriptor name="white" column="whitepoint" jdbc-type="INTEGER"/>
+      <field-descriptor name="black" column="blackpoint" jdbc-type="INTEGER"/>
+      <field-descriptor name="evCorr" column="ev_corr" jdbc-type="FLOAT"/>
+      <field-descriptor name="hlightComp" column="hlight_corr" jdbc-type="FLOAT"/>
+      <field-descriptor name="useEmbeddedICCProfile" column="embedded_profile" jdbc-type="BIT"/>
+      <field-descriptor name="whiteBalanceType" column="wb_type" jdbc-type="INTEGER"/>
+      <field-descriptor name="redGreenRatio" column="r_g_ratio" jdbc-type="FLOAT"/>
+      <field-descriptor name="blueGreenRatio" column="b_g_ratio" jdbc-type="FLOAT"/>
+      <field-descriptor name="daylightRedGreenRatio" column="dl_r_g_ratio" jdbc-type="FLOAT"/>
+      <field-descriptor name="daylightBlueGreenRatio" column="dl_b_g_ratio" jdbc-type="FLOAT"/>
+      <field-descriptor name="colorProfileId" column="profile_id" jdbc-type="INTEGER"/>
+      <reference-descriptor name="colorProfile" class-ref="org.photovault.dcraw.ColorProfileDesc">
+          <documentation>ICC profile used for raw conversion</documentation>
+          <foreignkey field-ref="colorProfileId">
+          </foreignkey>
+      </reference-descriptor>
+  </class-descriptor>
+  
+  <class-descriptor class="org.photovault.dcraw.ColorProfileDesc" table="icc_profiles">
+      <field-descriptor name="id" column="profile_id" primarykey="true" 
+                        jdbc-type="INTEGER" autoincrement="true"/>
+      <field-descriptor name="name" column="profile_name" jdbc-type="VARCHAR"/>
+      <field-descriptor name="description" column="profile_desc" jdbc-type="VARCHAR"/>
+      <field-descriptor name="hash" column="hash" jdbc-type="VARBINARY"/>
+      <collection-descriptor name="instances"
+                             element-class-ref="org.photovault.dcraw.ColorProfileInstance"
+                             auto-retrieve="true"
+                             auto-update="none"
+                             auto-delete="none">
+          <inverse-foreignkey field-ref="profileId"/>
+      </collection-descriptor>
+  </class-descriptor>
+
+  <class-descriptor class="org.photovault.dcraw.ColorProfileInstance" table="icc_instances">
+      <field-descriptor name="profileId" column="profile_id" primarykey="true" jdbc-type="INTEGER"/>
+      <field-descriptor name="volumeId" column="volume_id" primarykey="true" jdbc-type="VARCHAR"/>
+      <field-descriptor name="fname" column="fname" jdbc-type="VARCHAR"/>
+  </class-descriptor>
+  
+  <class-descriptor class="org.photovault.common.DbInfo" table="database_info">
+      <field-descriptor name="id" column="database_id" primarykey="true" jdbc-type="VARCHAR"/>
+      <field-descriptor name="createTime" column="create_time" 
+            jdbc-type="TIMESTAMP" 
+            conversion="org.photovault.imginfo.Timestamp2DateConversion"/>
+      <field-descriptor name="version" column="schema_version" jdbc-type="INTEGER"/>      
+  </class-descriptor>
+</descriptor-repository>

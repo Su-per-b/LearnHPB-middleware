@@ -8,7 +8,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import org.bushe.swing.event.EventBus;
-import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.menu.About_Help;
 import com.sri.straylight.client.event.menu.Options_SelectSimulationEngine;
@@ -40,7 +39,7 @@ public class TopMenuController  extends AbstractController  {
 		// Create the menu bar
 		menuBar_ = new JMenuBar();
 		
-		initMenuOptions_();
+		//initMenuOptions_();
 		initMenuHelp_();
 		
 		setView_(menuBar_);
@@ -121,16 +120,6 @@ public class TopMenuController  extends AbstractController  {
 
 
 
-
-	/**
-	 * On menu event_ about_ help.
-	 *
-	 * @param event the event
-	 */
-	@EventSubscriber(eventClass=About_Help.class)
-	public void onMenuEvent_About_Help(About_Help event) {
-		// new AboutDialog(mainView_.getJframe(), configModel_);
-	}
 
 
 }

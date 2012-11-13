@@ -10,43 +10,11 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 /**
  * The Class ResultEvent.
  */
-public class ResultEvent extends EventObject {
+public class ResultEvent extends BaseEvent<ScalarValueResults> {
 
-	
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-	
-	/** The result of step. */
-	private ScalarValueResults scalarValueResults_;
-	
-    public ScalarValueResults getScalarValueResults() {
-		return scalarValueResults_;
-	}
-
-    /**
-	 * Instantiates a new result event.
-	 *
-	 * @param source the source
-     * @param scalarValueResults 
-	 */
-	public ResultEvent(Object source) {
-        super(source);
+	public ResultEvent(Object source, ScalarValueResults payload) {
+        super(source, payload);
     }
-	
-    /**
-	 * Instantiates a new result event.
-	 *
-	 * @param source the source
-     * @param scalarValueResults 
-	 */
-	public ResultEvent(Object source, ScalarValueResults scalarValueResults) {
-        super(source);
-        
-        scalarValueResults_ = scalarValueResults;
-    }
-    
-    
-
 }
 
 

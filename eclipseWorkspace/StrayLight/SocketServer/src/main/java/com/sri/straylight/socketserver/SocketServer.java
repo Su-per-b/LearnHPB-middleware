@@ -12,15 +12,14 @@ public class SocketServer {
 
 	public static Logger logger = Log.getLogger("SocketServer");
 	public static Properties properties;
-	public static SocketServer instance;
+
 
 	public SocketServer() {
 		super();
-		instance = this;
+
 	}
 	
 	public void showBanner() {
-
 
 		java.net.URL url = SocketServer.class.getClassLoader().getResource("SocketServer.properties");
 
@@ -44,10 +43,11 @@ public class SocketServer {
 			server.join();
 
 
-
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
+		
+
 	}
 
 
