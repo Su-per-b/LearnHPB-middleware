@@ -9,7 +9,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 
 import com.sri.straylight.client.controller.ConsoleController;
@@ -21,9 +20,15 @@ import com.sri.straylight.client.model.ConsoleModel;
  */
 public class ConsoleView extends BaseView {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private static final String TITLE = "Console";
 	
 	/** The input form controller_. */
+	@SuppressWarnings("unused")
 	private ConsoleController consoleController_;
 	
 	private ConsoleModel consoleModel_;
@@ -34,8 +39,6 @@ public class ConsoleView extends BaseView {
 	/** The newline_. */
 	private final String newline_ = "\n";
 
-	private Style styleError_;
-	private Style styleNormal_;
 	
 	/** The text pane_. */
 	private JTextPane textPane_ = new JTextPane();
@@ -44,7 +47,7 @@ public class ConsoleView extends BaseView {
 	
 	public ConsoleView(ConsoleController consoleController, ConsoleModel theModel) {
 		
-		super(TITLE, 0);
+		super(TITLE);
 		
 		consoleController_ = consoleController;
 		consoleModel_ = theModel;
@@ -56,12 +59,7 @@ public class ConsoleView extends BaseView {
 		add(scrollPaneText);
 		scrollPaneText.setViewportView(textPane_);
 		
-		styleError_ = textPane_.addStyle("Error Style", null);
-		StyleConstants.setForeground(styleError_, Color.red);
-		
-		styleNormal_ = textPane_.addStyle("Normal Style", null);
-		StyleConstants.setForeground(styleError_, Color.black);
-		
+
 	}
 	
 	

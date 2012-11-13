@@ -1,7 +1,5 @@
 package com.sri.straylight.client.test;
 
-import static org.junit.Assert.*;
-
 import java.awt.AWTException;
 import java.awt.Component;
 import java.awt.Container;
@@ -9,7 +7,6 @@ import java.awt.Point;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.util.HashMap;
-import java.util.Vector;
 
 import javax.swing.JButton;
 
@@ -42,9 +39,6 @@ public class GUI {
 	private HashMap<Integer, Point> buttonPointMap_;
 	
 	private Robot robot_;
-	
-	private boolean isFindComplete_ = false;
-	
 	
 	private static final int BTN_CONNECT = 0;
 	private static final int BTN_XMLPARSE = 1;
@@ -101,11 +95,6 @@ public class GUI {
         				ExceptionThrowingEventService.class.getName());
         		
         		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        		
-        		//InputStream is = classLoader.getResourceAsStream("log4j.xml");
-        		
-        		//	DOMConfigurator.configure("log4j.xml");
-            	//
             	
             	DOMConfigurator.configure(Main.class.getResource("/log4j.xml"));
             	Logger  logger = Logger.getLogger(EventService.class.getCanonicalName());
@@ -170,11 +159,7 @@ public class GUI {
     
 	@Test
 	public void ClickConnect() throws AWTException, InterruptedException {
-		
-		
-		
 
-		
 		while(null == mainView_ || !mainView_.isShowing()) {
 			robot_.delay(250);
 		}
@@ -206,6 +191,7 @@ public class GUI {
 	
 	
 	
+	@SuppressWarnings("incomplete-switch")
 	@EventSubscriber(eventClass=SimStateNotify.class)
     private void onSimStateNotify(SimStateNotify event) {
 		

@@ -2,13 +2,8 @@ package com.sri.straylight.client.controller;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.util.Vector;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableModel;
 
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
@@ -16,9 +11,6 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 import com.sri.straylight.client.event.ClearViewAction;
 import com.sri.straylight.client.event.ViewInitialized;
 import com.sri.straylight.client.model.ResultsLogModel;
-import com.sri.straylight.client.view.BaseView;
-import com.sri.straylight.client.view.ConsoleView;
-import com.sri.straylight.client.view.JTableEx;
 import com.sri.straylight.client.view.ResultsLogView;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
@@ -32,13 +24,10 @@ import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
  */
 public class ResultsLogController extends BaseController {
 	
-    /** The table_. */
-    private  JTableEx table_;
-    
+
     private ResultsLogModel resultsLogModel_;
     
-    
-    
+
 	/**
 	 * Instantiates a new results table controller.
 	 *

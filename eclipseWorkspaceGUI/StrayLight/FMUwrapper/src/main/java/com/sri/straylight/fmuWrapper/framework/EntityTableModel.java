@@ -17,7 +17,12 @@ import javax.swing.table.AbstractTableModel;
  */
 public class EntityTableModel<T> extends AbstractTableModel {
 
-    /** The entity class. */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/** The entity class. */
     private Class<T> entityClass;
     
     /** The properties. */

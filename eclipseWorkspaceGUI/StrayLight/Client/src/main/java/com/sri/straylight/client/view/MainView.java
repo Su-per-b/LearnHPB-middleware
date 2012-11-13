@@ -2,16 +2,12 @@ package com.sri.straylight.client.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Image;
-import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import com.sri.straylight.client.model.ClientConfig;
-import com.sri.straylight.client.model.ClientConfigXML;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -20,7 +16,8 @@ import com.sri.straylight.client.model.ClientConfigXML;
 public class MainView extends JFrame {
 	
 	
-	/** The config model_. */
+	private static final long serialVersionUID = 1L;
+	
 	private ClientConfig configModel_;
 	
     /**
@@ -50,10 +47,6 @@ public class MainView extends JFrame {
         
     	setPreferredSize(new Dimension(704, 800));
         setLayout(new BorderLayout(0, 0));
-
-        
-    	//set icon
-
 
         ImageIcon imageIcon = new ImageIcon(configModel_.windowIconUrl);
         Image image = imageIcon.getImage();

@@ -14,16 +14,19 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import com.sri.straylight.client.model.DoubleInputVerifier;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueBooleanStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableBooleanStruct;
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ScalarVariableBooleanPanel.
  */
 public class ScalarVariableBooleanPanel extends JPanel {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/** The lbl name_. */
 	private JLabel lblName_;
@@ -31,9 +34,6 @@ public class ScalarVariableBooleanPanel extends JPanel {
 	/** The lbl value_. */
 	private JLabel lblValue_;
 
-	/** The value_. */
-	private ScalarValueBooleanStruct theValue_;
-	
 	/** The btn submit_. */
 	private JButton btnSubmit_;
 
@@ -54,7 +54,7 @@ public class ScalarVariableBooleanPanel extends JPanel {
 	public ScalarVariableBooleanPanel(InputView inputView) {
 		
 				
-		Font normalFont = new Font("sansserif", Font.PLAIN, 12);
+		//Font normalFont = new Font("sansserif", Font.PLAIN, 12);
 		Font boldFont = new Font("sansserif", Font.BOLD, 12);
 
 		lblName_ = new JLabel("{Name}");
@@ -154,8 +154,7 @@ public class ScalarVariableBooleanPanel extends JPanel {
 	 * Submit button pressed.
 	 */
 	public void submitButtonPressed() {
-		
-		boolean isSelected = checkBox_.isSelected();
+	
 		ScalarValueBooleanStruct scalarValue = new ScalarValueBooleanStruct();
 		scalarValue.idx = scalarVariableBooleanStruct_.idx;
 
@@ -170,7 +169,6 @@ public class ScalarVariableBooleanPanel extends JPanel {
 	 */
 	public void setValue(ScalarValueBooleanStruct scalarValueBooleanStruct) {
 
-		theValue_ = scalarValueBooleanStruct;
 		String valueStr = String.valueOf(scalarValueBooleanStruct.value);
 		
 		lblValue_.setText(valueStr);

@@ -2,8 +2,6 @@ package com.sri.straylight.fmuWrapper.serialization;
 
 
 import java.lang.reflect.Type;
-
-import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -16,7 +14,6 @@ import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 
 
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class InitializedStructAdapter.
  */
@@ -70,8 +67,8 @@ JsonSerializer<XMLparsed>, JsonDeserializer<XMLparsed> {
     	
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         
-        JsonArray jsAry = jsonObject.get("columnNames").getAsJsonArray();
-        int len = jsAry.size();
+       // JsonArray jsAry = jsonObject.get("columnNames").getAsJsonArray();
+
         
         /*
         String[] columnNames = new String[len];

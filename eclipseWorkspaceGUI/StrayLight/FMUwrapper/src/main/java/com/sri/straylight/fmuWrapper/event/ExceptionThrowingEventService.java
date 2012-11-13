@@ -6,8 +6,7 @@ import org.bushe.swing.event.SwingEventService;
 public class ExceptionThrowingEventService extends SwingEventService {
 
 
-	/** {@inheritDoc} */						
-	@SuppressWarnings("unchecked")						
+	/** {@inheritDoc} */										
 	@Override						
 	protected void handleException(Object event, Throwable e, StackTraceElement[] callingStack,						
 			EventSubscriber eventSubscriber) {		

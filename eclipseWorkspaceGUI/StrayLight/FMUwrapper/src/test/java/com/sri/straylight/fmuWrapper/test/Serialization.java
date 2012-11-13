@@ -8,8 +8,6 @@ import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateWrapperNotify;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
-import com.sri.straylight.fmuWrapper.voManaged.ScalarValue;
-import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.SimStateWrapper;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageType;
@@ -161,28 +159,7 @@ public class Serialization
     	
     }
 
-    
-    
-    /**
-     * ResultItemPrimitiveStruct.
-     */
-    public void testScalarValue()
-    {
-    	ScalarValue<Double> scalarValue = new ScalarValue<Double>(1, 1.0);
-    	//scalarValue.idx = 1;
-    	//scalarValue.string = "one";
-    	
-    	String jsonString = scalarValue.toJson();
-    	JsonSerializable scalarValue2 = gsonController_.fromJson(jsonString);
-    	
-    	
-    	assertNotNull(jsonString);
-    }
-
-    
-    
-
-    
+  
 
     
 }

@@ -1,7 +1,5 @@
 package com.sri.straylight.fmuWrapper.event;
 
-import java.util.EventObject;
-
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 
 
@@ -11,6 +9,11 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
  * The Class ResultEvent.
  */
 public class ResultEvent extends BaseEvent<ScalarValueResults> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public ResultEvent(Object source, ScalarValueResults payload) {
         super(source, payload);

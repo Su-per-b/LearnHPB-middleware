@@ -1,7 +1,5 @@
 package com.sri.straylight.fmuWrapper.voManaged;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Vector;
 
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueBooleanStruct;

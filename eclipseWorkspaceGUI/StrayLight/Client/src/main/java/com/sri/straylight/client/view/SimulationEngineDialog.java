@@ -15,7 +15,6 @@ import javax.swing.border.Border;
 
 import com.sri.straylight.client.ConnectTo;
 import com.sri.straylight.client.model.ClientConfig;
-import com.sri.straylight.client.model.ClientConfigXML;
 
 
 
@@ -26,8 +25,13 @@ import com.sri.straylight.client.model.ClientConfigXML;
  */
 public class SimulationEngineDialog extends JDialog  {
 
-	/** The config model_. */
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private ClientConfig configModel_;
+	
 	
 	/**
 	 * Instantiates a new simulation engine dialog.
@@ -110,16 +114,13 @@ public class SimulationEngineDialog extends JDialog  {
 	    serverSelectionPanel.add(rb_straylightsim_com);
 	    serverSelectionPanel.add(rb_fmu_file);
 	    
-	    
 	    setContentPane(serverSelectionPanel);
 	    
 	    rb_localhost.setSelected(configModel_.connectTo == ConnectTo.connecTo_localhost);
 	    rb_straylightsim_com.setSelected(configModel_.connectTo == ConnectTo.connecTo_straylightsim_com);
 	    rb_fmu_file.setSelected(configModel_.connectTo == ConnectTo.connecTo_file);
 	    
-	    
-	    
-	    
+
 	}
 	
 

@@ -1,8 +1,6 @@
 package com.sri.straylight.client.event;
 
 import java.util.EventObject;
-import java.util.HashSet;
-import java.util.Set;
 
 // TODO: Auto-generated Javadoc
 /**

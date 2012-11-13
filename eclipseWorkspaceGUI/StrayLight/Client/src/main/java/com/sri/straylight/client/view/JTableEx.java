@@ -14,6 +14,8 @@ public class JTableEx extends JTable {
 	
 	
 	
+	private static final long serialVersionUID = 1L;
+	
 	private int resultsCount_ = 0;
 	
 	

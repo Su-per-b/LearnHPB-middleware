@@ -27,14 +27,16 @@ import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
  */
 public class InputView extends BaseView {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** The table model_. */
 	private DefaultTableModel tableModel_;
 	
 	/** The table_. */
 	private  JTableEx table_;
-
-	/** The result input ary_. */
-	private Vector<String> resultInputAry_;
 
 	/** The input form controller_. */
 	private InputController inputController_;
@@ -45,9 +47,7 @@ public class InputView extends BaseView {
 	private JPanel bottomPanel_;
 	
 	private ScalarValueCollection latestInput_;
-	
-	private int selectedIdx_;
-	
+
 	protected JSplitPane splitPane_;
 
 	private JScrollPane scrollPaneTable_;
@@ -61,7 +61,7 @@ public class InputView extends BaseView {
 	 */
 	public InputView(InputController inputController, InputDataModel inputDataModel) {
 		
-		super(TITLE, 1);
+		super(TITLE);
 		
 		inputDataModel_ = inputDataModel;
 		inputController_ = inputController;
@@ -109,11 +109,8 @@ public class InputView extends BaseView {
 	 */
 	public void newResult(Vector<String> resultInput) {
 
-		resultInputAry_ = resultInput;
 		int len = resultInput.size();
 
-
-		//populate the 'value' column
 		for (int i = 0; i < len; i++) {
 			String str = resultInput.get(i);
 
@@ -149,7 +146,6 @@ public class InputView extends BaseView {
 	
 	public void selectRow(int idx) {
 		
-		selectedIdx_ = idx;
 		bottomPanel_.removeAll();
 		
 		ScalarVariableRealPanel componentPanel = new ScalarVariableRealPanel(this); // FlowLayout 

@@ -1,6 +1,5 @@
 package com.sri.straylight.client.model;
 
-import com.sri.straylight.fmuWrapper.voManaged.SimStateWrapper;
 import com.sri.straylight.fmuWrapper.voNative.JnaEnum;
 
 

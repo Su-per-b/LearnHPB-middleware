@@ -4,7 +4,6 @@ package com.sri.straylight.client.controller;
 
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -20,22 +19,20 @@ import com.sri.straylight.client.model.ClientConfig;
 import com.sri.straylight.client.model.ClientConfigXML;
 import com.sri.straylight.client.view.BaseView;
 import com.sri.straylight.client.view.MainView;
-import com.sri.straylight.client.view.OutputView;
 import com.sri.straylight.client.view.SimulationEngineDialog;
-import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
-import com.sri.straylight.fmuWrapper.framework.AbstractController;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class MainController.
  */
-public class MainController extends AbstractController {
+public class MainController extends BaseController {
 	
 
 	/** The top panel controller_. */
 	private TopPanelController topPanelController_;
 	
 	/** The simulation controller_. */
+	@SuppressWarnings("unused")
 	private SimulationController simulationController_;
 	
 	/** The debug console controller_. */
@@ -46,9 +43,6 @@ public class MainController extends AbstractController {
 	
 	/** The results table controller_. */
 	private ResultsLogController resultsLogController_;
-	
-	/** The internal table controller_. */
-	private InternalTableController internalTableController_;
 	
 	/** The results form controller_. */
 	private OutputController outputController_;
@@ -124,7 +118,10 @@ public class MainController extends AbstractController {
 	 */
 	@EventSubscriber(eventClass=Options_SelectSimulationEngine.class)
 	public void onSelectSimulationEngine(Options_SelectSimulationEngine event) {
-		  new SimulationEngineDialog((MainView) getView(), configModel_);
+		
+		@SuppressWarnings("unused")
+		SimulationEngineDialog dialog =  new SimulationEngineDialog( mainView_ , configModel_);
+		  
 	}
 
 	

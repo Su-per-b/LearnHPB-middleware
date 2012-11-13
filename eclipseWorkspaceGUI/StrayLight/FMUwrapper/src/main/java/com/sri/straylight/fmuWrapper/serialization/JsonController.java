@@ -10,11 +10,8 @@ import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.event.SimStateWrapperNotify;
-import com.sri.straylight.fmuWrapper.voManaged.ScalarValue;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
-import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
-import com.sri.straylight.fmuWrapper.serialization.SimStateNativeRequestAdapter;
 /**
  * used for serialization
  */
@@ -47,8 +44,8 @@ public class JsonController {
 			return toJson(JsonNull.INSTANCE);
 		}
 
-		String classString = src.getClass().getCanonicalName();
-		boolean isRegisteredClass = registeredClasses_.containsKey(classString);
+		//String classString = src.getClass().getCanonicalName();
+		//boolean isRegisteredClass = registeredClasses_.containsKey(classString);
 
 
 
@@ -64,7 +61,7 @@ public class JsonController {
 		
 		String classString = obj.type;
 
-        Class cl;
+        Class<?> cl;
 		try {
 			
 			cl = Class.forName(classString);
@@ -97,18 +94,12 @@ public class JsonController {
 		gsonBuilder_ = new GsonBuilder();
 
 		registeredClasses_ = new HashMap<String, Type>();
-		register_(SimStateWrapperNotify.class, new SimStateWrapperNotifyAdapter());
 		
+		register_(SimStateWrapperNotify.class, new SimStateWrapperNotifyAdapter());
 		register_(MessageStruct.class, new MessageStructAdapter());
 		register_(MessageEvent.class, new MessageEventAdapter());
-
-		register_(ScalarValue.class, new ScalarValueAdapter());
-
 		register_(ResultEvent.class, new ResultEventAdapter());
-		
 		register_(XMLparsed.class, new InitializedStructAdapter());
-		
-		
 		register_(SimStateNativeRequest.class, new SimStateNativeRequestAdapter());
 		
 		gson_ = gsonBuilder_.create();

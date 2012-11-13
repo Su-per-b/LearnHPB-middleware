@@ -28,7 +28,7 @@ import com.sri.straylight.fmuWrapper.framework.AbstractController;
 /**
  * The Class TopPanelController.
  */
-public class TopPanelController extends AbstractController {
+public class TopPanelController extends BaseController {
 
 	/** The btn clear_. */
 	private final JButton btnClear_ = new JButton("Clear -");
@@ -180,18 +180,8 @@ public class TopPanelController extends AbstractController {
 	private void bindActions_() {
 
 		btnConnect_.addActionListener(new ActionListener() {
-			
-			
 			public void actionPerformed(ActionEvent ae) {
-
-		        
-		        
 				requestStateChange_(SimStateClient.level_1_connect_requested);
-				
-				int x = 1;
-				
-				
-				
 			}
 		}
 				);

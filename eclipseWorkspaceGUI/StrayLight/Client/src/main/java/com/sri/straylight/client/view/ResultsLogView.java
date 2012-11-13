@@ -18,6 +18,11 @@ import com.sri.straylight.client.model.ResultsLogModel;
  */
 public class ResultsLogView extends BaseView {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** The table model_. */
 	private DefaultTableModel tableModel_;
 	
@@ -28,6 +33,7 @@ public class ResultsLogView extends BaseView {
 	private Vector<String> resultOutputAry_;
 
 	/** The input form controller_. */
+	@SuppressWarnings("unused")
 	private ResultsLogController resultsLogController_;
 	
 	/** The input form data model_. */
@@ -43,7 +49,8 @@ public class ResultsLogView extends BaseView {
 	 */
 	public ResultsLogView(ResultsLogController resultsLogController, ResultsLogModel resultsLogModel) {
 		
-		super(TITLE, 3);
+		super(TITLE);
+		
 		resultsLogController_ = resultsLogController;
 		resultsLogModel_ = resultsLogModel;
 		

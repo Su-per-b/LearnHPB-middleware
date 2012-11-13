@@ -1,16 +1,6 @@
 package com.sri.straylight.client.controller;
 
 import java.awt.Color;
-import java.awt.GridLayout;
-
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.SwingUtilities;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
 
 import org.bushe.swing.event.annotation.EventSubscriber;
 
@@ -18,7 +8,6 @@ import com.sri.straylight.client.event.ClearViewAction;
 import com.sri.straylight.client.event.SimStateNotify;
 import com.sri.straylight.client.event.SimStateRequest;
 import com.sri.straylight.client.model.ConsoleModel;
-import com.sri.straylight.client.view.BaseView;
 import com.sri.straylight.client.view.ConsoleView;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
@@ -33,7 +22,7 @@ import com.sri.straylight.fmuWrapper.voNative.MessageType;
 /**
  * The Class DebugConsoleController.
  */
-public class ConsoleController extends AbstractController {
+public class ConsoleController extends BaseController {
 
 
 	/**

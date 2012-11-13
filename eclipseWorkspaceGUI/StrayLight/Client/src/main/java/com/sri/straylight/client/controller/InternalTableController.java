@@ -28,7 +28,8 @@ public class InternalTableController  extends BaseController {
     /** The data model_. */
     private DefaultTableModel dataModel_;
     
-    
+	private static final String TITLE = "Internal";
+	
 	/**
 	 * Instantiates a new internal table controller.
 	 *
@@ -43,7 +44,7 @@ public class InternalTableController  extends BaseController {
 	
 	protected void init_( XMLparsed xmlParsed) {  
 
-	    BaseView theView = new BaseView("Internal", 5);
+	    BaseView theView = new BaseView(TITLE);
 	    
 	    theView.setPreferredSize(new Dimension(704, 500));
 	    theView.setLayout(new GridLayout(1, 1, 0, 0));

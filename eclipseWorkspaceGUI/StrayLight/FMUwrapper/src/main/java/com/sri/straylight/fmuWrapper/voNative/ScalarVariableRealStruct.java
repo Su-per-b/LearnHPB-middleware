@@ -2,8 +2,6 @@ package com.sri.straylight.fmuWrapper.voNative;
 
 
 
-import java.text.DecimalFormat;
-
 import com.sun.jna.Structure;
 
 // TODO: Auto-generated Javadoc

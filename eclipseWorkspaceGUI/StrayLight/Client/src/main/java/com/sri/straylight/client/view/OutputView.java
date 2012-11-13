@@ -3,35 +3,29 @@ package com.sri.straylight.client.view;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Vector;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
-import com.sri.straylight.client.controller.InputController;
 import com.sri.straylight.client.controller.OutputController;
-import com.sri.straylight.client.event.ScalarValueChangeRequest;
-import com.sri.straylight.client.model.InputDataModel;
 import com.sri.straylight.client.model.OutputDataModel;
-import com.sri.straylight.fmuWrapper.voManaged.BaseScalarValue;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
-import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
-import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class OutputView.
  */
 public class OutputView extends BaseView {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/** The table model_. */
 	private DefaultTableModel tableModel_;
@@ -43,13 +37,13 @@ public class OutputView extends BaseView {
 	private Vector<String> resultOutputAry_;
 
 	/** The input form controller_. */
+	@SuppressWarnings("unused")
 	private OutputController outputController_;
 	
 	/** The input form data model_. */
+	@SuppressWarnings("unused")
 	private OutputDataModel outputDataModel_;
 
-	private JPanel bottomPanel_;
-	
 	private ScalarValueCollection latestInput_;
 	
 	protected JSplitPane splitPane_;
@@ -66,7 +60,7 @@ public class OutputView extends BaseView {
 	 */
 	public OutputView(OutputController outputController, OutputDataModel outputDataModel) {
 		
-		super(TITLE, 2);
+		super(TITLE);
 		
 		outputDataModel_ = outputDataModel;
 		outputController_ = outputController;

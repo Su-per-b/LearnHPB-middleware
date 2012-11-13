@@ -1,9 +1,5 @@
 package com.sri.straylight.fmuWrapper.voNative;
 
-import com.sun.jna.FromNativeContext;
-import com.sun.jna.NativeMapped;
-import com.sun.jna.Pointer;
-import com.sun.jna.PointerType;
 import com.sun.jna.Structure;
 
 public class ScalarValueCollectionStruct extends Structure {

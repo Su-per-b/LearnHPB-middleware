@@ -1,8 +1,6 @@
 
 package com.sri.straylight.fmuWrapper.event;
 
-import java.util.EventObject;
-
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageType;
 
@@ -19,6 +17,14 @@ public class MessageEvent extends BaseEvent<MessageStruct> {
 
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
+
+
+	/**
      * Instantiates a new message event.
      *
      * @param source the source

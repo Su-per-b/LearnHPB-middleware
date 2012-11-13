@@ -7,28 +7,17 @@ import javax.swing.JPanel;
 
 public class BaseView extends JPanel {
 
-	
+		private static final long serialVersionUID = 1L;
 		private String title_;
 		
-		private int idx_;
-		
-		
-
-		/**
-		 * @return the idx_
-		 */
-		public int getIdx() {
-			return idx_;
-		}
 
 		
 		public String getTitle() {
 			return title_;
 		}
 		
-		public BaseView(String title, int idx) {
+		public BaseView(String title) {
 			title_ = title;
-			idx_ = idx;
 		}
 		
 		

@@ -13,6 +13,11 @@ import javax.swing.AbstractAction;
 public abstract class DefaultAction extends AbstractAction {
     
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
      * Execute in controller.
      *
      * @param controller the controller

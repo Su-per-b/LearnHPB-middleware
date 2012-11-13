@@ -1,8 +1,5 @@
 package com.sri.straylight.fmuWrapper.voManaged;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueBooleanStruct;
 
 public class ScalarValueBoolean extends BaseScalarValue {

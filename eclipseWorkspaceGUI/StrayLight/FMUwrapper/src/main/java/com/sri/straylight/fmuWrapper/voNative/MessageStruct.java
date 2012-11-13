@@ -3,7 +3,6 @@ package com.sri.straylight.fmuWrapper.voNative;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sun.jna.Structure;
-import org.apache.commons.lang.builder.EqualsBuilder;
 
 // TODO: Auto-generated Javadoc
 /**

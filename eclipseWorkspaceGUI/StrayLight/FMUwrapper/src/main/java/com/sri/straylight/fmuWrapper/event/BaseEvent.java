@@ -1,8 +1,6 @@
 package com.sri.straylight.fmuWrapper.event;
 
 import java.util.EventObject;
-import java.util.HashSet;
-import java.util.Set;
 
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;

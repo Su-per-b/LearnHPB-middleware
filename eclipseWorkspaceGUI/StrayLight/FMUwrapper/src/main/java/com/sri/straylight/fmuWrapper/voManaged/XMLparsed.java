@@ -11,8 +11,6 @@ import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
  */
 public class XMLparsed  {
 
-	/** The output var names. */
-	private String[] outputVarNames;
 
 	/** The input vars. */
 	private ScalarVariableRealStruct[] inputVars;

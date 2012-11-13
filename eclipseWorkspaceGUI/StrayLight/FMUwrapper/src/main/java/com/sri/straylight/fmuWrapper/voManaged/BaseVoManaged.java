@@ -11,9 +11,7 @@ public class BaseVoManaged implements JsonSerializable {
 	}
 	
 	
-	/**
-	 * 
-	 */
+	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 1L;
 	
 }

@@ -8,11 +8,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
-import java.util.concurrent.ExecutionException;
 
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
-import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
@@ -31,7 +29,6 @@ import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueResultsStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariablesAllStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
-import com.sri.straylight.fmuWrapper.voNative.fmiStatus;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 
@@ -72,9 +69,6 @@ public class FMUcontroller  {
 		return simStateWrapper_;
 	}
 
-
-	/** The cleanup when possible_. */
-	private boolean cleanupWhenPossible_ = false;
 
 
 
@@ -182,6 +176,7 @@ public class FMUcontroller  {
 	 * TODO:(raj) get rid of all these switch blocks of code
 	 * and replace with a public / private state notification system
 	 */
+
 	public void onSimStateNative(SimStateNative simStateNative)
 	{
 
@@ -217,10 +212,10 @@ public class FMUcontroller  {
 			case simStateNative_e_error:
 				notifyStateChange_(SimStateWrapper.simStateServer_e_error);
 				break;
+			default:
+				break;
 		}
 		
-		
-
 		simStateNative_ = simStateNative;
 		
 	}
@@ -351,7 +346,7 @@ public class FMUcontroller  {
 	 * @param value the value
 	 */
 	public void setScalarValueReal(int idx, double value) {
-		fmiStatus status = jnaFMUWrapper_.setScalarValueReal(idx, value);
+		jnaFMUWrapper_.setScalarValueReal(idx, value);
 	}
 
 	/**
@@ -375,22 +370,6 @@ public class FMUcontroller  {
 		
 	}
 	
-	
-	
-
-/*
-	
-	@EventSubscriber(eventClass=ResultEvent.class)
-	public void onResultEvent(ResultEvent event) {
-
-
-		ScalarValueResults scalarValueResults = event.getPayload();
-		
-		int x = 0;
-		
-	}
-
-	*/
 
 
 }

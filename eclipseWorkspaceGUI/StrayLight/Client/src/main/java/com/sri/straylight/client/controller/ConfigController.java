@@ -7,7 +7,6 @@ import java.text.DecimalFormat;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultFormatter;
 import javax.swing.text.DefaultFormatterFactory;
@@ -120,7 +119,7 @@ public class ConfigController extends BaseController {
 		txtStepDelta_.setFormatterFactory(fmtFactory);
 		
 	
-		BaseView theView = new BaseView("Config", 1);
+		BaseView theView = new BaseView("Config");
 		theView.setLayout(new MigLayout("", "[][grow][290.00,grow]", "[][]"));
 		
 		theView.add(lblStartTime_, "cell 0 0,alignx trailing");

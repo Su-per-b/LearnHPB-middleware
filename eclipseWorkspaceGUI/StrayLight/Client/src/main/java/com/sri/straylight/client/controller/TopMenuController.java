@@ -11,23 +11,18 @@ import org.bushe.swing.event.EventBus;
 
 import com.sri.straylight.client.event.menu.About_Help;
 import com.sri.straylight.client.event.menu.Options_SelectSimulationEngine;
-import com.sri.straylight.client.model.ClientConfigXML;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class TopMenuController.
  */
-public class TopMenuController  extends AbstractController  {
+public class TopMenuController  extends BaseController  {
 
-
-	/** The config model_. */
-	private ClientConfigXML configModel_;
 	
     /** The menu bar_. */
     private JMenuBar menuBar_;
     
-
 	/**
 	 * Instantiates a new top menu controller.
 	 *
@@ -36,10 +31,9 @@ public class TopMenuController  extends AbstractController  {
 	public TopMenuController(AbstractController parentController) {
 		super(parentController);
 		
-		// Create the menu bar
 		menuBar_ = new JMenuBar();
 		
-		//initMenuOptions_();
+		initMenuOptions_();
 		initMenuHelp_();
 		
 		setView_(menuBar_);

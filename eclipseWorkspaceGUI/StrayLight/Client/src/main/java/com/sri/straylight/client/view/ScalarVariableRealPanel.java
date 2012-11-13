@@ -1,6 +1,5 @@
 package com.sri.straylight.client.view;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +14,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -29,12 +27,18 @@ import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ScalarVariableRealPanel.
  */
 public class ScalarVariableRealPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	
 	/** The lbl name_. */
 	private JLabel lblName_;
 	
@@ -47,9 +51,6 @@ public class ScalarVariableRealPanel extends JPanel {
 	/** The lbl start_. */
 	private JLabel lblStart_;
 
-	/** The text field. */
-	private JTextField textField;
-	
 	/** The lbl nominal_. */
 	private JLabel lblNominal_;
 	
@@ -108,8 +109,6 @@ public class ScalarVariableRealPanel extends JPanel {
 		lblMax_ = new JLabel("{Max}");
 		lblMax_.setFont(normalFont);
 
-
-		//JSeparator separator = new JSeparator();
 		slider_ = new JSlider();
 
 		lblStart_ = new JLabel("Start");
@@ -275,7 +274,7 @@ public class ScalarVariableRealPanel extends JPanel {
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				boolean flag = doubleInputVerifier_.verify(textField_);
+				doubleInputVerifier_.verify(textField_);
 			}
 
 			@Override

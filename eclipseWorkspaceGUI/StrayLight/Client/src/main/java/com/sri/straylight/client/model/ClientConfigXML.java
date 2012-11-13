@@ -1,18 +1,12 @@
 package com.sri.straylight.client.model;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
-import com.sri.straylight.client.ConnectTo;
-import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
 import com.thoughtworks.xstream.XStream;
 
 // TODO: Auto-generated Javadoc
@@ -27,7 +21,6 @@ public class ClientConfigXML {
 	/** The Constant VERSION. */
 	public static final String VERSION = "Alpha 0.4";
 
-	
 	/** The fmu file path. */
 	public String fmuFilePath = "";
 	
@@ -91,44 +84,8 @@ public class ClientConfigXML {
 		return clientConfig;
 	}
 	
-	
-	
-	/**
-	 * Convert relative to absolute.
-	 *
-	 * @param relativePath the relative path
-	 * @return the string
-	 */
-	private static String convertRelativeToAbsolute (String relativePath) {
 
-		
-		String absolutePath ="";
-		
-		try {
 
-			File file = new File (".");
-			String currentDirectory = file.getCanonicalPath();
-			
-			String complexFolderBase = currentDirectory + relativePath;
-			
-			File file2 = new File (complexFolderBase + "\\.");
-			String simpleFolderBase = file2.getCanonicalPath();
-			
-			absolutePath = simpleFolderBase;
-			//absolutePath = simpleFolderBase + "\\" + config.unzippedFMU;
-
-			   
-			 } catch(Exception e) {
-				 System.out.println("Exceptione is ="+e.getMessage());
-				 return null;
-			 }
-		
-		return absolutePath;
-	
-	}
-	
-	
-	
 	/**
 	 * Make.
 	 */

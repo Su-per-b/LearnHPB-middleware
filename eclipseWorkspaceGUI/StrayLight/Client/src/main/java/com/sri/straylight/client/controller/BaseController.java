@@ -1,7 +1,5 @@
 package com.sri.straylight.client.controller;
 
-import java.awt.Container;
-
 import javax.swing.SwingUtilities;
 
 import org.bushe.swing.event.annotation.EventSubscriber;

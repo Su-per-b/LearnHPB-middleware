@@ -32,18 +32,10 @@ public class Main {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
             	
-
-            	
         		System.setProperty(EventServiceLocator.SERVICE_NAME_EVENT_BUS,
         				ExceptionThrowingEventService.class.getName());
-        		
-        		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        		
-        		//InputStream is = classLoader.getResourceAsStream("log4j.xml");
-        		
-        		//	DOMConfigurator.configure("log4j.xml");
-            	//
-            	
+        	
+
             	DOMConfigurator.configure(Main.class.getResource("/log4j.xml"));
             	Logger  logger = Logger.getLogger(EventService.class.getCanonicalName());
             	

@@ -8,6 +8,11 @@ import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
  */
 public class ConfigChangeRequest extends BaseEvent<ConfigStruct> {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ConfigChangeRequest(Object source, ConfigStruct configStruct) {
         super(source, configStruct);
     }

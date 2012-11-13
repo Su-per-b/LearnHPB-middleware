@@ -21,7 +21,7 @@ import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 /**
  * The Class SimulationController.
  */
-public class SimulationController extends AbstractController  {
+public class SimulationController extends BaseController  {
 
 	/** The fmu connect_. */
 	private IFmuConnect fmuConnect_;
@@ -80,13 +80,10 @@ public class SimulationController extends AbstractController  {
     	
     	
     	
-    	try {
+    	try 
+    	{
 			fmuConnect_.connect();
-			
-			int x = 0;
-			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
@@ -115,8 +112,6 @@ public class SimulationController extends AbstractController  {
     public void onSimStateNotify(SimStateNotify event) {
 		simulationStateClient_ = event.getPayload();
 		
-
-        
 		switch (simulationStateClient_) {
 			case level_1_connect_completed:
 		        if (configModel_.autoParseXMLFlag) {
@@ -127,6 +122,8 @@ public class SimulationController extends AbstractController  {
 		        if (configModel_.autoInitFlag) {
 		        	requestStateChange_(SimStateClient.level_3_init_requested);
 		        }
+				break;
+			default:
 				break;
 		}
 		
@@ -151,6 +148,7 @@ public class SimulationController extends AbstractController  {
 	 *
 	 * @param event the event
 	 */
+	@SuppressWarnings("incomplete-switch")
 	@EventSubscriber(eventClass=SimStateRequest.class)
     public void onSimStateRequest(SimStateRequest event) {
 		
@@ -169,16 +167,12 @@ public class SimulationController extends AbstractController  {
 				fmuConnect_.xmlParse();
 				break;
 			case level_3_init_requested :
-				
-				//fmuConnect_.init();
 				fmuConnect_.requestStateChange(SimStateNative.simStateNative_3_init_requested);
-				
 				break;
 			case level_4_run_requested :
 				fmuConnect_.run();
 				break;
 			case level_5_stop_requested:
-				//fmuConnect_.stop();
 				fmuConnect_.requestStateChange(SimStateNative.simStateNative_5_stop_requested);
 				break;
 			case level_5_step_requested:
