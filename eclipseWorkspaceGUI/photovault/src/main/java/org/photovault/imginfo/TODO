@@ -1,1 +1,0 @@
-Bug fix: When reading a photo info with null fields in may not be equal o the PhotoInfo object before saving.
