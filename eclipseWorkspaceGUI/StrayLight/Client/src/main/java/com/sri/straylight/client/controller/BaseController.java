@@ -41,7 +41,12 @@ public class BaseController extends AbstractController {
      * @return the view
      */
     public BaseView getView() {
-        return (BaseView) view;
+    	
+    	if (view == null) {
+    		return null;
+    	} else {
+    		return (BaseView) view;
+    	}
     }
     
     

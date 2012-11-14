@@ -1,6 +1,9 @@
 
 package com.sri.straylight.fmuWrapper.event;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageType;
 
@@ -15,13 +18,10 @@ import com.sri.straylight.fmuWrapper.voNative.MessageType;
 public class MessageEvent extends BaseEvent<MessageStruct> {
 
 
-
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-
 
 
 	/**
@@ -34,9 +34,6 @@ public class MessageEvent extends BaseEvent<MessageStruct> {
         setPayload( payload );
     }
     
-    
-    
-
     /**
      * Instantiates a new message event.
      *
@@ -55,8 +52,40 @@ public class MessageEvent extends BaseEvent<MessageStruct> {
     }
     
     
+    public int hashCode() {
+        return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
+            append(this.source).
+            append(this.payload_).
+            toHashCode();
+    }
 
     
+    public boolean equals(Object obj) {
+    	
+        if (obj == null)
+            return false;
+        
+        if (obj == this)
+            return true;
+        
+        if (obj.getClass() != getClass())
+            return false;
+
+        MessageEvent messageEvent = (MessageEvent) obj;
+        
+        return new EqualsBuilder().
+            // if deriving: appendSuper(super.equals(obj)).
+            append(this.source, messageEvent.source).
+            append(this.payload_, messageEvent.payload_).
+            isEquals();
+    }
+    
+    
+
+    
+    
+
+      
     
 }
 

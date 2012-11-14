@@ -39,7 +39,7 @@ public class EventSerialization {
 	}
 
 	@Test
-	public void test() {
+	public void messageEvent() {
 		
     	MessageStruct structOrig = new MessageStruct();
     	structOrig.msgText = "testMessageStruct";

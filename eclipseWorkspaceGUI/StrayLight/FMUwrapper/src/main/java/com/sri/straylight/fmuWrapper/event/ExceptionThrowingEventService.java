@@ -8,12 +8,18 @@ public class ExceptionThrowingEventService extends SwingEventService {
 
 	/** {@inheritDoc} */										
 	@Override						
-	protected void handleException(Object event, Throwable e, StackTraceElement[] callingStack,						
-			EventSubscriber eventSubscriber) {		
-		
+	protected void handleException(
+			Object event, 
+			Throwable e, 
+			StackTraceElement[] callingStack,						
+			EventSubscriber eventSubscriber) 
+	{		
+
 		super.handleException(event, e, callingStack, eventSubscriber);					
 		throwRuntimeException(e);					
-	}						
+	}
+	
+	
 
 	/** {@inheritDoc} */						
 	@Override						

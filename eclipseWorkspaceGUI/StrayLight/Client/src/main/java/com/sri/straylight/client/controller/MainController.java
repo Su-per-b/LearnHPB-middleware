@@ -89,7 +89,10 @@ public class MainController extends BaseController {
 		topMenuController_ = new TopMenuController(this);
 		configController_ = new ConfigController(this);
 	
-		mainView_.add(topPanelController_.getView(), BorderLayout.NORTH);
+		
+		BaseView view = topPanelController_.getView();
+		
+		mainView_.add(view, BorderLayout.NORTH);
 
 		tabbedPane_ = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane_.addTab("Console", null, consoleController_.getView(), null);

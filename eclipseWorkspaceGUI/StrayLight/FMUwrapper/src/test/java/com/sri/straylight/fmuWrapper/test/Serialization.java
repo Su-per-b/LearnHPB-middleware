@@ -23,7 +23,6 @@ public class Serialization
 	
 	/** The for serialization. */
 	private  JsonController gsonController_ = JsonController.getInstance();
-	//private  Gson gson = JsonController.getInstance().getGson();
     
 	
     /**
@@ -55,13 +54,7 @@ public class Serialization
      */
     public void testSimStateWrapper() {
 
-    	SimStateWrapper state1 = SimStateWrapper.simStateServer_4_run_requested;
-    	SimStateWrapperNotify event = new SimStateWrapperNotify(this, state1);
-    	
-    	String jsonString = event.toJson();
-    	JsonSerializable obj = gsonController_.fromJson(jsonString);
-    	
-    	assertEquals(SimStateWrapperNotify.class,  obj.getClass());
+
     }
     
     

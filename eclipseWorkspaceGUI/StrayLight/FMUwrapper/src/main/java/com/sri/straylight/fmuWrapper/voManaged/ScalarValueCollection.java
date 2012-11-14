@@ -85,7 +85,13 @@ public class ScalarValueCollection {
 
 	}
 	
+	public void setRealList(Vector<ScalarValueReal> realList) {
+		realList_ = realList;
+	}
 	
+	public void setBooleanList(Vector<ScalarValueBoolean> booleanList) {
+		booleanList_ = booleanList;
+	}
 	
 	
 	private void initReal_(ScalarValueCollectionStruct struct) {

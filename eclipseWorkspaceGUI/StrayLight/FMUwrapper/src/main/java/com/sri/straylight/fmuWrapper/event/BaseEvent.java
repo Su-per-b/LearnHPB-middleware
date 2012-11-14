@@ -17,13 +17,11 @@ import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 public class BaseEvent<T> extends EventObject implements JsonSerializable {
 
     /** The payload. */
-    private T payload_;
+    protected T payload_;
+    
+    protected static final long serialVersionUID = 1L;
     
 
-    private static final long serialVersionUID = 1L;
-    
-
-    
     public BaseEvent( Object source ) {
         super( source );
     }

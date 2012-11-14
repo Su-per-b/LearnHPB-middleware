@@ -33,7 +33,7 @@ public class TopMenuController  extends BaseController  {
 		
 		menuBar_ = new JMenuBar();
 		
-		initMenuOptions_();
+		//initMenuOptions_();
 		initMenuHelp_();
 		
 		setView_(menuBar_);

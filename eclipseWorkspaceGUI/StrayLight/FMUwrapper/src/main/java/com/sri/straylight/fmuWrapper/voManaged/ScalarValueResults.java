@@ -10,10 +10,10 @@ public class ScalarValueResults {
 	private double time_;
 	
 	
-	public ScalarValueResults(ScalarValueResultsStruct st1) {
-		time_ = st1.time;
-		input = new ScalarValueCollection(st1.input);
-		output = new ScalarValueCollection(st1.output);
+	public ScalarValueResults(ScalarValueResultsStruct struct) {
+		time_ = struct.time;
+		input = new ScalarValueCollection(struct.input);
+		output = new ScalarValueCollection(struct.output);
 	}
 	
 	

@@ -19,6 +19,7 @@ import com.sri.straylight.client.event.ClearViewAction;
 import com.sri.straylight.client.event.SimStateNotify;
 import com.sri.straylight.client.event.SimStateRequest;
 import com.sri.straylight.client.model.SimStateClient;
+import com.sri.straylight.client.view.BaseView;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 
 
@@ -77,14 +78,14 @@ public class TopPanelController extends BaseController {
 
 		super(parentController);
 
-		JPanel panel = new JPanel();
+		BaseView theView = new BaseView("Top Panel");
 
-		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
+		FlowLayout flowLayout = (FlowLayout) theView.getLayout();
 		flowLayout.setAlignment(FlowLayout.LEFT);
 
-		panel.setMaximumSize(new Dimension(32767, 60));
-		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panel.setAlignmentY(Component.TOP_ALIGNMENT);
+		theView.setMaximumSize(new Dimension(32767, 60));
+		theView.setAlignmentX(Component.LEFT_ALIGNMENT);
+		theView.setAlignmentY(Component.TOP_ALIGNMENT);
 		
 		
 		btnConnect_.setName("TopPanel.Button_Connect");
@@ -103,19 +104,15 @@ public class TopPanelController extends BaseController {
 		buttons_.add(btnStep_);
 		buttons_.add(btnStop_);
 		buttons_.add(btnTerminate_);
-		//buttons_.add(btnReset_);
 		buttons_.add(btnClear_);
 
-		//Array<SimStateClient>[] states = {}
-		
 		int len = buttons_.size();
-		
 		Insets insets = new Insets(0, 2, 0, 2);
 		
 		for (int i = 0; i < len; i++) {
 			JButton b = buttons_.get(i);
 			b.setMargin(insets);
-			panel.add(b);
+			theView.add(b);
 		}
 		
 		setupFSM_();
@@ -123,7 +120,7 @@ public class TopPanelController extends BaseController {
 		bindActions_();
 		updateGUI_();
 		
-		setView_(panel);
+		setView_(theView);
 
 	}
 
