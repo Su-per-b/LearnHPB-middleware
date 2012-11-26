@@ -3,23 +3,16 @@ package com.sri.straylight.fmuWrapper.voManaged;
 
 
 
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
+import java.util.Vector;
+
+import com.sri.straylight.fmuWrapper.serialization.JsonController;
+import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class XMLparsed.
  */
-public class XMLparsed  {
-
-
-	/** The input vars. */
-	private ScalarVariableRealStruct[] inputVars;
-	
-	/** The output vars. */
-	private ScalarVariableRealStruct[] outputVars;
-	
-	/** The internal vars. */
-	private ScalarVariableRealStruct[] internalVars;
+public class XMLparsedInfo implements JsonSerializable  {
 
 	/** The scalar variables all_. */
 	private ScalarVariablesAll scalarVariablesAll_;
@@ -28,9 +21,19 @@ public class XMLparsed  {
 	/**
 	 * Instantiates a new xM lparsed.
 	 */
-	public XMLparsed() {
+	public XMLparsedInfo() {
 
 	}
+	
+	/**
+	 * Instantiates a new xmlparsed.
+	 *
+	 * @param scalarVariablesAll the scalar variables all
+	 */
+	public XMLparsedInfo(ScalarVariablesAll scalarVariablesAll) {
+		scalarVariablesAll_ = scalarVariablesAll;	
+	}
+	
 	
 	/**
 	 * Gets the scalar variables all.
@@ -42,19 +45,7 @@ public class XMLparsed  {
 		return scalarVariablesAll_;
 	}
 	
-	/**
-	 * Instantiates a new xM lparsed.
-	 *
-	 * @param scalarVariablesAll the scalar variables all
-	 */
-	public XMLparsed(ScalarVariablesAll scalarVariablesAll) {
-		scalarVariablesAll_ = scalarVariablesAll;
-		
-		inputVars = scalarVariablesAll.input.realValue;
-		outputVars = scalarVariablesAll.output.realValue;
-		internalVars = scalarVariablesAll.internal.realValue;
-			
-	}
+
 
 	
 	/**
@@ -62,9 +53,11 @@ public class XMLparsed  {
 	 *
 	 * @return the input vars
 	 */
-	public ScalarVariableRealStruct[] getInputVars() {
+	public Vector<ScalarVariableReal> getInputVars() {
 		
-		return inputVars;
+		Vector<ScalarVariableReal> realVarList = scalarVariablesAll_.getInput().getRealVarList();
+		
+		return realVarList;
 	}
 	
 	
@@ -74,13 +67,16 @@ public class XMLparsed  {
 	 * @return the output column names
 	 */
 	public String[] getOutputColumnNames() {
+		
+		Vector<ScalarVariableReal> realVarList = scalarVariablesAll_.getOutput().getRealVarList();
+		
 
-		int len = outputVars.length + 1;
+		int len = realVarList.size() + 1;
 		
 		String[] columnNames = new String[len];
 		columnNames[0] = "time";
 		for (int i =1; i < len; i++) {
-			columnNames[i] = outputVars[i-1].name;
+			columnNames[i] = realVarList.get(i-1).getName();
 		}
 		
 		return columnNames;
@@ -92,8 +88,8 @@ public class XMLparsed  {
 	 * @return the output form column names
 	 */
 	public String[] getOutputFormColumnNames() {
-		
-		String[] columnNames = ScalarVariableRealStruct.getColumnNamesArray();
+
+		String[] columnNames = ScalarVariableReal.getColumnNamesArray();
 		return columnNames;
 	}
 	
@@ -124,7 +120,7 @@ public class XMLparsed  {
 	 */
 	public String[] getInputFormColumnNames() {
 
-		String[] columnNames = ScalarVariableRealStruct.getColumnNamesArray();
+		String[] columnNames = ScalarVariableReal.getColumnNamesArray();
 		return columnNames;
 	}
 	
@@ -135,17 +131,19 @@ public class XMLparsed  {
 	 */
 	public Object[][] getOutputData () {
 		
-		int len = outputVars.length;
+		Vector<ScalarVariableReal> realVarList = scalarVariablesAll_.getOutput().getRealVarList();
+		int len = realVarList.size();
+		
 		Object[][] data = new Object[len][];
 
 		for (int i = 0; i < len; i++) {
-			ScalarVariableRealStruct sv = outputVars[i];
+			ScalarVariableReal sv = realVarList.get(i);
 			String[] row  = {
-				sv.name,
+				sv.getName(),
 				"Real",
 				sv.getCausalityEnum().toString(),
 				sv.getVariabilityEnum().toString(),
-				sv.description
+				sv.getDescription()
 			};
 			
 			data[i] = row;
@@ -161,11 +159,13 @@ public class XMLparsed  {
 	 */
 	public Object[][] getOutputFormData () {
 		
-		int len = outputVars.length;
+		Vector<ScalarVariableReal> realVarList = scalarVariablesAll_.getOutput().getRealVarList();
+		
+		int len = realVarList.size();
 		Object[][] data = new Object[len][];
 
 		for (int i = 0; i < len; i++) {
-			ScalarVariableRealStruct sv = outputVars[i];
+			ScalarVariableReal sv = realVarList.get(i);
 			data[i] = sv.toStringArray();
 		}
 
@@ -180,18 +180,21 @@ public class XMLparsed  {
 	 */
 	public Object[][] getInternalData () {
 		
-		int len = internalVars.length;
+		Vector<ScalarVariableReal> realVarList = scalarVariablesAll_.getInternal().getRealVarList();
+		
+		int len = realVarList.size();
 		Object[][] data = new Object[len][];
 
 		for (int i = 0; i < len; i++) {
-			ScalarVariableRealStruct sv = internalVars[i];
+			ScalarVariableReal sv = realVarList.get(i);
+			
 			String[] row  = {
-				sv.name,
+				sv.getName(),
 				"unknown",
 				"Real",
 				sv.getCausalityEnum().toString(),
 				sv.getVariabilityEnum().toString(),
-				sv.description
+				sv.getDescription()
 			};
 			
 			data[i] = row;
@@ -209,11 +212,13 @@ public class XMLparsed  {
 	 */
 	public Object[][] getInputData() {
 		
-		int len = inputVars.length;
+		Vector<ScalarVariableReal> realVarList = scalarVariablesAll_.getOutput().getRealVarList();
+		
+		int len = realVarList.size();
 		Object[][] data = new Object[len][];
 
 		for (int i = 0; i < len; i++) {
-			ScalarVariableRealStruct sv = inputVars[i];
+			ScalarVariableReal sv = realVarList.get(i);
 			data[i] = sv.toStringArray();
 		}
 
@@ -221,5 +226,9 @@ public class XMLparsed  {
 	}
 
 
+	public String toJson() {
+		return JsonController.getInstance().toJson(this);
+	}
+	
 
 }

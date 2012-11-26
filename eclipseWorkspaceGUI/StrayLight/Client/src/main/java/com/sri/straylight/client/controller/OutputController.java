@@ -11,7 +11,7 @@ import com.sri.straylight.client.view.OutputView;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
-import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
+import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 
 
 // TODO: Auto-generated Javadoc
@@ -38,7 +38,7 @@ public class OutputController extends BaseController {
 	 *
 	 * @param xmlParsed the xml parsed
 	 */
-	protected void init_(XMLparsed xmlParsed) {  
+	protected void init_(XMLparsedInfo xmlParsed) {  
 		
 		outputDataModel_ = new OutputDataModel(xmlParsed);
 		OutputView theView = new OutputView(this, outputDataModel_);

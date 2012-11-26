@@ -2,47 +2,27 @@ package com.sri.straylight.fmuWrapper.serialization;
 
 import java.lang.reflect.Type;
 
-
 import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class MessageStructAdapter.
  */
-public class MessageStructAdapter implements 
-JsonSerializer<MessageStruct>, JsonDeserializer<MessageStruct> {
+public class MessageStructAdapter 
+	extends AdapterBase<MessageStruct> {
 
-	/* (non-Javadoc)
-	 * @see com.google.gson.JsonSerializer#serialize(java.lang.Object, java.lang.reflect.Type, com.google.gson.JsonSerializationContext)
-	 */
-	@Override
-    public JsonElement serialize(
-    		MessageStruct src, 
-    		Type typeOfSrc, 
-    		JsonSerializationContext context) {
-        
-    	JsonObject result = new JsonObject();
-        result.add("type", new JsonPrimitive(src.getClass().getCanonicalName()));
-        result.add("msgText", new JsonPrimitive(src.msgText));
-        result.add("messageType", new JsonPrimitive(src.messageType));
-        
-        return result;
-    }
-    
-    
-    
-    /* (non-Javadoc)
-     * @see com.google.gson.JsonDeserializer#deserialize(com.google.gson.JsonElement, java.lang.reflect.Type, com.google.gson.JsonDeserializationContext)
-     */
+	final protected String[] fieldNames_ = {"msgText", "messageType"};
+
+	public MessageStructAdapter() {
+		super();
+		super.setFieldNames(fieldNames_);
+	}
+	
+	
     @Override
     public MessageStruct deserialize(
     		JsonElement jsonElement, 
@@ -51,13 +31,10 @@ JsonSerializer<MessageStruct>, JsonDeserializer<MessageStruct> {
     
         throws JsonParseException {
     	
-        JsonObject jsonObject = jsonElement.getAsJsonObject();
-        
-        MessageStruct messageStruct = new MessageStruct();
-        messageStruct.msgText = jsonObject.get("msgText").getAsString();
-        messageStruct.messageType = jsonObject.get("messageType").getAsInt();
-        	
-        return messageStruct;
+        destObject_ = new MessageStruct();
+        super.deserialize(jsonElement, typeOfT, context);
+
+        return destObject_;
 
     }
     

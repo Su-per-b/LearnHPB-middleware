@@ -2,7 +2,7 @@ package com.sri.straylight.fmuWrapper.event;
 
 import java.util.EventObject;
 
-import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
+import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 
 // TODO: Auto-generated Javadoc
@@ -18,7 +18,7 @@ public class XMLparsedEvent extends EventObject {
 	public ConfigStruct metaDataStruct;
 	
 	/** The xml parsed. */
-	public XMLparsed xmlParsed;
+	public XMLparsedInfo xmlParsed;
 	
     //here's the constructor
     /**
@@ -28,7 +28,7 @@ public class XMLparsedEvent extends EventObject {
      * @param xmlParsedArg the xml parsed arg
      * @param metaDataStruct_arg the meta data struct_arg
      */
-    public XMLparsedEvent(Object source, XMLparsed xmlParsedArg, ConfigStruct metaDataStruct_arg) {
+    public XMLparsedEvent(Object source, XMLparsedInfo xmlParsedArg, ConfigStruct metaDataStruct_arg) {
         super(source);
         
         xmlParsed = xmlParsedArg;

@@ -116,7 +116,7 @@ public class OutputView extends BaseView {
 	 */
 	public void addResult(ScalarValueResults scalarValueResults) {
 		
-		latestInput_ = scalarValueResults.input;
+		latestInput_ = scalarValueResults.getInput();
 		
 		Vector<String> list = latestInput_.getStringList();
 		int len = list.size();
@@ -139,7 +139,7 @@ public class OutputView extends BaseView {
 
 	public void updateResults(ScalarValueResults scalarValueResults) {
 		
-		Vector<String> resultOutput = scalarValueResults.output.getStringList();
+		Vector<String> resultOutput = scalarValueResults.getOutput().getStringList();
 		
 		int len = resultOutput.size();
 		

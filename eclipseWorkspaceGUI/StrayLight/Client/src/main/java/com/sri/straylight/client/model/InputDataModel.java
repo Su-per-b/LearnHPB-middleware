@@ -1,6 +1,6 @@
 package com.sri.straylight.client.model;
 
-import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
+import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -9,7 +9,7 @@ import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
 public class InputDataModel {
 
     /** The xml parsed. */
-    public XMLparsed xmlParsed;
+    public XMLparsedInfo xmlParsed;
     
     
     

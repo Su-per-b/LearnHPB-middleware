@@ -7,7 +7,7 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 import com.sri.straylight.client.view.BaseView;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
-import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
+import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 
 
 
@@ -17,7 +17,7 @@ public class BaseController extends AbstractController {
 		super(parentController);
 	}
 	
-	protected void init_(XMLparsed xmlParsed) {  
+	protected void init_(XMLparsedInfo xmlParsed) {  
 		
 
 	    

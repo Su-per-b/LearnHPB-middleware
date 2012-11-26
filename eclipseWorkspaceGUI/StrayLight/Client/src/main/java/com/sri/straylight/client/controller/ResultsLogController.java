@@ -15,7 +15,7 @@ import com.sri.straylight.client.view.ResultsLogView;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
-import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
+import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 
 
 // TODO: Auto-generated Javadoc
@@ -42,7 +42,7 @@ public class ResultsLogController extends BaseController {
 	 *
 	 * @param xmlParsed the xml parsed
 	 */
-	protected void init_(XMLparsed xmlParsed) {  
+	protected void init_(XMLparsedInfo xmlParsed) {  
 
 		resultsLogModel_ = new ResultsLogModel(xmlParsed);
 		ResultsLogView theView = new ResultsLogView(this, resultsLogModel_);

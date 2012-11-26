@@ -13,7 +13,7 @@ import com.sri.straylight.client.event.ViewInitialized;
 import com.sri.straylight.client.view.BaseView;
 import com.sri.straylight.client.view.JTableEx;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
-import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
+import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -42,7 +42,7 @@ public class InternalTableController  extends BaseController {
 
 	
 	
-	protected void init_( XMLparsed xmlParsed) {  
+	protected void init_( XMLparsedInfo xmlParsed) {  
 
 	    BaseView theView = new BaseView(TITLE);
 	    

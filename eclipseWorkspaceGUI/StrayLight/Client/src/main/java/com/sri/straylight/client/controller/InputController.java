@@ -10,7 +10,7 @@ import com.sri.straylight.client.view.InputView;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
-import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
+import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -32,7 +32,7 @@ public class InputController extends BaseController {
 	}
 	
 
-	public void init_( XMLparsed xmlParsed) {  
+	public void init_( XMLparsedInfo xmlParsed) {  
 
 		inputDataModel_ = new InputDataModel();
 		inputDataModel_.xmlParsed = xmlParsed;

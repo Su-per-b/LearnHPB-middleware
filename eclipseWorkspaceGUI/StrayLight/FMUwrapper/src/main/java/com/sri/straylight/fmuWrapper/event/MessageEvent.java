@@ -51,15 +51,15 @@ public class MessageEvent extends BaseEvent<MessageStruct> {
         setPayload( payload );
     }
     
-    
+    @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
-            append(this.source).
+
             append(this.payload_).
             toHashCode();
     }
 
-    
+    @Override
     public boolean equals(Object obj) {
     	
         if (obj == null)
@@ -74,18 +74,10 @@ public class MessageEvent extends BaseEvent<MessageStruct> {
         MessageEvent messageEvent = (MessageEvent) obj;
         
         return new EqualsBuilder().
-            // if deriving: appendSuper(super.equals(obj)).
-            append(this.source, messageEvent.source).
             append(this.payload_, messageEvent.payload_).
             isEquals();
     }
     
-    
-
-    
-    
-
-      
     
 }
 

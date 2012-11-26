@@ -5,15 +5,15 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
-import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
+import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 
 public class ResultsLogModel {
 	
-	private XMLparsed xmlParsed_;
+	private XMLparsedInfo xmlParsed_;
 	
 	private DefaultTableModel tableModel_;
 	
-	public ResultsLogModel(XMLparsed xmlParsed) {
+	public ResultsLogModel(XMLparsedInfo xmlParsed) {
 		xmlParsed_ = xmlParsed;
 		
 		init();
@@ -40,7 +40,7 @@ public class ResultsLogModel {
 
 	public void addNewResult(ScalarValueResults scalarValueResults) {
 
-		Vector<String> resultOuput = scalarValueResults.output.getStringList();
+		Vector<String> resultOuput = scalarValueResults.getOutput().getStringList();
 		double time = scalarValueResults.getTime();
 
 		resultOuput.insertElementAt(Double.toString(time), 0);

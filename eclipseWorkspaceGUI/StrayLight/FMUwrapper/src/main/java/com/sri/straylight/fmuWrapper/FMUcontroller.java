@@ -21,7 +21,7 @@ import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
 import com.sri.straylight.fmuWrapper.voManaged.SimStateWrapper;
-import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
+import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.EnumTypeMapper;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
@@ -245,7 +245,7 @@ public class FMUcontroller  {
 		ScalarVariablesAll scalarVariablesAll = new ScalarVariablesAll(scalarVariablesAllStruct);
 		
 		configStruct_ = jnaFMUWrapper_.getConfig();	
-		XMLparsed xmlParsed = new XMLparsed(scalarVariablesAll);
+		XMLparsedInfo xmlParsed = new XMLparsedInfo(scalarVariablesAll);
 		
 		XMLparsedEvent event = new XMLparsedEvent(this, xmlParsed, configStruct_);
 		EventBus.publish(event);

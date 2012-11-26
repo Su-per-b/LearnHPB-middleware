@@ -9,13 +9,13 @@ import com.sri.straylight.fmuWrapper.voNative.ScalarVariablesAllStruct;
 public class ScalarVariablesAll {
 
 	/** The input. */
-	public ScalarVariableCollection input;
+	private ScalarVariableCollection input_;
 	
 	/** The output. */
-	public ScalarVariableCollection output;
+	private ScalarVariableCollection output_;
 	
 	/** The internal. */
-	public ScalarVariableCollection internal;
+	private ScalarVariableCollection internal_;
 	
 	
 	
@@ -25,13 +25,45 @@ public class ScalarVariablesAll {
 	 * @param struct the struct
 	 */
 	public ScalarVariablesAll(ScalarVariablesAllStruct struct) {
-		
+		input_ = new ScalarVariableCollection(struct.input);
+		output_ = new ScalarVariableCollection(struct.output);
+		internal_ = new ScalarVariableCollection(struct.internal, 100);
+	}
 
-		input = new ScalarVariableCollection(struct.input);
-		output = new ScalarVariableCollection(struct.output);
-		internal = new ScalarVariableCollection(struct.internal, 100);
-		 
+
+	public ScalarVariablesAll() {
+		
+	}
+
+
+	/**
+	 * @return the input_
+	 */
+	public ScalarVariableCollection getInput() {
+		return input_;
+	}
+
+
+	/**
+	 * @param input_ the input_ to set
+	 */
+	public void setInput(ScalarVariableCollection input_) {
+		this.input_ = input_;
 	}
 	
+	
+	/**
+	 * @return the output_
+	 */
+	public ScalarVariableCollection getOutput() {
+		return output_;
+	}
+	
+	/**
+	 * @return the internal_
+	 */
+	public ScalarVariableCollection getInternal() {
+		return internal_;
+	}
 	
 }

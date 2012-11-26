@@ -3,7 +3,7 @@ package com.sri.straylight.fmuWrapper.voManaged;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 
-public class BaseScalarValue implements JsonSerializable{
+public class BaseScalarValue implements JsonSerializable {
 	
 
 	
@@ -16,6 +16,11 @@ public class BaseScalarValue implements JsonSerializable{
 	}
 
 	
+	public BaseScalarValue() {
+		
+	}
+
+
 	@Override
 	public String toJson() {
 		return JsonController.getInstance().toJson(this);

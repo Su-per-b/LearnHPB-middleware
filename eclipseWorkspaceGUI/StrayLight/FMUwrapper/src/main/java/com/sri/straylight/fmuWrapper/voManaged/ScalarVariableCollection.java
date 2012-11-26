@@ -1,12 +1,10 @@
 package com.sri.straylight.fmuWrapper.voManaged;
 
+import java.util.Vector;
+
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableBooleanStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableCollectionStruct;
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableEnumerationStruct;
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableIntegerStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableStringStruct;
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableStructBase;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -15,32 +13,34 @@ import com.sri.straylight.fmuWrapper.voNative.ScalarVariableStructBase;
 public class ScalarVariableCollection {
 	
 
-	/** The real value. */
-	public ScalarVariableRealStruct[] realValue;
+	private Vector<ScalarVariableReal> realVarList_;
 	
-	/** The boolean value. */
-	public ScalarVariableBooleanStruct[] booleanValue;
+	private Vector<ScalarVariableBoolean> booleanVarList_;
 	
-	/** The integer value. */
-	public ScalarVariableIntegerStruct[] integerValue;
-	
-	/** The enumeration value. */
-	public ScalarVariableEnumerationStruct[] enumerationValue;
-	
-	/** The string value. */
-	public ScalarVariableStringStruct[] stringValue;
-	
+
 	/** The max array size. */
 	public int maxArraySize = 0;
 	
 	/** The total size. */
 	public int totalSize;
 	
-	/** The all values. */
-	public ScalarVariableStructBase[] allValues;
+
+
+	/**
+	 * @return the realValue
+	 */
+	public Vector<ScalarVariableReal> getRealVarList() {
+		return realVarList_;
+	}
+
+	/**
+	 * @param realValue the realValue to set
+	*/
+	public void setRealVarList(Vector<ScalarVariableReal> realVarList) {
+		realVarList_ = realVarList;
+	}
+		 
 	
-	/** The all values len. */
-	private int allValuesLen;
 	
 	/**
 	 * Instantiates a new scalar variable collection.
@@ -58,63 +58,34 @@ public class ScalarVariableCollection {
 	}
 	
 
+	public ScalarVariableCollection() {
+
+	}
+	
+
 	private void init(ScalarVariableCollectionStruct.ByReference struct, int maxArraySize) {
-		realValue = struct.getRealAsArray(maxArraySize);
 		
-		if (realValue != null) {
-			totalSize += realValue.length;
+
+		ScalarVariableRealStruct[] realAry = struct.getRealAsArray(maxArraySize);
+		if (realAry != null) {
+			totalSize += realAry.length;
 		}
 
+		realVarList_ = ScalarVariableReal.makeList(realAry);
 		
-		booleanValue = struct.getBooleanAsArray(maxArraySize);
-		if (booleanValue != null) {
-			totalSize += booleanValue.length;
+		
+		ScalarVariableBooleanStruct[] booleanAry = struct.getBooleanAsArray(maxArraySize);
+		if (booleanVarList_ != null) {
+			totalSize += booleanAry.length;
 		}
 		
-		integerValue = struct.getIntegerAsArray(maxArraySize);
-		if (integerValue != null) {
-			totalSize += integerValue.length;
-		}
-		
-		enumerationValue = struct.getEnumerationAsArray(maxArraySize);
-		if (enumerationValue != null) {
-			totalSize += enumerationValue.length;
-		}
-		
-		stringValue = struct.getStringAsArray(maxArraySize);
-		if (stringValue != null) {
-			totalSize += stringValue.length;
-		}
-		
-		allValuesLen = 0;
-		allValues = new ScalarVariableStructBase[totalSize];
-		add(realValue);
-		add(booleanValue);
-		add(integerValue);
-		add(enumerationValue);
-		add(stringValue);
-	
+		booleanVarList_ = ScalarVariableBoolean.makeList(booleanAry);
+
+
+
 	}
 	
-	
-	
-	/**
-	 * Adds the.
-	 *
-	 * @param ary the ary
-	 */
-	private void add(ScalarVariableStructBase[] ary) {
-			
-		if (ary == null) return;
-		
-		int len = ary.length;
-		for (int i = 0; i < len; i++) {
-			allValues[allValuesLen] = ary[i];
-			allValuesLen++;
-		}
-		
-	}
-	
+
 	
 	
 }

@@ -10,7 +10,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
+import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 
 
 
@@ -18,14 +18,14 @@ import com.sri.straylight.fmuWrapper.voManaged.XMLparsed;
  * The Class InitializedStructAdapter.
  */
 public class InitializedStructAdapter implements 
-JsonSerializer<XMLparsed>, JsonDeserializer<XMLparsed> {
+JsonSerializer<XMLparsedInfo>, JsonDeserializer<XMLparsedInfo> {
 
 	/* (non-Javadoc)
 	 * @see com.google.gson.JsonSerializer#serialize(java.lang.Object, java.lang.reflect.Type, com.google.gson.JsonSerializationContext)
 	 */
 	@Override
     public JsonElement serialize(
-    		XMLparsed src, 
+    		XMLparsedInfo src, 
     		Type typeOfSrc, 
     		JsonSerializationContext context) {
         
@@ -56,14 +56,14 @@ JsonSerializer<XMLparsed>, JsonDeserializer<XMLparsed> {
      * @see com.google.gson.JsonDeserializer#deserialize(com.google.gson.JsonElement, java.lang.reflect.Type, com.google.gson.JsonDeserializationContext)
      */
     @Override
-    public XMLparsed deserialize(
+    public XMLparsedInfo deserialize(
     		JsonElement jsonElement, 
     		Type typeOfT, 
     		JsonDeserializationContext context)
     
         throws JsonParseException {
     	
-    	XMLparsed struct = new XMLparsed();
+    	XMLparsedInfo struct = new XMLparsedInfo();
     	
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         

@@ -3,6 +3,9 @@ package com.sri.straylight.fmuWrapper.voManaged;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 
 public class ScalarValueReal extends BaseScalarValue {
@@ -30,6 +33,11 @@ public class ScalarValueReal extends BaseScalarValue {
 
 
 	
+	public ScalarValueReal() {
+		super();
+	}
+
+
 	public Double getValue() {
 		return value_;
 	}
@@ -43,6 +51,32 @@ public class ScalarValueReal extends BaseScalarValue {
 		return bd.toString();
 	}
 	
-	
+	 @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
 
+            append(this.value_).
+            toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+    	
+        if (obj == null)
+            return false;
+        
+        if (obj == this)
+            return true;
+        
+        if (obj.getClass() != getClass())
+            return false;
+
+        ScalarValueReal typedObj = (ScalarValueReal) obj;
+        
+        return new EqualsBuilder().
+            append(this.value_, typedObj.getValue()).
+            append(this.idx_, typedObj.getIdx()).
+            isEquals();
+    }
+    
 }

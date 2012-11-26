@@ -3,12 +3,11 @@ package com.sri.straylight.fmuWrapper.voNative;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sun.jna.Structure;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class MessageStruct.
  */

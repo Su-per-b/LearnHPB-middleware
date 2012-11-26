@@ -1,5 +1,8 @@
 package com.sri.straylight.fmuWrapper.voNative;
 
+import com.sri.straylight.fmuWrapper.serialization.JsonController;
+import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
+
 
 
 
@@ -7,7 +10,7 @@ package com.sri.straylight.fmuWrapper.voNative;
 /**
  * The Enum SimStateNative.
  */
-public enum SimStateNative implements JnaEnum<SimStateNative>  {
+public enum SimStateNative implements JnaEnum<SimStateNative>, JsonSerializable  {
 	
 
 	/** uninitialized. */
@@ -88,6 +91,15 @@ public enum SimStateNative implements JnaEnum<SimStateNative>  {
 	    return null;
 	}
 	
+	@Override
+	public String toJson() {
+		return JsonController.getInstance().toJson(this);
+	}
+	
 
+
+
+    
+    
 }
 

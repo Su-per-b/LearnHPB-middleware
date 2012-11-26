@@ -19,6 +19,7 @@ import com.sri.straylight.fmuWrapper.voManaged.BaseScalarValue;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 
 // TODO: Auto-generated Javadoc
@@ -129,7 +130,7 @@ public class InputView extends BaseView {
 	 */
 	public void addResult(ScalarValueResults scalarValueResults) {
 		
-		latestInput_ = scalarValueResults.input;
+		latestInput_ = scalarValueResults.getInput();
 		
 		Vector<String> list = latestInput_.getStringList();
 		int len = list.size();
@@ -149,8 +150,10 @@ public class InputView extends BaseView {
 		bottomPanel_.removeAll();
 		
 		ScalarVariableRealPanel componentPanel = new ScalarVariableRealPanel(this); // FlowLayout 
-		ScalarVariableRealStruct[] svAry = inputDataModel_.xmlParsed.getInputVars();
-		ScalarVariableRealStruct sv = svAry[idx];
+		Vector<ScalarVariableReal> ScalarVarList = inputDataModel_.xmlParsed.getInputVars();
+		
+		ScalarVariableReal sv = ScalarVarList.get(idx);
+		
 		componentPanel.setMetaData(sv);
 		
 		if (latestInput_ != null) {

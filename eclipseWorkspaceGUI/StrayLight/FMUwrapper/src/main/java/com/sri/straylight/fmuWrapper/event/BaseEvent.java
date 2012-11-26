@@ -2,6 +2,9 @@ package com.sri.straylight.fmuWrapper.event;
 
 import java.util.EventObject;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 
@@ -14,10 +17,10 @@ import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
  * @param <PAYLOAD> the generic type
  * @author Christian Bauer
  */
-public class BaseEvent<T> extends EventObject implements JsonSerializable {
+public class BaseEvent<P> extends EventObject implements JsonSerializable {
 
     /** The payload. */
-    protected T payload_;
+    protected P payload_;
     
     protected static final long serialVersionUID = 1L;
     
@@ -27,7 +30,7 @@ public class BaseEvent<T> extends EventObject implements JsonSerializable {
     }
     
 
-    public BaseEvent(Object source, T payload) {
+    public BaseEvent(Object source, P payload) {
         super( source );
         this.payload_ = payload;
     }
@@ -38,7 +41,7 @@ public class BaseEvent<T> extends EventObject implements JsonSerializable {
      *
      * @return the payload
      */
-    public T getPayload() {
+    public P getPayload() {
         return payload_;
     }
     
@@ -48,7 +51,7 @@ public class BaseEvent<T> extends EventObject implements JsonSerializable {
      *
      * @param payload the new payload
      */
-    public void setPayload(T payload) {
+    public void setPayload(P payload) {
     	payload_ = payload;
     }
 
@@ -57,7 +60,15 @@ public class BaseEvent<T> extends EventObject implements JsonSerializable {
     	return JsonController.getInstance().toJson(this);
     }
 
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
+
+            append(this.payload_).
+            toHashCode();
+    }
     
+
     
     
 }

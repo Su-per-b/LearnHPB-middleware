@@ -23,6 +23,7 @@ import javax.swing.event.ChangeListener;
 import com.sri.straylight.client.event.ScalarValueChangeRequest;
 import com.sri.straylight.client.model.DoubleInputVerifier;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
@@ -79,7 +80,7 @@ public class ScalarVariableRealPanel extends JPanel {
 	private InputView inputFormView_;
 	
 	/** The scalar variable real struct_. */
-	private ScalarVariableRealStruct scalarVariableRealStruct_;
+	private ScalarVariableReal scalarVariableReal_;
 	
 	/** The lbl description_. */
 	private JLabel lblDescription_;
@@ -213,41 +214,41 @@ public class ScalarVariableRealPanel extends JPanel {
 	 *
 	 * @param sv the new meta data
 	 */
-	public void setMetaData(ScalarVariableRealStruct sv) {
+	public void setMetaData(ScalarVariableReal sv) {
 		
-		scalarVariableRealStruct_ = sv;
+		scalarVariableReal_ = sv;
 		
-		lblName_.setText(sv.name);
-		lblName_.setToolTipText("Name: " + sv.name);
+		lblName_.setText(sv.getName());
+		lblName_.setToolTipText("Name: " + sv.getName());
 
-		TypeSpecReal typeSpecReal = sv.typeSpecReal;
+		TypeSpecReal typeSpecReal = sv.getTypeSpecReal();
 		String minStr = String.valueOf(typeSpecReal.min);
 		
 		lblMin_.setText(minStr);
 		lblMin_.setToolTipText("Minimum Value: " + minStr);
 
-		String maxStr = String.valueOf(sv.typeSpecReal.max);
+		String maxStr = String.valueOf(sv.getTypeSpecReal().max);
 		lblMax_.setText(maxStr);
 		lblMax_.setToolTipText("Maximum Value: " + maxStr);
 
-		String startStr = String.valueOf(sv.typeSpecReal.start);
+		String startStr = String.valueOf(sv.getTypeSpecReal().start);
 		lblStart_.setText("Start: " + startStr);
 		lblStart_.setToolTipText("Start Value: " + startStr);
 
-		String nominalStr = String.valueOf(sv.typeSpecReal.nominal);
+		String nominalStr = String.valueOf(sv.getTypeSpecReal().nominal);
 		lblNominal_.setText("  Nominal: " + nominalStr);
 		lblNominal_.setToolTipText("Nominal Value: " + nominalStr);
 
-		String valueReferenceStr = String.valueOf(sv.valueReference);
+		String valueReferenceStr = String.valueOf(sv.getValueReference());
 		
 		lblValueReference_.setText("Value Reference: " + valueReferenceStr);
 		lblValueReference_.setToolTipText("Value Reference: " + valueReferenceStr);
 		
-		slider_.setMinimum((int)sv.typeSpecReal.min);
-		slider_.setMaximum((int)sv.typeSpecReal.max);
+		slider_.setMinimum((int)sv.getTypeSpecReal().min);
+		slider_.setMaximum((int)sv.getTypeSpecReal().max);
 
 		doubleInputVerifier_ = DoubleInputVerifier.getInstance("##0.00##");
-		doubleInputVerifier_.setRange(sv.typeSpecReal.min, sv.typeSpecReal.max);
+		doubleInputVerifier_.setRange(sv.getTypeSpecReal().min, sv.getTypeSpecReal().max);
 
 		textField_.setInputVerifier(doubleInputVerifier_);
 		textField_.addKeyListener(new DoubleKeyAdapter(textField_));
@@ -301,7 +302,7 @@ public class ScalarVariableRealPanel extends JPanel {
 		});
 
 		
-		lblDescription_.setText(sv.description);
+		lblDescription_.setText(sv.getDescription());
 		
 		
 	}
@@ -317,7 +318,7 @@ public class ScalarVariableRealPanel extends JPanel {
 		Vector<ScalarValueRealStruct> scalarValueList = new Vector<ScalarValueRealStruct>();
 		
 		ScalarValueRealStruct scalarValue = new ScalarValueRealStruct();
-		scalarValue.idx = scalarVariableRealStruct_.idx;
+		scalarValue.idx = scalarVariableReal_.getIdx();
 		scalarValue.value = newDoubleValue;
 		
 		scalarValueList.add(scalarValue);
