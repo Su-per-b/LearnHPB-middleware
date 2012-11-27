@@ -17,16 +17,16 @@ import net.miginfocom.swing.MigLayout;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.event.SimStateNotify;
-import com.sri.straylight.client.event.SimStateRequest;
 import com.sri.straylight.client.event.ViewInitialized;
-import com.sri.straylight.client.model.SimStateClient;
 import com.sri.straylight.client.view.BaseView;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeRequest;
+import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
+import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
+import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -34,35 +34,19 @@ import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
  */
 public class ConfigController extends BaseController {
 	
-	
-	/** The txt start time_. */
 	private JFormattedTextField txtStartTime_;
-	
-	/** The txt stop time_. */
 	private JFormattedTextField txtStopTime_;
-	
-	/** The txt step delta_. */
 	private JFormattedTextField txtStepDelta_;
 	
 	/** The btn apply_. */
 	private final JButton btnApply_ = new JButton("Apply");
-
-	/** The lbl start time_. */
 	private final JLabel lblStartTime_ = new JLabel("Start Time");
-	
-	/** The lbl stop time_. */
 	private final JLabel lblStopTime_ = new JLabel("Stop Time");
-	
-	/** The lbl step delta_. */
 	private final JLabel lblStepDelta_ = new JLabel("Step Delta");
-
-	
-	/** The config struct_. */
 	private ConfigStruct configStruct_;
 	
+	private SimStateNative simStateNative_ = SimStateNative.simStateNative_0_uninitialized;
 	
-	/** The simulation state_. */
-	private SimStateClient simulationState_ = SimStateClient.level_0_uninitialized;
 	
 	/**
 	 * Instantiates a new config controller.
@@ -162,8 +146,8 @@ public class ConfigController extends BaseController {
 	 *
 	 * @param event the event
 	 */
-	@EventSubscriber(eventClass=SimStateRequest.class)
-	public void onSimStateRequest(SimStateRequest event) {
+	@EventSubscriber(eventClass=SimStateNativeRequest.class)
+	public void onSimStateRequest(SimStateNativeRequest event) {
 		setEnabled(false);
 	}
 	
@@ -186,10 +170,10 @@ public class ConfigController extends BaseController {
 	
 	
 	
-	@EventSubscriber(eventClass=SimStateNotify.class)
-	public void onSimStateNotify(SimStateNotify event) {
+	@EventSubscriber(eventClass=SimStateNativeNotify.class)
+	public void onSimStateNotify(SimStateNativeNotify event) {
 	
-		simulationState_ = event.getPayload();
+		simStateNative_ = event.getPayload();
 		updateGUIFromState_();
 		
 	}
@@ -213,8 +197,8 @@ public class ConfigController extends BaseController {
 	 */
 	private void updateGUIFromState_() {
 
-		boolean isEnabled = (simulationState_ == SimStateClient.level_2_xmlParse_completed ||
-				simulationState_ == SimStateClient.level_7_terminate_completed
+		boolean isEnabled = (simStateNative_ == SimStateNative.simStateNative_2_xmlParse_completed ||
+				simStateNative_ == SimStateNative.simStateNative_7_terminate_completed
 				);
 		setEnabled(isEnabled);
 	}

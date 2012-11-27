@@ -8,13 +8,13 @@ import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.model.SimStateClient;
+import com.sri.straylight.client.event.SimStateClientNotify;
 import com.sri.straylight.fmuWrapper.event.BaseEvent;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
+import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
-import com.sri.straylight.fmuWrapper.voManaged.SimStateWrapper;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageType;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
@@ -67,52 +67,11 @@ public class FmuConnectRemote implements IFmuConnect {
 	 *
 	 * @param event the event
 	 */
-	@EventSubscriber(eventClass=com.sri.straylight.fmuWrapper.event.SimStateWrapperNotify.class)
-	public void onSimStateNotify(com.sri.straylight.fmuWrapper.event.SimStateWrapperNotify event) {
+	@EventSubscriber(eventClass=SimStateNativeNotify.class)
+	public void onSimStateNotify(SimStateNativeNotify event) {
 
-		SimStateWrapper serverState = event.getPayload();
-		SimStateClient clientState;
-
-		switch (serverState) {
-		case simStateServer_1_connect_completed:
-			clientState = SimStateClient.level_1_connect_completed;
-			break;
-		case simStateServer_2_xmlParse_completed:
-			clientState = SimStateClient.level_2_xmlParse_completed;
-			break;
-		case simStateServer_3_ready:
-			clientState = SimStateClient.level_3_ready;
-			break;
-		case simStateServer_4_run_completed:
-			clientState = SimStateClient.level_4_run_completed;
-			break;
-		case simStateServer_4_run_started:
-			clientState = SimStateClient.level_4_run_started;
-			break;
-		case simStateServer_5_step_completed:
-			clientState = SimStateClient.level_5_step_completed;
-			break;
-		case simStateServer_7_terminate_completed:
-			clientState = SimStateClient.level_7_terminate_completed;
-			break;
-		case simStateServer_7_reset_completed:
-			clientState = SimStateClient.level_7_reset_completed;
-			break;
-			
-		case simStateServer_e_error:
-			clientState = SimStateClient.level_e_error;
-			break;
-			
-		default:
-			throw new IllegalStateException("serverState not defined");
-
-		}
-
-		
-		com.sri.straylight.client.event.SimStateNotify event2 = 
-				new com.sri.straylight.client.event.SimStateNotify(this, clientState);
-
-
+		SimStateNative simStateNative = event.getPayload();
+		SimStateClientNotify event2 = new SimStateClientNotify(this, simStateNative);
 		EventBus.publish(event2);
 
 	}

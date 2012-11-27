@@ -1,6 +1,7 @@
 package com.sri.straylight.fmuWrapper.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.concurrent.BrokenBarrierException;
@@ -15,20 +16,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.sri.straylight.fmuWrapper.FMUcontroller;
-import com.sri.straylight.fmuWrapper.event.SimStateWrapperNotify;
+import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
-import com.sri.straylight.fmuWrapper.voManaged.SimStateWrapper;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 
-public class FMUstateTransitions {
+public class StateTransitions {
 
 	/** The main barrier. */
-	 final CyclicBarrier mainBarrier = new CyclicBarrier(2);
+	private final CyclicBarrier mainBarrier_ = new CyclicBarrier(2);
 	
 	/** The next state expected. */
-	private static SimStateWrapper nextServerStateExpected;
-	private static SimStateNative nextNativeStateExpected;
+	private static SimStateNative nextNativeStateExpected_;
 	
 	/** This is the rug that really ties the room together. */
 	private FMUcontroller fmuController_;
@@ -48,7 +47,7 @@ public class FMUstateTransitions {
 		
 		InitThread task = new InitThread();
 		task.start();
-		awaitOnBarrier(mainBarrier);
+		awaitOnBarrier(mainBarrier_);
 
 		
 		SimStateNative simStateNative2  = fmuController_.getSimStateNative();
@@ -63,7 +62,7 @@ public class FMUstateTransitions {
 		
 		TearDownThread task = new TearDownThread();
 		task.start();
-		awaitOnBarrier(mainBarrier);
+		awaitOnBarrier(mainBarrier_);
 	}
 	
 
@@ -72,7 +71,7 @@ public class FMUstateTransitions {
 
 		RunThread task = new RunThread();
 		task.start();
-		awaitOnBarrier(mainBarrier);
+		awaitOnBarrier(mainBarrier_);
 		
 		assertNotNull(task);
 	}
@@ -94,10 +93,9 @@ public class FMUstateTransitions {
 			
 			requestStateChange_(
 					SimStateNative.simStateNative_7_terminate_requested,
-					SimStateNative.simStateNative_7_terminate_completed,
-					SimStateWrapper.simStateServer_7_terminate_completed
+					SimStateNative.simStateNative_7_terminate_completed
 					);
-			awaitOnBarrier(mainBarrier);
+			awaitOnBarrier(mainBarrier_);
 		}
 	}
 	
@@ -118,7 +116,7 @@ public class FMUstateTransitions {
 		{
 			Thread.currentThread().setName("InitThread");
 			
-			FMUstateTransitions.nextServerStateExpected = SimStateWrapper.simStateServer_1_connect_completed;
+			StateTransitions.nextNativeStateExpected_ = SimStateNative.simStateNative_1_connect_completed;
 			
 
 			try
@@ -137,18 +135,17 @@ public class FMUstateTransitions {
 		    String threadName = t.getName();
 		    assert (threadName.equals("InitThread"));
 		    
-			FMUstateTransitions.nextServerStateExpected = SimStateWrapper.simStateServer_2_xmlParse_completed;
+			StateTransitions.nextNativeStateExpected_ = SimStateNative.simStateNative_2_xmlParse_completed;
 			fmuController_.xmlParse();
 			awaitOnBarrier(barrier);
 			
 			
 			requestStateChange_(
 					SimStateNative.simStateNative_3_init_requested,
-					SimStateNative.simStateNative_3_ready,
-					SimStateWrapper.simStateServer_3_ready
+					SimStateNative.simStateNative_3_ready
 					);
 			
-			awaitOnBarrier(mainBarrier);
+			awaitOnBarrier(mainBarrier_);
 			
 		}
 
@@ -169,11 +166,10 @@ public class FMUstateTransitions {
 
 			requestStateChange_(
 					SimStateNative.simStateNative_5_step_requested,
-					SimStateNative.simStateNative_3_ready,
-					SimStateWrapper.simStateServer_3_ready
+					SimStateNative.simStateNative_3_ready
 					);
 			
-			awaitOnBarrier(mainBarrier);
+			awaitOnBarrier(mainBarrier_);
 			
 		}
 	}
@@ -215,13 +211,11 @@ public class FMUstateTransitions {
 		
 		protected void requestStateChange_ (
 				SimStateNative nativeStateRequest,
-				SimStateNative nativeStateExpected,
-				SimStateWrapper serverStateExpected
+				SimStateNative nativeStateExpected
 				) 
 		{
 			
-			nextServerStateExpected = serverStateExpected;
-			nextNativeStateExpected = nativeStateExpected;
+			nextNativeStateExpected_ = nativeStateExpected;
 			
 			fmuController_.requestStateChange(nativeStateRequest);
 			awaitOnBarrier(barrier);
@@ -234,21 +228,24 @@ public class FMUstateTransitions {
 		 *
 		 * @param event the event
 		 */
-		@EventSubscriber(eventClass=SimStateWrapperNotify.class)
-		public void onSimStateNotify(SimStateWrapperNotify event) {
+		@EventSubscriber(eventClass=SimStateNativeNotify.class)
+		public void onSimStateNotify(SimStateNativeNotify event) {
+			
 			Thread t = Thread.currentThread();
 		    String threadName = t.getName();
 		    
 		    assert (threadName.equals("name=AWT-EventQueue-0"));
 		    
-			SimStateWrapper state = event.getPayload();
-			assert (state.equals(FMUstateTransitions.nextServerStateExpected) );
+		    SimStateNative state = event.getPayload();
+			assert (state.equals(StateTransitions.nextNativeStateExpected_) );
 			
-			SimStateNative simStateNative  = fmuController_.getSimStateNative();
-			assert (simStateNative.equals(FMUstateTransitions.nextNativeStateExpected) );
+			//SimStateNative simStateNative  = fmuController_.getSimStateNative();
+			//assert (simStateNative.equals(StateTransitions.nextNativeStateExpected_) );
 			
-			
-			awaitOnBarrier(barrier);
+			if(state.equals(StateTransitions.nextNativeStateExpected_)) {
+				awaitOnBarrier(barrier);
+			}
+
 
 		}
 		

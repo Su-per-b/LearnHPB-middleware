@@ -20,7 +20,6 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 
 // TODO: Auto-generated Javadoc
 /**

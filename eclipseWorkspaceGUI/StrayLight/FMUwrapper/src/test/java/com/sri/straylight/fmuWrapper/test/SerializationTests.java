@@ -13,8 +13,8 @@ import org.junit.Test;
 
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
-import com.sri.straylight.fmuWrapper.event.SimStateWrapperNotify;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueBoolean;
@@ -24,7 +24,6 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
-import com.sri.straylight.fmuWrapper.voManaged.SimStateWrapper;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.Enu;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
@@ -34,7 +33,7 @@ import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
 
-public class Serial {
+public class SerializationTests {
 	
 	
 	/** The for serialization. */
@@ -395,36 +394,15 @@ public class Serial {
 		assertEquals(SimStateNativeRequest.class, event1Deserialized.getClass());
 		
 		assertEquals(event1, event1Deserialized);
-		
-		
-	}
-	
-	
-	@Test
-    public void simStateWrapper() {
-		
-		//make SimStateWrapper 1
-		SimStateWrapper simStateWrapper = SimStateWrapper.simStateServer_2_xmlParse_completed;
-		
-		//serialize / deserialize 
-		String json = simStateWrapper.toJson();
-		Object simStateWrapperDeserialized = gsonController_.fromJson(json);
-		
-		//assert
-		assertEquals(simStateWrapper.getClass(), simStateWrapperDeserialized.getClass());
-		assertEquals(SimStateWrapper.class, simStateWrapperDeserialized.getClass());
-		
-		assertEquals(simStateWrapper, simStateWrapperDeserialized);
 
 	}
 	
 	@Test
-	public void simStateWrapperNotify() {
+	public void simStateNativeNotify() {
 		
-		//make SimStateWrapper 1
-		SimStateWrapper simStateWrapper = SimStateWrapper.simStateServer_2_xmlParse_completed;
-		SimStateWrapperNotify event1 = new SimStateWrapperNotify(this, simStateWrapper);
-		
+		//make SimStateNative 1
+		SimStateNative simStateNative1 = SimStateNative.simStateNative_3_init_dllLoaded;
+		SimStateNativeNotify event1 = new SimStateNativeNotify(this, simStateNative1);
 		
 		//serialize / deserialize 
 		String json = event1.toJson();
@@ -432,21 +410,12 @@ public class Serial {
 		
 		//assert
 		assertEquals(event1.getClass(), event1Deserialized.getClass());
-		assertEquals(SimStateWrapperNotify.class, event1Deserialized.getClass());
+		assertEquals(SimStateNativeNotify.class, event1Deserialized.getClass());
 		
 		assertEquals(event1, event1Deserialized);
-
+		
 	}
-	
-/*	
 
-
-	
-	
-
-	
-	 */
-	
 
 	
 	@Test

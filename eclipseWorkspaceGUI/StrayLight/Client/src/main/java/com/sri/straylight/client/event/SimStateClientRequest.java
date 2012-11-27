@@ -1,23 +1,20 @@
-package com.sri.straylight.fmuWrapper.event;
+package com.sri.straylight.client.event;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
+import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
-import com.sri.straylight.fmuWrapper.voManaged.SimStateWrapper;
-
-
-public class SimStateWrapperNotify extends BaseEvent<SimStateWrapper> {
-
+public class SimStateClientRequest extends BaseEvent<SimStateNative> {
 
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public SimStateWrapperNotify(Object source, SimStateWrapper newState) {
-        super(source,newState);
+	public SimStateClientRequest(Object source, SimStateNative newState) {
+        super(source, newState);
     }
 	
-	
+
     @Override
     public boolean equals(Object obj) {
     	
@@ -30,9 +27,9 @@ public class SimStateWrapperNotify extends BaseEvent<SimStateWrapper> {
         if (obj.getClass() != getClass())
             return false;
         
-        SimStateWrapperNotify event;
+        SimStateClientRequest event;
         if (obj instanceof BaseEvent) {
-        	 event = (SimStateWrapperNotify) obj;
+        	 event = (SimStateClientRequest) obj;
         	 
              return new EqualsBuilder().
                      append(this.payload_, event.getPayload()).
@@ -43,6 +40,5 @@ public class SimStateWrapperNotify extends BaseEvent<SimStateWrapper> {
         
 
     }
-    
     
 }

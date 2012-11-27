@@ -10,19 +10,16 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JPanel;
 
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.ClearViewAction;
-import com.sri.straylight.client.event.SimStateNotify;
-import com.sri.straylight.client.event.SimStateRequest;
-import com.sri.straylight.client.model.SimStateClient;
+import com.sri.straylight.client.event.SimStateClientNotify;
+import com.sri.straylight.client.event.SimStateClientRequest;
 import com.sri.straylight.client.view.BaseView;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
-
-
+import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 
 // TODO: Auto-generated Javadoc
@@ -31,43 +28,25 @@ import com.sri.straylight.fmuWrapper.framework.AbstractController;
  */
 public class TopPanelController extends BaseController {
 
-	/** The btn clear_. */
+	/** Declare Buttons */
 	private final JButton btnClear_ = new JButton("Clear -");
-	
-	/** The btn connect_. */
 	private final JButton btnConnect_ = new JButton("Connect ~");
-	
-	/** The btn xml parse_. */
 	private final JButton btnXmlParse_ = new JButton("XML Parse {}");
-	
-	/** The btn init_. */
 	private final JButton btnInit_ = new JButton("Init ^");
-	
-	/** The btn step_. */
 	private final JButton btnStep_ = new JButton("Step >|");
-	
-	/** The btn run_. */
 	private final JButton btnRun_ = new JButton("Run >");
-	
-	/** The btn stop_. */
 	private final JButton btnStop_ = new JButton("Stop []");
-	
-	/** The btn terminate_. */
 	private final JButton btnTerminate_ = new JButton("Terminate .");
 	
-	/** The btn reset_. */
-	//private final JButton btnReset_ = new JButton("Reset .^");
-
-
 
 	/** The simulation state_. */
-	private SimStateClient simulationState_ = SimStateClient.level_0_uninitialized;
+	private SimStateNative simStateNative_ = SimStateNative.simStateNative_0_uninitialized;
 	
 	/** The buttons_. */
 	private Vector<JButton> buttons_;
 	
 	/** The state map_. */
-	Hashtable<SimStateClient, JButton[]> stateMap_ = new Hashtable<SimStateClient, JButton[]>();
+	Hashtable<SimStateNative, JButton[]> stateMap_ = new Hashtable<SimStateNative, JButton[]>();
 	
 	/**
 	 * Instantiates a new top panel controller.
@@ -133,37 +112,37 @@ public class TopPanelController extends BaseController {
 		//JButton[] ary  = {btnConnect_};
 		
 		stateMap_.put(
-				SimStateClient.level_0_uninitialized,
+				SimStateNative.simStateNative_0_uninitialized,
 				new JButton[]{btnConnect_}
 				);
 		
 		stateMap_.put(
-				SimStateClient.level_1_connect_completed,
+				SimStateNative.simStateNative_1_connect_completed,
 				new JButton[]{btnXmlParse_, btnClear_}
 				);
 		
 		stateMap_.put(
-				SimStateClient.level_2_xmlParse_completed,
+				SimStateNative.simStateNative_2_xmlParse_completed,
 				new JButton[]{btnInit_, btnClear_}
 				);
 		
 		stateMap_.put(
-				SimStateClient.level_3_ready,
+				SimStateNative.simStateNative_3_ready,
 				new JButton[]{btnRun_, btnStep_,  btnTerminate_, btnClear_}
 				);
 		
 		stateMap_.put(
-				SimStateClient.level_4_run_started,
+				SimStateNative.simStateNative_4_run_started,
 				new JButton[]{btnStop_}
 				);
 		
 		stateMap_.put(
-				SimStateClient.level_4_run_completed,
+				SimStateNative.simStateNative_4_run_completed,
 				new JButton[]{ btnTerminate_}
 				);
 		
 		stateMap_.put(
-				SimStateClient.level_7_terminate_completed,
+				SimStateNative.simStateNative_7_terminate_completed,
 				new JButton[]{btnInit_, btnClear_}
 				);
 
@@ -178,16 +157,14 @@ public class TopPanelController extends BaseController {
 
 		btnConnect_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				requestStateChange_(SimStateClient.level_1_connect_requested);
+				requestStateChange_(SimStateNative.simStateNative_1_connect_requested);
 			}
 		}
 				);
 		
 		btnXmlParse_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-			//	btnXmlParse_.setEnabled(false);
-				requestStateChange_(SimStateClient.level_2_xmlParse_requested);
-				
+				requestStateChange_(SimStateNative.simStateNative_2_xmlParse_requested);
 			}
 		}
 				);
@@ -195,8 +172,7 @@ public class TopPanelController extends BaseController {
 
 		btnInit_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				requestStateChange_(SimStateClient.level_3_init_requested);
-				
+				requestStateChange_(SimStateNative.simStateNative_3_init_requested);
 			}
 
 		}
@@ -204,7 +180,7 @@ public class TopPanelController extends BaseController {
 		
 		btnStep_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				requestStateChange_(SimStateClient.level_5_step_requested);
+				requestStateChange_(SimStateNative.simStateNative_5_step_requested);
 				
 			}
 
@@ -215,7 +191,7 @@ public class TopPanelController extends BaseController {
 		btnRun_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				
-				requestStateChange_(SimStateClient.level_4_run_requested);
+				requestStateChange_(SimStateNative.simStateNative_4_run_requested);
 			}
 		}
 				);
@@ -223,27 +199,18 @@ public class TopPanelController extends BaseController {
 
 		btnStop_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				requestStateChange_(SimStateClient.level_5_stop_requested);
+				requestStateChange_(SimStateNative.simStateNative_5_stop_requested);
 			}
 		}
 				);
 		
 		btnTerminate_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				requestStateChange_(SimStateClient.level_7_terminate_requested);
-			}
-		}
-				);
-		
-/*
-		btnReset_.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				requestStateChange_(SimStateClient.level_7_reset_requested);
+				requestStateChange_(SimStateNative.simStateNative_7_terminate_requested);
 			}
 		}
 				);
 
-*/
 		
 		btnClear_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -273,10 +240,10 @@ public class TopPanelController extends BaseController {
 	 *
 	 * @param state_arg the state_arg
 	 */
-	private void requestStateChange_(SimStateClient state_arg)
+	private void requestStateChange_(SimStateNative simStateNative)
 	{
 		EventBus.publish(
-				new SimStateRequest(this, state_arg)
+				new SimStateClientRequest(this, simStateNative)
 				);	
 		
 	}
@@ -286,9 +253,10 @@ public class TopPanelController extends BaseController {
 	 *
 	 * @param event the event
 	 */
-	@EventSubscriber(eventClass=SimStateRequest.class)
-	public void onSimStateRequest(SimStateRequest event) {
-		simulationState_ = event.getPayload();
+	@EventSubscriber(eventClass=SimStateClientRequest.class)
+	public void onSimStateClientRequest(SimStateClientRequest event) {
+		
+		simStateNative_ = event.getPayload();
 	
 		updateGUI_();
 		
@@ -299,9 +267,9 @@ public class TopPanelController extends BaseController {
 	 *
 	 * @param event the event
 	 */
-	@EventSubscriber(eventClass=SimStateNotify.class)
-	public void onSimStateNotify(SimStateNotify event) {
-		simulationState_ = event.getPayload();
+	@EventSubscriber(eventClass=SimStateClientNotify.class)
+	public void onSimStateNotify(SimStateClientNotify event) {
+		simStateNative_ = event.getPayload();
 		updateGUI_();
 	}
 
@@ -316,7 +284,7 @@ public class TopPanelController extends BaseController {
 			buttons_.get(i).setEnabled(false);
 		}
 		
-		JButton[] activeButtons = stateMap_.get(simulationState_);
+		JButton[] activeButtons = stateMap_.get(simStateNative_);
 		
 		if (activeButtons != null) {
 			

@@ -176,6 +176,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
      * @param eventListener The listener implementation.
      */
     public void registerEventListener(Class eventClass, DefaultEventListener eventListener) {
+    	
         log.debug("Registering listener: " + eventListener + " for event type: " + eventClass.getName());
         java.util.List<DefaultEventListener> listenersForEvent = eventListeners.get(eventClass);
         if (listenersForEvent == null) { listenersForEvent = new ArrayList<DefaultEventListener>(); }

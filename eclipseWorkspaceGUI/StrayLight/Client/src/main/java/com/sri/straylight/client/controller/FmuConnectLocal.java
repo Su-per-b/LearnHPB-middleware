@@ -12,10 +12,10 @@ import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.model.SimStateClient;
+import com.sri.straylight.client.event.SimStateClientNotify;
 import com.sri.straylight.fmuWrapper.FMUcontroller;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeRequest;
-import com.sri.straylight.fmuWrapper.voManaged.SimStateWrapper;
+import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
@@ -63,9 +63,6 @@ public class FmuConnectLocal implements  IFmuConnect {
 	}
 	
 
-	/* (non-Javadoc)
-	 * @see com.sri.straylight.client.controller.IFmuConnect#changeInput(int, double)
-	 */
 	public void changeInput(int idx, double value) {
 		
 		synchronized(changeInputSync_) { 
@@ -75,9 +72,7 @@ public class FmuConnectLocal implements  IFmuConnect {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.sri.straylight.client.controller.IFmuConnect#changeScalarValues(java.util.Vector)
-	 */
+
 	public void changeScalarValues(Vector<ScalarValueRealStruct> scalarValueList) {
 		
 		synchronized(changeInputSync_) { 
@@ -87,41 +82,25 @@ public class FmuConnectLocal implements  IFmuConnect {
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.sri.straylight.client.controller.IFmuConnect#connect()
-	 */
+
 	public void connect() {
 		taskConnect_ = new TaskConnect();
 		taskConnect_.execute();
 	}
 
 
-	/* (non-Javadoc)
-	 * @see com.sri.straylight.client.controller.IFmuConnect#xmlParse()
-	 */
 	public void xmlParse() {
 		taskXMLparse_ = new TaskXMLparse();
 		taskXMLparse_.execute();
 	}
 
-
-
-
-	/* (non-Javadoc)
-	 * @see com.sri.straylight.client.controller.IFmuConnect#run()
-	 */
 	public void run() {
-		
 		taskRun_ = new TaskRun();
 		taskRun_.execute();
-		
 	}
 	
 	
 	
-	/* (non-Javadoc)
-	 * @see com.sri.straylight.client.controller.IFmuConnect#requestStateChange(com.sri.straylight.fmuWrapper.voNative.SimStateNative)
-	 */
 	public void requestStateChange(SimStateNative newState) {
 
 		synchronized(requestStateChangeSync_) { 
@@ -132,21 +111,14 @@ public class FmuConnectLocal implements  IFmuConnect {
 	}
 	
 
-	/* (non-Javadoc)
-	 * @see com.sri.straylight.client.controller.IFmuConnect#setConfig(com.sri.straylight.fmuWrapper.voNative.ConfigStruct)
-	 */
 	public void setConfig(ConfigStruct configStruct) {
 		fmu_.setConfig(configStruct);
 	}
 
 
 	
-	/**
- * On config change request.
- *
- * @param event the event
- */
-@EventSubscriber(eventClass=ConfigChangeRequest.class)
+	//event handlers
+	@EventSubscriber(eventClass=ConfigChangeRequest.class)
 	public void onConfigChangeRequest(ConfigChangeRequest event) {
 	
 		ConfigStruct configStruct = event.getPayload();
@@ -157,60 +129,10 @@ public class FmuConnectLocal implements  IFmuConnect {
 	}
 	
 
+	@EventSubscriber(eventClass=SimStateNativeNotify.class)
+	public void onSimStateNotify(SimStateNativeNotify event) {
 
-	
-	
-	/**
-	 * On sim state notify.
-	 *
-	 * @param event the event
-	 */
-	@EventSubscriber(eventClass=com.sri.straylight.fmuWrapper.event.SimStateWrapperNotify.class)
-	public void onSimStateNotify(com.sri.straylight.fmuWrapper.event.SimStateWrapperNotify event) {
-
-		SimStateWrapper serverState = event.getPayload();
-		SimStateClient clientState;
-
-		switch (serverState) {
-		case simStateServer_1_connect_completed:
-			clientState = SimStateClient.level_1_connect_completed;
-			break;
-		case simStateServer_2_xmlParse_completed:
-			clientState = SimStateClient.level_2_xmlParse_completed;
-			break;
-		case simStateServer_3_ready:
-			clientState = SimStateClient.level_3_ready;
-			break;
-		case simStateServer_4_run_completed:
-			clientState = SimStateClient.level_4_run_completed;
-			break;
-		case simStateServer_4_run_started:
-			clientState = SimStateClient.level_4_run_started;
-			break;
-		case simStateServer_5_step_completed:
-			clientState = SimStateClient.level_5_step_completed;
-			break;
-		case simStateServer_7_terminate_completed:
-			clientState = SimStateClient.level_7_terminate_completed;
-			break;
-		case simStateServer_7_reset_completed:
-			clientState = SimStateClient.level_7_reset_completed;
-			break;
-			
-		case simStateServer_e_error:
-			clientState = SimStateClient.level_e_error;
-			break;
-			
-		default:
-			throw new IllegalStateException("serverState not defined");
-
-		}
-
-		
-		com.sri.straylight.client.event.SimStateNotify event2 = 
-				new com.sri.straylight.client.event.SimStateNotify(this, clientState);
-
-
+		SimStateClientNotify event2 = new SimStateClientNotify(this, event.getPayload());
 		EventBus.publish(event2);
 
 	}

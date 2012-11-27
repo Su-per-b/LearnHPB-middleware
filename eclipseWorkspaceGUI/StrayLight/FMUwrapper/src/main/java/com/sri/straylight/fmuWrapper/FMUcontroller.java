@@ -15,12 +15,11 @@ import org.bushe.swing.event.annotation.AnnotationProcessor;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
-import com.sri.straylight.fmuWrapper.event.SimStateWrapperNotify;
+import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
-import com.sri.straylight.fmuWrapper.voManaged.SimStateWrapper;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.EnumTypeMapper;
@@ -41,20 +40,16 @@ import com.sun.jna.Native;
 public class FMUcontroller  {
 
 	
-	/** The jna fmu wrapper_. */
 	private JNAfmuWrapper jnaFMUWrapper_;
-	
-	/** The config struct_. */
 	private ConfigStruct configStruct_;
-	
-	/** The fmu wrapper config_. */
 	private FMUwrapperConfig fmuWrapperConfig_;
-	
-	
-	/** The sim state native_. */
 	private SimStateNative simStateNative_;
+	
+	private HashMap<SimStateNative, Boolean> fireEventsForStates_ =
+			new HashMap<SimStateNative, Boolean>();
+			
 
-	private SimStateWrapper simStateWrapper_;
+	
 	
 	/**
 	 * Gets the fmu state.
@@ -65,11 +60,8 @@ public class FMUcontroller  {
 		return simStateNative_;
 	}
 	
-	public SimStateWrapper getSimStateWrapper() {
-		return simStateWrapper_;
-	}
 
-
+	
 
 
 	
@@ -81,10 +73,10 @@ public class FMUcontroller  {
 	public FMUcontroller(FMUwrapperConfig fmuWrapperConfig) {
 		
 		simStateNative_ = SimStateNative.simStateNative_0_uninitialized;
-		simStateWrapper_ = SimStateWrapper.simStateServer_0_uninitialized;
 		
 		fmuWrapperConfig_ = fmuWrapperConfig;
-		AnnotationProcessor.process(this);
+		init();
+
 	}
 	
 	
@@ -93,10 +85,27 @@ public class FMUcontroller  {
 	 */
 	public FMUcontroller() {
 		fmuWrapperConfig_ = FMUwrapperConfig.load();
-		AnnotationProcessor.process(this);
+		init();
 	}
 	
 	
+	private void init() {
+		AnnotationProcessor.process(this);
+		
+		fireEventsForStates_.put(SimStateNative.simStateNative_1_connect_completed, true);
+		fireEventsForStates_.put(SimStateNative.simStateNative_2_xmlParse_completed, true);
+		
+		fireEventsForStates_.put(SimStateNative.simStateNative_3_init_initializedSlaves, true);
+		fireEventsForStates_.put(SimStateNative.simStateNative_3_ready, true);
+		
+		fireEventsForStates_.put(SimStateNative.simStateNative_4_run_completed, true);
+		fireEventsForStates_.put(SimStateNative.simStateNative_4_run_started, true);
+		
+		fireEventsForStates_.put(SimStateNative.simStateNative_5_step_completed, true);
+		fireEventsForStates_.put(SimStateNative.simStateNative_7_terminate_completed, true);
+		fireEventsForStates_.put(SimStateNative.simStateNative_e_error, true);
+		
+	}
 	
 	
 	/**
@@ -104,10 +113,10 @@ public class FMUcontroller  {
 	 *
 	 * @param state_arg the state_arg
 	 */
-	private void notifyStateChange_(SimStateWrapper state_arg)
+	private void notifyStateChange_(SimStateNative simStateNative)
 	{
 		EventBus.publish(
-				new SimStateWrapperNotify(this, state_arg)
+				new SimStateNativeNotify(this, simStateNative)
 				);	
 		
 	}
@@ -120,12 +129,9 @@ public class FMUcontroller  {
 
 		public boolean messageCallback(MessageStruct messageStruct) {
 
-
 			MessageEvent event = new MessageEvent(this, messageStruct);
-			
 			EventBus.publish(event);
 
-			
 			return true;                  
 		}
 	};
@@ -137,21 +143,14 @@ public class FMUcontroller  {
 
 		public boolean resultCallback(ScalarValueResultsStruct scalarValueResultsStruct) {
 			
-			//ScalarValueResultsStruct res = jnaFMUWrapper_.getTest();
 			ScalarValueResults scalarValueResults = new ScalarValueResults(scalarValueResultsStruct);
-			
 			ResultEvent event = new ResultEvent(this, scalarValueResults);
-			//ResultEvent event = new ResultEvent(this);
-			
 			
 			try {
 				EventBus.publish(event);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
-			
-			
 			
 			return true;                  
 		}
@@ -162,63 +161,18 @@ public class FMUcontroller  {
 	private JNAfmuWrapper.StateChangeCallbackInterface stateChangeCallbackFunc_ = 
 
 			new JNAfmuWrapper.StateChangeCallbackInterface() {
-		public boolean stateChangeCallback(SimStateNative fmuState) {
+		public boolean stateChangeCallback(SimStateNative simStateNative) {
 			
-			onSimStateNative (fmuState);
+			simStateNative_ = simStateNative;
+			
+			if (fireEventsForStates_.containsKey(simStateNative)) {
+				notifyStateChange_(simStateNative);
+			}
+			
 			return true;                  
 		}		
 	};
 
-	/**
-	 * On sim state native.
-	 *
-	 * @param simStateNative the sim state native
-	 * TODO:(raj) get rid of all these switch blocks of code
-	 * and replace with a public / private state notification system
-	 */
-
-	public void onSimStateNative(SimStateNative simStateNative)
-	{
-
-		switch (simStateNative) {
-		
-			case simStateNative_2_xmlParse_completed:
-				simStateWrapper_ = SimStateWrapper.simStateServer_2_xmlParse_completed;
-				notifyStateChange_(SimStateWrapper.simStateServer_2_xmlParse_completed);
-				break;
-			case simStateNative_3_ready:  
-				simStateWrapper_ = SimStateWrapper.simStateServer_3_ready;
-				notifyStateChange_(SimStateWrapper.simStateServer_3_ready);
-				break;
-			case simStateNative_4_run_started:  
-				simStateWrapper_ = SimStateWrapper.simStateServer_4_run_started;
-				notifyStateChange_(SimStateWrapper.simStateServer_4_run_started);
-	        	break;
-			case simStateNative_4_run_completed:  
-				simStateWrapper_ = SimStateWrapper.simStateServer_4_run_completed;
-				notifyStateChange_(SimStateWrapper.simStateServer_4_run_completed);
-				break;
-			case simStateNative_5_step_completed:  
-				//notifyStateChange_(SimStateServer.simStateServer_5_step_completed);
-				break;
-			case simStateNative_7_terminate_completed: 
-				simStateWrapper_ = SimStateWrapper.simStateServer_7_terminate_completed;
-				notifyStateChange_(SimStateWrapper.simStateServer_7_terminate_completed);
-				break;
-			case simStateNative_7_reset_completed:  
-				simStateWrapper_ = SimStateWrapper.simStateServer_7_reset_completed;
-				notifyStateChange_(SimStateWrapper.simStateServer_7_reset_completed); 
-				break;
-			case simStateNative_e_error:
-				notifyStateChange_(SimStateWrapper.simStateServer_e_error);
-				break;
-			default:
-				break;
-		}
-		
-		simStateNative_ = simStateNative;
-		
-	}
 
 
 
@@ -297,7 +251,7 @@ public class FMUcontroller  {
 				stateChangeCallbackFunc_
 				);
 		
-		notifyStateChange_(SimStateWrapper.simStateServer_1_connect_completed);
+		notifyStateChange_(SimStateNative.simStateNative_1_connect_completed);
 	}
 
 

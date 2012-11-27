@@ -8,8 +8,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonNull;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
-import com.sri.straylight.fmuWrapper.event.SimStateWrapperNotify;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueBoolean;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
@@ -17,7 +17,6 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
-import com.sri.straylight.fmuWrapper.voManaged.SimStateWrapper;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
@@ -143,9 +142,8 @@ public class JsonController {
 		
 		register_(SimStateNative.class, new SimStateNativeAdapter());
 		register_(SimStateNativeRequest.class, new SimStateNativeRequestAdapter());
+		register_(SimStateNativeNotify.class, new SimStateNativeNotifyAdapter());
 		
-		register_(SimStateWrapper.class, new SimStateWrapperAdapter());
-		register_(SimStateWrapperNotify.class, new SimStateWrapperNotifyAdapter());
 		
 		register_(TypeSpecReal.class, new TypeSpecRealAdapter());
 		register_(ScalarVariableReal.class, new ScalarVariableRealAdapter());

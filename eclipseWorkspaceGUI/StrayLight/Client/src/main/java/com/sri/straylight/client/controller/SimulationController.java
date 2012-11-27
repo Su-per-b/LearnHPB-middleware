@@ -6,10 +6,9 @@ import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.ScalarValueChangeRequest;
-import com.sri.straylight.client.event.SimStateNotify;
-import com.sri.straylight.client.event.SimStateRequest;
+import com.sri.straylight.client.event.SimStateClientNotify;
+import com.sri.straylight.client.event.SimStateClientRequest;
 import com.sri.straylight.client.model.ClientConfig;
-import com.sri.straylight.client.model.SimStateClient;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
@@ -23,15 +22,9 @@ import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
  */
 public class SimulationController extends BaseController  {
 
-	/** The fmu connect_. */
 	private IFmuConnect fmuConnect_;
-	
-    /** The config model_. */
     private ClientConfig configModel_;
-    
-    /** The simulation state client_. */
-    private SimStateClient simulationStateClient_ = 
-    		SimStateClient.level_0_uninitialized;
+    private SimStateNative simStateNative_ = SimStateNative.simStateNative_0_uninitialized;
     
     
 	/**
@@ -46,14 +39,10 @@ public class SimulationController extends BaseController  {
         
         
         if (configModel_.autoConnectFlag) {
-        	requestStateChange_(SimStateClient.level_1_connect_requested);
+        	requestStateChange_(SimStateNative.simStateNative_1_connect_requested);
         }
 	}
 	
-	
-	
-
-
 	
 	/**
 	 * Connect_.
@@ -103,98 +92,61 @@ public class SimulationController extends BaseController  {
 	}
 	
 	
-	/**
-	 * On sim state notify.
-	 *
-	 * @param event the event
-	 */
-	@EventSubscriber(eventClass=SimStateNotify.class)
-    public void onSimStateNotify(SimStateNotify event) {
-		simulationStateClient_ = event.getPayload();
+	@EventSubscriber(eventClass=SimStateClientRequest.class)
+    public void onSimStateRequest(SimStateClientRequest event) {
 		
-		switch (simulationStateClient_) {
-			case level_1_connect_completed:
+		SimStateNative requestedState = event.getPayload();
+		
+		switch (requestedState) {
+			case simStateNative_1_connect_requested :
+				connect_();
+				break;
+			case simStateNative_2_xmlParse_requested :
+				fmuConnect_.xmlParse();
+				break;
+			case simStateNative_4_run_requested :
+				fmuConnect_.run();
+				break;
+			default:
+				fmuConnect_.requestStateChange(requestedState);
+		}
+    }
+	
+	@EventSubscriber(eventClass=SimStateClientNotify.class)
+    public void onSimStateNotify(SimStateClientNotify event) {
+		
+		simStateNative_ = event.getPayload();
+		
+		switch (simStateNative_) {
+			case simStateNative_1_connect_completed:
 		        if (configModel_.autoParseXMLFlag) {
-		        	requestStateChange_(SimStateClient.level_2_xmlParse_requested);
+		        	requestStateChange_(SimStateNative.simStateNative_2_xmlParse_requested);
 		        }
 				break;
-			case level_2_xmlParse_completed :
+			case simStateNative_2_xmlParse_completed :
 		        if (configModel_.autoInitFlag) {
-		        	requestStateChange_(SimStateClient.level_3_init_requested);
+		        	requestStateChange_(SimStateNative.simStateNative_3_init_requested);
 		        }
 				break;
 			default:
 				break;
 		}
-		
 	}
 	
 	
-	/**
-	 * Request state change_.
-	 *
-	 * @param state_arg the state_arg
-	 */
-	private void requestStateChange_(SimStateClient state_arg)
+
+	private void requestStateChange_(SimStateNative simStateNative)
 	{
 		EventBus.publish(
-				new SimStateRequest(this, state_arg)
+				new SimStateClientRequest(this, simStateNative)
 				);	
 		
 	}
 	
-	/**
-	 * On sim state request.
-	 *
-	 * @param event the event
-	 */
-	@SuppressWarnings("incomplete-switch")
-	@EventSubscriber(eventClass=SimStateRequest.class)
-    public void onSimStateRequest(SimStateRequest event) {
-		
-		
-		
-		SimStateClient state = event.getPayload();
-		
-		if (simulationStateClient_ == state)
-			return;
-			
-		switch (state) {
-			case level_1_connect_requested :
-				connect_();
-				break;
-			case level_2_xmlParse_requested :
-				fmuConnect_.xmlParse();
-				break;
-			case level_3_init_requested :
-				fmuConnect_.requestStateChange(SimStateNative.simStateNative_3_init_requested);
-				break;
-			case level_4_run_requested :
-				fmuConnect_.run();
-				break;
-			case level_5_stop_requested:
-				fmuConnect_.requestStateChange(SimStateNative.simStateNative_5_stop_requested);
-				break;
-			case level_5_step_requested:
-				fmuConnect_.requestStateChange(SimStateNative.simStateNative_5_step_requested);
-				break;
-			case level_7_reset_requested:
-				fmuConnect_.requestStateChange(SimStateNative.simStateNative_7_reset_requested);
-				break;
-			case level_7_terminate_requested:
-				fmuConnect_.requestStateChange(SimStateNative.simStateNative_7_terminate_requested);
-				break;
-		}
-    }
-	
-	
-
-	
-	
-	
 
 
-    
+	
+	
 }
     
     

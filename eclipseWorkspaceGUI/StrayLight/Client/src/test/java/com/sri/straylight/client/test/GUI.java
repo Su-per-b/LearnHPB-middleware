@@ -26,18 +26,15 @@ import org.junit.Test;
 
 import com.sri.straylight.client.Main;
 import com.sri.straylight.client.controller.MainController;
-import com.sri.straylight.client.event.SimStateNotify;
-import com.sri.straylight.client.model.SimStateClient;
 import com.sri.straylight.fmuWrapper.event.ExceptionThrowingEventService;
+import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
+import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 public class GUI {
 
 	private Container mainView_;
-	
 	private MainController applicationController;
-	
 	private HashMap<Integer, Point> buttonPointMap_;
-	
 	private Robot robot_;
 	
 	private static final int BTN_CONNECT = 0;
@@ -94,7 +91,7 @@ public class GUI {
         		System.setProperty(EventServiceLocator.SERVICE_NAME_EVENT_BUS,
         				ExceptionThrowingEventService.class.getName());
         		
-        		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        		//ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             	
             	DOMConfigurator.configure(Main.class.getResource("/log4j.xml"));
             	Logger  logger = Logger.getLogger(EventService.class.getCanonicalName());
@@ -117,7 +114,7 @@ public class GUI {
 	}
 	
 
-	  
+/*	  
     private static void listComponents(Container container) {
 		
         Component[] components = container.getComponents();
@@ -128,7 +125,7 @@ public class GUI {
             }
         }
     }
-
+*/
     
     private static Component getComponentNamed(Container container, String theName) {
     	
@@ -191,17 +188,18 @@ public class GUI {
 	
 	
 	
+
 	@SuppressWarnings("incomplete-switch")
-	@EventSubscriber(eventClass=SimStateNotify.class)
-    private void onSimStateNotify(SimStateNotify event) {
+	@EventSubscriber(eventClass=SimStateNativeNotify.class)
+    private void onSimStateNotify(SimStateNativeNotify event) {
 		
-		SimStateClient simulationStateClient = event.getPayload();
+		SimStateNative simStateNative = event.getPayload();
 		
-		switch (simulationStateClient) {
-			case level_1_connect_completed:
+		switch (simStateNative) {
+			case simStateNative_1_connect_completed:
 				clickButton_(BTN_XMLPARSE);
 				break;
-			case level_2_xmlParse_completed :
+			case simStateNative_2_xmlParse_completed :
 				clickButton_(BTN_INIT);
 				break;
 		}

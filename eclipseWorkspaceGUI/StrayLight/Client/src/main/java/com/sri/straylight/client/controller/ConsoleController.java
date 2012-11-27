@@ -5,12 +5,12 @@ import java.awt.Color;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.ClearViewAction;
-import com.sri.straylight.client.event.SimStateNotify;
-import com.sri.straylight.client.event.SimStateRequest;
 import com.sri.straylight.client.model.ConsoleModel;
 import com.sri.straylight.client.view.ConsoleView;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
+import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
@@ -47,8 +47,8 @@ public class ConsoleController extends BaseController {
 	 *
 	 * @param event the event
 	 */
-	@EventSubscriber(eventClass=SimStateRequest.class)
-	public void onSimStateRequest(SimStateRequest event) {
+	@EventSubscriber(eventClass=SimStateNativeRequest.class)
+	public void onSimStateRequest(SimStateNativeRequest event) {
 		
 		ConsoleView view = (ConsoleView) getView();
 		view.outputText ("SimStateRequest: " + event.getPayload().toString(), Color.black);
@@ -59,8 +59,8 @@ public class ConsoleController extends BaseController {
 	 *
 	 * @param event the event
 	 */
-	@EventSubscriber(eventClass=SimStateNotify.class)
-	public void onSimStateRequest(SimStateNotify event) {
+	@EventSubscriber(eventClass=SimStateNativeNotify.class)
+	public void onSimStateRequest(SimStateNativeNotify event) {
 		ConsoleView view = (ConsoleView) getView();
 		view.outputText ("SimStateNotify: " + event.getPayload().toString(), Color.black);
 	}

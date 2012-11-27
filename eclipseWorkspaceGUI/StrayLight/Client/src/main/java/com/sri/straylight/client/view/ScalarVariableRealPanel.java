@@ -25,7 +25,6 @@ import com.sri.straylight.client.model.DoubleInputVerifier;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
 
 

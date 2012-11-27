@@ -14,7 +14,7 @@ import java.util.EventObject;
 public class BaseEvent<T> extends EventObject {
 
     /** The payload. */
-    private T payload_;
+    protected T payload_;
     
 
     private static final long serialVersionUID = 1L;
