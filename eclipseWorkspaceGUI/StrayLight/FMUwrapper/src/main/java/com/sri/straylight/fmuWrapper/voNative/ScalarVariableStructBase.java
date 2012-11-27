@@ -10,22 +10,11 @@ import com.sun.jna.Structure;
  */
 public class ScalarVariableStructBase extends Structure {
 	
-	/** The name. */
 	public String name;
-	
-	/** The idx. */
 	public int idx;
-	
-	/** The causality. */
 	public int causality;
-	
-	/** The variability. */
 	public int variability;
-	
-	/** The description. */
 	public String description;
-	
-	/** The value reference. */
 	public int valueReference;
 	
 	

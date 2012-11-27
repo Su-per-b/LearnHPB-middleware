@@ -1,15 +1,10 @@
 package com.sri.straylight.fmuWrapper.voNative;
 
-import java.util.Vector;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
-import com.sri.straylight.fmuWrapper.voManaged.ScalarValueBoolean;
-import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
-import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
 import com.sun.jna.Structure;
 
 // TODO: Auto-generated Javadoc
@@ -27,31 +22,17 @@ public class TypeSpecReal
 	 */
 	public static class ByReference extends TypeSpecReal implements Structure.ByReference { }
 	
-	/** The start. */
 	public double start;
-	
-	/** The nominal. */
 	public double nominal;
-	
-	/** The min. */
 	public double min;
-	
-	/** The max. */
 	public double max;
 
-	/** The start value status. */
 	public int startValueStatus;
-	
-	/** The nominal value status. */
 	public int nominalValueStatus;
-	
-	/** The min value status. */
 	public int minValueStatus;
-	
-	/** The max value status. */
 	public int maxValueStatus;
 
-	
+
 	public String toJson() {
 		return JsonController.getInstance().toJson(this);
 	}
@@ -60,7 +41,6 @@ public class TypeSpecReal
 	@Override
     public int hashCode() {
         return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
-
             append(this.start).
             append(this.nominal).
             append(this.min).

@@ -5,6 +5,9 @@ package com.sri.straylight.fmuWrapper.voManaged;
 
 import java.util.Vector;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 
@@ -18,45 +21,30 @@ public class XMLparsedInfo implements JsonSerializable  {
 	private ScalarVariablesAll scalarVariablesAll_;
 	
 	
-	/**
-	 * Instantiates a new xM lparsed.
-	 */
+	//constructor 1
 	public XMLparsedInfo() {
 
 	}
 	
-	/**
-	 * Instantiates a new xmlparsed.
-	 *
-	 * @param scalarVariablesAll the scalar variables all
-	 */
+	//constructor 2
 	public XMLparsedInfo(ScalarVariablesAll scalarVariablesAll) {
 		scalarVariablesAll_ = scalarVariablesAll;	
 	}
 	
+
+	public void setScalarVariablesAll(ScalarVariablesAll scalarVariablesAll) {
+		scalarVariablesAll_ = scalarVariablesAll;
+	}
 	
-	/**
-	 * Gets the scalar variables all.
-	 *
-	 * @return the scalar variables all
-	 */
 	public ScalarVariablesAll getScalarVariablesAll() {
-		
 		return scalarVariablesAll_;
 	}
 	
 
 
-	
-	/**
-	 * Gets the input vars.
-	 *
-	 * @return the input vars
-	 */
+
 	public Vector<ScalarVariableReal> getInputVars() {
-		
 		Vector<ScalarVariableReal> realVarList = scalarVariablesAll_.getInput().getRealVarList();
-		
 		return realVarList;
 	}
 	
@@ -141,8 +129,8 @@ public class XMLparsedInfo implements JsonSerializable  {
 			String[] row  = {
 				sv.getName(),
 				"Real",
-				sv.getCausalityEnum().toString(),
-				sv.getVariabilityEnum().toString(),
+				sv.getCausalityAsEnum().toString(),
+				sv.getVariabilityAsEnum().toString(),
 				sv.getDescription()
 			};
 			
@@ -192,8 +180,8 @@ public class XMLparsedInfo implements JsonSerializable  {
 				sv.getName(),
 				"unknown",
 				"Real",
-				sv.getCausalityEnum().toString(),
-				sv.getVariabilityEnum().toString(),
+				sv.getCausalityAsEnum().toString(),
+				sv.getVariabilityAsEnum().toString(),
 				sv.getDescription()
 			};
 			
@@ -226,9 +214,37 @@ public class XMLparsedInfo implements JsonSerializable  {
 	}
 
 
+	@Override
 	public String toJson() {
 		return JsonController.getInstance().toJson(this);
 	}
 	
+	
+	 @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
+
+            append(scalarVariablesAll_.hashCode()).
+            toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+    	
+        if (obj == null)
+            return false;
+        
+        if (obj == this)
+            return true;
+        
+        if (obj.getClass() != getClass())
+            return false;
+
+        XMLparsedInfo typedObj = (XMLparsedInfo) obj;
+        
+        return new EqualsBuilder().
+            append(this.scalarVariablesAll_, typedObj.getScalarVariablesAll()).
+            isEquals();
+    }
 
 }

@@ -31,7 +31,7 @@ public class ScalarVariableRealAdapter extends AdapterBase<ScalarVariableReal> {
 		super.serialize(src, typeOfSrc, context);
 		
 		TypeSpecReal typeSpecReal =  src.getTypeSpecReal();
-		JsonElement element = context_.serialize(typeSpecReal, TypeSpecReal.class);
+		JsonElement element = serializationContext_.serialize(typeSpecReal, TypeSpecReal.class);
 		jsonObject_.add("typeSpecReal_", element);
 		
 		return jsonObject_;

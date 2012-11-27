@@ -10,12 +10,10 @@ import com.sun.jna.Structure;
  */
 public class ScalarVariableRealStruct extends ScalarVariableStructBase {
 	
-	/**
-	 * The Class ByReference.
-	 */
+
 	public static class ByReference extends ScalarVariableRealStruct implements Structure.ByReference { }
 	
-	/** The type spec real. */
+
 	public TypeSpecReal.ByReference typeSpecReal;
 
 

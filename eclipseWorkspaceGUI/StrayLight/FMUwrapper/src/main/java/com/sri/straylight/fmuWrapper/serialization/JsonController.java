@@ -14,8 +14,11 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarValueBoolean;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
 import com.sri.straylight.fmuWrapper.voManaged.SimStateWrapper;
+import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
@@ -147,7 +150,10 @@ public class JsonController {
 		register_(TypeSpecReal.class, new TypeSpecRealAdapter());
 		register_(ScalarVariableReal.class, new ScalarVariableRealAdapter());
 		
+		register_(ScalarVariableCollection.class, new ScalarVariableCollectionAdapter());
+		register_(ScalarVariablesAll.class, new ScalarVariablesAllAdapter());
 		
+		register_(XMLparsedInfo.class, new XMLparsedInfoAdapter());
 		
 
 		gson_ = gsonBuilder_.create();

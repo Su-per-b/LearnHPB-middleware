@@ -24,7 +24,7 @@ public class AdapterBase<T extends JsonSerializable>
 	protected T destObject_;
 
 	protected Type typeOfT_;
-	protected JsonSerializationContext context_;
+	protected JsonSerializationContext serializationContext_;
 	protected JsonDeserializationContext deserializationContext_;
 
 	protected HashMap<Type, SerializeBase> serializeMap_ = new HashMap<Type, SerializeBase>();
@@ -63,7 +63,7 @@ public class AdapterBase<T extends JsonSerializable>
 		sourceObject_ = src;
 		typeOfT_ = typeOfSrc;
 
-		context_ = context;
+		serializationContext_ = context;
 		jsonObject_ = new JsonObject();
 		jsonObject_.add("type", new JsonPrimitive(src.getClass()
 				.getCanonicalName()));
@@ -85,17 +85,24 @@ public class AdapterBase<T extends JsonSerializable>
 	}
 	
 	
-
 	private void serializeFields(String[] fieldNames) {
 
 		int len = fieldNames.length;
 		for (int i = 0; i < len; i++) {
 			String fieldName = fieldNames[i];
-			serializeOneField(fieldName);
+			serializeOneField_(fieldName);
 		}
 	}
+	
+	protected void serializeOneField_(String fieldName, Object obj) {
+		
+		JsonElement element = serializationContext_.serialize(obj, obj.getClass());
+		jsonObject_.add(fieldName, element);
+		
+	}
 
-	protected void serializeOneField(String fieldName) {
+	
+	protected void serializeOneField_(String fieldName) {
 
 		
 		Field field = null;
@@ -157,25 +164,7 @@ public class AdapterBase<T extends JsonSerializable>
 	}
 	
 	
-	public void deserializeHelperxxx_(JsonElement jsonElement, Type typeOfT,
-			JsonDeserializationContext context) {
 
-		jsonElement_ = jsonElement;
-
-		if (jsonElement_.isJsonObject()) {
-			jsonObject_ = jsonElement_.getAsJsonObject();
-		}
-
-		typeOfT_ = typeOfT;
-		deserializationContext_ = context;
-
-		int len = fieldNames_.length;
-		for (int i = 0; i < len; i++) {
-			String fieldName = fieldNames_[i];
-			deserializeOneField(fieldName);
-		}
-
-	}
 
 	private void deserializeOneField(String fieldName) {
 

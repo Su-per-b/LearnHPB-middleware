@@ -20,7 +20,9 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
 public class ScalarValueCollectionAdapter 
 	extends AdapterBase<ScalarValueCollection> {
 
-
+	final protected Type realListType_ = new TypeToken<Vector<ScalarValueReal>>(){}.getType();
+	final protected Type booleanListType_ = new TypeToken<Vector<ScalarValueBoolean>>(){}.getType();
+	
 	public ScalarValueCollectionAdapter() {
 		super();
 	}
@@ -31,14 +33,12 @@ public class ScalarValueCollectionAdapter
 
 		super.serialize(src, typeOfSrc, context);
 		
-		Type typeToken1 = new TypeToken<Vector<ScalarValueReal>>(){}.getType();
 		Vector<ScalarValueReal> realList =  src.getRealList();
-		JsonElement element1  = context_.serialize(realList, typeToken1);
+		JsonElement element1  = serializationContext_.serialize(realList, realListType_);
 		jsonObject_.add("realList", element1);
 		
-		Type typeToken2 = new TypeToken<Vector<ScalarValueBoolean>>(){}.getType();
 		Vector<ScalarValueBoolean> booleanList =  src.getBooleanList();
-		JsonElement element2 = context_.serialize(booleanList, typeToken2);
+		JsonElement element2 = serializationContext_.serialize(booleanList, booleanListType_);
 		jsonObject_.add("booleanList", element2);
 
 		return jsonObject_;
@@ -54,16 +54,13 @@ public class ScalarValueCollectionAdapter
 		destObject_ = new ScalarValueCollection();
 		super.deserialize(jsonElement, typeOfT, context);
 		
-		Type typeToken1 = new TypeToken<Vector<ScalarValueReal>>(){}.getType();
 		JsonElement jsonElementReal = jsonObject_.get("realList");
-		Vector<ScalarValueReal> realList = context.deserialize(jsonElementReal, typeToken1);
+		Vector<ScalarValueReal> realList = context.deserialize(jsonElementReal, realListType_);
 		destObject_.setRealList(realList);
 		
-		Type typeToken2 = new TypeToken<Vector<ScalarValueBoolean>>(){}.getType();
 		JsonElement jsonElementBoolean = jsonObject_.get("booleanList");
-		Vector<ScalarValueBoolean> booleanList = context.deserialize(jsonElementBoolean, typeToken2);
+		Vector<ScalarValueBoolean> booleanList = context.deserialize(jsonElementBoolean, booleanListType_);
 		destObject_.setBooleanList(booleanList);
-
 
 		return destObject_;
 

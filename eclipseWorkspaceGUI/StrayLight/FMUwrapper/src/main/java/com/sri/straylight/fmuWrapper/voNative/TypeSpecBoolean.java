@@ -14,19 +14,12 @@ public class TypeSpecBoolean extends Structure {
 	 */
 	public static class ByReference extends TypeSpecBoolean implements Structure.ByReference { }
 	
-	/** The start. */
 	public byte start;
-	
-	/** The fixed. */
 	public byte fixed;
 
-	/** The start value status. */
 	public int startValueStatus;
-	
-	/** The fixed value status. */
 	public int fixedValueStatus;
 
-	/** The declared type. */
 	public String declaredType;
 	
 }

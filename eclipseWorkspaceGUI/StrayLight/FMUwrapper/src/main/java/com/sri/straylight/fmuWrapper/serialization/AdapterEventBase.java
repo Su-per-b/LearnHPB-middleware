@@ -25,7 +25,7 @@ public class AdapterEventBase<T
 		super.serialize(src, typeOfSrc, context);
 		
 		payload_ =  src.getPayload();
-		JsonElement element = context_.serialize(payload_, payload_.getClass());
+		JsonElement element = serializationContext_.serialize(payload_, payload_.getClass());
 		
 		jsonObject_.add("payload", element);
 		

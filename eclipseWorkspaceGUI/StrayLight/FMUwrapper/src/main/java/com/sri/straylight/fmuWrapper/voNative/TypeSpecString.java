@@ -14,13 +14,8 @@ public class TypeSpecString  extends Structure {
 	 */
 	public static class ByReference extends TypeSpecString implements Structure.ByReference { }
 	
-	/** The start. */
 	public String start;
-	
-	/** The declared type. */
 	public String declaredType;
-	
-	/** The start value status. */
 	public int startValueStatus;
 
 }

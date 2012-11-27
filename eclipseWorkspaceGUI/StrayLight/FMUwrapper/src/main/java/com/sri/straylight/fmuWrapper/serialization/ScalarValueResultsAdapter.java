@@ -34,11 +34,11 @@ public class ScalarValueResultsAdapter extends AdapterBase<ScalarValueResults> {
 		
 
 		ScalarValueCollection input =  src.getInput();
-		JsonElement element = context_.serialize(input, ScalarValueCollection.class);
+		JsonElement element = serializationContext_.serialize(input, ScalarValueCollection.class);
 		jsonObject_.add("input", element);
 		
 		ScalarValueCollection output =  src.getOutput();
-		JsonElement element2 = context_.serialize(output, ScalarValueCollection.class);
+		JsonElement element2 = serializationContext_.serialize(output, ScalarValueCollection.class);
 		jsonObject_.add("output", element2);
 		
 		

@@ -15,28 +15,26 @@ public class ScalarVariableReal
 		implements JsonSerializable
 {
 
-
 	private TypeSpecReal typeSpecReal_;
 	
-	/**
-	 * @return the typeSpecReal_
-	 */
+
 	public TypeSpecReal getTypeSpecReal() {
 		return typeSpecReal_;
 	}
 
 	
+	//constructor 1
 	public ScalarVariableReal(ScalarVariableRealStruct struct) {
-		
 		super(struct);
 		typeSpecReal_ = struct.typeSpecReal;
 	}
 
+	//constructor 2
 	public ScalarVariableReal(TypeSpecReal typeSpecReal2) {
 		typeSpecReal_ = typeSpecReal2;
 	}
 	
-
+	//constructor 3
 	public ScalarVariableReal() {
 
 	}
@@ -52,8 +50,8 @@ public class ScalarVariableReal
 				doubleToString(getTypeSpecReal().nominal),
 				doubleToString(getTypeSpecReal().min),
 				doubleToString(getTypeSpecReal().max),
-				getCausalityEnum().toString(),
-				getVariabilityEnum().toString(),
+				getCausalityAsEnum().toString(),
+				getVariabilityAsEnum().toString(),
 				getDescription()
 		};
 		
