@@ -1,1 +1,0 @@
-java -jar -Xss2m Client-*.jar

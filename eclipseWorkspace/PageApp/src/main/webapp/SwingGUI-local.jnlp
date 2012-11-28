@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<jnlp spec="1.0+" codebase="http://localhost/" href="SwingGUI-local.jnlp">
+	<information>
+		<title>SwingGUI</title>
+		<vendor>Raj Dye</vendor>
+		<homepage href="http://localhost/index2.jsp" />
+		<description>Testing Testing</description>
+	</information>
+	<security>
+		<all-permissions/>
+	</security>
+	<resources>
+		<j2se version="1.6+" />
+		<jar href="SwingGUI-0.0.2.jar" />
+	</resources>
+	<application-desc main-class="com.sri.straylight.SwingGUI.Main" />
+</jnlp>

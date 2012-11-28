@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<config>
-
-	<windowIconFileName>blue_flame32.png</windowIconFileName>
-	<autoConnectString>false</autoConnectString>
-	<autoParseXMLString>false</autoParseXMLString>
-	<autoInitString>false</autoInitString>
-	
-</config>

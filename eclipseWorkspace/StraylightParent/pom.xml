@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<artifactId>StraylightParent</artifactId>
+	<groupId>com.sri</groupId>
+	<version>0.4.8</version>
+	<packaging>pom</packaging>
+	<modelVersion>4.0.0</modelVersion>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<jdk.version>1.7</jdk.version>
+		<jwebsocket.version>1.0</jwebsocket.version>
+		<slf4j.version>1.7.1</slf4j.version>
+		<junit.version>4.10</junit.version>
+		<jna.version>3.4.0</jna.version>
+		<jetty.version>8.0.4.v20111024</jetty.version>
+		<commons-lang.version>2.6</commons-lang.version>
+	</properties>
+
+
+	<repositories>
+		<!-- maven repository 2 -->
+		<repository>
+			<id>maven-central-repo2</id>
+			<name>Maven Central Repository</name>
+			<url>http://repo2.maven.org/maven2</url>
+		</repository>
+
+		<!-- maven repository 1 -->
+		<repository>
+			<id>maven-central-repo1</id>
+			<name>Maven Central Repository</name>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
+
+		<!-- Java.net repository -->
+		<repository>
+			<id>java-net-repo</id>
+			<name>Java.net Repository</name>
+			<url>http://download.java.net/maven/2</url>
+		</repository>
+
+		<!-- NetBeans repository -->
+		<repository>
+			<id>netbeans</id>
+			<name>NetBeans Repository</name>
+			<url>http://bits.netbeans.org/maven2</url>
+		</repository>
+
+		<!-- JBoss repo -->
+		<repository>
+			<id>repository.jboss.org-public</id>
+			<name>JBoss.org Maven repository</name>
+			<url>https://repository.jboss.org/nexus/content/groups/public</url>
+		</repository>
+	</repositories>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.bushe</groupId>
+			<artifactId>eventbus</artifactId>
+			<version>1.4</version>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<plugins>
+		
+			<!--  Compile -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
+			
+			<!--  Test -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12.4</version>
+			</plugin>
+			
+		</plugins>
+	</build>
+
+	<modules>
+		<module>../Client</module>
+		<module>../Common</module>
+		<module>../SocketServer</module>
+		<module>../FMUwrapper</module>
+	</modules>
+
+
+</project>

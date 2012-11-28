@@ -113,17 +113,24 @@ namespace Straylight
 
 		case simStateNative_5_step_requested :
 			if (state_ == simStateNative_3_ready) {
-				setState_(simStateNative_5_step_requested);
+
+				setState_(simStateNative_5_step_started);
 				
 				int result = doOneStep();
 
 				if (0 == result) { 
-					setState_(simStateNative_5_step_completed);
+					//setState_(simStateNative_5_step_completed);
 					setState_(simStateNative_3_ready);
 				} else {
 					setStateError_(_T("Could not step\n"));
 				}
+			} else  {
+
+				Logger::getInstance()->printError(_T("Could not step\n"));
 			}
+
+
+
 			break;
 
 		case simStateNative_7_terminate_requested :
@@ -221,7 +228,7 @@ namespace Straylight
 	void MainController::setState_(SimStateNative newState) {
 		if (state_ != newState) {
 			state_ = newState;
-			stateChangeCallbackPtr_( state_ );
+			stateChangeCallbackPtr_( newState );
 		}
 	}
 
@@ -514,6 +521,8 @@ namespace Straylight
 		} else {
 			Logger::getInstance()->printDebug(_T("initializeSlave() successful\n"));
 			setState_( simStateNative_3_init_initializedSlaves );
+
+
 			return 0;
 		}
 	}
@@ -650,7 +659,7 @@ namespace Straylight
 			return 1;
 		}
 
-		if(!(state_ == simStateNative_3_ready|| state_ ==  simStateNative_5_step_requested)) {
+		if(!(state_ == simStateNative_3_ready|| state_ ==  simStateNative_5_step_started)) {
 			setStateError_("MainController::doOneStep cannot execute simulation is in the wrong state");
 			return 1;
 		}

@@ -61,7 +61,8 @@ typedef enum {
 	simStateNative_3_init_dllLoaded,
 	simStateNative_3_init_instantiatedSlaves,
 	simStateNative_3_init_initializedSlaves,
-	
+	simStateNative_3_init_completed,
+
 	/** ready */
 	simStateNative_3_ready,
 	
@@ -77,6 +78,7 @@ typedef enum {
 	
 	/** step */
 	simStateNative_5_step_requested,
+	simStateNative_5_step_started,
 	simStateNative_5_step_completed,
 	
 	/** pause */
