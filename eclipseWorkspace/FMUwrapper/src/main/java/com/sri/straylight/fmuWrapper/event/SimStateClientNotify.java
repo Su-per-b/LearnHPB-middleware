@@ -1,7 +1,8 @@
-package com.sri.straylight.client.event;
+package com.sri.straylight.fmuWrapper.event;
 
 
 import org.apache.commons.lang.builder.EqualsBuilder;
+
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 public class SimStateClientNotify extends BaseEvent<SimStateNative> {
@@ -34,4 +35,7 @@ public class SimStateClientNotify extends BaseEvent<SimStateNative> {
         
 
     }
+
+
+
 }

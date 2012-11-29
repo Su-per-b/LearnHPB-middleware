@@ -1,4 +1,4 @@
-package com.sri.straylight.fmuWrapper;
+package com.sri.straylight.fmuWrapper.Controller;
 
 
 
@@ -12,11 +12,13 @@ import java.util.Vector;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 
+import com.sri.straylight.fmuWrapper.JNAfmuWrapper;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
+import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
@@ -33,11 +35,10 @@ import com.sun.jna.Native;
 
 
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class FMUcontroller.
  */
-public class FMUcontroller  {
+public class FMUcontroller extends AbstractController {
 
 	
 	private JNAfmuWrapper jnaFMUWrapper_;
@@ -49,38 +50,26 @@ public class FMUcontroller  {
 			new HashMap<SimStateNative, Boolean>();
 		
 	
-	
-	/**
-	 * Gets the fmu state.
-	 *
-	 * @return the fmu state
-	 */
-	public SimStateNative getSimStateNative() {
-		return simStateNative_;
+	//constructor
+	public FMUcontroller(AbstractController parent) {
+		super(parent);
 	}
 	
-	
-	/**
-	 * Instantiates a new fMu controller.
-	 *
-	 * @param fmuWrapperConfig the fmu wrapper config
-	 */
-	public FMUcontroller(FMUwrapperConfig fmuWrapperConfig) {
-		
+	public FMUcontroller(AbstractController parent, FMUwrapperConfig fmuWrapperConfig) {
+		super(parent);
 		simStateNative_ = SimStateNative.simStateNative_0_uninitialized;
-		
 		fmuWrapperConfig_ = fmuWrapperConfig;
 		init();
-
 	}
 	
-	
-	/**
-	 * Instantiates a new FMUcontroller.
-	 */
+
 	public FMUcontroller() {
 		fmuWrapperConfig_ = FMUwrapperConfig.load();
 		init();
+	}
+	
+	public SimStateNative getSimStateNative() {
+		return simStateNative_;
 	}
 	
 	
@@ -105,11 +94,7 @@ public class FMUcontroller  {
 	}
 	
 	
-	/**
-	 * Notify state change_.
-	 *
-	 * @param state_arg the state_arg
-	 */
+
 	private void notifyStateChange_(SimStateNative simStateNative)
 	{
 		EventBus.publish(
@@ -178,10 +163,9 @@ public class FMUcontroller  {
 	 *
 	 * @return the meta data
 	 */
-	public ConfigStruct getMetaData() {
+	public ConfigStruct getConfigStruct() {
 		return configStruct_;
 	}
-	
 	
 
 

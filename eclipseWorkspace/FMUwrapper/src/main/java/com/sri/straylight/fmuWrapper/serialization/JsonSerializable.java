@@ -4,4 +4,5 @@ public interface JsonSerializable {
 
 	public String toJson();
 	
+	
 }

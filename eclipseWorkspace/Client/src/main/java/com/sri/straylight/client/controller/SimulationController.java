@@ -5,24 +5,27 @@ import java.util.Vector;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.event.ScalarValueChangeRequest;
-import com.sri.straylight.client.event.SimStateClientNotify;
-import com.sri.straylight.client.event.SimStateClientRequest;
 import com.sri.straylight.client.model.ClientConfig;
+import com.sri.straylight.client.util.FmuConnectionAbstract;
+import com.sri.straylight.client.util.FmuConnectionLocal;
+import com.sri.straylight.client.util.FmuConnectionRemote;
+import com.sri.straylight.fmuWrapper.event.ConfigChangeRequest;
+import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
+import com.sri.straylight.fmuWrapper.event.SimStateClientNotify;
+import com.sri.straylight.fmuWrapper.event.SimStateClientRequest;
+import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
+import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 
-
-
-// TODO: Auto-generated Javadoc
 /**
  * The Class SimulationController.
  */
 public class SimulationController extends BaseController  {
 
-	private IFmuConnect fmuConnect_;
+	private FmuConnectionAbstract fmuConnect_;
     private ClientConfig configModel_;
     private SimStateNative simStateNative_ = SimStateNative.simStateNative_0_uninitialized;
     
@@ -39,7 +42,7 @@ public class SimulationController extends BaseController  {
         
         
         if (configModel_.autoConnectFlag) {
-        	requestStateChange_(SimStateNative.simStateNative_1_connect_requested);
+        	fireSimStateRequest_(SimStateNative.simStateNative_1_connect_requested);
         }
 	}
 	
@@ -49,26 +52,23 @@ public class SimulationController extends BaseController  {
 	 */
 	private void connect_() {
 		
-		
 		if (configModel_.connectTo == null) {
 		    throw new IllegalArgumentException("configModel_.connectTo");
 		}
 
-		
     	switch (configModel_.connectTo) {
 			case connectTo_localhost :
-				fmuConnect_ = new FmuConnectRemote("localhost");
+				fmuConnect_ = new FmuConnectionRemote("localhost");
 				break;
 			case connecTo_straylightsim_com :
-				fmuConnect_ = new FmuConnectRemote("wintermute.straylightsim.com");
+				fmuConnect_ = new FmuConnectionRemote("wintermute.straylightsim.com");
 				break;
 			case connectTo_file :
-				fmuConnect_ = new FmuConnectLocal();
+				fmuConnect_ = new FmuConnectionLocal();
 				break;
     	}
     	
-    	
-    	
+
     	try 
     	{
 			fmuConnect_.connect();
@@ -78,22 +78,36 @@ public class SimulationController extends BaseController  {
     }
 	
 	
-	
-	
-	/**
-	 * On input change request.
-	 *
-	 * @param event the event
-	 */
-	@EventSubscriber(eventClass=ScalarValueChangeRequest.class)
-    public void onInputChangeRequest(ScalarValueChangeRequest event) {
-		Vector<ScalarValueRealStruct> list = event.getPayload();
-		fmuConnect_.changeScalarValues(list);
+	@EventSubscriber(eventClass = ConfigChangeRequest.class)
+	public void onConfigChangeRequest(ConfigChangeRequest event) {
+
+		ConfigStruct configStruct = event.getPayload();
+		fmuConnect_.setConfig(configStruct);
 	}
 	
 	
+
+	@EventSubscriber(eventClass = SimStateNativeNotify.class)
+	public void onSimStateNativeNotify(SimStateNativeNotify event) {
+
+		SimStateClientNotify newEvent = 
+				new SimStateClientNotify(this,event.getPayload());
+		
+		EventBus.publish(newEvent);
+
+	}
+
+	
+	@EventSubscriber(eventClass=ScalarValueChangeRequest.class)
+    public void onInputChangeRequest(ScalarValueChangeRequest event) {
+		Vector<ScalarValueRealStruct> list = event.getPayload();
+		fmuConnect_.setScalarValues(list);
+	}
+	
+	
+	//this event comes from the GUI
 	@EventSubscriber(eventClass=SimStateClientRequest.class)
-    public void onSimStateRequest(SimStateClientRequest event) {
+    public void onSimStateClientRequest(SimStateClientRequest event) {
 		
 		SimStateNative requestedState = event.getPayload();
 		
@@ -112,6 +126,8 @@ public class SimulationController extends BaseController  {
 		}
     }
 	
+	
+	//this event comes from the FMU engine
 	@EventSubscriber(eventClass=SimStateClientNotify.class)
     public void onSimStateNotify(SimStateClientNotify event) {
 		
@@ -120,12 +136,12 @@ public class SimulationController extends BaseController  {
 		switch (simStateNative_) {
 			case simStateNative_1_connect_completed:
 		        if (configModel_.autoParseXMLFlag) {
-		        	requestStateChange_(SimStateNative.simStateNative_2_xmlParse_requested);
+		        	fireSimStateRequest_(SimStateNative.simStateNative_2_xmlParse_requested);
 		        }
 				break;
 			case simStateNative_2_xmlParse_completed :
 		        if (configModel_.autoInitFlag) {
-		        	requestStateChange_(SimStateNative.simStateNative_3_init_requested);
+		        	fireSimStateRequest_(SimStateNative.simStateNative_3_init_requested);
 		        }
 				break;
 			default:
@@ -135,11 +151,10 @@ public class SimulationController extends BaseController  {
 	
 	
 
-	private void requestStateChange_(SimStateNative simStateNative)
+	private void fireSimStateRequest_(SimStateNative simStateNative)
 	{
-		EventBus.publish(
-				new SimStateClientRequest(this, simStateNative)
-				);	
+		SimStateClientRequest event = new SimStateClientRequest(this, simStateNative);
+		EventBus.publish(event);
 		
 	}
 	

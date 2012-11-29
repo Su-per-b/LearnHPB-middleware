@@ -1,4 +1,4 @@
-package com.sri.straylight.client.event;
+package com.sri.straylight.fmuWrapper.event;
 
 import java.util.EventObject;
 
@@ -11,7 +11,7 @@ import java.util.EventObject;
  * @param <PAYLOAD> the generic type
  * @author Christian Bauer
  */
-public class BaseEvent<T> extends EventObject {
+public class BaseEventForClient<T> extends EventObject {
 
     /** The payload. */
     protected T payload_;
@@ -21,12 +21,12 @@ public class BaseEvent<T> extends EventObject {
     
 
     
-    public BaseEvent( Object source ) {
+    public BaseEventForClient( Object source ) {
         super( source );
     }
     
 
-    public BaseEvent(Object source, T payload) {
+    public BaseEventForClient(Object source, T payload) {
         super( source );
         this.payload_ = payload;
     }

@@ -24,10 +24,10 @@ public class MessageEventAdapter
     		Type typeOfT, 
     		JsonDeserializationContext context)
         throws JsonParseException {
-    	
-    	super.deserializeHelper_(jsonElement, typeOfT, context);
+
+    	super.deserializeHelper_(jsonElement, typeOfT, context, MessageStruct.class);
     	MessageEvent event = new MessageEvent(this, payload_);
-        
+    	
         return event;
 
     }

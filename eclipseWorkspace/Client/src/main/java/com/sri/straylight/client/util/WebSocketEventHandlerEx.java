@@ -1,4 +1,4 @@
-package com.sri.straylight.client;
+package com.sri.straylight.client.util;
 
 import java.net.URI;
 

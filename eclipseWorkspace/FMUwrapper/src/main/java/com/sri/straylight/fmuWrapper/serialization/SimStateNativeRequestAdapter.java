@@ -25,7 +25,10 @@ public class SimStateNativeRequestAdapter
     		JsonDeserializationContext context)
         throws JsonParseException {
     	
-    	super.deserializeHelper_(jsonElement, typeOfT, context);
+    	payload_ = SimStateNative.simStateNative_0_uninitialized;
+    	
+    	super.deserializeHelper_(jsonElement, typeOfT, context, SimStateNative.class);
+    	
     	SimStateNativeRequest event = new SimStateNativeRequest(this, payload_);
         
         return event;

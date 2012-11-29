@@ -22,7 +22,8 @@ public class SimStateNativeNotifyAdapter
     		JsonDeserializationContext context)
         throws JsonParseException {
     	
-    	super.deserializeHelper_(jsonElement, typeOfT, context);
+
+    	super.deserializeHelper_(jsonElement, typeOfT, context, SimStateNative.class);
     	SimStateNativeNotify event = new SimStateNativeNotify(this, payload_);
         
         return event;

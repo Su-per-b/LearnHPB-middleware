@@ -3,6 +3,7 @@ package com.sri.straylight.fmuWrapper.event;
 import java.util.EventObject;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.bushe.swing.event.EventBus;
 
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
@@ -67,7 +68,8 @@ public class BaseEvent<P> extends EventObject implements JsonSerializable {
             toHashCode();
     }
     
-
-    
+	public void fire() {
+		EventBus.publish(this);
+	}
     
 }

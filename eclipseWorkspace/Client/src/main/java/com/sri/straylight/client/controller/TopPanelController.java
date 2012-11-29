@@ -15,9 +15,9 @@ import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.ClearViewAction;
-import com.sri.straylight.client.event.SimStateClientNotify;
-import com.sri.straylight.client.event.SimStateClientRequest;
 import com.sri.straylight.client.view.BaseView;
+import com.sri.straylight.fmuWrapper.event.SimStateClientNotify;
+import com.sri.straylight.fmuWrapper.event.SimStateClientRequest;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 

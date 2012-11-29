@@ -1,4 +1,4 @@
-package com.sri.straylight.client.event;
+package com.sri.straylight.fmuWrapper.event;
 
 import java.util.EventObject;
 import java.util.Vector;

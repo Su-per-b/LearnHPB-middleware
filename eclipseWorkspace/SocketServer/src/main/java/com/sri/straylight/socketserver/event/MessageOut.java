@@ -4,10 +4,9 @@ import java.util.EventObject;
 
 public class MessageOut extends EventObject {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
+	
 	private String payload_;
 	
 	public MessageOut(Object source, String messageText) {

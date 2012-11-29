@@ -15,7 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sri.straylight.fmuWrapper.FMUcontroller;
+import com.sri.straylight.fmuWrapper.Controller.FMUcontroller;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
@@ -41,7 +41,7 @@ public class StateTransitionTests {
 		FMUwrapperConfig config = FMUwrapperConfig.load();
 		assertEquals("LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1", config.fmuFolderName);
 		
-		fmuController_ = new FMUcontroller(config);
+		fmuController_ = new FMUcontroller(null, config);
 		SimStateNative simStateNative  = fmuController_.getSimStateNative();
 		assertEquals(SimStateNative.simStateNative_0_uninitialized, simStateNative);
 		

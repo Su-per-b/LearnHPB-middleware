@@ -3,7 +3,7 @@
 
 	<windowIconFileName>blue_flame32.png</windowIconFileName>
 	<autoConnectString>false</autoConnectString>
-	<autoParseXMLString>true</autoParseXMLString>
-	<autoInitString>true</autoInitString>
+	<autoParseXMLString>false</autoParseXMLString>
+	<autoInitString>false</autoInitString>
 	
 </config>

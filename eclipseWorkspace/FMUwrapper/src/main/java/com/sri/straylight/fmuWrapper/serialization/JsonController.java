@@ -87,7 +87,8 @@ public class JsonController {
 	
 	
 	public JsonSerializable fromJson(String jsonString) {
-
+		
+		//extract the class name as a string
 		SerializeableObject obj = gson_.fromJson(jsonString,
 				SerializeableObject.class);
 		

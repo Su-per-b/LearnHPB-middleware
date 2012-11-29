@@ -3,11 +3,11 @@ package com.sri.straylight.client.controller;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.event.ScalarValueChangeRequest;
 import com.sri.straylight.client.event.ViewInitialized;
 import com.sri.straylight.client.model.InputDataModel;
 import com.sri.straylight.client.view.InputView;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;

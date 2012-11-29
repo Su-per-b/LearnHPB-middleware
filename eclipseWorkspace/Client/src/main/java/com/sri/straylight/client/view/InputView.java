@@ -13,8 +13,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
 import com.sri.straylight.client.controller.InputController;
-import com.sri.straylight.client.event.ScalarValueChangeRequest;
 import com.sri.straylight.client.model.InputDataModel;
+import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
 import com.sri.straylight.fmuWrapper.voManaged.BaseScalarValue;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;

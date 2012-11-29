@@ -15,10 +15,13 @@ public class ResultEventAdapter extends
 	@Override
 	public ResultEvent deserialize(JsonElement jsonElement, Type typeOfT,
 			JsonDeserializationContext context) throws JsonParseException {
+		
 
-		super.deserializeHelper_(jsonElement, typeOfT, context);
-		ResultEvent event = new ResultEvent(this, payload_);
 
+    	super.deserializeHelper_(jsonElement, typeOfT, context, ScalarValueResults.class);
+    	ResultEvent event = new ResultEvent(this, payload_);
+    	
+    	
 		return event;
 
 	}

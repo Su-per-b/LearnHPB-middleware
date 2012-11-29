@@ -5,13 +5,12 @@ import java.lang.reflect.Type;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.sri.straylight.fmuWrapper.event.BaseEvent;
 
 
-public class AdapterEventBase<T 
-	extends BaseEvent<P>, P> extends AdapterBase<T> 
+public class AdapterEventBase<T extends BaseEvent<P>, P> 
+	extends AdapterBase<T> 
 {
 	
 	protected P payload_;
@@ -33,18 +32,16 @@ public class AdapterEventBase<T
 	}
 	
 	
-    public void deserializeHelper_(
-    		JsonElement jsonElement, 
-    		Type typeOfT, 
-    		JsonDeserializationContext context)
-        throws JsonParseException {
-    	
+
+	public void deserializeHelper_(JsonElement jsonElement, Type typeOfT,
+			JsonDeserializationContext context, Class<P> class1) {
+
     	super.deserialize(jsonElement, typeOfT, context);
     	
         JsonElement jsonElement1 = jsonObject_.get("payload");
-        payload_ = context.deserialize(jsonElement1, payload_.getClass());
-
-    }
+        payload_ = context.deserialize(jsonElement1, class1);
+		
+	}
 
 	
 

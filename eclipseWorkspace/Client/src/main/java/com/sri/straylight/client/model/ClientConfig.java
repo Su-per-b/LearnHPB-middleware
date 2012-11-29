@@ -20,7 +20,7 @@ public class ClientConfig {
 	public boolean autoInitFlag;
 	
 	/** The connect to. */
-	public ConnectTo connectTo = ConnectTo.connectTo_file;
+	public ConnectTo connectTo = ConnectTo.connectTo_localhost;
 	
 	/** The window icon url. */
 	public URL windowIconUrl;
