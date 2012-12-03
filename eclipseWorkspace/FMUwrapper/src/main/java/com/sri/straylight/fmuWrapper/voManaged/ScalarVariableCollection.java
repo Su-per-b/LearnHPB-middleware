@@ -92,11 +92,14 @@ public class ScalarVariableCollection implements JsonSerializable{
 	 @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
-
-            append(realVarList_.hashCode()).
-            append(booleanVarList_.hashCode()).
+            append(realVarList_).
+            append(booleanVarList_).
             toHashCode();
     }
+	 
+	 
+	 
+	 
 
     @Override
     public boolean equals(Object obj) {
@@ -116,5 +119,9 @@ public class ScalarVariableCollection implements JsonSerializable{
             append(this.realVarList_, typedObj.getRealVarList()).
             isEquals();
     }
+    
+    
+    
+    
     
 }

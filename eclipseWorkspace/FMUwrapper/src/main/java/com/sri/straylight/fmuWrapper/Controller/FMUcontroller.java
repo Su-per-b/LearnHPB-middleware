@@ -19,6 +19,7 @@ import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
+import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
@@ -45,15 +46,15 @@ public class FMUcontroller extends AbstractController {
 
 	private HashMap<SimStateNative, Boolean> fireEventsForStates_ = new HashMap<SimStateNative, Boolean>();
 
-	private MsgCallBack messageCallbackFunc_;
-	private RsltCallback resultCallbackFunc_;
+	private MessageCallback messageCallbackFunc_;
+	private ResultCallback resultCallbackFunc_;
 	
 	
-	private class MsgCallBack implements MessageCallbackInterface {
+	private class MessageCallback implements MessageCallbackInterface {
 		
 		private FMUcontroller fmuController_;
 		
-		public MsgCallBack(FMUcontroller fmuController) {
+		public MessageCallback(FMUcontroller fmuController) {
 			fmuController_ = fmuController;
 		}
 		
@@ -68,11 +69,11 @@ public class FMUcontroller extends AbstractController {
 		
 	}
 		
-	private class RsltCallback implements ResultCallbackInterface {
+	private class ResultCallback implements ResultCallbackInterface {
 		
 		private FMUcontroller fmuController_;
 		
-		public RsltCallback(FMUcontroller fmuController) {
+		public ResultCallback(FMUcontroller fmuController) {
 			fmuController_ = fmuController;
 		}
 		
@@ -119,8 +120,8 @@ public class FMUcontroller extends AbstractController {
 
 	protected void init() {
 		
-		messageCallbackFunc_ = new MsgCallBack(this);
-		resultCallbackFunc_ = new RsltCallback(this);
+		messageCallbackFunc_ = new MessageCallback(this);
+		resultCallbackFunc_ = new ResultCallback(this);
 		
 		
 		AnnotationProcessor.process(this);
@@ -159,8 +160,7 @@ public class FMUcontroller extends AbstractController {
 
 
 		
-		
-
+	
 	/** The state change callback func_. */
 	private JNAfmuWrapper.StateChangeCallbackInterface stateChangeCallbackFunc_ =
 
@@ -198,37 +198,19 @@ public class FMUcontroller extends AbstractController {
 		ScalarVariablesAll scalarVariablesAll = new ScalarVariablesAll(
 				scalarVariablesAllStruct);
 
-		
 		XMLparsedInfo xmlParsed = new XMLparsedInfo(scalarVariablesAll);
-		
 		XMLparsedEvent event = new XMLparsedEvent(this, xmlParsed);
+		
+		String json = event.toJson();
+		JsonSerializable obj = JsonController.getInstance().fromJson(json);
+		
+		
 		fireEvent(event);
 		
-
 		configStruct_ = jnaFMUWrapper_.getConfig();
-		
-//		DefaultExperimentStruct.ByReference defaultExperimentStruct 
-//			= new DefaultExperimentStruct.ByReference();
-//		
-//		defaultExperimentStruct.startTime = configStruct_.defaultExperimentStruct.startTime;
-//		defaultExperimentStruct.stopTime = configStruct_.defaultExperimentStruct.stopTime;
-//		defaultExperimentStruct.tolerance = configStruct_.defaultExperimentStruct.tolerance;
-//		
-//		ConfigStruct configStruct = new ConfigStruct();
-//		configStruct.defaultExperimentStruct = defaultExperimentStruct;
-//		configStruct.stepDelta = configStruct_.stepDelta;
-//		
-//				
-//		
-//		String json = event.toJson();
-		
 		ConfigChangeNotify event2 = new ConfigChangeNotify(this, configStruct_);
-//		Object eventDeserialized = JsonController.getInstance().fromJson(json);
-		
-		
 		fireEvent(event2);
 
-		
 	}
 
 	/**

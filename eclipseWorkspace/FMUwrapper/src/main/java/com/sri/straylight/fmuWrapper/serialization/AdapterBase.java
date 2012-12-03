@@ -106,14 +106,16 @@ public class AdapterBase<T extends JsonSerializable>
 
 		
 		Field field = null;
+		Class<?> cl = sourceObject_.getClass();
 		
 		try {
-			field = sourceObject_.getClass().getDeclaredField(fieldName);
+			
+			field = cl.getDeclaredField(fieldName);
+			
 		} catch (NoSuchFieldException e1) {
 			try {
-				field = sourceObject_.getClass().getField(fieldName);
+				field = cl.getField(fieldName);
 			} catch (NoSuchFieldException | SecurityException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

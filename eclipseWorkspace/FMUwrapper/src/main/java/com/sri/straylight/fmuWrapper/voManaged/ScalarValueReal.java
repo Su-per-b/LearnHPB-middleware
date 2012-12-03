@@ -54,7 +54,6 @@ public class ScalarValueReal extends BaseScalarValue {
 	 @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
-
             append(this.value_).
             toHashCode();
     }

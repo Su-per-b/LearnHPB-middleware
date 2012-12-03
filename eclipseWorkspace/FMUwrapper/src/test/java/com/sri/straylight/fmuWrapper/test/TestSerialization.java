@@ -754,6 +754,7 @@ public class TestSerialization {
 		
 		//make SimStateWrapper 1
 		XMLparsedInfo xmlParsedInfo = new XMLparsedInfo(scalarVariablesAll);
+		
 		XMLparsedEvent event = new XMLparsedEvent(this, xmlParsedInfo);
 		
 		//serialize / deserialize 
@@ -766,6 +767,27 @@ public class TestSerialization {
 		assertEquals(XMLparsedEvent.class, eventDeserialized.getClass());
 		assertEquals(event, eventDeserialized);
 		
+		XMLparsedInfo payloadDeserialized =  event.getPayload();
+		
+		assertEquals(XMLparsedInfo.class, payloadDeserialized.getClass());
+		assertEquals(xmlParsedInfo, payloadDeserialized);
+		
+		ScalarVariablesAll scalarVariablesAllDeserialized = xmlParsedInfo.getScalarVariablesAll();
+		assertEquals(scalarVariablesAll, scalarVariablesAllDeserialized);
+		
+		ScalarVariableCollection scalarVariableCollectionDes = scalarVariablesAllDeserialized.getInput();
+		assertEquals(sVarColl, scalarVariableCollectionDes);
+		
+		Vector<ScalarVariableReal> list = scalarVariableCollectionDes.getRealVarList();
+		ScalarVariableReal sVar = list.get(0);
+		
+		assertEquals("scalarVar name", sVar.getName());
+		assertEquals(1, sVar.getIdx());
+		assertEquals(Enu.enu_input, sVar.getCausalityAsEnum());
+		
+		assertEquals(Enu.enu_discrete, sVar.getVariabilityAsEnum());
+		assertEquals("The Description", sVar.getDescription());
+		assertEquals(125420, sVar.getValueReference());
 		
 	}
 	
