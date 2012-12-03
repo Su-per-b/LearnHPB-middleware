@@ -3,6 +3,7 @@ package com.sri.straylight.socketserver.controller;
 import java.io.IOException;
 
 import com.sri.straylight.fmuWrapper.Controller.FMUcontroller;
+import com.sri.straylight.fmuWrapper.event.BaseEvent;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
@@ -63,9 +64,6 @@ public class ConnectionBundle extends AbstractController {
 								case simStateNative_2_xmlParse_requested:
 									fmuController_.xmlParse();
 									break;
-								case simStateNative_4_run_requested:
-									fmuController_.run();
-									break;
 								default:
 									fmuController_.requestStateChange(requestedState);
 								}
@@ -90,7 +88,7 @@ public class ConnectionBundle extends AbstractController {
 					}
 				});
 		
-		
+
 		//MessageEvent
 		fmuController_
 		.registerEventListener(

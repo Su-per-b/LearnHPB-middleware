@@ -1,18 +1,13 @@
 package com.sri.straylight.socketserver.controller;
 
-import org.bushe.swing.event.EventBus;
-import org.bushe.swing.event.annotation.EventSubscriber;
-
 import com.sri.straylight.fmuWrapper.event.BaseEvent;
-import com.sri.straylight.fmuWrapper.event.SimStateClientNotify;
-import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.event.StraylightEventListener;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
-import com.sri.straylight.socketserver.StraylightWebSocket;
 import com.sri.straylight.socketserver.JettyWebSocketHandler;
+import com.sri.straylight.socketserver.StraylightWebSocket;
 import com.sri.straylight.socketserver.event.MessageReceived;
 
 public class WebSocketConnectionController 

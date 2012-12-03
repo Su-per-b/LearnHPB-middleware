@@ -126,9 +126,6 @@ public class SimulationController extends BaseController  {
 			case simStateNative_2_xmlParse_requested :
 				fmuConnect_.xmlParse();
 				break;
-			case simStateNative_4_run_requested :
-				fmuConnect_.run();
-				break;
 			default:
 				fmuConnect_.requestStateChange(requestedState);
 		}

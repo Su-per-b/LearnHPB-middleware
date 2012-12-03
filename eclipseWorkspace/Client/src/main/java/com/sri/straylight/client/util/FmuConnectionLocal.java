@@ -42,9 +42,6 @@ public class FmuConnectionLocal extends FmuConnectionAbstract {
 		threadedFMUcontroller_.setScalarValues(scalarValueList);
 	}
 
-	public void run() {
-		threadedFMUcontroller_.run();
-	}
 
 
 }

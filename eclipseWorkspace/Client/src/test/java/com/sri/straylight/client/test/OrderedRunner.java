@@ -1,7 +1,11 @@
 package com.sri.straylight.client.test;
 
 import org.junit.runners.BlockJUnit4ClassRunner;
+import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
+
+
+
 import java.util.*;
 
 
@@ -16,17 +20,17 @@ public class OrderedRunner extends BlockJUnit4ClassRunner
     /*                                                                         
      * default initializer                                                     
      */
-    public OrderedRunner(Class klass) throws InitializationError
+    public OrderedRunner(Class<?> klass) throws InitializationError
     {
         super (klass);
     }
     
     
     @Override
-    protected List computeTestMethods()
+    protected  List<FrameworkMethod> computeTestMethods()
     {
-    List lst = super.computeTestMethods();
-    List cpy = new ArrayList (lst);
+    List<FrameworkMethod> lst = super.computeTestMethods();
+    List<FrameworkMethod> cpy = new ArrayList<FrameworkMethod> (lst);
      
     Collections.sort (cpy, new AlphabeticalOrder());
      

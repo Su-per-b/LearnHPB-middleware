@@ -71,11 +71,13 @@ int forceCleanup()
 	return 0;
 }
 
+/*
 int run()
 {
-	mainController->run();
-	return 0;
+mainController->run();
+return 0;
 }
+*/
 
 /*******************************************************//**
  * Gets all scalar variables.

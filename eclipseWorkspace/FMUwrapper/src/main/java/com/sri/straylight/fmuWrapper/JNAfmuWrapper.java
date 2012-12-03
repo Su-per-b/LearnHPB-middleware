@@ -101,7 +101,7 @@ public interface JNAfmuWrapper extends Library {
 	 *
 	 * @return the int
 	 */
-	public int run(); 
+//	public int run(); 
 	
 	/**
 	 * Request state change.

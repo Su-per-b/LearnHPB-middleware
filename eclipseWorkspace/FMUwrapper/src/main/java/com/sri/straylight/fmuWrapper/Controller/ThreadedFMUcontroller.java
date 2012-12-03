@@ -25,7 +25,7 @@ public class ThreadedFMUcontroller extends AbstractController {
 	private WorkerSetConfig workerSetConfig_;
 	private WorkerRequestStateChange workerRequestStateChange_;
 	private WorkerSetScalarValues workerSetScalarValues_;
-	private WorkerRun workerRun_;
+//	private WorkerRun workerRun_;
 
 
 
@@ -65,10 +65,10 @@ public class ThreadedFMUcontroller extends AbstractController {
 		workerSetScalarValues_.execute();
 	}
 
-	public void run() {
-		workerRun_ = new WorkerRun();
-		workerRun_.execute();
-	}
+//	public void run() {
+//		workerRun_ = new WorkerRun();
+//		workerRun_.execute();
+//	}
 
 
 	protected class WorkerInstantiateFMU extends WorkerThreadAbstract {
@@ -126,7 +126,7 @@ public class ThreadedFMUcontroller extends AbstractController {
 		
 		@Override
 		public void doneIt_() {
-			workerRun_ = null;
+			workerXMLparse_ = null;
 		}
 	}
 	
@@ -158,7 +158,12 @@ public class ThreadedFMUcontroller extends AbstractController {
 		
 		WorkerRequestStateChange(SimStateNative simStateNative) {
 			simStateNative_ = simStateNative;
-			setSyncObject(FMUcontrollerSync_);
+			
+			//do not block a stop request
+			if (simStateNative != SimStateNative.simStateNative_5_stop_requested 
+					) {
+				setSyncObject(FMUcontrollerSync_);
+			}
 		}
 		
 		@Override
@@ -192,18 +197,18 @@ public class ThreadedFMUcontroller extends AbstractController {
 		}
 	}
 	
-	protected class WorkerRun extends WorkerThreadAbstract {
-		
-		@Override
-		public void doIt_() {
-			fmuController_.run();
-		}
-		
-		@Override
-		public void doneIt_() {
-			workerRun_ = null;
-		}
-	}
+//	protected class WorkerRun extends WorkerThreadAbstract {
+//		
+//		@Override
+//		public void doIt_() {
+//			fmuController_.run();
+//		}
+//		
+//		@Override
+//		public void doneIt_() {
+//			workerRun_ = null;
+//		}
+//	}
 
 	public SimStateNative getSimStateNative() {
 		return fmuController_.getSimStateNative();	

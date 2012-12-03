@@ -17,4 +17,7 @@ public interface StraylightEventListener<EVENT extends BaseEvent<PAYLOAD>, PAYLO
      * @param event the event
      */
     public void handleEvent(EVENT event);
+
+
+	
 }

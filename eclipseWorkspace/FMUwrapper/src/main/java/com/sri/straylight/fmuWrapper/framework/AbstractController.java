@@ -53,7 +53,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
     private AbstractController parentController;
     
     /** The sub controllers. */
-    private java.util.List<AbstractController> subControllers = new ArrayList<AbstractController>();
+    private List<AbstractController> subControllers = new ArrayList<AbstractController>();
     
     /** The actions. */
     private Map<String, DefaultAction> actions = new HashMap<String, DefaultAction>();
@@ -62,9 +62,14 @@ public abstract class AbstractController implements ActionListener, WindowListen
 //    private Map<Class, java.util.List<DefaultEventListener>> eventListeners =
 //            new HashMap<Class, java.util.List<DefaultEventListener>>();
     
-    private Map<Class, java.util.List<StraylightEventListener>> eventListeners =
-    		new HashMap<Class, java.util.List<StraylightEventListener>>();
+    private Map	<  Class<? extends BaseEvent<?>>, 
+    			   List<StraylightEventListener<? extends BaseEvent<?>,?>>  
+    			> 
+    				eventListeners;
+    
+    
 
+    
     
     
     /**
@@ -72,6 +77,9 @@ public abstract class AbstractController implements ActionListener, WindowListen
      */
     public AbstractController() { 
     	this(null, null);
+    	eventListeners = new HashMap	<  Class<? extends BaseEvent<?>>, 
+ 			   List<StraylightEventListener<? extends BaseEvent<?>,?>>  
+ 			>();
     }
 
     /**
@@ -192,33 +200,23 @@ public abstract class AbstractController implements ActionListener, WindowListen
      * @param eventClass The actual event class this listeners is interested in.
      * @param eventListener The listener implementation.
      */
-    public void registerEventListener(Class eventClass, StraylightEventListener eventListener) {
+    public void registerEventListener(
+    		Class<? extends BaseEvent<?>> eventClass, 
+    		StraylightEventListener<? extends BaseEvent<?>,?> eventListener) 
+    {
+    	
     	
         log.debug("Registering listener: " + eventListener + " for event type: " + eventClass.getName());
         
-        List<StraylightEventListener> listenersForEvent = eventListeners.get(eventClass);
+        List<StraylightEventListener<? extends BaseEvent<?>,?>>  listenersForEvent = eventListeners.get(eventClass);
         
-        if (listenersForEvent == null) { listenersForEvent = new ArrayList<StraylightEventListener>(); }
+        if (listenersForEvent == null) { listenersForEvent = new ArrayList<StraylightEventListener<? extends BaseEvent<?>,?>>(); }
         
         listenersForEvent.add(eventListener);
         eventListeners.put(eventClass, listenersForEvent);
     }
 
-    
-    
-//    public void registerEventListener(Class eventClass, DefaultEventListener eventListener) {
-//    	
-//        log.debug("Registering listener: " + eventListener + " for event type: " + eventClass.getName());
-//        java.util.List<DefaultEventListener> listenersForEvent = eventListeners.get(eventClass);
-//        
-//        if (listenersForEvent == null) { listenersForEvent = new ArrayList<DefaultEventListener>(); }
-//        listenersForEvent.add(eventListener);
-//        
-//        eventListeners.put(eventClass, listenersForEvent);
-//    }
-//    
-    
-    
+
     
     
     /**
@@ -247,7 +245,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
      *
      * @param event The event to be propagated.
      */
-    public void fireEventGlobal(BaseEvent event) {
+    public void fireEventGlobal(BaseEvent<?> event) {
         fireEvent(event, true);
     }
 
@@ -258,7 +256,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
      * @param event the event
      * @param global the global
      */
-    protected void fireEvent(BaseEvent event, boolean global) {
+    protected void fireEvent(BaseEvent<?> event, boolean global) {
     	
         if (!event.alreadyFired(this)) {
         	
@@ -284,31 +282,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
     }
 
     
-    /**
-     * Fire event.
-     *
-     * @param event the event
-     * @param global the global
-     */
-//    private void fireEvent(DefaultEvent event, boolean global) {
-//        if (!event.alreadyFired(this)) {
-//            if (eventListeners.get(event.getClass()) != null) {
-//                for (DefaultEventListener eventListener : eventListeners.get(event.getClass())) {
-//                    log.debug("Event: " + event.getClass().getName() + " with listener: " + eventListener.getClass().getName());
-//                    eventListener.handleEvent(event);
-//                }
-//            }
-//            event.addFiredInController(this);
-//            log.debug("Passing event: " + event.getClass().getName() + " DOWN in the controller hierarchy");
-//            for (AbstractController subController : subControllers) subController.fireEvent(event, global);
-//        }
-//        if (getParentController() != null
-//            && !event.alreadyFired(getParentController())
-//            && global) {
-//            log.debug("Passing event: " + event.getClass().getName() + " UP in the controller hierarchy");
-//            getParentController().fireEvent(event, global);
-//        }
-//    }
+
     
     
     /**

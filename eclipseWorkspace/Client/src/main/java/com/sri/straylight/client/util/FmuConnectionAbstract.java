@@ -18,7 +18,7 @@ public abstract class FmuConnectionAbstract {
 	
 	public abstract void xmlParse();
 	
-	public abstract void run();
+//	public abstract void run();
 
 	public abstract void setConfig(ConfigStruct configStruct);
 

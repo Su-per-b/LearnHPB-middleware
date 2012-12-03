@@ -18,13 +18,10 @@ import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
-import com.sri.straylight.fmuWrapper.serialization.JsonController;
-import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
-import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct;
 import com.sri.straylight.fmuWrapper.voNative.EnumTypeMapper;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
@@ -202,7 +199,7 @@ public class FMUcontroller extends AbstractController {
 		XMLparsedEvent event = new XMLparsedEvent(this, xmlParsed);
 		
 		String json = event.toJson();
-		JsonSerializable obj = JsonController.getInstance().fromJson(json);
+//		JsonSerializable obj = JsonController.getInstance().fromJson(json);
 		
 		
 		fireEvent(event);
@@ -243,8 +240,6 @@ public class FMUcontroller extends AbstractController {
 
 		checkConfig();
 
-		// System.setProperty("java.library.path",
-		// "fmuWrapperConfig_.nativeLibFolderAbsolutePath");
 		System.setProperty("jna.library.path",
 				fmuWrapperConfig_.nativeLibFolderAbsolutePath);
 
@@ -261,12 +256,6 @@ public class FMUcontroller extends AbstractController {
 		notifyStateChange_(SimStateNative.simStateNative_1_connect_completed);
 	}
 
-	/**
-	 * Run.
-	 */
-	public void run() {
-		jnaFMUWrapper_.run();
-	}
 
 	/**
 	 * Sets the config.

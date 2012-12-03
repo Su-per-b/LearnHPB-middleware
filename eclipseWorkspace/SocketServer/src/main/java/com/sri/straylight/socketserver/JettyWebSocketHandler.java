@@ -3,10 +3,9 @@ package com.sri.straylight.socketserver;
 
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketHandler;
-
-import com.sri.straylight.fmuWrapper.framework.AbstractController;
 
 
 public class JettyWebSocketHandler extends WebSocketHandler {

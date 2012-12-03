@@ -42,9 +42,6 @@ public class FmuConnection  {
 		threadedFMUcontroller_.setScalarValues(scalarValueList);
 	}
 
-	public void run() {
-		threadedFMUcontroller_.run();
-	}
 
 	public SimStateNative getSimStateNative() {
 		return threadedFMUcontroller_.getSimStateNative();

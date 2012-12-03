@@ -77,7 +77,7 @@ extern "C" DllExport int isSimulationComplete();
  *
  * @return	.
  *******************************************************/
-extern "C" DllExport int run();
+//extern "C" DllExport int run();
 
 /*******************************************************//**
  * Gets the configuration.

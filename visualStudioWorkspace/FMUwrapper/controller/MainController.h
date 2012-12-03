@@ -218,6 +218,11 @@ namespace Straylight
 
 
 
+		/*******************************************************//**
+		 * Runs this object.
+		 *******************************************************/
+		void run();
+
 
 	public:
 				
@@ -297,14 +302,7 @@ namespace Straylight
 		 *******************************************************/
 		int loadDll();
 
-		/*******************************************************//**
-		 * XML parse.
-		 *
-		 * @param	unzipfolder	If non-null, the unzipfolder.
-		 *
-		 * @return	.
-		 *******************************************************/
-		int xmlParse(char* unzipfolder);
+
 
 		/*******************************************************//**
 		 * Print summary.
@@ -389,10 +387,7 @@ namespace Straylight
 		 *******************************************************/
 		MainDataModel * getMainDataModel();
 
-		/*******************************************************//**
-		 * Runs this object.
-		 *******************************************************/
-		void run();
+
 
 		/*******************************************************//**
 		 * Stops this object.
@@ -426,8 +421,14 @@ namespace Straylight
 		ScalarValueResults * getScalarValueResults();
 
 
-		//private functions
-
+		/*******************************************************//**
+		 * XML parse.
+		 *
+		 * @param	unzipfolder	If non-null, the unzipfolder.
+		 *
+		 * @return	.
+		 *******************************************************/
+		int xmlParse(char* unzipfolder);
 
 
 	};

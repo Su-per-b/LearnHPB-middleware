@@ -3,9 +3,6 @@ package com.sri.straylight.fmuWrapper.voNative;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sun.jna.Structure;
-import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
-import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct;
-import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct.ByReference;
 
 /**
  * The Class DefaultExperimentStruct.

@@ -1,13 +1,10 @@
 package com.sri.straylight.socketserver.controller;
 
 import java.util.ArrayList;
-import java.util.Properties;
 
 import org.bushe.swing.event.annotation.EventSubscriber;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
-
-import antlr.collections.impl.Vector;
 
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.util.WorkerThreadAbstract;

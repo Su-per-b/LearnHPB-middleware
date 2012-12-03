@@ -75,9 +75,19 @@ namespace Straylight
 	 *
 	 * @param	newState	State of the new.
 	 *******************************************************/
-	void MainController::requestStateChange (SimStateNative newState) {
+	void MainController::requestStateChange (SimStateNative requestedState) {
 		
-		switch (newState) {
+		switch (requestedState) {
+
+
+		case simStateNative_2_xmlParse_requested :
+			if (state_ == simStateNative_1_connect_completed) {
+	
+			}
+
+
+			break;
+
 
 		case simStateNative_3_init_requested :
 			if (state_ == simStateNative_2_xmlParse_completed) {
@@ -102,7 +112,12 @@ namespace Straylight
 			}
 
 
+			break;
+		case simStateNative_4_run_requested :
 
+			if (state_ == simStateNative_3_ready) {
+				this->run();
+			}
 			break;
 
 		case simStateNative_5_stop_requested :

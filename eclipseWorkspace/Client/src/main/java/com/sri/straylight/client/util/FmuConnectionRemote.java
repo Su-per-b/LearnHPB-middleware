@@ -158,20 +158,20 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 	}
 
 
-	public void run() {
-
-		try {
-			websocketConnection_.send("run");
-		} catch (WebSocketException wse) {
-			wse.printStackTrace();
-			wse.getMessage();
-			String msg = wse.getClass().getSimpleName() + ": "
-					+ wse.getMessage();
-			System.out.println(msg);
-
-		}
-	}
-	
+//	public void run() {
+//
+//		try {
+//			websocketConnection_.send("run");
+//		} catch (WebSocketException wse) {
+//			wse.printStackTrace();
+//			wse.getMessage();
+//			String msg = wse.getClass().getSimpleName() + ": "
+//					+ wse.getMessage();
+//			System.out.println(msg);
+//
+//		}
+//	}
+//	
 	
 	protected class WorkerConnect extends WorkerThreadAbstract {
 		
