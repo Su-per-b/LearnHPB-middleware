@@ -1,9 +1,7 @@
 package com.sri.straylight.fmuWrapper.event;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.bushe.swing.event.EventBus;
 
-import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 public class SimStateNativeNotify extends BaseEvent<SimStateNative> {
@@ -33,15 +31,10 @@ public class SimStateNativeNotify extends BaseEvent<SimStateNative> {
                  append(this.payload_, event.getPayload()).
                  isEquals();
 
-        
-
     }
 
 
-	public static void fire(Object source, SimStateNative simStateNative) {
-		SimStateNativeNotify event = new SimStateNativeNotify(source,simStateNative);
-		EventBus.publish(event);
-	}
+
 
 
 

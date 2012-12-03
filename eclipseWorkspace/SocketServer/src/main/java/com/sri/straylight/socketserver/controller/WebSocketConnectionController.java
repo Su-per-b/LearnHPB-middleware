@@ -6,78 +6,77 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 import com.sri.straylight.fmuWrapper.event.BaseEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateClientNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
+import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
+import com.sri.straylight.fmuWrapper.event.StraylightEventListener;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
-import com.sri.straylight.socketserver.WebSocketConnectionEx;
-import com.sri.straylight.socketserver.WebSocketHandlerEx;
+import com.sri.straylight.socketserver.StraylightWebSocket;
+import com.sri.straylight.socketserver.JettyWebSocketHandler;
 import com.sri.straylight.socketserver.event.MessageReceived;
 
-public class WebSocketConnectionController extends AbstractController  {
+public class WebSocketConnectionController 
+	extends AbstractController  
+	implements StraylightEventListener<MessageReceived, String>
+	{
 	
 //	private WebSocketHandlerEx socketHandler_;
-	private WebSocketConnectionEx webSocketConnection_;
+	private StraylightWebSocket straylightWebSocket_;
+	private JettyWebSocketHandler socketHandler_;
+	
+	private int idx_;
+	
+//	public WebSocketConnectionController(AbstractController parent) {
+//		super(parent);
+//	}
 	
 	
-	public WebSocketConnectionController(AbstractController parentController) {
-		super(parentController);
+	public WebSocketConnectionController(ConnectionBundle parent, StraylightWebSocket straylightWebSocket, int idx) {
+		super(parent);
+		idx_ = idx;
+		
+		straylightWebSocket_ = straylightWebSocket;
 	}
-	
-	
-	public void init() {
 
+
+	public void init() {
+		straylightWebSocket_.setParentController(this);
+		
+		straylightWebSocket_.registerEventListener(MessageReceived.class,this);
 	}
 	
-//	
-//	public WebSocketHandlerEx getSocketHandler() {
-//		return socketHandler_;
-//	}
-//
-//
-//	
-//	public void init() {
-//		socketHandler_ = new WebSocketHandlerEx();
-//	}
-//	
-	
-	//message has been received from the client
-	@EventSubscriber(eventClass=MessageReceived.class)
-	public void onMessageReceived(MessageReceived event) {
+
+	@Override
+	public void handleEvent(MessageReceived event) {
 		
 		String messageText = event.getPayload();
-    	JsonSerializable deserializedObject = JsonController.getInstance().fromJson(messageText);
+    	JsonSerializable deserializedEvent = JsonController.getInstance().fromJson(messageText);
     	
     	//if it is an event then just publish it
-    	if (deserializedObject instanceof BaseEvent) {
-    		EventBus.publish(deserializedObject);
+    	if (deserializedEvent instanceof SimStateNativeRequest) {
+    		
+    		SimStateNativeRequest newEvent = (SimStateNativeRequest) deserializedEvent;
+    				
+    		this.fireEvent(newEvent);
     	}
+    	
 	}
 	
-	@EventSubscriber(eventClass = SimStateNativeNotify.class)
-	public void onSimStateNativeNotify(SimStateNativeNotify event) {
 
-		send (
-			new SimStateClientNotify(this, event.getPayload())
-		);
 
+
+	public void send(BaseEvent event) {
+		straylightWebSocket_.serializeAndSend(event);
 	}
 
-
-	private void send(BaseEvent<?> event) {
-		webSocketConnection_.serializeAndSend(event);
-	}
-
-	public void setWebSocketConnection(WebSocketConnectionEx webSocketConnection) {
-		webSocketConnection_ = webSocketConnection;
+	public void setStraylightWebSocket(StraylightWebSocket webSocketConnection) {
+		straylightWebSocket_ = webSocketConnection;
 	}
 	
-	public WebSocketConnectionEx getWebSocketConnection() {
-		return webSocketConnection_;
+	public StraylightWebSocket getStraylightWebSocket() {
+		return straylightWebSocket_;
 	}
-//	public WebSocketConnectionEx getWebSocketHandler() {
-//		return webSocketConnection_.
-//	}
-//	
+
 
 
 

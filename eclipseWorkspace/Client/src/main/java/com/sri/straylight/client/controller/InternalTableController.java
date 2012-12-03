@@ -5,13 +5,16 @@ import java.awt.GridLayout;
 
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import org.bushe.swing.event.EventBus;
+import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.ViewInitialized;
 import com.sri.straylight.client.view.BaseView;
 import com.sri.straylight.client.view.JTableEx;
+import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 
@@ -40,7 +43,15 @@ public class InternalTableController  extends BaseController {
 	}
 	
 
-	
+	@EventSubscriber(eventClass=XMLparsedEvent.class)
+	public void onXMLparsedEventEX(final XMLparsedEvent event) {  
+
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+			    init_(event.getPayload());
+		    }
+		});
+    }
 	
 	protected void init_( XMLparsedInfo xmlParsed) {  
 

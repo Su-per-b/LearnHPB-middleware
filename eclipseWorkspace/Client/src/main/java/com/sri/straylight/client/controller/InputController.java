@@ -1,5 +1,7 @@
 package com.sri.straylight.client.controller;
 
+import javax.swing.SwingUtilities;
+
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
@@ -8,6 +10,7 @@ import com.sri.straylight.client.model.InputDataModel;
 import com.sri.straylight.client.view.InputView;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
+import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
@@ -32,7 +35,7 @@ public class InputController extends BaseController {
 	}
 	
 
-	public void init_( XMLparsedInfo xmlParsed) {  
+	public void initXML( XMLparsedInfo xmlParsed) {  
 
 		inputDataModel_ = new InputDataModel();
 		inputDataModel_.xmlParsed = xmlParsed;
@@ -43,6 +46,16 @@ public class InputController extends BaseController {
 	    ViewInitialized e = new ViewInitialized(this, theView);
 	    EventBus.publish(e);
 
+    }
+	
+	@EventSubscriber(eventClass=XMLparsedEvent.class)
+	public void onXMLparsedEventEX(final XMLparsedEvent event) {  
+
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+			    initXML(event.getPayload());
+		    }
+		});
     }
 	
 
@@ -61,9 +74,6 @@ public class InputController extends BaseController {
 		
 	}
 	
-
-
-
 
 	/**
 	 * On data model update request.

@@ -8,28 +8,25 @@ import org.eclipse.jetty.util.log.Logger;
 
 import com.sri.straylight.common.Banner;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
-import com.sri.straylight.socketserver.WebSocketHandlerEx;
+import com.sri.straylight.socketserver.JettyWebSocketHandler;
 
 public class JettyServerController extends AbstractController{
 	
 	private Server jettyServer_;
-	private WebSocketHandlerEx socketHandler_;
+	private JettyWebSocketHandler jettyWebSocketHandler_;
 	
 	public static Logger logger = Log.getLogger("JettyServerController");
 	public static Properties properties;
-	private WebSocketConnectionController webSocketConnectionController_;
+	
+//	private WebSocketConnectionController webSocketConnectionController_;
 	
 	public JettyServerController (AbstractController parentController ) {
 		super(parentController);
 	}
 	
 	public void init() {
-		
 		showBanner_();
-		
-		webSocketConnectionController_ = new WebSocketConnectionController(this);
-		webSocketConnectionController_.init();
-		
+		start();
 	}
 	
 	private void showBanner_() {
@@ -41,11 +38,14 @@ public class JettyServerController extends AbstractController{
 	public void start() {
 		
 		//there is only one of these
-		socketHandler_ = new WebSocketHandlerEx();
+		jettyWebSocketHandler_ = new JettyWebSocketHandler();
+		
+	//	jettyWebSocketHandler_.setTheParent();
+		
 		try {
 			
 			jettyServer_ = new Server(8081);
-			jettyServer_.setHandler(socketHandler_);
+			jettyServer_.setHandler(jettyWebSocketHandler_);
 			jettyServer_.start();
 
 			// Jetty server is stopped when the Thread is interrupted.

@@ -2,25 +2,19 @@
 package com.sri.straylight.fmuWrapper.event;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageType;
 
 
 
-
-
-// TODO: Auto-generated Javadoc
 /**
  * The Class MessageEvent.
  */
-public class MessageEvent extends BaseEvent<MessageStruct> {
+public class MessageEvent extends BaseEvent<MessageStruct> 
+{
 
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 
@@ -30,8 +24,7 @@ public class MessageEvent extends BaseEvent<MessageStruct> {
      * @param source the source
      */
     public MessageEvent(Object source, MessageStruct payload) {
-        super(source);
-        setPayload( payload );
+        super(source, payload);
     }
     
     /**
@@ -51,13 +44,6 @@ public class MessageEvent extends BaseEvent<MessageStruct> {
         setPayload( payload );
     }
     
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
-
-            append(this.payload_).
-            toHashCode();
-    }
 
     @Override
     public boolean equals(Object obj) {

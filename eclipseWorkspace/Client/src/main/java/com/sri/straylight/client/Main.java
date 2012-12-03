@@ -18,7 +18,7 @@ import com.sri.straylight.fmuWrapper.framework.AbstractController;
 public class Main {
 	
 	/** The application controller. */
-	public static AbstractController applicationController;
+	public static AbstractController mainController;
 	
 	
     /**
@@ -50,7 +50,7 @@ public class Main {
             	
     	 		
             	
-            	applicationController = new MainController();
+            	mainController = new MainController();
             }
         });
     }

@@ -49,6 +49,11 @@ public abstract class WorkerThreadAbstract extends SwingWorker<Void, Void> {
 
 	}
 	
+	
+	protected void setName_(String name) {
+		Thread.currentThread().setName(name);
+	}
+	
 	//for subclass to override
 	protected abstract void doIt_();
 	protected abstract void doneIt_();

@@ -89,9 +89,7 @@ public class MainController extends BaseController {
 		topMenuController_ = new TopMenuController(this);
 		configController_ = new ConfigController(this);
 	
-		
 		BaseView view = topPanelController_.getView();
-		
 		mainView_.add(view, BorderLayout.NORTH);
 
 		tabbedPane_ = new JTabbedPane(JTabbedPane.TOP);
@@ -108,7 +106,6 @@ public class MainController extends BaseController {
 		setView_(mainView_);
 		
 		instance = this;
-		
 		views_ = new Vector<BaseView>();
 
 	}
@@ -121,10 +118,8 @@ public class MainController extends BaseController {
 	 */
 	@EventSubscriber(eventClass=Options_SelectSimulationEngine.class)
 	public void onSelectSimulationEngine(Options_SelectSimulationEngine event) {
-		
 		@SuppressWarnings("unused")
 		SimulationEngineDialog dialog =  new SimulationEngineDialog( mainView_ , configModel_);
-		  
 	}
 
 	
@@ -134,7 +129,7 @@ public class MainController extends BaseController {
 	 * @param event the event
 	 */
 	@EventSubscriber(eventClass=About_Help.class)
-	public void onSelectSimulationEngine(About_Help event) {
+	public void onAbout_Help(About_Help event) {
 		JOptionPane.showMessageDialog(
 				mainView_, 
 				"Version: " + ClientConfigXML.VERSION,

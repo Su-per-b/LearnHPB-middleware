@@ -1,7 +1,6 @@
 package com.sri.straylight.fmuWrapper.event;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 
@@ -22,13 +21,7 @@ public class ResultEvent extends BaseEvent<ScalarValueResults> {
         super(source, payload);
     }
 	
-	
-	@Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
-            append(this.payload_).
-            toHashCode();
-    }
+
 
 	
     @Override

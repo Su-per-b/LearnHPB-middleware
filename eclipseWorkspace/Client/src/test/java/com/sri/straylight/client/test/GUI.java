@@ -18,6 +18,7 @@ import org.bushe.swing.event.EventServiceExistsException;
 import org.bushe.swing.event.EventServiceLocator;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

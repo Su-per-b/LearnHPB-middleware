@@ -1,26 +1,31 @@
 package com.sri.straylight.socketserver.controller;
 
+import java.util.ArrayList;
 import java.util.Properties;
 
 import org.bushe.swing.event.annotation.EventSubscriber;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 
+import antlr.collections.impl.Vector;
+
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
-import com.sri.straylight.socketserver.WebSocketConnectionEx;
+import com.sri.straylight.fmuWrapper.util.WorkerThreadAbstract;
+import com.sri.straylight.socketserver.StraylightWebSocket;
 import com.sri.straylight.socketserver.event.WebSocketConnectionNotify;
 
 
 public class MainController extends AbstractController  {
 	
 	public static Logger logger = Log.getLogger("SocketServer");
-	public static Properties properties;
+//	public static Properties properties;
 	
-	private SimulationController simulationController_;
+
 	public static MainController instance;
 	
-	private WebSocketConnectionController webSocketConnectionController_;
-
+	private ArrayList<ConnectionBundle> connectionBundleList_;
+	
+	private WorkerMakeBundle workerMakeBundle_;
 	
 	public MainController() {
 		super(null);
@@ -28,34 +33,63 @@ public class MainController extends AbstractController  {
 	 
 	public void init() {
 		
-		simulationController_ = new SimulationController(this);
-		simulationController_.init();
-	
-		webSocketConnectionController_ = new WebSocketConnectionController(this);
-		webSocketConnectionController_.init();
+		connectionBundleList_ = new ArrayList<ConnectionBundle>();
 		
 		JettyServerController jettyServerController_ = new JettyServerController(this);
 		jettyServerController_.init();
-		jettyServerController_.start();
-		
 	}
 	
 	
 	@EventSubscriber(eventClass=WebSocketConnectionNotify.class)
     public void onWebSocketConnectionNotify(WebSocketConnectionNotify event) {
 		
-		WebSocketConnectionEx webSocketConnection = event.getPayload();
-		webSocketConnectionController_.setWebSocketConnection(webSocketConnection);
+		StraylightWebSocket webSocketConnection = event.getPayload();
+		
+		int idx = connectionBundleList_.size();
+		webSocketConnection.setIdx(idx);
+		
+		workerMakeBundle_ = new WorkerMakeBundle(this, webSocketConnection, idx);
+		workerMakeBundle_.execute();
+	}
+	
 
+	
+	protected class WorkerMakeBundle extends WorkerThreadAbstract {
+		
+		private MainController parent_; 
+		private StraylightWebSocket  webSocketConnection_;
+		private int  idx_;
+		
+		 
+		WorkerMakeBundle(MainController parent, StraylightWebSocket  webSocketConnection, int idx) {
+			//setSyncObject(FMUcontrollerSync_);
+			parent_ = parent;
+			webSocketConnection_ = webSocketConnection;
+			idx_ = idx;
+			
 		}
-    }
+		
+		@Override
+		public void doIt_() {
+			
+			setName_("WorkerMakeBundle " + idx_);
+
+			ConnectionBundle connectionBundle = new ConnectionBundle(parent_, webSocketConnection_, idx_);
+			connectionBundleList_.add(connectionBundle);
+			
+			connectionBundle.init();
+		}
 
 
-	//public void spawnNewInstance
+		@Override
+		public void doneIt_() {
+			workerMakeBundle_ = null;
+		}
+	}
 	
 	
-
-
+	
+}
 	
 //	//ResultEvent from FMU
 //	@EventSubscriber(eventClass=ResultEvent.class)

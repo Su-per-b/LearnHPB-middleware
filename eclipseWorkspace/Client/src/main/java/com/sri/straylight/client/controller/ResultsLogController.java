@@ -13,6 +13,7 @@ import com.sri.straylight.client.event.ViewInitialized;
 import com.sri.straylight.client.model.ResultsLogModel;
 import com.sri.straylight.client.view.ResultsLogView;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
@@ -37,12 +38,13 @@ public class ResultsLogController extends BaseController {
 		super(parentController);
 	}
 	
+	
 	/**
 	 * Inits the.
 	 *
 	 * @param xmlParsed the xml parsed
 	 */
-	protected void init_(XMLparsedInfo xmlParsed) {  
+	protected void initXML(XMLparsedInfo xmlParsed) {  
 
 		resultsLogModel_ = new ResultsLogModel(xmlParsed);
 		ResultsLogView theView = new ResultsLogView(this, resultsLogModel_);
@@ -56,6 +58,19 @@ public class ResultsLogController extends BaseController {
 	    EventBus.publish(e);
 	    
     }
+	
+	@EventSubscriber(eventClass=XMLparsedEvent.class)
+	public void onXMLparsedEventEX(final XMLparsedEvent event) {  
+
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+			    initXML(event.getPayload());
+		    }
+		});
+    }
+	
+	
+
 	
 
 	

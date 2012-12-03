@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractButton;
@@ -14,6 +15,9 @@ import javax.swing.AbstractButton;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
+
+import com.sri.straylight.fmuWrapper.event.BaseEvent;
+import com.sri.straylight.fmuWrapper.event.StraylightEventListener;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -55,15 +59,19 @@ public abstract class AbstractController implements ActionListener, WindowListen
     private Map<String, DefaultAction> actions = new HashMap<String, DefaultAction>();
     
     /** The event listeners. */
-    private Map<Class, java.util.List<DefaultEventListener>> eventListeners =
-            new HashMap<Class, java.util.List<DefaultEventListener>>();
+//    private Map<Class, java.util.List<DefaultEventListener>> eventListeners =
+//            new HashMap<Class, java.util.List<DefaultEventListener>>();
+    
+    private Map<Class, java.util.List<StraylightEventListener>> eventListeners =
+    		new HashMap<Class, java.util.List<StraylightEventListener>>();
 
+    
+    
     /**
      * Subclass wants to control own view and is root controller.
      */
-    public AbstractController() {
-    	
-
+    public AbstractController() { 
+    	this(null, null);
     }
 
     /**
@@ -92,7 +100,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
      * @param view the view
      * @param parentController the parent controller
      */
-    protected void init_(Container view, AbstractController parentController) {
+    private void init_(Container view, AbstractController parentController) {
     	AnnotationProcessor.process(this);
     	
         this.view = view;
@@ -103,6 +111,15 @@ public abstract class AbstractController implements ActionListener, WindowListen
             parentController.getSubControllers().add(this);
         }
 
+    }
+    
+    
+    public void setParentController (AbstractController parentController) {
+        // Check if this is a subcontroller or a root controller
+        if (parentController != null) {
+            this.parentController = parentController;
+            parentController.getSubControllers().add(this);
+        }
     }
     
     /**
@@ -175,15 +192,35 @@ public abstract class AbstractController implements ActionListener, WindowListen
      * @param eventClass The actual event class this listeners is interested in.
      * @param eventListener The listener implementation.
      */
-    public void registerEventListener(Class eventClass, DefaultEventListener eventListener) {
+    public void registerEventListener(Class eventClass, StraylightEventListener eventListener) {
     	
         log.debug("Registering listener: " + eventListener + " for event type: " + eventClass.getName());
-        java.util.List<DefaultEventListener> listenersForEvent = eventListeners.get(eventClass);
-        if (listenersForEvent == null) { listenersForEvent = new ArrayList<DefaultEventListener>(); }
+        
+        List<StraylightEventListener> listenersForEvent = eventListeners.get(eventClass);
+        
+        if (listenersForEvent == null) { listenersForEvent = new ArrayList<StraylightEventListener>(); }
+        
         listenersForEvent.add(eventListener);
         eventListeners.put(eventClass, listenersForEvent);
     }
 
+    
+    
+//    public void registerEventListener(Class eventClass, DefaultEventListener eventListener) {
+//    	
+//        log.debug("Registering listener: " + eventListener + " for event type: " + eventClass.getName());
+//        java.util.List<DefaultEventListener> listenersForEvent = eventListeners.get(eventClass);
+//        
+//        if (listenersForEvent == null) { listenersForEvent = new ArrayList<DefaultEventListener>(); }
+//        listenersForEvent.add(eventListener);
+//        
+//        eventListeners.put(eventClass, listenersForEvent);
+//    }
+//    
+    
+    
+    
+    
     /**
      * Fire an event and pass it into the hierarchy of controllers.
      * <p>
@@ -191,10 +228,17 @@ public abstract class AbstractController implements ActionListener, WindowListen
      *
      * @param event The event to be propagated.
      */
-    public void fireEvent(DefaultEvent event) {
-        fireEvent(event, false);
+//    public void fireEvent(DefaultEvent event) {
+//        fireEvent(event, false);
+//    }
+    
+    public void fireEvent(BaseEvent<?> event) {
+    	fireEvent(event, false);
     }
 
+    
+    
+    
     /**
      * Fire an event and pass it into the hierarchy of controllers.
      * <p>
@@ -203,24 +247,30 @@ public abstract class AbstractController implements ActionListener, WindowListen
      *
      * @param event The event to be propagated.
      */
-    public void fireEventGlobal(DefaultEvent event) {
+    public void fireEventGlobal(BaseEvent event) {
         fireEvent(event, true);
     }
 
+    
     /**
      * Fire event.
      *
      * @param event the event
      * @param global the global
      */
-    private void fireEvent(DefaultEvent event, boolean global) {
+    protected void fireEvent(BaseEvent event, boolean global) {
+    	
         if (!event.alreadyFired(this)) {
-            if (eventListeners.get(event.getClass()) != null) {
-                for (DefaultEventListener eventListener : eventListeners.get(event.getClass())) {
+        	
+        	Class<?> cl = event.getClass();
+        	
+            if (eventListeners.get(cl) != null) {
+                for (StraylightEventListener eventListener : eventListeners.get(event.getClass())) {
                     log.debug("Event: " + event.getClass().getName() + " with listener: " + eventListener.getClass().getName());
                     eventListener.handleEvent(event);
                 }
             }
+            
             event.addFiredInController(this);
             log.debug("Passing event: " + event.getClass().getName() + " DOWN in the controller hierarchy");
             for (AbstractController subController : subControllers) subController.fireEvent(event, global);
@@ -233,6 +283,34 @@ public abstract class AbstractController implements ActionListener, WindowListen
         }
     }
 
+    
+    /**
+     * Fire event.
+     *
+     * @param event the event
+     * @param global the global
+     */
+//    private void fireEvent(DefaultEvent event, boolean global) {
+//        if (!event.alreadyFired(this)) {
+//            if (eventListeners.get(event.getClass()) != null) {
+//                for (DefaultEventListener eventListener : eventListeners.get(event.getClass())) {
+//                    log.debug("Event: " + event.getClass().getName() + " with listener: " + eventListener.getClass().getName());
+//                    eventListener.handleEvent(event);
+//                }
+//            }
+//            event.addFiredInController(this);
+//            log.debug("Passing event: " + event.getClass().getName() + " DOWN in the controller hierarchy");
+//            for (AbstractController subController : subControllers) subController.fireEvent(event, global);
+//        }
+//        if (getParentController() != null
+//            && !event.alreadyFired(getParentController())
+//            && global) {
+//            log.debug("Passing event: " + event.getClass().getName() + " UP in the controller hierarchy");
+//            getParentController().fireEvent(event, global);
+//        }
+//    }
+    
+    
     /**
      * Executes an action if it has been registered for this controller, otherwise passes it up the chain.
      * <p>

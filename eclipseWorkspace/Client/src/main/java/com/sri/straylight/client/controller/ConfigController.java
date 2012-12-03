@@ -7,7 +7,6 @@ import java.text.DecimalFormat;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultFormatter;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
@@ -23,7 +22,6 @@ import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeRequest;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
-import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
@@ -47,6 +45,7 @@ public class ConfigController extends BaseController {
 	
 	private SimStateNative simStateNative_ = SimStateNative.simStateNative_0_uninitialized;
 	
+	private boolean isInititialized_ = false;
 	
 	/**
 	 * Instantiates a new config controller.
@@ -82,9 +81,7 @@ public class ConfigController extends BaseController {
 	 *
 	 * @param configStruct the config struct
 	 */
-	private void init_(ConfigStruct configStruct) {
-		
-		configStruct_ = configStruct;
+	private void init_() {
 		
 		txtStartTime_ = new JFormattedTextField(new Double(0.0));
 		txtStopTime_ = new JFormattedTextField(new Double(0.0));
@@ -122,24 +119,32 @@ public class ConfigController extends BaseController {
 		
 		updateGUI_();
 	    
-	    ViewInitialized e = new ViewInitialized(this, theView);
-	    EventBus.publish(e);
+	    new ViewInitialized(this, theView).fire();
 	    
     }
 	
 	
 	
-	@EventSubscriber(eventClass=XMLparsedEvent.class)
-	public void onXMLparsedEvent(final XMLparsedEvent event) { 
-		
-		SwingUtilities.invokeLater(new Runnable() {
-		    public void run() {
-				init_(event.metaDataStruct);
-		    }
-		});
-		
-    }
 	
+	/**
+	 * On sim state notify.
+	 *
+	 * @param event the event
+	 */
+	@EventSubscriber(eventClass=ConfigChangeNotify.class)
+	public void onConfigChangeNotify(ConfigChangeNotify event) {
+
+		configStruct_ = event.getPayload();
+		
+		if (isInititialized_) {
+			updateGUIFromState_();
+		} else {
+			isInititialized_ = true;
+			init_();
+		}
+
+	}
+
 	
 	/**
 	 * On sim state request.
@@ -178,18 +183,6 @@ public class ConfigController extends BaseController {
 		
 	}
 	
-	
-	/**
-	 * On sim state notify.
-	 *
-	 * @param event the event
-	 */
-	@EventSubscriber(eventClass=ConfigChangeNotify.class)
-	public void onConfigChangeNotify(ConfigChangeNotify event) {
-
-		configStruct_ = event.getPayload();
-		updateGUIFromState_();
-	}
 
 	
 	/**
@@ -222,6 +215,8 @@ public class ConfigController extends BaseController {
 		configStruct_.defaultExperimentStruct.stopTime = (double)txtStopTime_.getValue();
 		configStruct_.stepDelta = (double)txtStepDelta_.getValue();
 	}
+
+
 	
 	
 }

@@ -296,7 +296,6 @@ public class TopPanelController extends BaseController {
 		
 
 		return;
-		
 	}
 
 

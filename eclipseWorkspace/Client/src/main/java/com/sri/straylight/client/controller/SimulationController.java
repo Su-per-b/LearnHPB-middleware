@@ -47,6 +47,14 @@ public class SimulationController extends BaseController  {
 	}
 	
 	
+	public SimulationController(ClientConfig configModel) {
+		super(null);
+        configModel_ = configModel;
+	}
+
+	
+	
+
 	/**
 	 * Connect_.
 	 */

@@ -1,38 +1,41 @@
 package com.sri.straylight.fmuWrapper.event;
 
-import java.util.EventObject;
+import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
-import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class XMLparsedEvent.
  */
-public class XMLparsedEvent extends EventObject {
+public class XMLparsedEvent extends BaseEvent<XMLparsedInfo> {
 	
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
-	
-	/** The meta data struct. */
-	public ConfigStruct metaDataStruct;
-	
-	/** The xml parsed. */
-	public XMLparsedInfo xmlParsed;
-	
-    //here's the constructor
-    /**
-     * Instantiates a new xM lparsed event.
-     *
-     * @param source the source
-     * @param xmlParsedArg the xml parsed arg
-     * @param metaDataStruct_arg the meta data struct_arg
-     */
-    public XMLparsedEvent(Object source, XMLparsedInfo xmlParsedArg, ConfigStruct metaDataStruct_arg) {
-        super(source);
-        
-        xmlParsed = xmlParsedArg;
-        metaDataStruct = metaDataStruct_arg; 
-    }
 
+    public XMLparsedEvent(Object source, XMLparsedInfo payload) {
+        super(source, payload);
+    }
+    
+
+    @Override
+    public boolean equals(Object obj) {
+    	
+        if (obj == null)
+            return false;
+        
+        if (obj == this)
+            return true;
+        
+        if (obj.getClass() != getClass())
+            return false;
+
+        XMLparsedEvent typedObj = (XMLparsedEvent) obj;
+        
+        return new EqualsBuilder().
+                append(this.payload_, typedObj.getPayload()).
+                isEquals();
+
+    }  
+    
 }

@@ -33,7 +33,7 @@ import de.roderick.weberknecht.WebSocketMessage;
 public class FmuConnectionRemote extends FmuConnectionAbstract {
 
 	private WorkerConnect workerConnect_;
-//	private WorkerXMLparse workerXMLparse_;
+	private WorkerRequestStateChange workerRequestStateChange_;
 //	private WorkerRun workerRun_;
 //	private WorkerRequestStateChange workerRequestStateChange_;
 //	private WorkerSetScalarValues workerSetScalarValues_;
@@ -77,17 +77,7 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 	}
 
 
-	public void requestStateChange(SimStateNative newState) {
 
-		SimStateNativeRequest event = new SimStateNativeRequest(this, newState);
-		try {
-			websocketConnection_.send(event.toJson());
-		} catch (WebSocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
 
 
 	public void setScalarValues(Vector<ScalarValueRealStruct> scalrValueList) {
@@ -155,7 +145,14 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 
 
 	public void xmlParse() {
-
+		workerRequestStateChange_ = new WorkerRequestStateChange(SimStateNative.simStateNative_2_xmlParse_requested);
+		workerRequestStateChange_.execute();
+	}
+	
+	
+	public void requestStateChange(SimStateNative state) {
+		workerRequestStateChange_ = new WorkerRequestStateChange(state);
+		workerRequestStateChange_.execute();
 	}
 
 
@@ -197,6 +194,47 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 		}
 	}
 	
+
+	protected class WorkerRequestStateChange extends WorkerThreadAbstract {
+		private SimStateNative state_;
+		
+		WorkerRequestStateChange(SimStateNative state) {
+			
+			state_ = state;
+			setSyncObject(websocketConnection_);
+			
+		}
+		
+		@Override
+		public void doIt_() {
+			SimStateNativeRequest event = new SimStateNativeRequest(this, state_);
+			try {
+				websocketConnection_.send(event.toJson());
+			} catch (WebSocketException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		@Override
+		public void doneIt_() {
+			workerRequestStateChange_ = null;
+		}
+	}
 	
+	
+//	
+//	
+//	public void requestStateChange(SimStateNative newState) {
+//
+//		SimStateNativeRequest event = new SimStateNativeRequest(this, newState);
+//		try {
+//			websocketConnection_.send(event.toJson());
+//		} catch (WebSocketException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//	}
 
 }

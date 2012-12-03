@@ -1,11 +1,11 @@
 package com.sri.straylight.socketserver.event;
 
-import java.util.EventObject;
-
 import org.bushe.swing.event.EventBus;
 
+import com.sri.straylight.fmuWrapper.event.BaseEvent;
 
-public class MessageReceived extends EventObject {
+
+public class MessageReceived extends BaseEvent<String> {
 
 
 	private static final long serialVersionUID = 1L;

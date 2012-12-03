@@ -131,6 +131,8 @@ public interface JNAfmuWrapper extends Library {
 	 */
 	public interface MessageCallbackInterface extends Callback {
 		
+
+
 		/**
 		 * Message callback.
 		 *

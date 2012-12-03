@@ -1,18 +1,20 @@
-package com.sri.straylight.fmuWrapper.framework;
+package com.sri.straylight.fmuWrapper.event;
 
-// TODO: Auto-generated Javadoc
+
+
 /**
  * A listener for a particular event, needs parameterization for typesafe usage of the payload.
  *
  * @param <PAYLOAD> the generic type
  * @author Christian Bauer
+ * @param <PAYLOAD>
  */
-public interface DefaultEventListener<PAYLOAD> {
+public interface StraylightEventListener<EVENT extends BaseEvent<PAYLOAD>, PAYLOAD> {
     
     /**
      * Handle event.
      *
      * @param event the event
      */
-    public void handleEvent(DefaultEvent<PAYLOAD> event);
+    public void handleEvent(EVENT event);
 }

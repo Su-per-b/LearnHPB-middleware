@@ -3,7 +3,7 @@ package com.sri.straylight.fmuWrapper.Controller;
 import java.io.IOException;
 import java.util.Vector;
 
-import com.sri.straylight.fmuWrapper.Controller.FMUcontroller;
+import com.sri.straylight.fmuWrapper.Controller.FMUcontrollerGlobal;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.util.WorkerThreadAbstract;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
@@ -16,7 +16,7 @@ import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 public class ThreadedFMUcontroller extends AbstractController {
 
 	/** The fmu_. */
-	private FMUcontroller fmuController_;
+	private FMUcontrollerGlobal fmuController_;
 	private Object FMUcontrollerSync_ = new Object();
 	
 	private WorkerInstantiateFMU workerInstantiateFMU_;
@@ -80,7 +80,7 @@ public class ThreadedFMUcontroller extends AbstractController {
 		//called by superclass
 		@Override
 		public void doIt_() {
-			fmuController_ = new FMUcontroller();
+			fmuController_ = new FMUcontrollerGlobal();
 		}
 		
 		//called by superclass

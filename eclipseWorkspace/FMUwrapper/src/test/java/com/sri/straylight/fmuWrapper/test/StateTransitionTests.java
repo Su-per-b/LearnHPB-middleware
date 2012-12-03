@@ -15,7 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sri.straylight.fmuWrapper.Controller.FMUcontroller;
+import com.sri.straylight.fmuWrapper.Controller.FMUcontrollerGlobal;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
@@ -27,10 +27,10 @@ public class StateTransitionTests {
 	private final CyclicBarrier mainBarrier_ = new CyclicBarrier(2);
 	
 	/** The next state expected. */
-	private static SimStateNative nextStateExpected_;
+	private static SimStateNative blockThreadUntilState_;
 	
 	/** This is the rug that really ties the room together. */
-	private FMUcontroller fmuController_;
+	private FMUcontrollerGlobal fmuController_;
 	
 
 
@@ -41,7 +41,7 @@ public class StateTransitionTests {
 		FMUwrapperConfig config = FMUwrapperConfig.load();
 		assertEquals("LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1", config.fmuFolderName);
 		
-		fmuController_ = new FMUcontroller(null, config);
+		fmuController_ = new FMUcontrollerGlobal(null, config);
 		SimStateNative simStateNative  = fmuController_.getSimStateNative();
 		assertEquals(SimStateNative.simStateNative_0_uninitialized, simStateNative);
 		
@@ -92,7 +92,7 @@ public class StateTransitionTests {
 			Thread.currentThread().setName("TearDownThread");
 			
 
-			StateTransitionTests.nextStateExpected_ = SimStateNative.simStateNative_7_terminate_completed;
+			StateTransitionTests.blockThreadUntilState_ = SimStateNative.simStateNative_7_terminate_completed;
 			fmuController_.requestStateChange(SimStateNative.simStateNative_7_terminate_requested);
 			
 			awaitOnBarrier(mainBarrier_);
@@ -110,7 +110,7 @@ public class StateTransitionTests {
 		{
 			Thread.currentThread().setName("InitThread");
 			
-			StateTransitionTests.nextStateExpected_ = SimStateNative.simStateNative_1_connect_completed;
+			StateTransitionTests.blockThreadUntilState_ = SimStateNative.simStateNative_1_connect_completed;
 			
 
 			try
@@ -130,7 +130,7 @@ public class StateTransitionTests {
 		    
 		    assert (threadName.equals("InitThread"));
 		    
-			StateTransitionTests.nextStateExpected_ = SimStateNative.simStateNative_2_xmlParse_completed;
+			StateTransitionTests.blockThreadUntilState_ = SimStateNative.simStateNative_2_xmlParse_completed;
 			fmuController_.xmlParse();
 			awaitOnBarrier(barrier);
 			
@@ -158,7 +158,7 @@ public class StateTransitionTests {
 		{
 			Thread.currentThread().setName("StepThread");
 			Thread.currentThread().setName("InitThread");
-			StateTransitionTests.nextStateExpected_ = SimStateNative.simStateNative_3_ready;
+			StateTransitionTests.blockThreadUntilState_ = SimStateNative.simStateNative_3_ready;
 			
 			fmuController_.requestStateChange(SimStateNative.simStateNative_5_step_requested);
 			awaitOnBarrier(mainBarrier_);
@@ -204,7 +204,7 @@ public class StateTransitionTests {
 		protected void requestStateChange_ 
 			(SimStateNative stateRequested, SimStateNative stateExpected) 
 		{
-			nextStateExpected_ = stateExpected;
+			blockThreadUntilState_ = stateExpected;
 			fmuController_.requestStateChange(stateRequested);
 			awaitOnBarrier(barrier);
 			
@@ -228,7 +228,7 @@ public class StateTransitionTests {
 		    SimStateNative state = event.getPayload();
 			//assert (state.equals(StateTransitions.nextStateExpected_) );
 			
-			if(state == StateTransitionTests.nextStateExpected_) {
+			if(state == StateTransitionTests.blockThreadUntilState_) {
 				
 				awaitOnBarrier(barrier);
 				System.out.println ("onSimStateNotify done");

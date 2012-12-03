@@ -2,6 +2,8 @@ package com.sri.straylight.fmuWrapper.event;
 
 import java.util.EventObject;
 
+import org.bushe.swing.event.EventBus;
+
 // TODO: Auto-generated Javadoc
 /**
  * An event with an Object payload.
@@ -56,7 +58,9 @@ public class BaseEventForClient<T> extends EventObject {
     	return "toJson";
     }
 
-    
-    
+
+	public void fire() {
+		EventBus.publish(this);
+	}
     
 }
