@@ -3,6 +3,7 @@ package com.sri.straylight.socketserver.controller;
 import java.io.IOException;
 
 import com.sri.straylight.fmuWrapper.Controller.FMUcontroller;
+import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
@@ -12,6 +13,7 @@ import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
+import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sri.straylight.socketserver.StraylightWebSocket;
@@ -77,7 +79,7 @@ public class ConnectionBundle extends AbstractController {
 		fmuController_ = new FMUcontroller(this);
 		
 
-
+		//SimStateNativeNotify
 		fmuController_
 		.registerEventListener(
 				SimStateNativeNotify.class,
@@ -89,6 +91,7 @@ public class ConnectionBundle extends AbstractController {
 				});
 		
 		
+		//MessageEvent
 		fmuController_
 		.registerEventListener(
 				MessageEvent.class,
@@ -99,7 +102,7 @@ public class ConnectionBundle extends AbstractController {
 					}
 				});
 		
-		
+		//ResultEvent
 		fmuController_
 		.registerEventListener(
 				ResultEvent.class,
@@ -111,6 +114,7 @@ public class ConnectionBundle extends AbstractController {
 				});
 
 		
+		//XMLparsedEvent
 		fmuController_
 		.registerEventListener(
 				XMLparsedEvent.class,
@@ -120,7 +124,21 @@ public class ConnectionBundle extends AbstractController {
 						webSocketConnectionController_.send(event);
 					}
 				});
-
+		
+		
+		//ConfigChangeNotify
+		fmuController_
+		.registerEventListener(
+				ConfigChangeNotify.class,
+				new StraylightEventListener<ConfigChangeNotify, ConfigStruct>() {
+					@Override
+					public void handleEvent(ConfigChangeNotify event) {
+						webSocketConnectionController_.send(event);
+					}
+				});
+		
+		
+		
 		try {
 			fmuController_.connect();
 		} catch (IOException e) {
@@ -130,35 +148,5 @@ public class ConnectionBundle extends AbstractController {
 	}
 	
 
-	// @Override
-	// public void handleEvent(SimStateNativeNotify event) {
-	// webSocketConnectionController_.send(event);
-	// }
-	//
-	//
-	// public void handleEvent(SimStateNativeRequest event) {
-	//
-	// SimStateNative requestedState = event.getPayload();
-	//
-	// switch (requestedState) {
-	// case simStateNative_1_connect_requested :
-	// try {
-	// fmuController_.connect();
-	// } catch (IOException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// break;
-	// case simStateNative_2_xmlParse_requested :
-	// fmuController_.xmlParse();
-	// break;
-	// case simStateNative_4_run_requested :
-	// fmuController_.run();
-	// break;
-	// default:
-	// fmuController_.requestStateChange(requestedState);
-	// }
-	//
-	// }
 
 }

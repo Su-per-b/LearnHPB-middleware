@@ -16,6 +16,7 @@ import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
+import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueBoolean;
@@ -690,6 +691,85 @@ public class TestSerialization {
 		assertEquals(xmlParsedInfo, xmlParsedInfoDeserialized);
 
 	}
+	
+	
+	
+	
+	@Test
+	public void xmlParsedEvent() {
+		//make TypeSpecReal
+		TypeSpecReal typeSpecReal = new TypeSpecReal();
+		typeSpecReal.start = 20.25;
+		typeSpecReal.nominal = 21.25;
+		typeSpecReal.min = 22.25;
+		typeSpecReal.max = 23.25;
+		
+		typeSpecReal.startValueStatus = 1;
+		typeSpecReal.nominalValueStatus = 1;
+		typeSpecReal.minValueStatus = 1;
+		typeSpecReal.maxValueStatus = 1;
+		
+		//make ScalarVariableReal
+		ScalarVariableReal sVarReal = new ScalarVariableReal(typeSpecReal);
+		sVarReal.setName("scalarVar name");
+		sVarReal.setIdx(1);
+		sVarReal.setCausality(Enu.enu_input);
+		sVarReal.setVariability(Enu.enu_discrete);
+		sVarReal.setDescription("The Description");
+		sVarReal.setValueReference(125420);
+		
+		//make TypeSpecReal 2
+		TypeSpecReal typeSpecReal2 = new TypeSpecReal();
+		typeSpecReal2.start = 2.25;
+		typeSpecReal2.nominal = 2.25;
+		typeSpecReal2.min = 2.25;
+		typeSpecReal2.max = 2.25;
+		
+		typeSpecReal2.startValueStatus = 1;
+		typeSpecReal2.nominalValueStatus = 1;
+		typeSpecReal2.minValueStatus = 1;
+		typeSpecReal2.maxValueStatus = 1;
+		
+		//make ScalarVariableReal 2
+		ScalarVariableReal sVarReal2 = new ScalarVariableReal(typeSpecReal);
+		sVarReal2.setName("scalarVar name");
+		sVarReal2.setIdx(1);
+		sVarReal2.setCausality(Enu.enu_input);
+		sVarReal2.setVariability(Enu.enu_discrete);
+		sVarReal2.setDescription("The Description");
+		sVarReal2.setValueReference(125420);
+		
+		Vector<ScalarVariableReal> realVarList = new Vector<ScalarVariableReal>();
+		realVarList.add(sVarReal);
+		realVarList.add(sVarReal2);
+		
+		ScalarVariableCollection sVarColl = new ScalarVariableCollection();
+		sVarColl.setRealVarList(realVarList);
+		
+		//make scalarVariablesAll 1
+		ScalarVariablesAll scalarVariablesAll = new ScalarVariablesAll();
+		scalarVariablesAll.setInput(sVarColl);
+		scalarVariablesAll.setOutput(sVarColl);
+		scalarVariablesAll.setInternal(sVarColl);
+		
+		//make SimStateWrapper 1
+		XMLparsedInfo xmlParsedInfo = new XMLparsedInfo(scalarVariablesAll);
+		XMLparsedEvent event = new XMLparsedEvent(this, xmlParsedInfo);
+		
+		//serialize / deserialize 
+		String json = event.toJson();
+		Object eventDeserialized = gsonController_.fromJson(json);
+		
+		
+		//assert
+		assertEquals(event.getClass(), eventDeserialized.getClass());
+		assertEquals(XMLparsedEvent.class, eventDeserialized.getClass());
+		assertEquals(event, eventDeserialized);
+		
+		
+	}
+	
+	
 	
 	@Test
 	public void defaultExperimentStruct() {

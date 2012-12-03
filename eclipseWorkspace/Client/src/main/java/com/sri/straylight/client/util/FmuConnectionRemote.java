@@ -104,6 +104,8 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 			public void onMessage(WebSocketMessage msg) {
 
 				String jsonString = msg.getText();
+				
+				
 				JsonSerializable deserializedObject = gsonController_
 						.fromJson(jsonString);
 

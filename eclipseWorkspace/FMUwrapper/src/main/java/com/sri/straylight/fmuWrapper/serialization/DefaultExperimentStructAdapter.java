@@ -58,8 +58,18 @@ public class DefaultExperimentStructAdapter
     
         throws JsonParseException {
     	
+    	
+		jsonElement_ = jsonElement;
         destObject_ = new DefaultExperimentStruct.ByReference();
         
+        
+		if (jsonElement_.isJsonObject()) {
+			jsonObject_ = jsonElement_.getAsJsonObject();
+		}
+		
+		typeOfT_ = typeOfT;
+		deserializationContext_ = context;
+		
 		double startTime = jsonObject_.get("startTime").getAsDouble();
 		destObject_.startTime = startTime;
 		

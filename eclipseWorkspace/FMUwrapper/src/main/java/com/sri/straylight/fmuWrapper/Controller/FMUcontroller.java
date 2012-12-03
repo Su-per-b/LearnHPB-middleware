@@ -18,10 +18,12 @@ import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
+import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
+import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct;
 import com.sri.straylight.fmuWrapper.voNative.EnumTypeMapper;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
@@ -196,14 +198,34 @@ public class FMUcontroller extends AbstractController {
 		ScalarVariablesAll scalarVariablesAll = new ScalarVariablesAll(
 				scalarVariablesAllStruct);
 
-		configStruct_ = jnaFMUWrapper_.getConfig();
 		
 		XMLparsedInfo xmlParsed = new XMLparsedInfo(scalarVariablesAll);
 		
 		XMLparsedEvent event = new XMLparsedEvent(this, xmlParsed);
 		fireEvent(event);
 		
+
+		configStruct_ = jnaFMUWrapper_.getConfig();
+		
+//		DefaultExperimentStruct.ByReference defaultExperimentStruct 
+//			= new DefaultExperimentStruct.ByReference();
+//		
+//		defaultExperimentStruct.startTime = configStruct_.defaultExperimentStruct.startTime;
+//		defaultExperimentStruct.stopTime = configStruct_.defaultExperimentStruct.stopTime;
+//		defaultExperimentStruct.tolerance = configStruct_.defaultExperimentStruct.tolerance;
+//		
+//		ConfigStruct configStruct = new ConfigStruct();
+//		configStruct.defaultExperimentStruct = defaultExperimentStruct;
+//		configStruct.stepDelta = configStruct_.stepDelta;
+//		
+//				
+//		
+//		String json = event.toJson();
+		
 		ConfigChangeNotify event2 = new ConfigChangeNotify(this, configStruct_);
+//		Object eventDeserialized = JsonController.getInstance().fromJson(json);
+		
+		
 		fireEvent(event2);
 
 		

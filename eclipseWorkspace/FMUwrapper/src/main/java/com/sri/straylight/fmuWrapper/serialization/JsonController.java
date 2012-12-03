@@ -11,6 +11,7 @@ import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
+import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueBoolean;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
@@ -21,9 +22,6 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct;
-import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct.ByReference;
-
-
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
@@ -157,9 +155,10 @@ public class JsonController {
 		register_(ScalarVariablesAll.class, new ScalarVariablesAllAdapter());
 		
 		register_(XMLparsedInfo.class, new XMLparsedInfoAdapter());
+		register_(XMLparsedEvent.class, new XMLparsedEventAdapter());
+		
 		register_(ConfigStruct.class, new ConfigStructAdapter());
 		register_(DefaultExperimentStruct.ByReference.class, new DefaultExperimentStructAdapter());
-		
 		register_(ConfigChangeNotify.class, new ConfigChangeNotifyAdapter());
 		
 		

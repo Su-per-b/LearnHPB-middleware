@@ -84,7 +84,8 @@ public class StraylightWebSocket extends AbstractController
 	}
 
 	public void serializeAndSend(JsonSerializable obj) {
-		sendString_ (obj.toJson());
+		String json = obj.toJson();
+		sendString_ (json);
 	}
 	
 	public void sendString_(String str) {

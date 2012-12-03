@@ -5,6 +5,10 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sun.jna.Structure;
+import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
+import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct;
+import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct.ByReference;
+
 
 // TODO: Auto-generated Javadoc
 /**
@@ -30,6 +34,8 @@ public class ConfigStruct
     @Override
     public boolean equals(Object obj) {
     	
+    	
+
         if (obj == null)
             return false;
         
