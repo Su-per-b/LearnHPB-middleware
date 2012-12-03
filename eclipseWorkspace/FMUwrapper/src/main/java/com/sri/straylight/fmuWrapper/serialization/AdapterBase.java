@@ -85,7 +85,7 @@ public class AdapterBase<T extends JsonSerializable>
 	}
 	
 	
-	private void serializeFields(String[] fieldNames) {
+	protected void serializeFields(String[] fieldNames) {
 
 		int len = fieldNames.length;
 		for (int i = 0; i < len; i++) {
@@ -169,7 +169,10 @@ public class AdapterBase<T extends JsonSerializable>
 	private void deserializeOneField(String fieldName) {
 
 		try {
-			Field field = destObject_.getClass().getDeclaredField(fieldName);
+			
+			Class<?> cl = destObject_.getClass();
+			
+			Field field = cl.getDeclaredField(fieldName);
 			field.setAccessible(true);
 			
 			Type type = field.getGenericType();

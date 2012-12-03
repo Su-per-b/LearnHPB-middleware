@@ -10,13 +10,11 @@ import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
  */
 public class ConfigChangeNotify extends BaseEvent<ConfigStruct> {
 	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
-	public ConfigChangeNotify(Object source, ConfigStruct configStruct) {
-        super(source, configStruct);
+	public ConfigChangeNotify(Object source, ConfigStruct payload) {
+        super(source, payload);
     }
 	
     @Override
@@ -31,7 +29,7 @@ public class ConfigChangeNotify extends BaseEvent<ConfigStruct> {
         if (obj.getClass() != getClass())
             return false;
 
-        ResultEvent typedObj = (ResultEvent) obj;
+        ConfigChangeNotify typedObj = (ConfigChangeNotify) obj;
         
         return new EqualsBuilder().
                 append(this.payload_, typedObj.getPayload()).

@@ -1,6 +1,5 @@
 package com.sri.straylight.client.test;
 
-import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,8 +9,6 @@ import com.sri.straylight.client.controller.SimulationController;
 import com.sri.straylight.client.model.ClientConfig;
 import com.sri.straylight.client.model.ClientConfigXML;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
-import com.sri.straylight.fmuWrapper.event.SimStateClientRequest;
-import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 

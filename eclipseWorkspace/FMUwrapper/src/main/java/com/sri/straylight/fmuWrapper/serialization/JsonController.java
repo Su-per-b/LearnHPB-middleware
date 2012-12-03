@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonNull;
+import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
@@ -18,9 +19,16 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
+import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
+import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct;
+import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct.ByReference;
+
+
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
+
+
 /**
  * used for serialization
  */
@@ -128,9 +136,6 @@ public class JsonController {
 
 		registeredClasses_ = new HashMap<String, Type>();
 		
-
-		//register_(XMLparsed.class, new InitializedStructAdapter());
-		
 		register_(MessageStruct.class, new MessageStructAdapter());
 		register_(MessageEvent.class, new MessageEventAdapter());
 		
@@ -145,7 +150,6 @@ public class JsonController {
 		register_(SimStateNativeRequest.class, new SimStateNativeRequestAdapter());
 		register_(SimStateNativeNotify.class, new SimStateNativeNotifyAdapter());
 		
-		
 		register_(TypeSpecReal.class, new TypeSpecRealAdapter());
 		register_(ScalarVariableReal.class, new ScalarVariableRealAdapter());
 		
@@ -153,8 +157,13 @@ public class JsonController {
 		register_(ScalarVariablesAll.class, new ScalarVariablesAllAdapter());
 		
 		register_(XMLparsedInfo.class, new XMLparsedInfoAdapter());
+		register_(ConfigStruct.class, new ConfigStructAdapter());
+		register_(DefaultExperimentStruct.ByReference.class, new DefaultExperimentStructAdapter());
 		
-
+		register_(ConfigChangeNotify.class, new ConfigChangeNotifyAdapter());
+		
+		
+		
 		gson_ = gsonBuilder_.create();
 	}
 	

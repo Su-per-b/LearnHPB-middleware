@@ -1,12 +1,16 @@
 package com.sri.straylight.fmuWrapper.voNative;
 
+import com.sri.straylight.fmuWrapper.serialization.JsonController;
+import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sun.jna.Structure;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class DefaultExperimentStruct.
  */
-public class DefaultExperimentStruct extends Structure {
+public class DefaultExperimentStruct
+	extends Structure
+	implements JsonSerializable {
 	
 	/**
 	 * The Class ByReference.
@@ -21,5 +25,11 @@ public class DefaultExperimentStruct extends Structure {
 	
 	/** The tolerance. */
 	public double tolerance;
+	
+	
+	public String toJson() {
+		return JsonController.getInstance().toJson(this);
+	}
+	
 	
 }

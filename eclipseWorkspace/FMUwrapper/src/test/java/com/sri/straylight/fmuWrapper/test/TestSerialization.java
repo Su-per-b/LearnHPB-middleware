@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
@@ -25,6 +26,8 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
+import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
+import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct;
 import com.sri.straylight.fmuWrapper.voNative.Enu;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageType;
@@ -687,6 +690,86 @@ public class TestSerialization {
 		assertEquals(xmlParsedInfo, xmlParsedInfoDeserialized);
 
 	}
+	
+	@Test
+	public void defaultExperimentStruct() {
+
+		
+		DefaultExperimentStruct.ByReference struct 
+			= new DefaultExperimentStruct.ByReference();
+		
+		struct.startTime = 123.03;
+		struct.stopTime = 145.03;
+		struct.tolerance = 10.0;
+		String json = struct.toJson();
+		
+		Object structDeserialized = gsonController_.fromJson(json);
+		//assert
+		assertEquals(struct.getClass(), structDeserialized.getClass());
+		assertEquals(DefaultExperimentStruct.ByReference.class, structDeserialized.getClass());
+		assertEquals(struct, structDeserialized);
+		
+		
+	}
+	
+	
+	@Test
+	public void configStruct() {
+	
+		
+		DefaultExperimentStruct.ByReference defaultExperimentStruct 
+			= new DefaultExperimentStruct.ByReference();
+	
+		defaultExperimentStruct.startTime = 123.03;
+		defaultExperimentStruct.stopTime = 145.03;
+		defaultExperimentStruct.tolerance = 10.0;
+		
+		ConfigStruct configStruct = new ConfigStruct();
+		configStruct.stepDelta = 1.0;
+		configStruct.defaultExperimentStruct = defaultExperimentStruct;
+		
+		
+		String json = configStruct.toJson();
+		
+		Object configStructDeserialized = gsonController_.fromJson(json);
+		
+		//assert
+		assertEquals(configStruct.getClass(), configStructDeserialized.getClass());
+		assertEquals(ConfigStruct.class, configStructDeserialized.getClass());
+		assertEquals(configStruct, configStructDeserialized);
+		
+	}
+	
+	
+	@Test
+	public void configChangeNotify() {
+		
+		
+		DefaultExperimentStruct.ByReference defaultExperimentStruct 
+		= new DefaultExperimentStruct.ByReference();
+		
+		defaultExperimentStruct.startTime = 123.03;
+		defaultExperimentStruct.stopTime = 145.03;
+		defaultExperimentStruct.tolerance = 10.0;
+		
+		ConfigStruct configStruct = new ConfigStruct();
+		configStruct.stepDelta = 1.0;
+		configStruct.defaultExperimentStruct = defaultExperimentStruct;
+		
+		
+		ConfigChangeNotify event = new ConfigChangeNotify(this,configStruct);
+		String json = event.toJson();
+		
+		Object eventDeserialized = gsonController_.fromJson(json);
+		
+		//assert
+		assertEquals(event.getClass(), eventDeserialized.getClass());
+		assertEquals(ConfigChangeNotify.class, eventDeserialized.getClass());
+		assertEquals(event, eventDeserialized);
+		
+	}
+	
+	
 	
 	
 }

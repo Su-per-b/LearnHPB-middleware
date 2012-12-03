@@ -2,10 +2,7 @@ package com.sri.straylight.socketserver.controller;
 
 import java.io.IOException;
 
-import org.bushe.swing.event.annotation.EventSubscriber;
-
 import com.sri.straylight.fmuWrapper.Controller.FMUcontroller;
-import com.sri.straylight.fmuWrapper.event.BaseEvent;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
@@ -15,14 +12,14 @@ import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
+import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sri.straylight.socketserver.StraylightWebSocket;
-import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 
 
 public class ConnectionBundle extends AbstractController {
 
-	private SimulationController simulationController_;
+
 	private WebSocketConnectionController webSocketConnectionController_;
 
 	private FMUcontroller fmuController_;
