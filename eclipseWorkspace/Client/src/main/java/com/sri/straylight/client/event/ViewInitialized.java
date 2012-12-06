@@ -1,7 +1,6 @@
 package com.sri.straylight.client.event;
 
 import com.sri.straylight.client.view.BaseView;
-import com.sri.straylight.fmuWrapper.event.BaseEventForClient;
 
 
 /**

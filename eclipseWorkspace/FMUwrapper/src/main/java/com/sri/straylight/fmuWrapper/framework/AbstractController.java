@@ -64,8 +64,9 @@ public abstract class AbstractController implements ActionListener, WindowListen
     
     private Map	<  Class<? extends BaseEvent<?>>, 
     			   List<StraylightEventListener<? extends BaseEvent<?>,?>>  
-    			> 
-    				eventListeners;
+    			> eventListeners = new HashMap	<  Class<? extends BaseEvent<?>>, 
+    		 			   List<StraylightEventListener<? extends BaseEvent<?>,?>>  
+     			>();
     
     
 
@@ -77,9 +78,6 @@ public abstract class AbstractController implements ActionListener, WindowListen
      */
     public AbstractController() { 
     	this(null, null);
-    	eventListeners = new HashMap	<  Class<? extends BaseEvent<?>>, 
- 			   List<StraylightEventListener<? extends BaseEvent<?>,?>>  
- 			>();
     }
 
     /**
@@ -210,7 +208,12 @@ public abstract class AbstractController implements ActionListener, WindowListen
         
         List<StraylightEventListener<? extends BaseEvent<?>,?>>  listenersForEvent = eventListeners.get(eventClass);
         
-        if (listenersForEvent == null) { listenersForEvent = new ArrayList<StraylightEventListener<? extends BaseEvent<?>,?>>(); }
+        if (listenersForEvent == null) { 
+        	
+        	//listenersForEvent = new ArrayList<StraylightEventListener<? extends BaseEvent<?>,?>>(); 
+        	listenersForEvent = new ArrayList<StraylightEventListener<? extends BaseEvent<?>,?>>();
+        	
+        }
         
         listenersForEvent.add(eventListener);
         eventListeners.put(eventClass, listenersForEvent);
@@ -256,14 +259,18 @@ public abstract class AbstractController implements ActionListener, WindowListen
      * @param event the event
      * @param global the global
      */
-    protected void fireEvent(BaseEvent<?> event, boolean global) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	protected void fireEvent(BaseEvent<?> event, boolean global) {
     	
         if (!event.alreadyFired(this)) {
         	
-        	Class<?> cl = event.getClass();
+        	Class<?> eventClass = event.getClass();
         	
-            if (eventListeners.get(cl) != null) {
-                for (StraylightEventListener eventListener : eventListeners.get(event.getClass())) {
+            if (eventListeners.get(eventClass) != null) {
+            	
+            	List<StraylightEventListener<? extends BaseEvent<?>,?>>  listenersForEvent = eventListeners.get(eventClass);
+            	
+                for (StraylightEventListener eventListener : listenersForEvent) {
                     log.debug("Event: " + event.getClass().getName() + " with listener: " + eventListener.getClass().getName());
                     eventListener.handleEvent(event);
                 }

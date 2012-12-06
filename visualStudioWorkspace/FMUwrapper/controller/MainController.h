@@ -295,6 +295,10 @@ namespace Straylight
 		 *******************************************************/
 		int isSimulationComplete();
 
+
+		int forceCleanup();
+
+
 		/*******************************************************//**
 		 * Loads the DLL.
 		 *

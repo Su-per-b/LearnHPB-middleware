@@ -15,7 +15,7 @@ import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 @RunWith(OrderedRunner.class)
 public class WebsocketTs extends BaseTest {
 	
-	private static SimulationController simulationController_;
+	//private static SimulationController simulationController_;
 
 	public WebsocketTs() {
 		super();
@@ -29,7 +29,7 @@ public class WebsocketTs extends BaseTest {
 		ClientConfig configModel = ClientConfigXML.load();
 		configModel.connectTo = ConnectTo.connectTo_localhost;
 		
-		simulationController_ = new SimulationController( configModel );
+		new SimulationController( configModel );
 		
 		requestStateChange_(SimStateNative.simStateNative_1_connect_requested);
 		awaitOnState(SimStateNative.simStateNative_1_connect_completed);

@@ -22,9 +22,6 @@ public class MessageReceived extends BaseEvent<String> {
     	return payload_;
     }
 
-	public static void fire(Object source, String str) {
-		MessageReceived event = new MessageReceived(source,str);
-		EventBus.publish(event);
-	}
+
 
 }

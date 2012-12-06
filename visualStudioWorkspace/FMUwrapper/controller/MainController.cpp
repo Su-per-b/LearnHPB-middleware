@@ -25,7 +25,18 @@ namespace Straylight
 	{
 		//logger_ = new Logger();
 		resultCallbackPtr_ = NULL;
-		resultClassCallbackPtr_ = NULL;
+		unzipFolderPath_ = NULL;
+		xmlFilePath_ = NULL;
+		dllFilePath_ = NULL;
+		configStruct_ = NULL;
+		fmu_= NULL;
+		fmiComponent_ = NULL;
+		mainDataModel_ = NULL;
+
+		stateChangeCallbackPtr_ = NULL;
+
+
+
 	}
 
 
@@ -33,23 +44,66 @@ namespace Straylight
 	{
 		printf(_T("executing deconstructor"));
 
+
+
+
 		// Cleanup
-		free((void *) unzipFolderPath_);
-		free((void *) xmlFilePath_);
-		free((void *) dllFilePath_);
+		if(NULL != unzipFolderPath_) {
+			free((void *) unzipFolderPath_);
+		}
+
+
+		if(NULL != dllFilePath_) {
+			free((void *) dllFilePath_);
+		}
+
+		if(NULL != configStruct_ ) {
+			delete configStruct_;
+		}
+
 
 		// Release FMU
-		FreeLibrary(fmu_->dllHandle);
-		freeElement(fmu_->modelDescription);
+		if(NULL != fmu_) {
 
-		delete fmu_;
+			if (NULL != fmiComponent_) {
+				fmu_->terminateSlave(fmiComponent_);
+				fmu_->freeSlaveInstance(fmiComponent_);
+			}
+
+
+			if (NULL !=  fmu_->modelDescription) {
+				free((void *) fmu_->modelDescription);
+			}
+
+
+			if (NULL !=  fmu_->dllHandle) {
+				FreeLibrary (fmu_->dllHandle);
+			}
+
+
+
+
+			delete fmu_;
+		}
+
+		if(NULL != mainDataModel_) {
+			delete mainDataModel_;
+		}
+		
+
 		delete Logger::getInstance();
+
+		printf(_T("deconstructor done"));
 	}
 
 
 	void MainController::connect( void (*messageCallbackPtr)(MessageStruct *), void (*resultCallbackPtr)(ScalarValueResultsStruct *), void (*stateChangeCallbackPtr)(SimStateNative ) )
 	{
 			fmu_ = new FMU();
+			fmu_->dllHandle =NULL;
+			fmu_->modelDescription =NULL;
+
+
 			Logger::getInstance()->registerMessageCallback(messageCallbackPtr);
 			Logger::getInstance()->setDebugvs(1);
 
@@ -62,12 +116,12 @@ namespace Straylight
 			mainDataModel_->setFMU(fmu_);
 
 
-			setState_( simStateNative_0_uninitialized );
+			setState_( simStateNative_1_connect_completed );
 	}
 
-	void MainController::setResultClassCallback( void (*resultClassCallbackPtr)(ScalarValueResults *) ) {
-		resultClassCallbackPtr_ = resultClassCallbackPtr;
-	}
+	//void MainController::setResultClassCallback( void (*resultClassCallbackPtr)(ScalarValueResults *) ) {
+		//resultClassCallbackPtr_ = resultClassCallbackPtr;
+	//	}
 
 
 	/*******************************************************//**
@@ -78,15 +132,6 @@ namespace Straylight
 	void MainController::requestStateChange (SimStateNative requestedState) {
 		
 		switch (requestedState) {
-
-
-		case simStateNative_2_xmlParse_requested :
-			if (state_ == simStateNative_1_connect_completed) {
-	
-			}
-
-
-			break;
 
 
 		case simStateNative_3_init_requested :
@@ -165,8 +210,35 @@ namespace Straylight
 			}
 			break;
 
-		}
+
 	}
+	}
+
+
+
+	int MainController::forceCleanup() {
+
+		if (state_ == simStateNative_1_connect_requested ||
+			simStateNative_1_connect_completed ||
+			simStateNative_2_xmlParse_requested ||
+			simStateNative_2_xmlParse_completed
+			) 
+		{
+
+			setState_(simStateNative_8_tearDown_completed);
+			return 0;
+		} else if (state_ == simStateNative_3_ready) {
+
+
+			setState_(simStateNative_8_tearDown_completed);
+			return 0;
+		}
+
+
+
+	}
+
+
 
 	/*******************************************************//**
 	 * Cleanups this object.
@@ -650,9 +722,6 @@ namespace Straylight
 			resultCallbackPtr_(scalarValueResults_->toStruct());
 		}
 
-		if (resultClassCallbackPtr_ != NULL) {
-			resultClassCallbackPtr_(scalarValueResults_);
-		}
 
 
 		nSteps_++;

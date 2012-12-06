@@ -2,27 +2,19 @@ package com.sri.straylight.socketserver;
 
 
 
+//import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketHandler;
 
+import com.sri.straylight.socketserver.controller.SocketController;
+
+
 
 public class JettyWebSocketHandler extends WebSocketHandler {
 
-	private StraylightWebSocket straylightWebSocket_;
-//	private AbstractController parent_;
-
-	
-//	public JettyWebSocketHandler(AbstractController parent) {
-//		super();
-//		parent_ = parent;
-//	}
-	
-	
-	public StraylightWebSocket getStraylightWebSocket(){
-		return straylightWebSocket_;
-	}
 	
 	public WebSocket doWebSocketConnect(HttpServletRequest request,
 			String protocol) {
@@ -31,11 +23,10 @@ public class JettyWebSocketHandler extends WebSocketHandler {
 	    System.out.println("pathInfo: " + pathInfo);
 	    
 	    if (pathInfo.equals("/")) {
-	    	straylightWebSocket_ = new StraylightWebSocket();
-	    	return straylightWebSocket_;
+	    	SocketController socketController = new SocketController();
+	    	return socketController;
 	    } else {
 	    	return null;
 	    }
-
 	}
 }

@@ -398,6 +398,9 @@ public class TestSerialization {
 		assertEquals(SimStateNativeRequest.class, event1Deserialized.getClass());
 		
 		assertEquals(event1, event1Deserialized);
+		assertEquals("{\"type\":\"com.sri.straylight.fmuWrapper.event.SimStateNativeRequest\",\"payload\":{\"type\":\"com.sri.straylight.fmuWrapper.voNative.SimStateNative\",\"intValue\":6}}",
+				json);
+		
 
 	}
 	

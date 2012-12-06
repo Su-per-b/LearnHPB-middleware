@@ -3,7 +3,6 @@ package com.sri.straylight.fmuWrapper.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
@@ -113,16 +112,7 @@ public class StateTransitionTests {
 			StateTransitionTests.blockThreadUntilState_ = SimStateNative.simStateNative_1_connect_completed;
 			
 
-			try
-			{
-				fmuController_.connect();
-			}
-			catch(IOException ex)
-			{
-				ex.printStackTrace();
-			}
-			
-			
+			fmuController_.requestStateChange(SimStateNative.simStateNative_1_connect_requested);
 			awaitOnBarrier(barrier);
 			
 			Thread t = Thread.currentThread();
@@ -131,7 +121,10 @@ public class StateTransitionTests {
 		    assert (threadName.equals("InitThread"));
 		    
 			StateTransitionTests.blockThreadUntilState_ = SimStateNative.simStateNative_2_xmlParse_completed;
-			fmuController_.xmlParse();
+			
+
+			fmuController_.requestStateChange(SimStateNative.simStateNative_2_xmlParse_requested);
+			
 			awaitOnBarrier(barrier);
 			
 			

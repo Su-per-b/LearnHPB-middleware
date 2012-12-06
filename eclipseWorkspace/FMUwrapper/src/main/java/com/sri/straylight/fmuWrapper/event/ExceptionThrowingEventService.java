@@ -12,7 +12,7 @@ public class ExceptionThrowingEventService extends SwingEventService {
 			Object event, 
 			Throwable e, 
 			StackTraceElement[] callingStack,						
-			EventSubscriber eventSubscriber) 
+			@SuppressWarnings("rawtypes") EventSubscriber eventSubscriber) 
 	{		
 
 		super.handleException(event, e, callingStack, eventSubscriber);					

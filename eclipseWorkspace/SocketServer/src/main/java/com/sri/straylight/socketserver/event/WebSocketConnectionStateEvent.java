@@ -1,34 +1,31 @@
 package com.sri.straylight.socketserver.event;
 
-import java.util.EventObject;
-
-import org.bushe.swing.event.EventBus;
-
+import com.sri.straylight.fmuWrapper.event.BaseEvent;
+import com.sri.straylight.socketserver.controller.SocketController;
 import com.sri.straylight.socketserver.model.WebSocketConnectionState;
 
 
-public class WebSocketConnectionStateEvent extends EventObject {
+public class WebSocketConnectionStateEvent extends BaseEvent<WebSocketConnectionState> {
 	
 	
 	private static final long serialVersionUID = 1L;
-	private WebSocketConnectionState payload_;
 	
-	public WebSocketConnectionStateEvent(Object source, WebSocketConnectionState payload) {
-		super(source);
+	private SocketController stronglyTypedSource_;
+	
+	public WebSocketConnectionStateEvent(SocketController source, WebSocketConnectionState payload ) {
 		
-		payload_ = payload;
+		super(source, payload);
+		stronglyTypedSource_ = source;
 	}
-	
 
-    public WebSocketConnectionState getPayload() {
-    	return payload_;
-    }
-
-
-
-	public static void fire(Object source, WebSocketConnectionState state) {
-		WebSocketConnectionStateEvent event = new WebSocketConnectionStateEvent(source,state);
-		EventBus.publish(event);
+	public SocketController getStronglyTypedSource() {
+		return stronglyTypedSource_;
 	}
+
+
+
+
+
+
     
 }

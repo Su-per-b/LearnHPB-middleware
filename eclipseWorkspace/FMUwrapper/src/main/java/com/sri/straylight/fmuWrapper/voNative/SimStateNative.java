@@ -66,7 +66,12 @@ public enum SimStateNative implements JnaEnum<SimStateNative>, JsonSerializable 
 	simStateNative_7_resume_completed,
 	
 	/** error */
-	simStateNative_e_error;
+	simStateNative_e_error,
+	
+	/** tear down */
+	simStateNative_8_tearDown_requested,
+	simStateNative_8_tearDown_completed;
+	
 	
 	/** The start. */
 	private static int start = 0;

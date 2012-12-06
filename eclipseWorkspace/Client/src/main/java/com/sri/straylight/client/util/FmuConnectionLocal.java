@@ -2,6 +2,7 @@ package com.sri.straylight.client.util;
 
 import java.util.Vector;
 
+import com.sri.straylight.fmuWrapper.Controller.FMUcontrollerGlobal;
 import com.sri.straylight.fmuWrapper.Controller.ThreadedFMUcontroller;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
@@ -18,17 +19,13 @@ public class FmuConnectionLocal extends FmuConnectionAbstract {
 
 	//constructor
 	public FmuConnectionLocal() {
-		threadedFMUcontroller_ = new ThreadedFMUcontroller();
+		
+		FMUcontrollerGlobal fmuController = new FMUcontrollerGlobal(null);
+		
+		threadedFMUcontroller_ = new ThreadedFMUcontroller(fmuController);
 		threadedFMUcontroller_.instantiateFMU();
 	}
 	
-	public void connect() {
-		threadedFMUcontroller_.connect();
-	}
-	
-	public void xmlParse() {
-		threadedFMUcontroller_.xmlParse();
-	}
 	
 	public void setConfig(ConfigStruct configStruct) {
 		threadedFMUcontroller_.setConfig(configStruct);

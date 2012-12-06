@@ -8,7 +8,7 @@ import org.junit.runners.model.FrameworkMethod;
 * Class for alphabetical ordering of a list                                   
 */
  
-public class AlphabeticalOrder implements Comparator
+public class AlphabeticalOrder implements Comparator<Object>
 {
 	
 public int compare (Object o1, Object o2)

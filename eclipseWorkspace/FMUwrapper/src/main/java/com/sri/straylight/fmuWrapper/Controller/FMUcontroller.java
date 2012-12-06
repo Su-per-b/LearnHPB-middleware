@@ -11,6 +11,7 @@ import org.bushe.swing.event.annotation.AnnotationProcessor;
 import com.sri.straylight.fmuWrapper.JNAfmuWrapper;
 import com.sri.straylight.fmuWrapper.JNAfmuWrapper.MessageCallbackInterface;
 import com.sri.straylight.fmuWrapper.JNAfmuWrapper.ResultCallbackInterface;
+import com.sri.straylight.fmuWrapper.JNAfmuWrapper.StateChangeCallbackInterface;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
@@ -45,52 +46,67 @@ public class FMUcontroller extends AbstractController {
 
 	private MessageCallback messageCallbackFunc_;
 	private ResultCallback resultCallbackFunc_;
-	
-	
+	private StateChangeCallback stateChangeCallbackFunc_;
+
 	private class MessageCallback implements MessageCallbackInterface {
-		
-		private FMUcontroller fmuController_;
-		
-		public MessageCallback(FMUcontroller fmuController) {
-			fmuController_ = fmuController;
-		}
-		
-		
+
 		public boolean messageCallback(MessageStruct messageStruct) {
-			
+
 			MessageEvent event = new MessageEvent(this, messageStruct);
-			fmuController_.fireEvent(event);
-			
+			fireEvent(event);
+
 			return true;
 		}
-		
+
 	}
-		
+
 	private class ResultCallback implements ResultCallbackInterface {
-		
-		private FMUcontroller fmuController_;
-		
-		public ResultCallback(FMUcontroller fmuController) {
-			fmuController_ = fmuController;
-		}
-		
-		
+
 		public boolean resultCallback(
 				ScalarValueResultsStruct scalarValueResultsStruct) {
 
 			ScalarValueResults scalarValueResults = new ScalarValueResults(
 					scalarValueResultsStruct);
 			ResultEvent event = new ResultEvent(this, scalarValueResults);
-			
-			fmuController_.fireEvent(event);
+
+			fireEvent(event);
 
 			return true;
 		}
-		
+
 	}
-		
-	
-	
+
+	private class StateChangeCallback implements StateChangeCallbackInterface {
+
+		public boolean stateChangeCallback(SimStateNative simStateNative) {
+
+			simStateNative_ = simStateNative;
+
+			if (fireEventsForStates_.containsKey(simStateNative)) {
+				SimStateNativeNotify e = new SimStateNativeNotify(this, simStateNative);
+				fireEvent(e);
+			}
+
+			return true;
+		}
+
+	}
+
+	/**
+	 * The state change callback func_. private StateChangeCallbackInterface
+	 * stateChangeCallbackFunc_ =
+	 * 
+	 * new JNAfmuWrapper.StateChangeCallbackInterface() { public boolean
+	 * stateChangeCallback(SimStateNative simStateNative) {
+	 * 
+	 * simStateNative_ = simStateNative;
+	 * 
+	 * if (fireEventsForStates_.containsKey(simStateNative)) {
+	 * notifyStateChange_(simStateNative); }
+	 * 
+	 * return true; } };
+	 */
+
 	// constructor
 	public FMUcontroller(AbstractController parent) {
 		super(parent);
@@ -116,22 +132,23 @@ public class FMUcontroller extends AbstractController {
 	}
 
 	protected void init() {
-		
-		messageCallbackFunc_ = new MessageCallback(this);
-		resultCallbackFunc_ = new ResultCallback(this);
-		
-		
+
 		AnnotationProcessor.process(this);
 
+		messageCallbackFunc_ = new MessageCallback();
+		resultCallbackFunc_ = new ResultCallback();
+		stateChangeCallbackFunc_ = new StateChangeCallback();
 		simStateNative_ = SimStateNative.simStateNative_0_uninitialized;
+
+		//fireEventsForStates_.put(SimStateNative.simStateNative_0_uninitialized,
+			//	true);
 
 		fireEventsForStates_.put(
 				SimStateNative.simStateNative_1_connect_completed, true);
+
 		fireEventsForStates_.put(
 				SimStateNative.simStateNative_2_xmlParse_completed, true);
 
-		fireEventsForStates_.put(
-				SimStateNative.simStateNative_3_init_initializedSlaves, true);
 		fireEventsForStates_.put(SimStateNative.simStateNative_3_ready, true);
 
 		fireEventsForStates_.put(SimStateNative.simStateNative_4_run_completed,
@@ -139,40 +156,18 @@ public class FMUcontroller extends AbstractController {
 		fireEventsForStates_.put(SimStateNative.simStateNative_4_run_started,
 				true);
 
-		fireEventsForStates_.put(SimStateNative.simStateNative_5_step_started,
-				true);
+	//	fireEventsForStates_.put(SimStateNative.simStateNative_5_step_started,
+	//			true);
 		fireEventsForStates_.put(
 				SimStateNative.simStateNative_5_step_completed, true);
 
 		fireEventsForStates_.put(
 				SimStateNative.simStateNative_7_terminate_completed, true);
+		
 		fireEventsForStates_.put(SimStateNative.simStateNative_e_error, true);
 
 	}
 
-	private void notifyStateChange_(SimStateNative simStateNative) {
-		SimStateNativeNotify e = new SimStateNativeNotify(this, simStateNative);
-		this.fireEvent(e);
-	}
-
-
-		
-	
-	/** The state change callback func_. */
-	private JNAfmuWrapper.StateChangeCallbackInterface stateChangeCallbackFunc_ =
-
-	new JNAfmuWrapper.StateChangeCallbackInterface() {
-		public boolean stateChangeCallback(SimStateNative simStateNative) {
-
-			simStateNative_ = simStateNative;
-
-			if (fireEventsForStates_.containsKey(simStateNative)) {
-				notifyStateChange_(simStateNative);
-			}
-
-			return true;
-		}
-	};
 
 	/**
 	 * Gets the meta data.
@@ -186,7 +181,7 @@ public class FMUcontroller extends AbstractController {
 	/**
 	 * Xml parse.
 	 */
-	public void xmlParse() {
+	private void xmlParse_() {
 
 		jnaFMUWrapper_.xmlParse(fmuWrapperConfig_.fmuFolderAbsolutePath);
 
@@ -197,13 +192,9 @@ public class FMUcontroller extends AbstractController {
 
 		XMLparsedInfo xmlParsed = new XMLparsedInfo(scalarVariablesAll);
 		XMLparsedEvent event = new XMLparsedEvent(this, xmlParsed);
-		
-		String json = event.toJson();
-//		JsonSerializable obj = JsonController.getInstance().fromJson(json);
-		
-		
+
 		fireEvent(event);
-		
+
 		configStruct_ = jnaFMUWrapper_.getConfig();
 		ConfigChangeNotify event2 = new ConfigChangeNotify(this, configStruct_);
 		fireEvent(event2);
@@ -221,7 +212,7 @@ public class FMUcontroller extends AbstractController {
 		// check to see that DLL exists
 		boolean exists = (new File(
 				fmuWrapperConfig_.nativeLibFolderAbsolutePath
-						+ "\\FMUwrapper.dll")).exists();
+				+ "\\FMUwrapper.dll")).exists();
 
 		if (!exists) {
 			throw new IOException("FMUwrapper.dll not found in: "
@@ -236,7 +227,7 @@ public class FMUcontroller extends AbstractController {
 	 * @throws Exception
 	 *             the exception
 	 */
-	public void connect() throws IOException {
+	private void connect_() throws IOException {
 
 		checkConfig();
 
@@ -245,17 +236,21 @@ public class FMUcontroller extends AbstractController {
 
 		Map<String, Object> options = new HashMap<String, Object>();
 		EnumTypeMapper mp = new EnumTypeMapper();
+		
+		if (null == jnaFMUWrapper_) {
+			
+			options.put(Library.OPTION_TYPE_MAPPER, mp);
+			jnaFMUWrapper_ = (JNAfmuWrapper) Native.loadLibrary("FMUwrapper",
+					JNAfmuWrapper.class, options);
+		}
+		
 
-		options.put(Library.OPTION_TYPE_MAPPER, mp);
-		jnaFMUWrapper_ = (JNAfmuWrapper) Native.loadLibrary("FMUwrapper",
-				JNAfmuWrapper.class, options);
 
 		jnaFMUWrapper_.connect(messageCallbackFunc_, resultCallbackFunc_,
 				stateChangeCallbackFunc_);
 
-		notifyStateChange_(SimStateNative.simStateNative_1_connect_completed);
+		// notifyStateChange_(SimStateNative.simStateNative_1_connect_completed);
 	}
-
 
 	/**
 	 * Sets the config.
@@ -270,12 +265,12 @@ public class FMUcontroller extends AbstractController {
 
 		if (result == 0) {
 
-			ConfigChangeNotify event = new ConfigChangeNotify(this, configStruct_);
+			ConfigChangeNotify event = new ConfigChangeNotify(this,
+					configStruct_);
 			fireEvent(event);
 		}
 
 	}
-	
 
 	/**
 	 * Request state change.
@@ -284,7 +279,25 @@ public class FMUcontroller extends AbstractController {
 	 *            the new state
 	 */
 	public void requestStateChange(SimStateNative newState) {
-		jnaFMUWrapper_.requestStateChange(newState);
+
+		switch (newState) {
+		case simStateNative_1_connect_requested:
+			try {
+				connect_();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		case simStateNative_2_xmlParse_requested:
+			xmlParse_();
+			break;
+		case simStateNative_8_tearDown_requested:
+			forceCleanup();
+			break;
+		default:
+			jnaFMUWrapper_.requestStateChange(newState);
+		}
 	}
 
 	/**
@@ -309,7 +322,7 @@ public class FMUcontroller extends AbstractController {
 
 		int len = scalarValueList.size();
 		ScalarValueRealStruct[] ary4 = (ScalarValueRealStruct[]) new ScalarValueRealStruct()
-				.toArray(len);
+		.toArray(len);
 
 		for (int i = 0; i < len; i++) {
 			ScalarValueRealStruct struct = scalarValueList.get(i);
@@ -319,6 +332,12 @@ public class FMUcontroller extends AbstractController {
 
 		jnaFMUWrapper_.setScalarValues(ary4, len);
 
+	}
+
+	public void forceCleanup() {
+		
+		jnaFMUWrapper_.forceCleanup();
+		
 	}
 
 }

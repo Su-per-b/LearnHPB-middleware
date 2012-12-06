@@ -98,6 +98,10 @@ typedef enum {
 	simStateNative_7_resume_completed,
 	
 	/** error */
-	simStateNative_e_error
+	simStateNative_e_error,
+
+	/** tear down */
+	simStateNative_8_tearDown_requested,
+	simStateNative_8_tearDown_completed
 
 } SimStateNative;

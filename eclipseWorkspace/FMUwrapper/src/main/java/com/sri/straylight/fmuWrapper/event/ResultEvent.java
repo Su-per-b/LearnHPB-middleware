@@ -18,7 +18,7 @@ public class ResultEvent extends BaseEvent<ScalarValueResults> {
 	private static final long serialVersionUID = 1L;
 
 	public ResultEvent(Object source, ScalarValueResults payload) {
-        super(source, payload);
+        super(source, payload, ResultEvent.class);
     }
 	
 

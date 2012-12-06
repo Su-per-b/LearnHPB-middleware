@@ -29,6 +29,7 @@ namespace Straylight
 	Logger::~Logger(void)
 	{
 		instanceFlag = false;
+
 	}
 
 	Logger* Logger::getInstance()  { 

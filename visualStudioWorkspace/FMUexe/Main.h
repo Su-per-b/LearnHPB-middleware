@@ -9,7 +9,10 @@
 
 using namespace Straylight;
 
-void test1();
+void terminate1();
+void terminate2();
+void terminate3();
+void terminate4();
 
 void test2();
 

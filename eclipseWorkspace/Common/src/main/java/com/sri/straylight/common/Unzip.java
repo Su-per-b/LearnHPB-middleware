@@ -27,7 +27,10 @@ public class Unzip {
 
 	public static final void unzip(String filename, String unZipFolder) {
 		
-		Enumeration<ZipEntry> entries;
+//		Enumeration<ZipEntry> entries;
+		
+		Enumeration<? extends ZipEntry> entries;
+		
 		ZipFile zipFile;
 
 		//make directories
@@ -35,7 +38,7 @@ public class Unzip {
 			
 
 			zipFile = new ZipFile(filename);
-			entries = (Enumeration<ZipEntry>) zipFile.entries();
+			entries = zipFile.entries();
 			
 			while (entries.hasMoreElements()) {
 				ZipEntry entry = (ZipEntry) entries.nextElement();
@@ -57,7 +60,7 @@ public class Unzip {
 		//make files
 		try {
 
-			entries = (Enumeration<ZipEntry>) zipFile.entries();
+			entries =  zipFile.entries();
 			while (entries.hasMoreElements()) {
 				ZipEntry entry = (ZipEntry) entries.nextElement();
 				String entryName = entry.getName();

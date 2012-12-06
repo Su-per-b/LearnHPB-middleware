@@ -65,7 +65,7 @@ void cleanup() {
  *******************************************************/
 int forceCleanup()
 {
-	//fmuWrapper->setState(fmuState_cleanedup);
+	mainController->forceCleanup();
 	delete mainController;
 
 	return 0;

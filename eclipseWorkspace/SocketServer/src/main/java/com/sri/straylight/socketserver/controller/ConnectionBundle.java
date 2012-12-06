@@ -1,9 +1,9 @@
 package com.sri.straylight.socketserver.controller;
 
-import java.io.IOException;
+import org.bushe.swing.event.EventBus;
 
 import com.sri.straylight.fmuWrapper.Controller.FMUcontroller;
-import com.sri.straylight.fmuWrapper.event.BaseEvent;
+import com.sri.straylight.fmuWrapper.Controller.ThreadedFMUcontroller;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
@@ -12,71 +12,50 @@ import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.event.StraylightEventListener;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
+import com.sri.straylight.fmuWrapper.serialization.JsonController;
+import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
+import com.sri.straylight.fmuWrapper.voNative.MessageType;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
-import com.sri.straylight.socketserver.StraylightWebSocket;
+import com.sri.straylight.socketserver.event.MessageReceived;
 
 
 public class ConnectionBundle extends AbstractController {
 
 
 	private WebSocketConnectionController webSocketConnectionController_;
-
 	private FMUcontroller fmuController_;
-
 	private int idx_;
 
+	private ThreadedFMUcontroller threadedFMUcontroller_;
+	
+	
 	public ConnectionBundle(AbstractController parent,
-			StraylightWebSocket webSocketConnection, int idx) {
+			SocketController webSocketConnection) {
 		super(null);
-		idx_ = idx;
+		
+		setIdx_(webSocketConnection.getIdx());
 
-		webSocketConnectionController_ = new WebSocketConnectionController(
-				this, webSocketConnection, idx);
+		webSocketConnectionController_ = new WebSocketConnectionController(this, webSocketConnection);
 	}
 
 	public void init() {
 
 		webSocketConnectionController_.init();
-
-		webSocketConnectionController_
-				.registerEventListener(
-						SimStateNativeRequest.class,
-
-						new StraylightEventListener<SimStateNativeRequest, SimStateNative>() {
-
-							@Override
-							public void handleEvent(SimStateNativeRequest event) {
-								SimStateNative requestedState = event
-										.getPayload();
-
-								switch (requestedState) {
-								case simStateNative_1_connect_requested:
-									// try {
-									// fmuController_.connect();
-									// } catch (IOException e) {
-									// e.printStackTrace();
-									// }
-									break;
-								case simStateNative_2_xmlParse_requested:
-									fmuController_.xmlParse();
-									break;
-								default:
-									fmuController_.requestStateChange(requestedState);
-								}
-
-							}
-
-						}
-
-				);
-
-		fmuController_ = new FMUcontroller(this);
 		
+		
+		fmuController_ = new FMUcontroller(this);
+		threadedFMUcontroller_ = new ThreadedFMUcontroller(fmuController_);
+		
+		registerSocketListeners_();
+		registerSimulationListeners_();
 
+	}
+
+	private void registerSimulationListeners_() {
 		//SimStateNativeNotify
 		fmuController_
 		.registerEventListener(
@@ -134,15 +113,72 @@ public class ConnectionBundle extends AbstractController {
 						webSocketConnectionController_.send(event);
 					}
 				});
-		
-		
-		
-		try {
-			fmuController_.connect();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	}
 
+	private void registerSocketListeners_() {
+		
+		
+
+		
+		webSocketConnectionController_
+		
+		.registerEventListener(
+				MessageReceived.class,
+				
+				new StraylightEventListener<MessageReceived, String>() {
+					
+					@Override
+					public void handleEvent(MessageReceived event) {
+						
+						String messageText = event.getPayload();
+				    	JsonSerializable deserializedEvent = JsonController.getInstance().fromJson(messageText);
+				    	
+				    	//if it is an event then just publish it
+				    	if (deserializedEvent instanceof SimStateNativeRequest) {
+				    		SimStateNativeRequest newEvent = (SimStateNativeRequest) deserializedEvent;
+				    		//fireEvent(newEvent);
+				    		threadedFMUcontroller_.requestStateChange(newEvent.getPayload());
+				    	} else {
+				    		
+				    		
+				    		MessageEvent newEvent = new MessageEvent(this, "Could not deserialize object ", MessageType.messageType_error);
+				    		fireEvent(newEvent);
+				    		
+				    	}
+						
+					}
+					
+				}
+				
+				);
+		
+		
+		
+	}
+
+	public int getIdx_() {
+		return idx_;
+	}
+
+	public void setIdx_(int idx_) {
+		this.idx_ = idx_;
+	}
+
+	public void notifyClient() {
+
+		SimStateNativeNotify event = 
+				new  SimStateNativeNotify(this, fmuController_.getSimStateNative());
+		
+		
+		webSocketConnectionController_.send(event);
+	}
+
+	public void forceCleanup() {
+		
+		if (null != fmuController_) {
+			fmuController_.forceCleanup();
+		}
+		
 	}
 	
 

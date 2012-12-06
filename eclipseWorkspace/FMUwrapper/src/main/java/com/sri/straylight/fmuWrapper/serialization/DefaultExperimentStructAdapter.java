@@ -8,7 +8,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
-import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct.ByReference;
 import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct;
 
 public class DefaultExperimentStructAdapter

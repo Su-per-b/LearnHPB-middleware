@@ -8,7 +8,7 @@ import java.util.concurrent.TimeoutException;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.fmuWrapper.event.SimStateClientRequest;
+import com.sri.straylight.client.event.SimStateClientRequest;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 

@@ -32,15 +32,12 @@ import de.roderick.weberknecht.WebSocketMessage;
  */
 public class FmuConnectionRemote extends FmuConnectionAbstract {
 
-	private WorkerConnect workerConnect_;
 	private WorkerRequestStateChange workerRequestStateChange_;
-//	private WorkerRun workerRun_;
-//	private WorkerRequestStateChange workerRequestStateChange_;
 //	private WorkerSetScalarValues workerSetScalarValues_;
 //	private WorkerSetConfig workerSetConfig_;
 //	
 	private JsonController gsonController_ = JsonController.getInstance();
-	private WebSocket websocketConnection_;
+	private WebSocket webSocket_;
 	private final String urlString_;
 
 	public FmuConnectionRemote(String hostName) {
@@ -72,12 +69,6 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 	}
 
 
-	public void changeInput(int idx, double value) {
-
-	}
-
-
-
 
 
 	public void setScalarValues(Vector<ScalarValueRealStruct> scalrValueList) {
@@ -87,7 +78,7 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 	private void initSocketClient_() throws Exception {
 
 		URI uri = new URI(urlString_);
-		websocketConnection_ = new WebSocketConnection(uri);
+		webSocket_ = new WebSocketConnection(uri);
 
 		WebSocketEventHandler webSocketEventHandler = new WebSocketEventHandler() {
 
@@ -127,93 +118,48 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 		};
 
 		AnnotationProcessor.process(webSocketEventHandler);
-		websocketConnection_.setEventHandler(webSocketEventHandler);
-
-	}
-
-	public void connect() {
-
-		MessageEvent event = new MessageEvent(this,
-				"Connecting to remote host at: " + urlString_,
-				MessageType.messageType_info);
-
-		EventBus.publish(event);
-
-		workerConnect_ = new WorkerConnect();
-		workerConnect_.execute();
+		webSocket_.setEventHandler(webSocketEventHandler);
 
 	}
 
 
 
-	public void xmlParse() {
-		workerRequestStateChange_ = new WorkerRequestStateChange(SimStateNative.simStateNative_2_xmlParse_requested);
-		workerRequestStateChange_.execute();
-	}
-	
-	
 	public void requestStateChange(SimStateNative state) {
 		workerRequestStateChange_ = new WorkerRequestStateChange(state);
 		workerRequestStateChange_.execute();
 	}
 
 
-//	public void run() {
-//
-//		try {
-//			websocketConnection_.send("run");
-//		} catch (WebSocketException wse) {
-//			wse.printStackTrace();
-//			wse.getMessage();
-//			String msg = wse.getClass().getSimpleName() + ": "
-//					+ wse.getMessage();
-//			System.out.println(msg);
-//
-//		}
-//	}
-//	
 	
-	protected class WorkerConnect extends WorkerThreadAbstract {
-		
-		WorkerConnect() {
-			setSyncObject(websocketConnection_);
-		}
-		
-		//called by superclass
-		@Override
-		public void doIt_() {
-			try {
-				websocketConnection_.connect();
-			} catch (WebSocketException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		//called by superclass
-		@Override
-		public void doneIt_() {
-			workerConnect_ = null;
-		}
-	}
-	
-
 	protected class WorkerRequestStateChange extends WorkerThreadAbstract {
 		private SimStateNative state_;
 		
 		WorkerRequestStateChange(SimStateNative state) {
 			
 			state_ = state;
-			setSyncObject(websocketConnection_);
+			setSyncObject(webSocket_);
 			
 		}
 		
 		@Override
 		public void doIt_() {
 			SimStateNativeRequest event = new SimStateNativeRequest(this, state_);
+			
+			
+			if (state_ == SimStateNative.simStateNative_1_connect_requested) {
+				try {
+					webSocket_.connect();
+				} catch (WebSocketException e) {
+					e.printStackTrace();
+				}
+			}
+			
 			try {
-				websocketConnection_.send(event.toJson());
+				
+				String json = event.toJson();
+				
+				webSocket_.send(json);
 			} catch (WebSocketException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -225,18 +171,6 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 	}
 	
 	
-//	
-//	
-//	public void requestStateChange(SimStateNative newState) {
-//
-//		SimStateNativeRequest event = new SimStateNativeRequest(this, newState);
-//		try {
-//			websocketConnection_.send(event.toJson());
-//		} catch (WebSocketException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//	}
+
 
 }

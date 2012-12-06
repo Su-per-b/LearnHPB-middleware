@@ -22,10 +22,14 @@ import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
  */
 public class BaseEvent<PAYLOAD> extends EventObject implements JsonSerializable {
 
-    /** The payload. */
+
     protected PAYLOAD payload_;
     
     protected static final long serialVersionUID = 1L;
+    
+    private Class<?> clazz_;
+    
+    private Object source_;
     
     /** The fired in controllers. */
     Set<AbstractController> firedInControllers = new HashSet<AbstractController>();
@@ -36,10 +40,21 @@ public class BaseEvent<PAYLOAD> extends EventObject implements JsonSerializable 
     
 
     public BaseEvent(Object source, PAYLOAD payload) {
-        super( source );
+        this( source );
+        source_ = source;
         this.payload_ = payload;
     }
 
+
+	public BaseEvent(Object source, PAYLOAD payload, Class<?> clazz) {
+		this( source, payload);
+		
+		clazz_ = clazz;
+	}
+	
+    public Class<?> getClazz() {
+        return clazz_;
+    }
 
 	/**
      * Gets the payload.
@@ -98,9 +113,7 @@ public class BaseEvent<PAYLOAD> extends EventObject implements JsonSerializable 
         return firedInControllers.contains(controller);
     }
 
-	
-	
 
-	
+
 	
 }

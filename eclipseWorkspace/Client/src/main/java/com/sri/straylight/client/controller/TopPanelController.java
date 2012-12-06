@@ -15,9 +15,9 @@ import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.ClearViewAction;
+import com.sri.straylight.client.event.SimStateClientRequest;
 import com.sri.straylight.client.view.BaseView;
 import com.sri.straylight.fmuWrapper.event.SimStateClientNotify;
-import com.sri.straylight.fmuWrapper.event.SimStateClientRequest;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
@@ -37,7 +37,7 @@ public class TopPanelController extends BaseController {
 	private final JButton btnRun_ = new JButton("Run >");
 	private final JButton btnStop_ = new JButton("Stop []");
 	private final JButton btnTerminate_ = new JButton("Terminate .");
-	
+	private final JButton btnTearDown_ = new JButton("Tear Down");
 
 	/** The simulation state_. */
 	private SimStateNative simStateNative_ = SimStateNative.simStateNative_0_uninitialized;
@@ -84,6 +84,7 @@ public class TopPanelController extends BaseController {
 		buttons_.add(btnStop_);
 		buttons_.add(btnTerminate_);
 		buttons_.add(btnClear_);
+		buttons_.add(btnTearDown_);
 
 		int len = buttons_.size();
 		Insets insets = new Insets(0, 2, 0, 2);
@@ -118,32 +119,32 @@ public class TopPanelController extends BaseController {
 		
 		stateMap_.put(
 				SimStateNative.simStateNative_1_connect_completed,
-				new JButton[]{btnXmlParse_, btnClear_}
+				new JButton[]{btnXmlParse_, btnClear_, btnTearDown_}
 				);
 		
 		stateMap_.put(
 				SimStateNative.simStateNative_2_xmlParse_completed,
-				new JButton[]{btnInit_, btnClear_}
+				new JButton[]{btnInit_, btnClear_, btnTearDown_}
 				);
 		
 		stateMap_.put(
 				SimStateNative.simStateNative_3_ready,
-				new JButton[]{btnRun_, btnStep_,  btnTerminate_, btnClear_}
+				new JButton[]{btnRun_, btnStep_,  btnTerminate_, btnClear_, btnTearDown_}
 				);
 		
 		stateMap_.put(
 				SimStateNative.simStateNative_4_run_started,
-				new JButton[]{btnStop_}
+				new JButton[]{btnStop_, btnTearDown_}
 				);
 		
 		stateMap_.put(
 				SimStateNative.simStateNative_4_run_completed,
-				new JButton[]{ btnTerminate_}
+				new JButton[]{ btnTerminate_, btnTearDown_}
 				);
 		
 		stateMap_.put(
 				SimStateNative.simStateNative_7_terminate_completed,
-				new JButton[]{btnInit_, btnClear_}
+				new JButton[]{btnInit_, btnClear_, btnTearDown_}
 				);
 
 		
@@ -207,6 +208,13 @@ public class TopPanelController extends BaseController {
 		btnTerminate_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				requestStateChange_(SimStateNative.simStateNative_7_terminate_requested);
+			}
+		}
+				);
+		
+		btnTearDown_.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				requestStateChange_(SimStateNative.simStateNative_8_tearDown_requested);
 			}
 		}
 				);

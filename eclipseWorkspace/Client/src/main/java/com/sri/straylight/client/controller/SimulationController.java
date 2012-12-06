@@ -5,6 +5,7 @@ import java.util.Vector;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
+import com.sri.straylight.client.event.SimStateClientRequest;
 import com.sri.straylight.client.model.ClientConfig;
 import com.sri.straylight.client.util.FmuConnectionAbstract;
 import com.sri.straylight.client.util.FmuConnectionLocal;
@@ -12,7 +13,6 @@ import com.sri.straylight.client.util.FmuConnectionRemote;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeRequest;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
 import com.sri.straylight.fmuWrapper.event.SimStateClientNotify;
-import com.sri.straylight.fmuWrapper.event.SimStateClientRequest;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
@@ -77,12 +77,6 @@ public class SimulationController extends BaseController  {
     	}
     	
 
-    	try 
-    	{
-			fmuConnect_.connect();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
     }
 	
 	
@@ -119,16 +113,20 @@ public class SimulationController extends BaseController  {
 		
 		SimStateNative requestedState = event.getPayload();
 		
-		switch (requestedState) {
-			case simStateNative_1_connect_requested :
-				connect_();
-				break;
-			case simStateNative_2_xmlParse_requested :
-				fmuConnect_.xmlParse();
-				break;
-			default:
-				fmuConnect_.requestStateChange(requestedState);
+//		switch (requestedState) {
+//			case simStateNative_1_connect_requested :
+//				connect_();
+//				break;
+//			default:
+//				fmuConnect_.requestStateChange(requestedState);
+//		}
+		
+		if (requestedState == SimStateNative.simStateNative_1_connect_requested ) {
+			connect_();
 		}
+		
+		fmuConnect_.requestStateChange(requestedState);
+		
     }
 	
 	

@@ -7,7 +7,10 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	//test2();
+	//terminate1();
+	//terminate2();
+	terminate4();
+
 	_getch();
 
 	return 0;
@@ -25,6 +28,50 @@ void messageCallback(MessageStruct * messageStruct) {
 void fmuStateCallback(SimStateNative simStateNative) {
 	//printf ("Main.exe messageCallback: %s \n", messageStruct->msgText);
 	printf ("Main.exe simStateNative: %s \n", _T("simStateNative"));
+}
+
+void terminate1 () {
+
+	connect(&messageCallback, &resultCallback, &fmuStateCallback);
+	forceCleanup();
+
+	return;
+}
+
+void terminate2 () {
+
+	connect(&messageCallback, &resultCallback, &fmuStateCallback);
+	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1"));
+
+	forceCleanup();
+
+	return;
+}
+
+
+void terminate3 () {
+
+	connect(&messageCallback, &resultCallback, &fmuStateCallback);
+	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1"));
+
+	requestStateChange(simStateNative_3_init_requested);
+
+	forceCleanup();
+
+	return;
+}
+
+void terminate4 () {
+
+	connect(&messageCallback, &resultCallback, &fmuStateCallback);
+	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1"));
+
+	requestStateChange(simStateNative_3_init_requested);
+	requestStateChange(simStateNative_5_step_requested);
+
+	forceCleanup();
+
+	return;
 }
 
 /*
