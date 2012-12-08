@@ -335,8 +335,10 @@ public class FMUcontroller extends AbstractController {
 	}
 
 	public void forceCleanup() {
-		
-		jnaFMUWrapper_.forceCleanup();
+
+		if (null != jnaFMUWrapper_) {
+			jnaFMUWrapper_.forceCleanup();
+		}
 		
 	}
 
