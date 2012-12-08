@@ -16,7 +16,10 @@
 
 
 	<dependencies>
+	
 
+            
+            
 		<!-- needed for the Config.xml parsing -->
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
@@ -49,14 +52,10 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.1.3.Final</version>
+			<version>4.1.7.Final</version>
 		</dependency>
 
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>${commons-lang.version}</version>
-		</dependency>
+
 
 	</dependencies>
 
