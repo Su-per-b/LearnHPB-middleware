@@ -5,7 +5,7 @@
 
 	<groupId>com.sri</groupId>
 	<artifactId>StraylightServer</artifactId>
-	<version>0.4.8</version>
+	<version>0.5.0</version>
 	<packaging>pom</packaging>
 
 	<name>StraylightServer</name>
