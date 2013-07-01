@@ -35,8 +35,6 @@ namespace Straylight
 
 		stateChangeCallbackPtr_ = NULL;
 
-
-
 	}
 
 

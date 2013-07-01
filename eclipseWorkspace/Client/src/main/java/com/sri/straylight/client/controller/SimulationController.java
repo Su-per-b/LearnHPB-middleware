@@ -68,8 +68,11 @@ public class SimulationController extends BaseController  {
 			case connectTo_localhost :
 				fmuConnect_ = new FmuConnectionRemote("localhost");
 				break;
-			case connecTo_straylightsim_com :
+			case connectTo_wintermute_straylightsim_com :
 				fmuConnect_ = new FmuConnectionRemote("wintermute.straylightsim.com");
+				break;
+			case connectTo_dev_straylightsim_com :
+				fmuConnect_ = new FmuConnectionRemote("dev.straylightsim.com");
 				break;
 			case connectTo_file :
 				fmuConnect_ = new FmuConnectionLocal();

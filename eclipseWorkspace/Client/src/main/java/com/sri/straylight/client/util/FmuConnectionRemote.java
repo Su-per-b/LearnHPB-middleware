@@ -7,6 +7,10 @@ import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
+import com.sri.straylight.client.event.SimStateClientRequest;
+import com.sri.straylight.client.event.WebSocketEvent;
+import com.sri.straylight.client.event.WebSocketEventType;
+import com.sri.straylight.client.model.WebSocketState;
 import com.sri.straylight.fmuWrapper.event.BaseEvent;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateClientNotify;
@@ -37,7 +41,8 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 //	private WorkerSetConfig workerSetConfig_;
 //	
 	private JsonController gsonController_ = JsonController.getInstance();
-	private WebSocket webSocket_;
+	private WebSocket webSocketConnection_;
+	private WebSocketState webSocketState_;
 	private final String urlString_;
 
 	public FmuConnectionRemote(String hostName) {
@@ -78,12 +83,16 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 	private void initSocketClient_() throws Exception {
 
 		URI uri = new URI(urlString_);
-		webSocket_ = new WebSocketConnection(uri);
-
+		webSocketConnection_ = new WebSocketConnection(uri);
+		webSocketState_ = WebSocketState.uninitialized;
+		
 		WebSocketEventHandler webSocketEventHandler = new WebSocketEventHandler() {
-
+			
+			
 			public void onOpen() {
-
+				
+				webSocketState_ = WebSocketState.open;
+				
 				MessageEvent event = new MessageEvent(this,
 						"WebSocket Connection open to " + urlString_,
 						MessageType.messageType_info);
@@ -108,6 +117,8 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 
 			public void onClose() {
 
+				webSocketState_ = WebSocketState.closed;
+				
 				MessageEvent event = new MessageEvent(this,
 						"WebSocket Connection closed",
 						MessageType.messageType_info);
@@ -118,7 +129,7 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 		};
 
 		AnnotationProcessor.process(webSocketEventHandler);
-		webSocket_.setEventHandler(webSocketEventHandler);
+		webSocketConnection_.setEventHandler(webSocketEventHandler);
 
 	}
 
@@ -132,33 +143,55 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 
 	
 	protected class WorkerRequestStateChange extends WorkerThreadAbstract {
-		private SimStateNative state_;
+		private SimStateNative simStateNative_;
 		
-		WorkerRequestStateChange(SimStateNative state) {
-			
-			state_ = state;
-			setSyncObject(webSocket_);
-			
+		WorkerRequestStateChange(SimStateNative requestedState) {
+			simStateNative_ = requestedState;
+			setSyncObject(webSocketConnection_);
 		}
 		
 		@Override
 		public void doIt_() {
-			SimStateNativeRequest event = new SimStateNativeRequest(this, state_);
+			SimStateNativeRequest event = new SimStateNativeRequest(this, simStateNative_);
 			
+
 			
-			if (state_ == SimStateNative.simStateNative_1_connect_requested) {
+			if (webSocketState_ == WebSocketState.uninitialized) {
 				try {
-					webSocket_.connect();
+					webSocketConnection_.connect();
 				} catch (WebSocketException e) {
-					e.printStackTrace();
+					
+					WebSocketEvent errorEvent = new WebSocketEvent(this,
+							"Unable to connect to WebSocket",
+							e.getMessage(),
+							WebSocketEventType.webSocketEventType_error);
+
+					EventBus.publish(errorEvent);
+					
+					
+					EventBus.publish(
+							new SimStateClientRequest(this, SimStateNative.simStateNative_0_uninitialized)
+							);	
+					
+					return;
 				}
+				
 			}
+			
+			
+//			if (simStateNative_ == SimStateNative.simStateNative_0_uninitialized &&
+//					webSocketState_ == WebSocketState.uninitialized 
+//					
+//					) {
+//				return;
+//			}
+			
 			
 			try {
 				
 				String json = event.toJson();
 				
-				webSocket_.send(json);
+				webSocketConnection_.send(json);
 			} catch (WebSocketException e) {
 				e.printStackTrace();
 			}

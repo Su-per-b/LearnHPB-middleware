@@ -76,7 +76,7 @@ public class ConsoleController extends BaseController {
 		
 		ScalarValueResults scalarValueResults = event.getPayload();
 		ConsoleView view = (ConsoleView) getView();
-		view.outputText (scalarValueResults.toString(), Color.black);
+		//view.outputText (scalarValueResults.toString(), Color.black);
 	}
 	
 

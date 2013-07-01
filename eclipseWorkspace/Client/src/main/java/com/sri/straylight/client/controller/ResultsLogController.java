@@ -82,6 +82,8 @@ public class ResultsLogController extends BaseController {
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
 		
+	
+		
 		final ScalarValueResults scalarValueResults = event.getPayload();
 		
 		SwingUtilities.invokeLater(new Runnable() {
@@ -92,6 +94,8 @@ public class ResultsLogController extends BaseController {
 		    	theView.update();
 		    }
 		});
+		
+		
 	}
 	
 

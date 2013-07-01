@@ -78,19 +78,34 @@ public class SimulationEngineDialog extends JDialog  {
     		    }
 	    		
 	    );
-
-	    JRadioButton rb_straylightsim_com = new JRadioButton("wintermute.straylightsim.com");
-	   // rb_straylightsim_com.setSelected(true);
-	    rb_straylightsim_com.addActionListener(
+	    
+	    
+	    JRadioButton rb_dev_straylightsim_com = new JRadioButton("dev.straylightsim.com");
+	    rb_dev_straylightsim_com.addActionListener(
 	    		new ActionListener() {
 	    		      public void actionPerformed(ActionEvent actionEvent) {
 	    		        AbstractButton aButton = (AbstractButton) actionEvent.getSource();
 	    		        System.out.println("Selected: " + aButton.getText());
-	    		        configModel_.connectTo = ConnectTo.connecTo_straylightsim_com;
+	    		        configModel_.connectTo = ConnectTo.connectTo_dev_straylightsim_com;
 	    		      }
 	    		    }
 		    		
 		    );
+	    
+	    
+	    JRadioButton rb_wintermute_straylightsim_com = new JRadioButton("wintermute.straylightsim.com");
+	    rb_wintermute_straylightsim_com.addActionListener(
+	    		new ActionListener() {
+	    		      public void actionPerformed(ActionEvent actionEvent) {
+	    		        AbstractButton aButton = (AbstractButton) actionEvent.getSource();
+	    		        System.out.println("Selected: " + aButton.getText());
+	    		        configModel_.connectTo = ConnectTo.connectTo_wintermute_straylightsim_com;
+	    		      }
+	    		    }
+		    		
+		    );
+	    
+	    
 	    
 	    JRadioButton rb_fmu_file = new JRadioButton("FMU file");
 	    rb_fmu_file.addActionListener(
@@ -105,19 +120,27 @@ public class SimulationEngineDialog extends JDialog  {
 		    );
 	    
 	    
+	    
+	    
+	    
 	    serverSelectionGroup.add(rb_localhost);
-	    serverSelectionGroup.add(rb_straylightsim_com);
+	    serverSelectionGroup.add(rb_wintermute_straylightsim_com);
+	    serverSelectionGroup.add(rb_dev_straylightsim_com);
+	    
 	    serverSelectionGroup.add(rb_fmu_file);
 	    
 	    serverSelectionPanel.setBorder(border);
 	    serverSelectionPanel.add(rb_localhost);
-	    serverSelectionPanel.add(rb_straylightsim_com);
+	    serverSelectionPanel.add(rb_wintermute_straylightsim_com);
+	    serverSelectionPanel.add(rb_dev_straylightsim_com);
 	    serverSelectionPanel.add(rb_fmu_file);
 	    
 	    setContentPane(serverSelectionPanel);
 	    
+	    //set the default 
 	    rb_localhost.setSelected(configModel_.connectTo == ConnectTo.connectTo_localhost);
-	    rb_straylightsim_com.setSelected(configModel_.connectTo == ConnectTo.connecTo_straylightsim_com);
+	    rb_wintermute_straylightsim_com.setSelected(configModel_.connectTo == ConnectTo.connectTo_wintermute_straylightsim_com);
+	    rb_wintermute_straylightsim_com.setSelected(configModel_.connectTo == ConnectTo.connectTo_dev_straylightsim_com);
 	    rb_fmu_file.setSelected(configModel_.connectTo == ConnectTo.connectTo_file);
 	    
 

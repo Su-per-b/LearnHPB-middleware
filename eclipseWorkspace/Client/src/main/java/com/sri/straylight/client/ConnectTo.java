@@ -12,7 +12,8 @@ public enum ConnectTo implements JnaEnum<ConnectTo>  {
 	
     connectTo_file,
     connectTo_localhost,
-    connecTo_straylightsim_com;
+    connectTo_wintermute_straylightsim_com,
+    connectTo_dev_straylightsim_com;
 	     
 	/** The start. */
 	private static int start = 0;

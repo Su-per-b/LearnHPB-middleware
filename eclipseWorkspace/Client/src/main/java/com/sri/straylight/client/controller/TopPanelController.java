@@ -265,7 +265,6 @@ public class TopPanelController extends BaseController {
 	public void onSimStateClientRequest(SimStateClientRequest event) {
 		
 		simStateNative_ = event.getPayload();
-	
 		updateGUI_();
 		
 	}

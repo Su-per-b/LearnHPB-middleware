@@ -13,6 +13,8 @@ import javax.swing.SwingUtilities;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.ViewInitialized;
+import com.sri.straylight.client.event.WebSocketEvent;
+import com.sri.straylight.client.event.WebSocketEventStruct;
 import com.sri.straylight.client.event.menu.About_Help;
 import com.sri.straylight.client.event.menu.Options_SelectSimulationEngine;
 import com.sri.straylight.client.model.ClientConfig;
@@ -29,7 +31,7 @@ public class MainController extends BaseController {
 	
 
 	/** The top panel controller_. */
-	private TopPanelController topPanelController_;
+	private TopPanelController2 topPanelController_;
 	
 	/** The simulation controller_. */
 	@SuppressWarnings("unused")
@@ -78,7 +80,8 @@ public class MainController extends BaseController {
 		
 		mainView_ = new MainView(configModel_);
 
-		topPanelController_  = new TopPanelController(this);
+		topPanelController_  = new TopPanelController2(this);
+		
 		simulationController_ = new SimulationController(this, configModel_);
 		consoleController_ = new ConsoleController(this);
 		inputController_ = new InputController(this);
@@ -147,10 +150,25 @@ public class MainController extends BaseController {
 				null, 
 				view, 
 				null);
-		
-		
+
 	}
 	
+	
+	
+	@EventSubscriber(eventClass=WebSocketEvent.class)
+	public void onWebSocketEvent(WebSocketEvent event) {
+		
+		WebSocketEventStruct payload = event.getPayload();
+		
+		JOptionPane.showMessageDialog(
+				mainView_, 
+
+				payload.eventDetail,
+				"Error: " + payload.eventTitle,
+				JOptionPane.ERROR_MESSAGE
+				);
+
+	}
 	
 	
 	@EventSubscriber(eventClass=ViewInitialized.class)
