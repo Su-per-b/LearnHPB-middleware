@@ -16,7 +16,10 @@
 
 
 	<dependencies>
+	
 
+            
+            
 		<!-- needed for the Config.xml parsing -->
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
@@ -52,11 +55,7 @@
 			<version>4.1.7.Final</version>
 		</dependency>
 
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>${commons-lang.version}</version>
-		</dependency>
+
 
 	</dependencies>
 

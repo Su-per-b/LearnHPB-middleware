@@ -19,4 +19,31 @@
 		<module>../Common</module>
 	</modules>
 
+
+<build>
+		<plugins>
+		
+			<!--  Compile -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
+			
+			<!--  Test -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12.4</version>
+			</plugin>
+			
+
+			
+		</plugins>
+	</build>
+	
 </project>

@@ -22,6 +22,7 @@ package ch.ethz.polyql.jql.domain.shared;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // TODO: Auto-generated Javadoc
@@ -89,7 +90,7 @@ public final class TextUtil {
    * @param text the text
    * @return the string
    */
-  public static String join( final List<String> text ) {
+  public static String join(  final String[] text ) {
 	  
     return StringUtils.join( text, "\n" );
     
