@@ -4,7 +4,7 @@
 
 	<artifactId>StraylightParent</artifactId>
 	<groupId>com.sri</groupId>
-	<version>0.5.0</version>
+	<version>0.5.1</version>
 	<packaging>pom</packaging>
 	<modelVersion>4.0.0</modelVersion>
 
@@ -61,15 +61,12 @@
 
 	<dependencies>
 	
-			<dependency>
+		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>${commons-lang.version}</version>
 		</dependency>
 		
-
-
-
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>

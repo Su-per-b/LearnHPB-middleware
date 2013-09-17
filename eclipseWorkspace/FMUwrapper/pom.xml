@@ -10,7 +10,7 @@
 	<parent>
 		<artifactId>StraylightParent</artifactId>
 		<groupId>com.sri</groupId>
-		<version>0.5.0</version>
+		<version>0.5.1</version>
 		<relativePath>../StraylightParent/pom.xml</relativePath>
 	</parent>
 

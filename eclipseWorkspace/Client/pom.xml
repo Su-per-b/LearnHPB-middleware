@@ -2,58 +2,55 @@
 <project
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	
+
 	<artifactId>Client</artifactId>
 	<packaging>jar</packaging>
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<artifactId>StraylightParent</artifactId>
 		<groupId>com.sri</groupId>
-		<version>0.5.0</version>
+		<version>0.5.1</version>
 		<relativePath>../StraylightParent/pom.xml</relativePath>
 	</parent>
-	
+
 
 	<dependencies>
-		
-		<!--  Local Modules -->
+
+		<!-- Local Modules -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>FMUwrapper</artifactId>
 			<version> ${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>Common</artifactId>
 			<version> ${project.version}</version>
 		</dependency>
 
-		<!--  Remote -->
+
+		<!-- Remote -->
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>${commons-lang.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>20030203.000550</version>
+		</dependency>
 		
-<dependency>
-	<groupId>commons-io</groupId>
-	<artifactId>commons-io</artifactId>
-	<version>20030203.000550</version>
-</dependency>
-<dependency>
-	<groupId>commons-lang</groupId>
-	<artifactId>commons-lang</artifactId>
-	<version>20030203.000129</version>
-</dependency>
-            
+
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>3.2.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-validator</groupId>
 			<artifactId>commons-validator</artifactId>
@@ -90,58 +87,54 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
+		
 
-
-<!-- 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>1.4</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<transformers>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<manifestEntries>
-										<Main-Class>com.sri.straylight.client.Main</Main-Class>
-										<Build-Number>${project.version}</Build-Number>
-									</manifestEntries>
-								</transformer>
-							</transformers>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-				
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.2.1</version>
-				<executions>
-					<execution>
-
-						<goals>
-							<goal>exec</goal>
-							<goal>java</goal>
-						</goals>
-
-					</execution>
-				</executions>
-				<configuration>
-					<mainClass>com.sri.straylight.client.Main</mainClass>
-				</configuration>
-			</plugin>
+		<plugins>
 			
-		</plugins> -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.4</version>
+					<configuration>
+						<source>1.7</source>
+						<target>1.7</target>
+					</configuration>
+				</plugin>
+			
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>1.2.1</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>exec</goal>
+								<goal>java</goal>
+							</goals>
+	
+						</execution>
+					</executions>
+					<configuration>
+						<mainClass>com.sri.straylight.client.Main</mainClass>
+					</configuration>
+				</plugin>
+		</plugins>
 		
-		
+
+		<!-- <plugins> <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-shade-plugin</artifactId> 
+			<version>1.4</version> <executions> <execution> <phase>package</phase> <goals> 
+			<goal>shade</goal> </goals> <configuration> <transformers> <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"> 
+			<manifestEntries> <Main-Class>com.sri.straylight.client.Main</Main-Class> 
+			<Build-Number>${project.version}</Build-Number> </manifestEntries> </transformer> 
+			</transformers> </configuration> </execution> </executions> </plugin> <plugin> 
+			<groupId>org.codehaus.mojo</groupId> <artifactId>exec-maven-plugin</artifactId> 
+			<version>1.2.1</version> <executions> <execution> <goals> <goal>exec</goal> 
+			<goal>java</goal> </goals> </execution> </executions> <configuration> <mainClass>com.sri.straylight.client.Main</mainClass> 
+			</configuration> </plugin> </plugins> -->
+
+
 	</build>
+
 
 
 

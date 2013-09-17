@@ -16,7 +16,7 @@ public class ClientConfigXML {
 	private static final String configFile_ = "client-config.xml";
 	
 	/** The Constant VERSION. */
-	public static final String VERSION = "Alpha 0.50";
+	public static final String VERSION = "Alpha 0.51";
 
 	/** The fmu file path. */
 	public String fmuFilePath = "";
