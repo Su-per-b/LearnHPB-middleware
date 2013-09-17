@@ -12,8 +12,8 @@ public enum ConnectTo implements JnaEnum<ConnectTo>  {
 	
     connectTo_file,
     connectTo_localhost,
-    connectTo_wintermute_straylightsim_com,
-    connectTo_dev_straylightsim_com;
+    connectTo_pfalco_local,
+    connectTo_pfalco_global;
 	     
 	/** The start. */
 	private static int start = 0;

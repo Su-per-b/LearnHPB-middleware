@@ -20,7 +20,7 @@ public class ClientConfig {
 	public boolean autoInitFlag;
 	
 	/** The connect to. */
-	public ConnectTo connectTo = ConnectTo.connectTo_dev_straylightsim_com;
+	public ConnectTo connectTo = ConnectTo.connectTo_pfalco_local;
 	
 	/** The window icon url. */
 	public URL windowIconUrl;

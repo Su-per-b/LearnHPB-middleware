@@ -13,7 +13,6 @@ public class ConsoleModel {
 		Long elapsedTimeMillis =  System.currentTimeMillis()-startTime_;
 		return elapsedTimeMillis;
 	}
-	
-	
+
 
 }

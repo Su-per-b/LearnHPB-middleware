@@ -17,6 +17,8 @@ import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
+import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
+
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueBoolean;
@@ -874,7 +876,69 @@ public class TestSerialization {
 		
 	}
 	
-	
+	@Test
+	public void scalarValueChangeRequest() {
+		
+		//make struct
+		ScalarValueRealStruct struct = new ScalarValueRealStruct();
+		struct.idx = 1;
+		struct.value = 2.0;
+		
+		
+		//make Object
+		ScalarValueReal scalarValueReal1 = new ScalarValueReal(struct);
+
+		
+		//serialize / deserialize
+		String json = scalarValueReal1.toJson();
+		JsonSerializable deserializedObj = gsonController_.fromJson(json);
+		
+		//assert 1
+		assertEquals(ScalarValueReal.class,  deserializedObj.getClass());
+		
+		//cast
+		ScalarValueReal scalarValueReal2 = (ScalarValueReal) deserializedObj;
+		
+		//test 2
+    	assertEquals(scalarValueReal1, scalarValueReal2);
+
+		Double value = scalarValueReal2.getValue();
+		assertEquals(2.0, value, 0.0);
+		
+		
+		
+		Vector<ScalarValueRealStruct> scalarValueList = new Vector<ScalarValueRealStruct>();
+		scalarValueList.add(struct);
+		
+		
+		
+		
+		
+		ScalarValueChangeRequest event1 = new ScalarValueChangeRequest(this, scalarValueList);
+		
+		//String json = event1.toJson();
+		
+		
+/*		
+    	MessageStruct messageStruct1 = new MessageStruct();
+    	messageStruct1.msgText = "testMessageStruct";
+    	messageStruct1.setMessageTypeEnum(MessageType.messageType_debug);
+    	
+    	MessageEvent event1 = new MessageEvent(this, messageStruct1);
+    	String json = event1.toJson();
+    	
+    	JsonSerializable obj = gsonController_.fromJson(json);
+    	assertEquals(MessageEvent.class,  obj.getClass());
+    	
+    	MessageEvent event2 = (MessageEvent) obj;
+    	MessageStruct messageStruct2 = event2.getPayload();
+    	
+    	assertEquals(messageStruct1, messageStruct2);
+    	assertEquals(event1, event2);*/
+		
+
+		
+	}
 	
 	
 }

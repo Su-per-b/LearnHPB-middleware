@@ -80,26 +80,26 @@ public class SimulationEngineDialog extends JDialog  {
 	    );
 	    
 	    
-	    JRadioButton rb_dev_straylightsim_com = new JRadioButton("dev.straylightsim.com");
-	    rb_dev_straylightsim_com.addActionListener(
+	    JRadioButton rb_pfalco_local = new JRadioButton("Pfalco Local");
+	    rb_pfalco_local.addActionListener(
 	    		new ActionListener() {
 	    		      public void actionPerformed(ActionEvent actionEvent) {
 	    		        AbstractButton aButton = (AbstractButton) actionEvent.getSource();
 	    		        System.out.println("Selected: " + aButton.getText());
-	    		        configModel_.connectTo = ConnectTo.connectTo_dev_straylightsim_com;
+	    		        configModel_.connectTo = ConnectTo.connectTo_pfalco_local;
 	    		      }
 	    		    }
 		    		
 		    );
 	    
 	    
-	    JRadioButton rb_wintermute_straylightsim_com = new JRadioButton("wintermute.straylightsim.com");
-	    rb_wintermute_straylightsim_com.addActionListener(
+	    JRadioButton rb_pfalco_global = new JRadioButton("Pfalco global");
+	    rb_pfalco_global.addActionListener(
 	    		new ActionListener() {
 	    		      public void actionPerformed(ActionEvent actionEvent) {
 	    		        AbstractButton aButton = (AbstractButton) actionEvent.getSource();
 	    		        System.out.println("Selected: " + aButton.getText());
-	    		        configModel_.connectTo = ConnectTo.connectTo_wintermute_straylightsim_com;
+	    		        configModel_.connectTo = ConnectTo.connectTo_pfalco_global;
 	    		      }
 	    		    }
 		    		
@@ -124,23 +124,23 @@ public class SimulationEngineDialog extends JDialog  {
 	    
 	    
 	    serverSelectionGroup.add(rb_localhost);
-	    serverSelectionGroup.add(rb_wintermute_straylightsim_com);
-	    serverSelectionGroup.add(rb_dev_straylightsim_com);
+	    serverSelectionGroup.add(rb_pfalco_global);
+	    serverSelectionGroup.add(rb_pfalco_local);
 	    
 	    serverSelectionGroup.add(rb_fmu_file);
 	    
 	    serverSelectionPanel.setBorder(border);
 	    serverSelectionPanel.add(rb_localhost);
-	    serverSelectionPanel.add(rb_wintermute_straylightsim_com);
-	    serverSelectionPanel.add(rb_dev_straylightsim_com);
+	    serverSelectionPanel.add(rb_pfalco_global);
+	    serverSelectionPanel.add(rb_pfalco_local);
 	    serverSelectionPanel.add(rb_fmu_file);
 	    
 	    setContentPane(serverSelectionPanel);
 	    
 	    //set the default 
 	    rb_localhost.setSelected(configModel_.connectTo == ConnectTo.connectTo_localhost);
-	    rb_wintermute_straylightsim_com.setSelected(configModel_.connectTo == ConnectTo.connectTo_wintermute_straylightsim_com);
-	    rb_wintermute_straylightsim_com.setSelected(configModel_.connectTo == ConnectTo.connectTo_dev_straylightsim_com);
+	    rb_pfalco_global.setSelected(configModel_.connectTo == ConnectTo.connectTo_pfalco_global);
+	    rb_pfalco_local.setSelected(configModel_.connectTo == ConnectTo.connectTo_pfalco_local);
 	    rb_fmu_file.setSelected(configModel_.connectTo == ConnectTo.connectTo_file);
 	    
 

@@ -66,10 +66,15 @@ public class InputView extends BaseView {
 		inputDataModel_ = inputDataModel;
 		inputController_ = inputController;
 		
+		
+		Object[][] data = inputDataModel_.xmlParsed.getInputData();
+		String[] columns = inputDataModel_.xmlParsed.getInputFormColumnNames();
 
+		
+		
 		tableModel_ = new DefaultTableModel (	
-				inputDataModel_.xmlParsed.getInputData(),
-				inputDataModel_.xmlParsed.getInputFormColumnNames()
+				data,
+				columns
 				);
 
 		

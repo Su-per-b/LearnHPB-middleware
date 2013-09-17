@@ -200,7 +200,10 @@ public class XMLparsedInfo implements JsonSerializable  {
 	 */
 	public Object[][] getInputData() {
 		
-		Vector<ScalarVariableReal> realVarList = scalarVariablesAll_.getOutput().getRealVarList();
+		
+		ScalarVariableCollection input = scalarVariablesAll_.getInput();
+		
+		Vector<ScalarVariableReal> realVarList = input.getRealVarList();
 		
 		int len = realVarList.size();
 		Object[][] data = new Object[len][];
