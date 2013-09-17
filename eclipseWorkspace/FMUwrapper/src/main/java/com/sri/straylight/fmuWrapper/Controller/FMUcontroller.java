@@ -25,6 +25,7 @@ import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.EnumTypeMapper;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
+import com.sri.straylight.fmuWrapper.voNative.MessageType;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueResultsStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariablesAllStruct;
@@ -52,8 +53,32 @@ public class FMUcontroller extends AbstractController {
 
 		public boolean messageCallback(MessageStruct messageStruct) {
 
-			MessageEvent event = new MessageEvent(this, messageStruct);
-			fireEvent(event);
+			
+			boolean fire = false;
+			
+			if (messageStruct.messageType == 2 ) {
+				
+				int result = messageStruct.msgText.indexOf ("ScalarVariableFactory::makeReal() start value defined");
+				if (result == -1) {
+					fire = true;
+				}
+
+			}  else if (messageStruct.messageType == 1 ) {
+				int result = messageStruct.msgText.indexOf ("***CORRECTING***");
+				if (result == -1) {
+					fire = true;
+				}
+			} else {
+				fire = true;
+			}
+			
+			
+			if (fire) {
+				MessageEvent event = new MessageEvent(this, messageStruct);
+				fireEvent(event);
+			}
+
+
 
 			return true;
 		}
