@@ -52,6 +52,8 @@ public class ConnectionBundle extends AbstractController {
 		
 		registerSocketListeners_();
 		registerSimulationListeners_();
+		
+		webSocketConnectionController_.processQuedItem();
 
 	}
 

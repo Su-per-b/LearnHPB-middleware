@@ -28,6 +28,13 @@ public class WebSocketConnectionController
 //		socketController_.registerEventListener(MessageReceived.class,this);
 	}
 	
+	
+	public void processQuedItem() {
+		socketController_.processQuedItem();
+	}
+	
+	
+	
 	public void onMessageRecieved(String str) {
 		
 		System.out.println("SocketHandlerStream.onMessage " + str);

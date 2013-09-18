@@ -23,6 +23,8 @@ public class SocketController
 	
 	private WebSocketConnectionController parentController_;
 	
+	private String messageQueItem_;
+	
 
 	public void setIdx(int idx) {
 		idx_ = idx;
@@ -54,8 +56,14 @@ public class SocketController
 
 	//handle incoming message
 	public void onMessage(String str) {
-		parentController_.onMessageRecieved(str);
 		
+		
+		if (null == parentController_) {
+			messageQueItem_ = str;
+		} else {
+			parentController_.onMessageRecieved(str);
+		}
+
 
 	}
 	
@@ -109,11 +117,14 @@ public class SocketController
 
 	public void setParentController(WebSocketConnectionController webSocketConnectionController) {
 		parentController_ = webSocketConnectionController;
-		
 	}
 
 
-
+	public void processQuedItem() {
+		if (null != messageQueItem_) {
+			parentController_.onMessageRecieved(messageQueItem_);
+		}
+	}
 
 
 
