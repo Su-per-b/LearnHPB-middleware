@@ -220,9 +220,9 @@ public class TestSerialization {
 		
 		
 		//make ScalarValueCollection
-		ScalarValueCollection scalarValueCollection1 = new ScalarValueCollection();
-		scalarValueCollection1.setRealList(realList);
-		scalarValueCollection1.setBooleanList(boolList);
+		ScalarValueCollection scalarValueCollection1 = new ScalarValueCollection(realList, boolList);
+//		scalarValueCollection1.setRealList(realList);
+//		scalarValueCollection1.setBooleanList(boolList);
 		
 		//serialize / deserialize ScalarValueCollection
 		String json3 = scalarValueCollection1.toJson();

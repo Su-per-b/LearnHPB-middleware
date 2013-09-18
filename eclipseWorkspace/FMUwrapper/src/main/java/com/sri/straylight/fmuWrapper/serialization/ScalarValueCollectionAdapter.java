@@ -51,17 +51,20 @@ public class ScalarValueCollectionAdapter
 
 	throws JsonParseException {
 
-		destObject_ = new ScalarValueCollection();
+
 		super.deserialize(jsonElement, typeOfT, context);
 		
 		JsonElement jsonElementReal = jsonObject_.get("realList");
 		Vector<ScalarValueReal> realList = context.deserialize(jsonElementReal, realListType_);
-		destObject_.setRealList(realList);
+//		destObject_.setRealList(realList);
 		
 		JsonElement jsonElementBoolean = jsonObject_.get("booleanList");
 		Vector<ScalarValueBoolean> booleanList = context.deserialize(jsonElementBoolean, booleanListType_);
-		destObject_.setBooleanList(booleanList);
+//		destObject_.setBooleanList(booleanList);
 
+		destObject_ = new ScalarValueCollection(realList, booleanList);
+		
+		
 		return destObject_;
 
 	}

@@ -163,6 +163,7 @@ public class InputView extends BaseView {
 		if (latestInput_ != null) {
 			
 			BaseScalarValue val =  latestInput_.get(idx);
+			
 			componentPanel.setValue((ScalarValueReal) val);
 		}
 

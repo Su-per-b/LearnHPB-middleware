@@ -20,6 +20,9 @@ public class ScalarValueCollection implements JsonSerializable {
 	
 	
 
+	public ScalarValueCollection() {
+		valueList_ = new Vector<BaseScalarValue>();
+	}
 	
 	/**
 	 * Instantiates a new ScalarValueCollection from a struct.
@@ -31,9 +34,19 @@ public class ScalarValueCollection implements JsonSerializable {
 		init_(struct);
 	}
 	
-	public ScalarValueCollection() {
 
+	
+	
+	public ScalarValueCollection(Vector<ScalarValueReal> realList, Vector<ScalarValueBoolean> booleanList) {
+		valueList_ = new Vector<BaseScalarValue>();
+		
+		setRealList(realList);
+		setBooleanList(booleanList);
+		
 	}
+	
+	
+	
 	
 	@Override
 	public String toJson() {
@@ -45,13 +58,12 @@ public class ScalarValueCollection implements JsonSerializable {
 		
 		initReal_(struct);
 		initBoolean_(struct);
-		initAll_();
-	}
-	
-	private void initAll_() {
 
 	}
 	
+
+	
+
 	
 	public int size() {
 		
@@ -96,6 +108,14 @@ public class ScalarValueCollection implements JsonSerializable {
 	
 	public void setRealList(Vector<ScalarValueReal> realList) {
 		realList_ = realList;
+		
+		
+		int len = realList_.size();
+		for (int i = 0; i < len; i++) {
+			ScalarValueReal sv = realList_.get(i);
+			valueList_.add(sv);
+		}
+		
 	}
 	
 	public Vector<ScalarValueReal> getRealList() {
@@ -104,10 +124,20 @@ public class ScalarValueCollection implements JsonSerializable {
 	
 	public void setBooleanList(Vector<ScalarValueBoolean> booleanList) {
 		booleanList_ = booleanList;
+		
+		int len = booleanList_.size();
+		
+		for (int i = 0; i < len; i++) {
+			ScalarValueBoolean sv = booleanList_.get(i);
+			valueList_.add(sv);
+		}
 	}
 	
 	public Vector<ScalarValueBoolean> getBooleanList() {
 		return booleanList_;
+		
+		
+
 	}
 	
 	
