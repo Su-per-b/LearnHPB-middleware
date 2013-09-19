@@ -26,7 +26,6 @@ import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.EnumTypeMapper;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
-import com.sri.straylight.fmuWrapper.voNative.MessageType;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueResultsStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariablesAllStruct;
