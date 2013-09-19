@@ -134,6 +134,9 @@ public class ConnectionBundle extends AbstractController {
 					public void handleEvent(MessageReceived event) {
 						
 						String messageText = event.getPayload();
+						
+						System.out.println("StraylightEventListener.handleEvent " + messageText);
+						
 				    	JsonSerializable deserializedEvent = JsonController.getInstance().fromJson(messageText);
 				    	
 				    	//if it is an event then just publish it

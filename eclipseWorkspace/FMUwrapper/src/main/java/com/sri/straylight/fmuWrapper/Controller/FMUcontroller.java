@@ -267,7 +267,7 @@ public class FMUcontroller extends AbstractController {
 			options.put(Library.OPTION_TYPE_MAPPER, mp);
 			jnaFMUWrapper_ = (JNAfmuWrapper) Native.loadLibrary("FMUwrapper",
 					JNAfmuWrapper.class, options);
-		}
+		};
 		
 
 
