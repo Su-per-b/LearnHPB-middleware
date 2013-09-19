@@ -54,7 +54,6 @@ public class ScalarValueReal extends BaseScalarValue {
 	
 	public ScalarValueRealStruct toStruct() {
 		
-		
 		ScalarValueRealStruct struct = new ScalarValueRealStruct();
 		struct.idx = getIdx();
 		struct.value = getValue();

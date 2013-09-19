@@ -19,6 +19,7 @@ import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
@@ -358,6 +359,17 @@ public class FMUcontroller extends AbstractController {
 		jnaFMUWrapper_.setScalarValues(ary4, len);
 
 	}
+	
+
+	public void setScalarValueCollection(ScalarValueCollection collection_) {
+		
+		ScalarValueRealStruct[]  ary = collection_.getRealStructAry();
+		int len = ary.length;
+		
+		jnaFMUWrapper_.setScalarValues(ary, len);
+	}
+	
+	
 
 	public void forceCleanup() {
 
@@ -366,5 +378,7 @@ public class FMUcontroller extends AbstractController {
 		}
 		
 	}
+
+
 
 }

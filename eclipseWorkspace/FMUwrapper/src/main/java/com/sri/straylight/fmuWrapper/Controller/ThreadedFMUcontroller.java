@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.util.WorkerThreadAbstract;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
@@ -19,8 +20,10 @@ public class ThreadedFMUcontroller extends AbstractController {
 	private Object FMUcontrollerSync_ = new Object();
 	private WorkerInstantiateFMU workerInstantiateFMU_;
 	private WorkerSetConfig workerSetConfig_;
+	
 	private WorkerRequestStateChange workerRequestStateChange_;
 	private WorkerSetScalarValues workerSetScalarValues_;
+	private WorkerSetScalarValueCollection workerSetScalarValueCollection_;
 
 
 	//constructor
@@ -55,7 +58,13 @@ public class ThreadedFMUcontroller extends AbstractController {
 		workerSetScalarValues_.execute();
 	}
 
-
+	public void setScalarValueCollection(ScalarValueCollection collection) {
+		workerSetScalarValueCollection_ = new WorkerSetScalarValueCollection(collection);
+		workerSetScalarValueCollection_.execute();
+	}
+	
+	
+	
 	protected class WorkerInstantiateFMU extends WorkerThreadAbstract {
 		
 		WorkerInstantiateFMU() {
@@ -148,7 +157,29 @@ public class ThreadedFMUcontroller extends AbstractController {
 		}
 	}
 	
-
+	protected class WorkerSetScalarValueCollection extends WorkerThreadAbstract {
+		
+		private ScalarValueCollection collection_;
+		
+		WorkerSetScalarValueCollection(ScalarValueCollection collection) {
+			collection_ = collection;
+			setSyncObject(FMUcontrollerSync_);
+		}
+		
+		@Override
+		public void doIt_() {
+			setName_("WorkerSetScalarValueCollection");
+			
+			fmuController_.setScalarValueCollection(collection_);
+		}
+		
+		@Override
+		public void doneIt_() {
+			workerSetScalarValueCollection_ = null;
+		}
+	}
+	
+	
 	public SimStateNative getSimStateNative() {
 		return fmuController_.getSimStateNative();	
 	}

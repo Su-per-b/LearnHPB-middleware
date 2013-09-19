@@ -124,6 +124,26 @@ public class ScalarValueCollection implements JsonSerializable {
 		return realList_;
 	}
 	
+	
+	public ScalarValueRealStruct[] getRealStructAry() {
+		
+		
+		int len = realList_.size();
+		ScalarValueRealStruct[] ary = (ScalarValueRealStruct[]) new ScalarValueRealStruct().toArray(len);
+
+		
+		for (int i = 0; i < len; i++) {
+			ScalarValueReal real = realList_.get(i);
+			
+			//ScalarValueRealStruct struct = real.toStruct();
+			ary[i].idx = real.getIdx();
+			ary[i].value = real.getValue();
+		}
+		
+		
+		return ary;
+	}
+	
 	public void setBooleanList(Vector<ScalarValueBoolean> booleanList) {
 		booleanList_ = booleanList;
 		

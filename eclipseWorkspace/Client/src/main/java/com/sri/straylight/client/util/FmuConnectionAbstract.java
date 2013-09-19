@@ -25,9 +25,9 @@ public abstract class FmuConnectionAbstract {
 
 	public abstract void requestStateChange(SimStateNative newState);
 
-	public abstract void setScalarValues(Vector<ScalarValueRealStruct> scalrValueList);
+//	public abstract void setScalarValues(Vector<ScalarValueRealStruct> scalrValueList);
 
-	public abstract void setScalarValues2(ScalarValueCollection collection);
+	public abstract void setScalarValueCollection(ScalarValueCollection collection);
 	
 	
 }

@@ -43,11 +43,12 @@ public class FmuConnectionLocal extends FmuConnectionAbstract {
 
 
 	@Override
-	public void setScalarValues2(ScalarValueCollection collection) {
+	public void setScalarValueCollection(ScalarValueCollection collection) {
 		// TODO Auto-generated method stub
 		
-		Vector<ScalarValueRealStruct> list = collection.getRealStructList();
-		setScalarValues(list);
+		//Vector<ScalarValueRealStruct> list = collection.getRealStructList();
+		
+		threadedFMUcontroller_.setScalarValueCollection(collection);
 		
 		
 	}

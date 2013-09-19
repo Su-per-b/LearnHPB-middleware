@@ -237,7 +237,7 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 	
 	
 	@Override
-	public void setScalarValues2(ScalarValueCollection collection) {
+	public void setScalarValueCollection(ScalarValueCollection collection) {
 		
 		workerRequestScalarValueChange_ = new WorkerRequestScalarValueChange(collection);
 		workerRequestScalarValueChange_.execute();

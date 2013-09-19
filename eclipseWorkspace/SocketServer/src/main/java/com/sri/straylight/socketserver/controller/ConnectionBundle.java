@@ -7,6 +7,7 @@ import com.sri.straylight.fmuWrapper.Controller.ThreadedFMUcontroller;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.event.StraylightEventListener;
@@ -138,9 +139,12 @@ public class ConnectionBundle extends AbstractController {
 				    	//if it is an event then just publish it
 				    	if (deserializedEvent instanceof SimStateNativeRequest) {
 				    		SimStateNativeRequest newEvent = (SimStateNativeRequest) deserializedEvent;
-				    		//fireEvent(newEvent);
 				    		threadedFMUcontroller_.requestStateChange(newEvent.getPayload());
-				    	} else {
+				    	} else if (deserializedEvent instanceof ScalarValueChangeRequest) {
+				    		
+				    		ScalarValueChangeRequest newEvent = (ScalarValueChangeRequest) deserializedEvent;
+				    		threadedFMUcontroller_.setScalarValueCollection(newEvent.getPayload());
+				    	} {
 				    		
 				    		
 				    		MessageEvent newEvent = new MessageEvent(this, "Could not deserialize object ", MessageType.messageType_error);

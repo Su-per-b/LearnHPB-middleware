@@ -111,7 +111,7 @@ public class SimulationController extends BaseController  {
 		//Vector<ScalarValueReal> list = collection.getRealList();
 		
 		
-		fmuConnect_.setScalarValues2(collection);
+		fmuConnect_.setScalarValueCollection(collection);
 	}
 	
 	
