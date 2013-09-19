@@ -13,12 +13,14 @@ import com.sri.straylight.client.event.WebSocketEventType;
 import com.sri.straylight.client.model.WebSocketState;
 import com.sri.straylight.fmuWrapper.event.BaseEvent;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
+import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
 import com.sri.straylight.fmuWrapper.event.SimStateClientNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.util.WorkerThreadAbstract;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageType;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
@@ -37,9 +39,8 @@ import de.roderick.weberknecht.WebSocketMessage;
 public class FmuConnectionRemote extends FmuConnectionAbstract {
 
 	private WorkerRequestStateChange workerRequestStateChange_;
-//	private WorkerSetScalarValues workerSetScalarValues_;
-//	private WorkerSetConfig workerSetConfig_;
-//	
+	private WorkerRequestScalarValueChange workerRequestScalarValueChange_;
+
 	private JsonController gsonController_ = JsonController.getInstance();
 	private WebSocket webSocketConnection_;
 	private WebSocketState webSocketState_;
@@ -76,9 +77,7 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 
 
 
-	public void setScalarValues(Vector<ScalarValueRealStruct> scalrValueList) {
 
-	}
 
 	private void initSocketClient_() throws Exception {
 
@@ -202,8 +201,49 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 			workerRequestStateChange_ = null;
 		}
 	}
+
+
 	
 	
+	protected class WorkerRequestScalarValueChange extends WorkerThreadAbstract {
+		private ScalarValueCollection collection_;
+		
+		WorkerRequestScalarValueChange(ScalarValueCollection collection) {
+			collection_ = collection;
+			setSyncObject(webSocketConnection_);
+		}
+		
+		@Override
+		public void doIt_() {
+			ScalarValueChangeRequest event = new ScalarValueChangeRequest(this, collection_);
+			
+			try {
+				
+				String json = event.toJson();
+				
+				webSocketConnection_.send(json);
+			} catch (WebSocketException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		@Override
+		public void doneIt_() {
+			workerRequestScalarValueChange_ = null;
+		}
+	}
+	
+	
+	
+	
+	@Override
+	public void setScalarValues2(ScalarValueCollection collection) {
+		
+		workerRequestScalarValueChange_ = new WorkerRequestScalarValueChange(collection);
+		workerRequestScalarValueChange_.execute();
+	}
+	
+
 
 
 }

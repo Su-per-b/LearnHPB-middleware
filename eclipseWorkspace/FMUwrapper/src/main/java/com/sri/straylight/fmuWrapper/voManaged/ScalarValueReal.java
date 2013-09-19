@@ -51,6 +51,19 @@ public class ScalarValueReal extends BaseScalarValue {
 		return bd.toString();
 	}
 	
+	
+	public ScalarValueRealStruct toStruct() {
+		
+		
+		ScalarValueRealStruct struct = new ScalarValueRealStruct();
+		struct.idx = getIdx();
+		struct.value = getValue();
+		
+		return struct;
+	}
+	
+	
+	
 	 @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers

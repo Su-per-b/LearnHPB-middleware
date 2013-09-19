@@ -4,6 +4,8 @@ import java.util.Vector;
 
 import com.sri.straylight.fmuWrapper.Controller.FMUcontrollerGlobal;
 import com.sri.straylight.fmuWrapper.Controller.ThreadedFMUcontroller;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
@@ -40,5 +42,13 @@ public class FmuConnectionLocal extends FmuConnectionAbstract {
 	}
 
 
-
+	@Override
+	public void setScalarValues2(ScalarValueCollection collection) {
+		// TODO Auto-generated method stub
+		
+		Vector<ScalarValueRealStruct> list = collection.getRealStructList();
+		setScalarValues(list);
+		
+		
+	}
 }

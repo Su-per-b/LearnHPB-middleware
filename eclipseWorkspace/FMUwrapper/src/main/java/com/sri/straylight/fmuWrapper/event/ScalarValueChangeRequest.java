@@ -3,45 +3,52 @@ package com.sri.straylight.fmuWrapper.event;
 import java.util.EventObject;
 import java.util.Vector;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class ScalarValueChangeRequest.
  */
-public class ScalarValueChangeRequest extends EventObject {
+public class ScalarValueChangeRequest extends BaseEvent<ScalarValueCollection> {
 	
 	
 	
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 	
-	/** The payload_. */
-	private Vector<ScalarValueRealStruct> payload_;
-    //here's the constructor
-    /**
-     * Instantiates a new scalar value change request.
-     *
-     * @param source the source
-     * @param scalarValueList the scalar value list
-     */
-    public ScalarValueChangeRequest(Object source, Vector<ScalarValueRealStruct> scalarValueList) {
+
+
+    public ScalarValueChangeRequest(Object source, ScalarValueCollection scalarValueList) {
         super(source);
         
         payload_ = scalarValueList;
         
     }
     
-    /**
-     * Gets the payload.
-     *
-     * @return the payload
-     */
-    public Vector<ScalarValueRealStruct> getPayload() {
-    	
-    	return payload_;
-    }
     
+    
+    @Override
+    public boolean equals(Object obj) {
+    	
+        if (obj == null)
+            return false;
+        
+        if (obj == this)
+            return true;
+        
+        if (obj.getClass() != getClass())
+            return false;
+
+        ScalarValueChangeRequest typedObj = (ScalarValueChangeRequest) obj;
+        
+        return new EqualsBuilder().
+                append(this.payload_, typedObj.getPayload()).
+                isEquals();
+
+    }
     
     
 }

@@ -1,7 +1,5 @@
 package com.sri.straylight.client.controller;
 
-import java.util.Vector;
-
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
@@ -15,8 +13,8 @@ import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
 import com.sri.straylight.fmuWrapper.event.SimStateClientNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
-import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 
@@ -105,8 +103,15 @@ public class SimulationController extends BaseController  {
 	
 	@EventSubscriber(eventClass=ScalarValueChangeRequest.class)
     public void onInputChangeRequest(ScalarValueChangeRequest event) {
-		Vector<ScalarValueRealStruct> list = event.getPayload();
-		fmuConnect_.setScalarValues(list);
+		
+		
+		
+		ScalarValueCollection collection = event.getPayload();
+		
+		//Vector<ScalarValueReal> list = collection.getRealList();
+		
+		
+		fmuConnect_.setScalarValues2(collection);
 	}
 	
 	

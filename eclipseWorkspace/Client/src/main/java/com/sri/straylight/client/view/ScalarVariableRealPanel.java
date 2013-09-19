@@ -22,6 +22,7 @@ import javax.swing.event.ChangeListener;
 
 import com.sri.straylight.client.model.DoubleInputVerifier;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
@@ -320,9 +321,16 @@ public class ScalarVariableRealPanel extends JPanel {
 		scalarValue.idx = scalarVariableReal_.getIdx();
 		scalarValue.value = newDoubleValue;
 		
-		scalarValueList.add(scalarValue);
+		ScalarValueCollection collection = new ScalarValueCollection();
+		Vector<ScalarValueReal> realList = new Vector<ScalarValueReal>();
+		ScalarValueReal real = new ScalarValueReal(scalarVariableReal_.getIdx(), newDoubleValue);
+		realList.add(real);
 		
-		ScalarValueChangeRequest event = new ScalarValueChangeRequest(this, scalarValueList);
+		collection.setRealList(realList);
+		
+	
+		ScalarValueChangeRequest event = new ScalarValueChangeRequest(this, collection);
+		
 		inputFormView_.onDataModelUpdateRequest(event);
 		
 		btnSubmit_.setEnabled(false);

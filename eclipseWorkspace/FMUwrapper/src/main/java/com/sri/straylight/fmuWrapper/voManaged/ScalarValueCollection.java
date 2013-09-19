@@ -21,8 +21,10 @@ public class ScalarValueCollection implements JsonSerializable {
 	
 
 	public ScalarValueCollection() {
-		valueList_ = new Vector<BaseScalarValue>();
+		init2_();
 	}
+	
+
 	
 	/**
 	 * Instantiates a new ScalarValueCollection from a struct.
@@ -30,21 +32,24 @@ public class ScalarValueCollection implements JsonSerializable {
 	 * @param st1 the struct
 	 */
 	public ScalarValueCollection(ScalarValueCollectionStruct struct) {
-		
+		init2_();
 		init_(struct);
 	}
 	
-
-	
 	
 	public ScalarValueCollection(Vector<ScalarValueReal> realList, Vector<ScalarValueBoolean> booleanList) {
-		valueList_ = new Vector<BaseScalarValue>();
+		init2_();
 		
 		setRealList(realList);
 		setBooleanList(booleanList);
 		
 	}
 	
+	private void init2_() {
+		valueList_ = new Vector<BaseScalarValue>();
+		realList_ = new Vector<ScalarValueReal>();
+		booleanList_ = new Vector<ScalarValueBoolean>();
+	}
 	
 	
 	
@@ -54,11 +59,8 @@ public class ScalarValueCollection implements JsonSerializable {
 	}
 	
 	private void init_(ScalarValueCollectionStruct struct) {
-		valueList_ = new Vector<BaseScalarValue>();
-		
 		initReal_(struct);
 		initBoolean_(struct);
-
 	}
 	
 
@@ -176,7 +178,12 @@ public class ScalarValueCollection implements JsonSerializable {
 	}
 
 
-
+	
+	public Vector<BaseScalarValue> getValueList() {
+		return valueList_;
+	}
+	
+	
 	public Vector<String> getStringList() {
 		
 		int len = realList_.size();
@@ -245,8 +252,44 @@ public class ScalarValueCollection implements JsonSerializable {
         	}
 		}
         
+        
+        Vector<BaseScalarValue> valueList2 = typedObj.getValueList();
+
+        
+        int len3 = valueList_.size();
+        for (int j = 0; j < len3; j++) {
+        	
+        	BaseScalarValue scalarValue1 = valueList_.get(j);
+        	BaseScalarValue scalarValue2 = valueList2.get(j);
+        	
+        	isEqual = scalarValue1.equals(scalarValue2);
+        	if (!isEqual) {
+        		return false;
+        	}
+		}
+        
+        
+        
         return true;
 
     }
+
+	public Vector<ScalarValueRealStruct> getRealStructList() {
+		
+		Vector<ScalarValueRealStruct> stuctList = new Vector<ScalarValueRealStruct>();
+		int len = realList_.size();
+		
+        for (int i = 0; i < len; i++) {
+        	
+        	ScalarValueReal real = realList_.get(i);
+        	ScalarValueRealStruct realStruct = real.toStruct();
+        	
+        	stuctList.add(realStruct);
+
+		}
+        
+        return stuctList;
+		
+	}
 	
 }

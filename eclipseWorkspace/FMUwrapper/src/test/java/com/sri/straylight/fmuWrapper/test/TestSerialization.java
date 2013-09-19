@@ -905,36 +905,43 @@ public class TestSerialization {
 		Double value = scalarValueReal2.getValue();
 		assertEquals(2.0, value, 0.0);
 		
+		Vector<ScalarValueReal> realList = new Vector<ScalarValueReal>();
+		realList.add(scalarValueReal1);
+		
+		ScalarValueCollection scalarValueCollection1 = new ScalarValueCollection();
+		scalarValueCollection1.setRealList(realList);
 		
 		
-		Vector<ScalarValueRealStruct> scalarValueList = new Vector<ScalarValueRealStruct>();
-		scalarValueList.add(struct);
+		//serialize / deserialize
+		String json2 = scalarValueCollection1.toJson();
+		JsonSerializable deserializedObj2 = gsonController_.fromJson(json2);
+		
+		//assert 1
+		assertEquals(ScalarValueCollection.class,  deserializedObj2.getClass());
+		
+		//cast
+		ScalarValueCollection scalarValueCollection2 = (ScalarValueCollection) deserializedObj2;
+		
+		//test equals
+    	assertEquals(scalarValueCollection1, scalarValueCollection2);
 		
 		
-		
-		
-		
-		ScalarValueChangeRequest event1 = new ScalarValueChangeRequest(this, scalarValueList);
-		
-		//String json = event1.toJson();
-		
-		
-/*		
-    	MessageStruct messageStruct1 = new MessageStruct();
-    	messageStruct1.msgText = "testMessageStruct";
-    	messageStruct1.setMessageTypeEnum(MessageType.messageType_debug);
+    	ScalarValueChangeRequest event1 = new ScalarValueChangeRequest(this, scalarValueCollection1);
     	
-    	MessageEvent event1 = new MessageEvent(this, messageStruct1);
-    	String json = event1.toJson();
-    	
-    	JsonSerializable obj = gsonController_.fromJson(json);
-    	assertEquals(MessageEvent.class,  obj.getClass());
-    	
-    	MessageEvent event2 = (MessageEvent) obj;
-    	MessageStruct messageStruct2 = event2.getPayload();
-    	
-    	assertEquals(messageStruct1, messageStruct2);
-    	assertEquals(event1, event2);*/
+		//serialize / deserialize
+		String json3 = event1.toJson();
+		JsonSerializable deserializedObj3 = gsonController_.fromJson(json3);
+		
+		//assert 1
+		assertEquals(ScalarValueChangeRequest.class,  deserializedObj3.getClass());
+		
+		//cast
+		ScalarValueChangeRequest event2 = (ScalarValueChangeRequest) deserializedObj3;
+		
+		//test 2
+    	assertEquals(event1, event2);
+		
+
 		
 
 		
