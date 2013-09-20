@@ -37,8 +37,6 @@
 		<module>../../eclipseWorkspace/SocketServer</module>
 		<module>../../eclipseWorkspace/Common</module>
 		<module>../../eclipseWorkspace/FMUwrapper</module>
-		<module>../../eclipseWorkspace/PageServer</module>
-		<module>../../eclipseWorkspace/PageApp</module>
 	</modules>
 
 

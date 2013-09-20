@@ -9,13 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketHandler;
 
-import com.sri.straylight.socketserver.controller.SocketController;
+import com.sri.straylight.socketserver.controller.StrayLightWebSocketHandler;
 
 
 
 public class JettyWebSocketHandler extends WebSocketHandler {
 
-	
 	public WebSocket doWebSocketConnect(HttpServletRequest request,
 			String protocol) {
 		
@@ -23,8 +22,10 @@ public class JettyWebSocketHandler extends WebSocketHandler {
 	    System.out.println("pathInfo: " + pathInfo);
 	    
 	    if (pathInfo.equals("/")) {
-	    	SocketController socketController = new SocketController();
-	    	return socketController;
+	    	
+	    	StrayLightWebSocketHandler socketHandler = new StrayLightWebSocketHandler();
+	    	return socketHandler;
+
 	    } else {
 	    	return null;
 	    }

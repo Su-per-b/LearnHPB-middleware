@@ -30,31 +30,37 @@ public class ConnectionBundle extends AbstractController {
 	private WebSocketConnectionController webSocketConnectionController_;
 	private FMUcontroller fmuController_;
 	private int idx_;
+	private StrayLightWebSocketHandler socketHandler_;
 
 	private ThreadedFMUcontroller threadedFMUcontroller_;
 	
 	
-	public ConnectionBundle(AbstractController parent,
-			SocketController webSocketConnection) {
+	public ConnectionBundle(AbstractController parent, StrayLightWebSocketHandler socketHandler) {
 		super(null);
 		
-		setIdx_(webSocketConnection.getIdx());
-
-		webSocketConnectionController_ = new WebSocketConnectionController(this, webSocketConnection);
+		setIdx_(socketHandler.getIdx());
+		socketHandler_ = socketHandler;
+		webSocketConnectionController_ = new WebSocketConnectionController(this, socketHandler);
 	}
 
 	public void init() {
+		
 
+		
 		webSocketConnectionController_.init();
 		
 		
 		fmuController_ = new FMUcontroller(this);
 		threadedFMUcontroller_ = new ThreadedFMUcontroller(fmuController_);
 		
-		registerSocketListeners_();
 		registerSimulationListeners_();
+		registerSocketListeners_();
+
 		
 		webSocketConnectionController_.processQuedItem();
+		
+		//SimStateNativeNotify event = new SimStateNativeNotify(this, SimStateNative.simStateNative_1_connect_completed);
+	//	webSocketConnectionController_.send(event);
 
 	}
 
@@ -133,20 +139,27 @@ public class ConnectionBundle extends AbstractController {
 					@Override
 					public void handleEvent(MessageReceived event) {
 						
+						System.out.println("MessageReceived Event handled");
+						
 						String messageText = event.getPayload();
 				    	JsonSerializable deserializedEvent = JsonController.getInstance().fromJson(messageText);
 				    	
 				    	//if it is an event then just publish it
 				    	if (deserializedEvent instanceof SimStateNativeRequest) {
 				    		SimStateNativeRequest newEvent = (SimStateNativeRequest) deserializedEvent;
+				    		
+				    		System.out.println("MessageReceived -> SimStateNativeRequest Event");
+				    		
 				    		threadedFMUcontroller_.requestStateChange(newEvent.getPayload());
 				    	} else if (deserializedEvent instanceof ScalarValueChangeRequest) {
 				    		
 				    		ScalarValueChangeRequest newEvent = (ScalarValueChangeRequest) deserializedEvent;
+				    		
+				    		System.out.println("MessageReceived -> ScalarValueChangeRequest Event");
 				    		threadedFMUcontroller_.setScalarValueCollection(newEvent.getPayload());
-				    	} {
+				    	} else {
 				    		
-				    		
+				    		System.out.println("MessageReceived -> Unknown Event");
 				    		MessageEvent newEvent = new MessageEvent(this, "Could not deserialize object ", MessageType.messageType_error);
 				    		fireEvent(newEvent);
 				    		

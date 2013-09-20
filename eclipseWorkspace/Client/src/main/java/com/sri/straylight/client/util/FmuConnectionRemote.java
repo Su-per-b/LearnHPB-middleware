@@ -40,10 +40,16 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 
 	private WorkerRequestStateChange workerRequestStateChange_;
 	private WorkerRequestScalarValueChange workerRequestScalarValueChange_;
+	private WorkerRequestWebsocketChange workerRequestWebsocketChange_;
 
+	
+	
+	
 	private JsonController gsonController_ = JsonController.getInstance();
 	private WebSocket webSocketConnection_;
 	private WebSocketState webSocketState_;
+//	private WebSocketState requestedWebSocketState_;
+	
 	private final String urlString_;
 
 	public FmuConnectionRemote(String hostName) {
@@ -56,6 +62,8 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		this.requestWebsocketChange(WebSocketState.open);
 	}
 	
 
@@ -63,9 +71,15 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 	public void onSimStateNotify(SimStateNativeNotify event) {
 
 		SimStateNative simStateNative = event.getPayload();
+		
 		SimStateClientNotify event2 = new SimStateClientNotify(this,
 				simStateNative);
 		EventBus.publish(event2);
+		
+		if (simStateNative == SimStateNative.simStateNative_0_uninitialized) {
+			this.requestStateChange(SimStateNative.simStateNative_1_connect_requested);
+		}
+
 
 	}
 
@@ -139,7 +153,52 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 		workerRequestStateChange_.execute();
 	}
 
+	public void requestWebsocketChange(WebSocketState state) {
+		workerRequestWebsocketChange_ = new WorkerRequestWebsocketChange(state);
+		workerRequestWebsocketChange_.execute();
+	}
+	
+	
 
+	protected class WorkerRequestWebsocketChange extends WorkerThreadAbstract {
+		private WebSocketState requestedWebSocketState_;
+		
+		WorkerRequestWebsocketChange(WebSocketState requestedWebSocketState) {
+			requestedWebSocketState_ = requestedWebSocketState;
+			
+			setSyncObject(webSocketConnection_);
+		}
+		
+		@Override
+		public void doIt_() {
+
+			try {
+				if (requestedWebSocketState_ == WebSocketState.open) {
+					webSocketConnection_.connect();
+				} else if (requestedWebSocketState_ == WebSocketState.closed) {
+					webSocketConnection_.close();
+				}
+			} catch (WebSocketException e) {
+				
+				WebSocketEvent errorEvent = new WebSocketEvent(this,
+						"Unable to connect to WebSocket",
+						e.getMessage(),
+						WebSocketEventType.webSocketEventType_error);
+
+				EventBus.publish(errorEvent);
+
+
+			}
+		}
+		
+		@Override
+		public void doneIt_() {
+			workerRequestWebsocketChange_ = null;
+		}
+		
+	}
+	
+	
 	
 	protected class WorkerRequestStateChange extends WorkerThreadAbstract {
 		private SimStateNative simStateNative_;
@@ -156,7 +215,7 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 
 			
 			if (webSocketState_ == WebSocketState.uninitialized) {
-				try {
+/*				try {
 					webSocketConnection_.connect();
 				} catch (WebSocketException e) {
 					
@@ -173,8 +232,10 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 							);	
 					
 					return;
-				}
+				}*/
 				
+				//debugger;
+				int x = 0;
 			}
 			
 			
@@ -186,14 +247,15 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 //			}
 			
 			
-			try {
-				
-				String json = event.toJson();
-				
-				webSocketConnection_.send(json);
-			} catch (WebSocketException e) {
-				e.printStackTrace();
-			}
+			//if (event.getPayload() != SimStateNative.simStateNative_1_connect_requested) {
+				try {
+					String json = event.toJson();
+					webSocketConnection_.send(json);
+				} catch (WebSocketException e) {
+					e.printStackTrace();
+				}
+			//}
+
 		}
 		
 		@Override

@@ -10,7 +10,7 @@ import com.sri.straylight.common.Banner;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.socketserver.JettyWebSocketHandler;
 
-public class JettyServerController extends AbstractController{
+public class JettyServerController extends AbstractController {
 	
 	private Server jettyServer_;
 	private JettyWebSocketHandler jettyWebSocketHandler_;

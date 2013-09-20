@@ -93,11 +93,19 @@ public class SimulationController extends BaseController  {
 	@EventSubscriber(eventClass = SimStateNativeNotify.class)
 	public void onSimStateNativeNotify(SimStateNativeNotify event) {
 
-		SimStateClientNotify newEvent = 
-				new SimStateClientNotify(this,event.getPayload());
+		SimStateNative state = event.getPayload();
 		
-		EventBus.publish(newEvent);
-
+		//if (state == SimStateNative.simStateNative_0_uninitialized ) {
+			
+			//fmuConnect_.requestStateChange(SimStateNative.simStateNative_1_connect_requested);
+		//} else {
+			
+			SimStateClientNotify newEvent = 
+					new SimStateClientNotify(this,state);
+			
+			EventBus.publish(newEvent);
+		//}
+		
 	}
 
 	
@@ -131,10 +139,11 @@ public class SimulationController extends BaseController  {
 		
 		if (requestedState == SimStateNative.simStateNative_1_connect_requested ) {
 			connect_();
+		} else {
+			fmuConnect_.requestStateChange(requestedState);
 		}
 		
-		fmuConnect_.requestStateChange(requestedState);
-		
+
     }
 	
 	

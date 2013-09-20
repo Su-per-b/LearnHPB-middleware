@@ -13,7 +13,7 @@ import com.sri.straylight.socketserver.event.WebSocketConnectionStateEvent;
 import com.sri.straylight.socketserver.model.WebSocketConnectionState;
 
 
-public class SocketController
+public class StrayLightWebSocketHandler
 	implements WebSocket.OnTextMessage, WebSocket.OnControl  {
 
 	private Connection connection_;
@@ -26,6 +26,13 @@ public class SocketController
 	private String messageQueItem_;
 	
 
+	
+	
+	public StrayLightWebSocketHandler() {
+		
+	}
+	
+	
 	public void setIdx(int idx) {
 		idx_ = idx;
 	}
@@ -48,7 +55,7 @@ public class SocketController
 		// Store the opened connection
 		this.connection_ = connection;
 		setState(WebSocketConnectionState.opened_new);
-		
+		return;
 	}
 	
 	
@@ -57,14 +64,12 @@ public class SocketController
 	//handle incoming message
 	public void onMessage(String str) {
 		
-		
 		if (null == parentController_) {
 			messageQueItem_ = str;
 		} else {
 			parentController_.onMessageRecieved(str);
 		}
-
-
+		
 	}
 	
 	

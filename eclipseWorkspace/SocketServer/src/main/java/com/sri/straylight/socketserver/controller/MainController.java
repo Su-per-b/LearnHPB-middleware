@@ -28,6 +28,14 @@ public class MainController extends AbstractController  {
 		
 		connectionBundleList_ = new ArrayList<ConnectionBundle>();
 		
+		
+	//	ConnectionBundle connectionBundle = new ConnectionBundle(this, null);
+		//connectionBundleList_.add(connectionBundle);
+		
+		//connectionBundle.init();
+		
+		
+		
 		JettyServerController jettyServerController_ = new JettyServerController(this);
 		jettyServerController_.init();
 	}
@@ -39,20 +47,20 @@ public class MainController extends AbstractController  {
 		
 		
 		WebSocketConnectionState state = event.getPayload();
-		SocketController straylightWebSocket = event.getStronglyTypedSource();
+		StrayLightWebSocketHandler socketHandler = event.getStronglyTypedSource();
 		
 		//int idx = straylightWebSocket.getIdx();
 		
 		if (state == WebSocketConnectionState.opened_new) {
 			
 			int idxNew = connectionBundleList_.size();
-			straylightWebSocket.setIdx(idxNew);
+			socketHandler.setIdx(idxNew);
 			
-			workerMakeBundle_ = new WorkerMakeBundle(this, straylightWebSocket);
+			workerMakeBundle_ = new WorkerMakeBundle(this, socketHandler);
 			workerMakeBundle_.execute();
 		}  else if (state == WebSocketConnectionState.closed) {
 			
-			workerTearDownBundle_ = new WorkerTearDownBundle(this, straylightWebSocket);
+			workerTearDownBundle_ = new WorkerTearDownBundle(this, socketHandler);
 			workerTearDownBundle_.execute();
 			
 		}
@@ -62,11 +70,11 @@ public class MainController extends AbstractController  {
 	protected class WorkerTearDownBundle extends WorkerThreadAbstract {
 		
 	//	private MainController parent_; 
-		private SocketController straylightWebSocket_;
+		private StrayLightWebSocketHandler straylightWebSocket_;
 		private ConnectionBundle connectionBundle_;
 		
 		 
-		WorkerTearDownBundle(MainController parent, SocketController  straylightWebSocket) {
+		WorkerTearDownBundle(MainController parent, StrayLightWebSocketHandler  straylightWebSocket) {
 			//setSyncObject(FMUcontrollerSync_);
 			
 		//	parent_ = parent;
@@ -103,14 +111,14 @@ public class MainController extends AbstractController  {
 	protected class WorkerMakeBundle extends WorkerThreadAbstract {
 		
 		private MainController parent_; 
-		private SocketController  straylightWebSocket_;
+		private StrayLightWebSocketHandler  socketHandler_;
 		private ConnectionBundle connectionBundle_;
 		
 		 
-		WorkerMakeBundle(MainController parent, SocketController  straylightWebSocket) {
+		WorkerMakeBundle(MainController parent, StrayLightWebSocketHandler  straylightWebSocket) {
 			//setSyncObject(FMUcontrollerSync_);
 			parent_ = parent;
-			straylightWebSocket_ = straylightWebSocket;
+			socketHandler_ = straylightWebSocket;
 			
 			setSyncObject(connectionBundleList_);
 			
@@ -119,9 +127,9 @@ public class MainController extends AbstractController  {
 		@Override
 		public void doIt_() {
 			
-			setName_("WorkerMakeBundle " + straylightWebSocket_.getIdx());
+			setName_("WorkerMakeBundle " + socketHandler_.getIdx());
 
-			connectionBundle_ = new ConnectionBundle(parent_, straylightWebSocket_);
+			connectionBundle_ = new ConnectionBundle(parent_, socketHandler_);
 			connectionBundleList_.add(connectionBundle_);
 			
 			connectionBundle_.init();

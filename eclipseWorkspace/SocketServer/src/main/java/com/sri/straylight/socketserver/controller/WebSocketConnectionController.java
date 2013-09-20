@@ -12,25 +12,27 @@ public class WebSocketConnectionController
 	extends AbstractController  
 	{
 	
-	private SocketController socketController_;
+	private StrayLightWebSocketHandler socketHandler_;
 
 	
-	public WebSocketConnectionController(ConnectionBundle parent, SocketController straylightWebSocket) {
+	public WebSocketConnectionController(ConnectionBundle parent, StrayLightWebSocketHandler socketHandler) {
 		super(parent);
 		
-		socketController_ = straylightWebSocket;
+		socketHandler_ = socketHandler;
 	}
 
 
 	public void init() {
-		socketController_.setParentController(this);
+		socketHandler_.setParentController(this);
 		
 //		socketController_.registerEventListener(MessageReceived.class,this);
 	}
 	
 	
 	public void processQuedItem() {
-		socketController_.processQuedItem();
+		
+		
+		socketHandler_.processQuedItem();
 	}
 	
 	
@@ -60,15 +62,15 @@ public class WebSocketConnectionController
 	
 
 	public void send(BaseEvent<?> event) {
-		socketController_.serializeAndSend(event);
+		socketHandler_.serializeAndSend(event);
 	}
 
-	public void setStraylightWebSocket(SocketController webSocketConnection) {
-		socketController_ = webSocketConnection;
+	public void setStraylightWebSocket(StrayLightWebSocketHandler socketHandler) {
+		socketHandler_ = socketHandler;
 	}
 	
-	public SocketController getStraylightWebSocket() {
-		return socketController_;
+	public StrayLightWebSocketHandler getStraylightWebSocket() {
+		return socketHandler_;
 	}
 
 
