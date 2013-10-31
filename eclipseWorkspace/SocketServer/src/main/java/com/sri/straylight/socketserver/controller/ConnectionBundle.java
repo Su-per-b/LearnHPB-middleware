@@ -1,7 +1,5 @@
 package com.sri.straylight.socketserver.controller;
 
-import org.bushe.swing.event.EventBus;
-
 import com.sri.straylight.fmuWrapper.Controller.FMUcontroller;
 import com.sri.straylight.fmuWrapper.Controller.ThreadedFMUcontroller;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
@@ -65,6 +63,11 @@ public class ConnectionBundle extends AbstractController {
 	}
 
 	private void registerSimulationListeners_() {
+		
+		
+		//fmuController_ = threadedFMUcontroller_.getFMUcontroller();
+		
+		
 		//SimStateNativeNotify
 		fmuController_
 		.registerEventListener(

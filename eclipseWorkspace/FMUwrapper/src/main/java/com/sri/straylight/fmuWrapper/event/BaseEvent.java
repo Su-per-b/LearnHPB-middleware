@@ -29,7 +29,6 @@ public class BaseEvent<PAYLOAD> extends EventObject implements JsonSerializable 
     
     private Class<?> clazz_;
     
-    private Object source_;
     
     /** The fired in controllers. */
     Set<AbstractController> firedInControllers = new HashSet<AbstractController>();
@@ -41,7 +40,6 @@ public class BaseEvent<PAYLOAD> extends EventObject implements JsonSerializable 
 
     public BaseEvent(Object source, PAYLOAD payload) {
         this( source );
-        source_ = source;
         this.payload_ = payload;
     }
 

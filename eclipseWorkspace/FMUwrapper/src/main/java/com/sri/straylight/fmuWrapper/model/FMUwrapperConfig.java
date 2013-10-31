@@ -18,6 +18,7 @@ public class FMUwrapperConfig {
 	
 	/** The Constant configFile_. */
 	private static final String configFile_ = "fmuwrapper-config.xml";
+	private static FMUwrapperConfig config;
 	
 	//in XML file
 	public String id;
@@ -31,37 +32,40 @@ public class FMUwrapperConfig {
 	public String nativeLibFolderAbsolutePath;
 
 
-
 	public static FMUwrapperConfig load() {
 		
-		String theOs = System.getProperty("os.name");
-		System.out.println( "FMUwrapperConfig detected operating system : " + theOs);
 		
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		InputStream is = classLoader.getResourceAsStream(configFile_);
-		
-		XStream xStream = new XStream();
-		xStream.alias("config", com.sri.straylight.fmuWrapper.model.FMUwrapperConfig.class);
-		FMUwrapperConfig config;
-		
-		try {
+		if (null == config) {
+			String theOs = System.getProperty("os.name");
 			
-			Object object = xStream.fromXML(is);
+			System.out.println( "FMUwrapperConfig detected operating system : " + theOs);
 			
-			config = (FMUwrapperConfig)object;
-			is.close();
+			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+			InputStream is = classLoader.getResourceAsStream(configFile_);
+			
+			XStream xStream = new XStream();
+			xStream.alias("config", com.sri.straylight.fmuWrapper.model.FMUwrapperConfig.class);
+			
+			try {
+				
+				Object object = xStream.fromXML(is);
+				
+				config = (FMUwrapperConfig)object;
+				is.close();
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				return null;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+			config.unzipFolderAbsolutePath = convertRelativeToAbsolute(config.unzipFolderRelativePath);
+			config.fmuFolderAbsolutePath = config.unzipFolderAbsolutePath + "\\" + config.fmuFolderName;
+			config.nativeLibFolderAbsolutePath = convertRelativeToAbsolute(config.nativeLibFolderRelativePath);
 		}
-		
-		config.unzipFolderAbsolutePath = convertRelativeToAbsolute(config.unzipFolderRelativePath);
-		config.fmuFolderAbsolutePath = config.unzipFolderAbsolutePath + "\\" + config.fmuFolderName;
-		config.nativeLibFolderAbsolutePath = convertRelativeToAbsolute(config.nativeLibFolderRelativePath);
+
 		
 		return config;
 		

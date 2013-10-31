@@ -118,6 +118,7 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 
 				String jsonString = msg.getText();
 				
+				System.out.println( "onMessage : " + jsonString);
 				
 				JsonSerializable deserializedObject = gsonController_
 						.fromJson(jsonString);
@@ -235,7 +236,6 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 				}*/
 				
 				//debugger;
-				int x = 0;
 			}
 			
 			

@@ -74,6 +74,7 @@ public class SimulationController extends BaseController  {
 				break;
 			case connectTo_file :
 				fmuConnect_ = new FmuConnectionLocal();
+				fmuConnect_.requestStateChange(SimStateNative.simStateNative_1_connect_requested  );
 				break;
     	}
     	
@@ -88,6 +89,28 @@ public class SimulationController extends BaseController  {
 		fmuConnect_.setConfig(configStruct);
 	}
 	
+	
+	//this event comes from the FMU engine
+	@EventSubscriber(eventClass=SimStateClientNotify.class)
+    public void onSimStateNotify(SimStateClientNotify event) {
+		
+		simStateNative_ = event.getPayload();
+		
+		switch (simStateNative_) {
+			case simStateNative_1_connect_completed:
+		        if (configModel_.autoParseXMLFlag) {
+		        	fireSimStateRequest_(SimStateNative.simStateNative_2_xmlParse_requested);
+		        }
+				break;
+			case simStateNative_2_xmlParse_completed :
+		        if (configModel_.autoInitFlag) {
+		        	fireSimStateRequest_(SimStateNative.simStateNative_3_init_requested);
+		        }
+				break;
+			default:
+				break;
+		}
+	}
 	
 
 	@EventSubscriber(eventClass = SimStateNativeNotify.class)
@@ -147,27 +170,7 @@ public class SimulationController extends BaseController  {
     }
 	
 	
-	//this event comes from the FMU engine
-	@EventSubscriber(eventClass=SimStateClientNotify.class)
-    public void onSimStateNotify(SimStateClientNotify event) {
-		
-		simStateNative_ = event.getPayload();
-		
-		switch (simStateNative_) {
-			case simStateNative_1_connect_completed:
-		        if (configModel_.autoParseXMLFlag) {
-		        	fireSimStateRequest_(SimStateNative.simStateNative_2_xmlParse_requested);
-		        }
-				break;
-			case simStateNative_2_xmlParse_completed :
-		        if (configModel_.autoInitFlag) {
-		        	fireSimStateRequest_(SimStateNative.simStateNative_3_init_requested);
-		        }
-				break;
-			default:
-				break;
-		}
-	}
+
 	
 	
 

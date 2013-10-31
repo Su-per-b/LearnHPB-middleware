@@ -18,27 +18,34 @@ public class ThreadedFMUcontroller extends AbstractController {
 	private FMUcontroller fmuController_;
 	
 	private Object FMUcontrollerSync_ = new Object();
-	private WorkerInstantiateFMU workerInstantiateFMU_;
+	//private WorkerInstantiateFMU workerInstantiateFMU_;
 	private WorkerSetConfig workerSetConfig_;
 	
 	private WorkerRequestStateChange workerRequestStateChange_;
 	private WorkerSetScalarValues workerSetScalarValues_;
 	private WorkerSetScalarValueCollection workerSetScalarValueCollection_;
 
-
+	//private AbstractController parent_;
+	
+	
 	//constructor
+	public ThreadedFMUcontroller() {
+		super(null);
+	}
+	
 	public ThreadedFMUcontroller(FMUcontroller fmuController) {
 		super(null);
+		
 		fmuController_ = fmuController;
 	}
-
-	public void instantiateFMU() {
+	
+/*	public void instantiateFMU() {
 		workerInstantiateFMU_ = new WorkerInstantiateFMU();
 		workerInstantiateFMU_.execute();
-	}
+	}*/
 	
 	
-	public FMUcontroller getFMU() {
+	public FMUcontroller getFMUcontroller() {
 		return fmuController_;
 	}
 	
@@ -64,7 +71,7 @@ public class ThreadedFMUcontroller extends AbstractController {
 	}
 	
 	
-	
+/*	
 	protected class WorkerInstantiateFMU extends WorkerThreadAbstract {
 		
 		WorkerInstantiateFMU() {
@@ -75,7 +82,7 @@ public class ThreadedFMUcontroller extends AbstractController {
 		@Override
 		public void doIt_() {
 			setName_("WorkerInstantiateFMU");
-			fmuController_ = new FMUcontrollerGlobal();
+			fmuController_ = new FMUcontrollerGlobal(parent_);
 		}
 		
 		//called by superclass
@@ -84,7 +91,7 @@ public class ThreadedFMUcontroller extends AbstractController {
 			workerInstantiateFMU_ = null;
 		}
 	}
-	
+	*/
 	
 	
 	protected class WorkerSetConfig extends WorkerThreadAbstract {

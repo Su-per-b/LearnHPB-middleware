@@ -1,12 +1,8 @@
 package com.sri.straylight.fmuWrapper.event;
 
-import java.util.EventObject;
-import java.util.Vector;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
-import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 
 // TODO: Auto-generated Javadoc
 /**

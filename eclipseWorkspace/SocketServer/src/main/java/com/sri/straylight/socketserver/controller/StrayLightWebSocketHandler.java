@@ -2,12 +2,10 @@ package com.sri.straylight.socketserver.controller;
 
 import java.io.IOException;
 
-import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.bushe.swing.event.EventBus;
 import org.eclipse.jetty.websocket.WebSocket;
 
-import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.socketserver.event.WebSocketConnectionStateEvent;
 import com.sri.straylight.socketserver.model.WebSocketConnectionState;
@@ -20,12 +18,8 @@ public class StrayLightWebSocketHandler
 	private WebSocketConnectionState state_ = WebSocketConnectionState.uninitialized;
 	
 	private int idx_ = -1;
-	
 	private WebSocketConnectionController parentController_;
-	
 	private String messageQueItem_;
-	
-
 	
 	
 	public StrayLightWebSocketHandler() {

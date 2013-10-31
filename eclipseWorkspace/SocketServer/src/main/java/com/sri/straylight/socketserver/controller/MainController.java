@@ -28,14 +28,6 @@ public class MainController extends AbstractController  {
 		
 		connectionBundleList_ = new ArrayList<ConnectionBundle>();
 		
-		
-	//	ConnectionBundle connectionBundle = new ConnectionBundle(this, null);
-		//connectionBundleList_.add(connectionBundle);
-		
-		//connectionBundle.init();
-		
-		
-		
 		JettyServerController jettyServerController_ = new JettyServerController(this);
 		jettyServerController_.init();
 	}
@@ -48,8 +40,6 @@ public class MainController extends AbstractController  {
 		
 		WebSocketConnectionState state = event.getPayload();
 		StrayLightWebSocketHandler socketHandler = event.getStronglyTypedSource();
-		
-		//int idx = straylightWebSocket.getIdx();
 		
 		if (state == WebSocketConnectionState.opened_new) {
 			
@@ -101,8 +91,6 @@ public class MainController extends AbstractController  {
 
 		@Override
 		public void doneIt_() {
-			
-
 			workerTearDownBundle_ = null;
 		}
 	}

@@ -1,7 +1,5 @@
 package com.sri.straylight.socketserver.event;
 
-import org.bushe.swing.event.EventBus;
-
 import com.sri.straylight.fmuWrapper.event.BaseEvent;
 
 

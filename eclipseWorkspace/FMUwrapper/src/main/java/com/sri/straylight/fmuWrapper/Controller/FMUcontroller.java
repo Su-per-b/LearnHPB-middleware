@@ -49,6 +49,28 @@ public class FMUcontroller extends AbstractController {
 	private ResultCallback resultCallbackFunc_;
 	private StateChangeCallback stateChangeCallbackFunc_;
 
+	
+	public FMUcontroller() {
+		super(null);
+		init();
+	}
+	
+	// constructor
+	public FMUcontroller(AbstractController parent) {
+		super(parent);
+		init();
+	}
+
+	public FMUcontroller(AbstractController parent,
+			FMUwrapperConfig fmuWrapperConfig) {
+		super(parent);
+		fmuWrapperConfig_ = fmuWrapperConfig;
+		init();
+	}
+
+
+	
+	
 	private class MessageCallback implements MessageCallbackInterface {
 
 		public boolean messageCallback(MessageStruct messageStruct) {
@@ -110,6 +132,8 @@ public class FMUcontroller extends AbstractController {
 			if (fireEventsForStates_.containsKey(simStateNative)) {
 				SimStateNativeNotify e = new SimStateNativeNotify(this, simStateNative);
 				fireEvent(e);
+				
+				
 			}
 
 			return true;
@@ -117,40 +141,9 @@ public class FMUcontroller extends AbstractController {
 
 	}
 
-	/**
-	 * The state change callback func_. private StateChangeCallbackInterface
-	 * stateChangeCallbackFunc_ =
-	 * 
-	 * new JNAfmuWrapper.StateChangeCallbackInterface() { public boolean
-	 * stateChangeCallback(SimStateNative simStateNative) {
-	 * 
-	 * simStateNative_ = simStateNative;
-	 * 
-	 * if (fireEventsForStates_.containsKey(simStateNative)) {
-	 * notifyStateChange_(simStateNative); }
-	 * 
-	 * return true; } };
-	 */
 
-	// constructor
-	public FMUcontroller(AbstractController parent) {
-		super(parent);
-		fmuWrapperConfig_ = FMUwrapperConfig.load();
-		init();
-	}
 
-	public FMUcontroller(AbstractController parent,
-			FMUwrapperConfig fmuWrapperConfig) {
-		super(parent);
-		fmuWrapperConfig_ = fmuWrapperConfig;
-		init();
-	}
 
-	public FMUcontroller() {
-		super(null);
-		fmuWrapperConfig_ = FMUwrapperConfig.load();
-		init();
-	}
 
 	public SimStateNative getSimStateNative() {
 		return simStateNative_;
@@ -160,6 +153,11 @@ public class FMUcontroller extends AbstractController {
 
 		AnnotationProcessor.process(this);
 
+		
+		if (null == fmuWrapperConfig_) {
+			fmuWrapperConfig_ = FMUwrapperConfig.load();
+		}
+		
 		messageCallbackFunc_ = new MessageCallback();
 		resultCallbackFunc_ = new ResultCallback();
 		stateChangeCallbackFunc_ = new StateChangeCallback();

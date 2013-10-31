@@ -34,8 +34,4 @@ public class SimStateNativeNotify extends BaseEvent<SimStateNative> {
     }
 
 
-
-
-
-
 }

@@ -2,11 +2,26 @@ package com.sri.straylight.client.util;
 
 import java.util.Vector;
 
+import org.bushe.swing.event.EventBus;
+import org.bushe.swing.event.annotation.AnnotationProcessor;
+import org.bushe.swing.event.annotation.EventSubscriber;
+
+import com.sri.straylight.fmuWrapper.Controller.FMUcontroller;
 import com.sri.straylight.fmuWrapper.Controller.FMUcontrollerGlobal;
 import com.sri.straylight.fmuWrapper.Controller.ThreadedFMUcontroller;
+import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
+import com.sri.straylight.fmuWrapper.event.MessageEvent;
+import com.sri.straylight.fmuWrapper.event.ResultEvent;
+import com.sri.straylight.fmuWrapper.event.SimStateClientNotify;
+import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
+import com.sri.straylight.fmuWrapper.event.StraylightEventListener;
+import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
+import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
+import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
@@ -22,12 +37,96 @@ public class FmuConnectionLocal extends FmuConnectionAbstract {
 	//constructor
 	public FmuConnectionLocal() {
 		
-		FMUcontrollerGlobal fmuController = new FMUcontrollerGlobal(null);
+		
+		FMUcontroller fmuController = new FMUcontroller();
+		
+
+		
 		
 		threadedFMUcontroller_ = new ThreadedFMUcontroller(fmuController);
-		threadedFMUcontroller_.instantiateFMU();
+		registerSimulationListeners_();
+		
+		//threadedFMUcontroller_.requestStateChange(SimStateNative.simStateNative_1_connect_requested  );
+		
+		//threadedFMUcontroller_ = new ThreadedFMUcontroller();
+		//threadedFMUcontroller_.instantiateFMU();
 	}
 	
+private void registerSimulationListeners_() {
+		
+		
+		FMUcontroller fmuController = threadedFMUcontroller_.getFMUcontroller();
+		
+		
+		//SimStateNativeNotify
+		fmuController.registerEventListener(
+				SimStateNativeNotify.class,
+				new StraylightEventListener<SimStateNativeNotify, SimStateNative>() {
+					@Override
+					public void handleEvent(SimStateNativeNotify event) {
+						
+						
+						SimStateNative simStateNative = event.getPayload();
+						
+						SimStateClientNotify event2 = new SimStateClientNotify(this,
+								simStateNative);
+						EventBus.publish(event2);
+						
+					}
+				});
+		
+
+		//MessageEvent
+		fmuController
+		.registerEventListener(
+				MessageEvent.class,
+				new StraylightEventListener<MessageEvent, MessageStruct>() {
+					@Override
+					public void handleEvent(MessageEvent event) {
+						
+						EventBus.publish(event);
+						
+						
+					}
+				});
+		
+		//ResultEvent
+		fmuController
+		.registerEventListener(
+				ResultEvent.class,
+				new StraylightEventListener<ResultEvent, ScalarValueResults>() {
+					@Override
+					public void handleEvent(ResultEvent event) {
+						EventBus.publish(event);
+					}
+				});
+
+		
+		//XMLparsedEvent
+		fmuController
+		.registerEventListener(
+				XMLparsedEvent.class,
+				new StraylightEventListener<XMLparsedEvent, XMLparsedInfo>() {
+					@Override
+					public void handleEvent(XMLparsedEvent event) {
+						EventBus.publish(event);
+					}
+				});
+		
+		
+		//ConfigChangeNotify
+		fmuController
+		.registerEventListener(
+				ConfigChangeNotify.class,
+				new StraylightEventListener<ConfigChangeNotify, ConfigStruct>() {
+					@Override
+					public void handleEvent(ConfigChangeNotify event) {
+						EventBus.publish(event);
+					}
+				});
+	}
+	
+
 	
 	public void setConfig(ConfigStruct configStruct) {
 		threadedFMUcontroller_.setConfig(configStruct);
@@ -41,7 +140,12 @@ public class FmuConnectionLocal extends FmuConnectionAbstract {
 		threadedFMUcontroller_.setScalarValues(scalarValueList);
 	}
 
+	
+	
+	
+	
 
+	
 	@Override
 	public void setScalarValueCollection(ScalarValueCollection collection) {
 		// TODO Auto-generated method stub

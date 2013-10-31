@@ -1,11 +1,7 @@
 package com.sri.straylight.socketserver.controller;
 
 import com.sri.straylight.fmuWrapper.event.BaseEvent;
-import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
-import com.sri.straylight.fmuWrapper.event.StraylightEventListener;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
-import com.sri.straylight.fmuWrapper.serialization.JsonController;
-import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.socketserver.event.MessageReceived;
 
 public class WebSocketConnectionController 
