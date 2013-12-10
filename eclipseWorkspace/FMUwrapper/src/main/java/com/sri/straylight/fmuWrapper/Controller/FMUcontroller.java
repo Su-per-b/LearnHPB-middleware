@@ -210,6 +210,11 @@ public class FMUcontroller extends AbstractController {
 
 		ScalarVariablesAllStruct scalarVariablesAllStruct = jnaFMUWrapper_
 				.getAllScalarVariables();
+		
+//		int result = jnaFMUWrapper_.getAllTypeDefinitions();
+		
+		
+		
 		ScalarVariablesAll scalarVariablesAll = new ScalarVariablesAll(
 				scalarVariablesAllStruct);
 

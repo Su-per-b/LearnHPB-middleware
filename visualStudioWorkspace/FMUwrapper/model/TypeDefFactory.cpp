@@ -31,8 +31,8 @@ namespace Straylight
 	TypeDefinitionReal* TypeDefFactory::makeReal(Type* type) {
 		TypeDefinitionReal* typeDefinitionReal = new TypeDefinitionReal();
 
-		ValueStatus unitValueStatus;
-		typeDefinitionReal->unit = getElementAttributeString(type->typeSpec, &unitValueStatus, att_unit);
+
+
 		typeDefinitionReal->name = getName( type );
 
 		ValueStatus startValueStatus;
@@ -50,6 +50,22 @@ namespace Straylight
 		ValueStatus maxValueStatus;
 		typeDefinitionReal->max = getElementAttributeReal(type->typeSpec,&maxValueStatus, att_max);
 		typeDefinitionReal->maxValueStatus = maxValueStatus;
+
+		ValueStatus quantityValueStatus;
+		typeDefinitionReal->quantity = getElementAttributeString(type->typeSpec, &quantityValueStatus, att_quantity);
+		typeDefinitionReal->quantityValueStatus = quantityValueStatus;
+
+		ValueStatus unitValueStatus;
+		typeDefinitionReal->unit = getElementAttributeString(type->typeSpec, &unitValueStatus, att_unit);
+		typeDefinitionReal->unitValueStatus = unitValueStatus;
+
+
+		//ValueStatus declaredTypeValueStatus;
+		//typeDefinitionReal->declaredType = getElementAttributeReal(type->typeSpec, &declaredTypeValueStatus, att_declaredType);
+		//typeDefinitionReal->declaredTypeValueStatus = declaredTypeStatus;
+
+
+		
 
 		return typeDefinitionReal;
 	}

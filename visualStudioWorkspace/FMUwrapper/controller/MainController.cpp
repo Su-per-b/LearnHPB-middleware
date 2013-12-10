@@ -43,13 +43,10 @@ namespace Straylight
 		printf(_T("executing deconstructor"));
 
 
-
-
 		// Cleanup
 		if(NULL != unzipFolderPath_) {
 			free((void *) unzipFolderPath_);
 		}
-
 
 		if(NULL != dllFilePath_) {
 			free((void *) dllFilePath_);
@@ -100,7 +97,6 @@ namespace Straylight
 			fmu_ = new FMU();
 			fmu_->dllHandle =NULL;
 			fmu_->modelDescription =NULL;
-
 
 			Logger::getInstance()->registerMessageCallback(messageCallbackPtr);
 			Logger::getInstance()->setDebugvs(1);

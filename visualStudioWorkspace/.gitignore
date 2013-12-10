@@ -1,7 +1,4 @@
 tmp
 bin
-Debug
-Release
-ipch
 *.opensdf
 _ReSharper*

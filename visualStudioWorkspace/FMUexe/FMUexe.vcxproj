@@ -42,13 +42,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)tmp\obj\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)tmp\$(MSBuildProjectName)\obj\$(Configuration)\</IntDir>
     <IncludePath>$(IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)</OutDir>
-    <IntDir>$(ProjectDir)tmp\obj\$(Configuration)</IntDir>
+    <IntDir>$(SolutionDir)tmp\$(MSBuildProjectName)\obj\$(Configuration)</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -56,11 +56,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)expat-2.0.1\lib;$(SolutionDir)FMUwrapper\qtronic;$(SolutionDir)FMUwrapper\model;$(SolutionDir)FMUwrapper\controller;$(SolutionDir)FMUwrapper\view;$(SolutionDir)FMUwrapper</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)FMUwrapper\qtronic;$(SolutionDir)FMUwrapper\model;$(SolutionDir)FMUwrapper\controller;$(SolutionDir)FMUwrapper\view;$(SolutionDir)FMUwrapper;$(SolutionDir)expat</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
-      <PrecompiledHeaderOutputFile>$(ProjectDir)tmp\$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>$(SolutionDir)tmp\$(MSBuildProjectName)\$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -78,7 +78,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>E:\SRI\straylight_repo\visualStudioWorkspace\FMUwrapper;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PrecompiledHeaderOutputFile>$(ProjectDir)tmp\$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>$(SolutionDir)tmp\$(MSBuildProjectName)\$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -87,9 +87,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
     <ClInclude Include="stdafx.h" />
@@ -103,6 +100,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\expat\expat.vcxproj">
+      <Project>{e607c5b4-13c6-392a-9175-3ca89a1d013a}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\FMUwrapper\FMUwrapper.vcxproj">
       <Project>{96472430-757f-4d3f-b45e-31b1804bb83e}</Project>
     </ProjectReference>

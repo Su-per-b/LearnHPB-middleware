@@ -44,7 +44,6 @@ namespace Straylight
 		}
 
 		svStruct->typeSpecReal = new TypeSpecReal();
-		svStruct->typeSpecReal->declaredType = getString(scalarVariable->typeSpec, att_declaredType);
 
 		ValueStatus startValueStatus;
 		svStruct->typeSpecReal->start = getElementAttributeReal(scalarVariable->typeSpec, &startValueStatus, att_start);
@@ -61,6 +60,18 @@ namespace Straylight
 		ValueStatus maxValueStatus;
 		svStruct->typeSpecReal->max = getElementAttributeReal(scalarVariable->typeSpec,&maxValueStatus, att_max);
 		svStruct->typeSpecReal->maxValueStatus = maxValueStatus;
+
+		ValueStatus unitValueStatus;
+		svStruct->typeSpecReal->unit = getElementAttributeString(scalarVariable->typeSpec, &unitValueStatus, att_unit);
+		svStruct->typeSpecReal->unitValueStatus = unitValueStatus;
+
+		if (unitValueStatus == valueDefined) {
+			
+		} else {
+			svStruct->typeSpecReal->unit = _T("{no unit}");
+		}
+
+
 
 		bool autCorrectFlag = Config::getInstance()->getAutoCorrect();
 

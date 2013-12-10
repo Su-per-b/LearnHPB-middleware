@@ -32,6 +32,14 @@ namespace Straylight
 	}
 
 
+	TypeDefDataModel *  MainDataModel::getTypeDefDataModel() {
+		
+		return typeDefDataModel_;
+
+	}
+
+
+
 	/*******************************************************//**
 	 * Sets scalar value real.
 	 *

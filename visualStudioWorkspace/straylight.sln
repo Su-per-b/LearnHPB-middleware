@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FMUwrapper", "FMUwrapper\FMUwrapper.vcxproj", "{96472430-757F-4D3F-B45E-31B1804BB83E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FMUexe", "FMUexe\FMUexe.vcxproj", "{77A6C3A4-FFA6-4BC6-B4AC-28AA15FFADFE}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "expat", "expat-2.0.1\lib\expat.vcxproj", "{E607C5B4-13C6-392A-9175-3CA89A1D013A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "expat", "expat\expat.vcxproj", "{E607C5B4-13C6-392A-9175-3CA89A1D013A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fmutest", "fmutest\fmutest.vcxproj", "{71AB9D35-56B9-4CA4-8C9A-D8D7784E21C1}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FunctionalTest", "FunctionalTest\FunctionalTest.vcxproj", "{B9068426-8715-40B8-A79B-E0C8E81326A4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests\Tests.vcxproj", "{2800198A-B0F4-40EB-B998-BF3F862307B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,22 +43,14 @@ Global
 		{E607C5B4-13C6-392A-9175-3CA89A1D013A}.Static Release|Win32.Build.0 = Release|Win32
 		{E607C5B4-13C6-392A-9175-3CA89A1D013A}.Template|Win32.ActiveCfg = Template|Win32
 		{E607C5B4-13C6-392A-9175-3CA89A1D013A}.Template|Win32.Build.0 = Template|Win32
-		{71AB9D35-56B9-4CA4-8C9A-D8D7784E21C1}.Debug|Win32.ActiveCfg = Debug|Win32
-		{71AB9D35-56B9-4CA4-8C9A-D8D7784E21C1}.Debug|Win32.Build.0 = Debug|Win32
-		{71AB9D35-56B9-4CA4-8C9A-D8D7784E21C1}.Release|Win32.ActiveCfg = Release|Win32
-		{71AB9D35-56B9-4CA4-8C9A-D8D7784E21C1}.Release|Win32.Build.0 = Release|Win32
-		{71AB9D35-56B9-4CA4-8C9A-D8D7784E21C1}.Static Release|Win32.ActiveCfg = Release|Win32
-		{71AB9D35-56B9-4CA4-8C9A-D8D7784E21C1}.Static Release|Win32.Build.0 = Release|Win32
-		{71AB9D35-56B9-4CA4-8C9A-D8D7784E21C1}.Template|Win32.ActiveCfg = Release|Win32
-		{71AB9D35-56B9-4CA4-8C9A-D8D7784E21C1}.Template|Win32.Build.0 = Release|Win32
-		{B9068426-8715-40B8-A79B-E0C8E81326A4}.Debug|Win32.ActiveCfg = Debug|Win32
-		{B9068426-8715-40B8-A79B-E0C8E81326A4}.Debug|Win32.Build.0 = Debug|Win32
-		{B9068426-8715-40B8-A79B-E0C8E81326A4}.Release|Win32.ActiveCfg = Release|Win32
-		{B9068426-8715-40B8-A79B-E0C8E81326A4}.Release|Win32.Build.0 = Release|Win32
-		{B9068426-8715-40B8-A79B-E0C8E81326A4}.Static Release|Win32.ActiveCfg = Release|Win32
-		{B9068426-8715-40B8-A79B-E0C8E81326A4}.Static Release|Win32.Build.0 = Release|Win32
-		{B9068426-8715-40B8-A79B-E0C8E81326A4}.Template|Win32.ActiveCfg = Release|Win32
-		{B9068426-8715-40B8-A79B-E0C8E81326A4}.Template|Win32.Build.0 = Release|Win32
+		{2800198A-B0F4-40EB-B998-BF3F862307B9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2800198A-B0F4-40EB-B998-BF3F862307B9}.Debug|Win32.Build.0 = Debug|Win32
+		{2800198A-B0F4-40EB-B998-BF3F862307B9}.Release|Win32.ActiveCfg = Release|Win32
+		{2800198A-B0F4-40EB-B998-BF3F862307B9}.Release|Win32.Build.0 = Release|Win32
+		{2800198A-B0F4-40EB-B998-BF3F862307B9}.Static Release|Win32.ActiveCfg = Release|Win32
+		{2800198A-B0F4-40EB-B998-BF3F862307B9}.Static Release|Win32.Build.0 = Release|Win32
+		{2800198A-B0F4-40EB-B998-BF3F862307B9}.Template|Win32.ActiveCfg = Release|Win32
+		{2800198A-B0F4-40EB-B998-BF3F862307B9}.Template|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

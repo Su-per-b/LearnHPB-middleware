@@ -44,13 +44,13 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)tmp\obj\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)tmp\$(MSBuildProjectName)\obj\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProjectDir)includes;C:\Program Files (x86)\Java\jdk1.7.0_02\include;C:\Program Files (x86)\Java\jdk1.7.0_02\include\win32;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)bin\$(Configuration)</OutDir>
-    <IntDir>$(ProjectDir)tmp\obj\$(Configuration)</IntDir>
+    <IntDir>$(SolutionDir)tmp\$(MSBuildProjectName)\obj\$(Configuration)</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -58,9 +58,9 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FMUWRAPPER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)expat-2.0.1\lib;$(ProjectDir)qtronic;$(ProjectDir)model;$(ProjectDir)controller;$(ProjectDir)view;$(SolutionDir)FMUwrapper</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)qtronic;$(ProjectDir)model;$(ProjectDir)controller;$(ProjectDir)view;$(SolutionDir)expat</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PrecompiledHeaderOutputFile>$(ProjectDir)tmp\$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>$(SolutionDir)tmp\$(MSBuildProjectName)\$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -79,7 +79,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FMUWRAPPER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PrecompiledHeaderOutputFile>$(ProjectDir)tmp\$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>$(SolutionDir)tmp\$(MSBuildProjectName)\$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,7 +147,7 @@
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\expat-2.0.1\lib\expat.vcxproj">
+    <ProjectReference Include="..\expat\expat.vcxproj">
       <Project>{e607c5b4-13c6-392a-9175-3ca89a1d013a}</Project>
     </ProjectReference>
   </ItemGroup>

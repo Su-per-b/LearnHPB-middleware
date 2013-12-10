@@ -66,6 +66,8 @@ void terminate4 () {
 	connect(&messageCallback, &resultCallback, &fmuStateCallback);
 	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1"));
 
+	ScalarVariablesAllStruct * ss = getAllScalarVariables();
+
 	requestStateChange(simStateNative_3_init_requested);
 	requestStateChange(simStateNative_5_step_requested);
 

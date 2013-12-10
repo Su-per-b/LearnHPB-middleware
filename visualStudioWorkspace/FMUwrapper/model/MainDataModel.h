@@ -70,6 +70,9 @@ namespace Straylight
 		void setFmiComponent(fmiComponent fmiComponent_arg);
 		void setStartValues();
 
+		TypeDefDataModel *  getTypeDefDataModel();
+
+
 		/*******************************************************//**
 		* The type def data model.
 		*******************************************************/

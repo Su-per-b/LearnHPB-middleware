@@ -95,6 +95,12 @@ ScalarVariablesAllStruct * getAllScalarVariables() {
 	return allScalarVariables;
 }
 
+
+
+
+
+
+
 /*******************************************************//**
  * Gets the is simulation complete.
  *

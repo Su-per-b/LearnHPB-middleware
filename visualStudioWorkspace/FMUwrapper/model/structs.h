@@ -46,10 +46,10 @@ typedef struct {
 	int minValueStatus;
 	int maxValueStatus;
 
-	/*******************************************************//**
-	 * Type of the declared.
-	 *******************************************************/
-	const char * declaredType;
+	const char * unit;
+	int unitValueStatus;
+
+
 } TypeSpecReal;
 
 /*******************************************************//**
@@ -171,6 +171,7 @@ typedef struct {
 	int startValueStatus;
 } TypeSpecString;
 
+
 /*******************************************************//**
  * Defines an alias representing the structure.
  *******************************************************/
@@ -199,8 +200,10 @@ typedef struct {
 	 *******************************************************/
 	unsigned int valueReference;
 
+
 	TypeSpecReal  * typeSpecReal;
 } ScalarVariableRealStruct;
+
 
 /*******************************************************//**
  * Defines an alias representing the structure.
@@ -325,35 +328,27 @@ typedef struct {
 	 *******************************************************/
 	const char * name;
 	const char * unit;
-
+	const char * quantity; //Pressure, Density ... etc
+	
 	/*******************************************************//**
 	 * The index.
 	 *******************************************************/
 	int idx;
-	double start;
 
-	/*******************************************************//**
-	 * The nominal.
-	 *******************************************************/
+	//values
+	double start;
 	double nominal;
 	double min;
-
-	/*******************************************************//**
-	 * The maximum.
-	 *******************************************************/
 	double max;
-	int startValueStatus;
 
-	/*******************************************************//**
-	 * The nominal value status.
-	 *******************************************************/
+	//statuses
+	int startValueStatus;
 	int nominalValueStatus;
 	int minValueStatus;
-
-	/*******************************************************//**
-	 * The maximum value status.
-	 *******************************************************/
 	int maxValueStatus;
+	int unitValueStatus;
+	int quantityValueStatus;
+
 } TypeDefinitionReal;
 
 /*******************************************************//**
@@ -521,3 +516,16 @@ typedef struct {
 	 *******************************************************/
 	ScalarVariableCollectionStruct * internal;
 } ScalarVariablesAllStruct;
+
+
+typedef struct {
+
+
+	TypeDefinitionReal * input;
+	ScalarVariableCollectionStruct * output;
+
+
+} TypeDefinitionCollectionStruct;
+
+
+

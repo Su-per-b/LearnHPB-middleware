@@ -16,6 +16,7 @@ public class ScalarVariableStructBase extends Structure {
 	public int variability;
 	public String description;
 	public int valueReference;
+
 	
 	
 	/**

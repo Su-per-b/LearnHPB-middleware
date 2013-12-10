@@ -26,11 +26,14 @@ public class TypeSpecReal
 	public double nominal;
 	public double min;
 	public double max;
-
+	
 	public int startValueStatus;
 	public int nominalValueStatus;
 	public int minValueStatus;
 	public int maxValueStatus;
+	
+	public String unit;
+	public int unitValueStatus;
 
 
 	public String toJson() {
@@ -49,6 +52,8 @@ public class TypeSpecReal
             append(this.nominalValueStatus).
             append(this.minValueStatus).
             append(this.maxValueStatus).
+            append(this.unitValueStatus).
+            append(this.unit).
             toHashCode();
     }
 
@@ -75,6 +80,8 @@ public class TypeSpecReal
             append(this.nominalValueStatus, typedObj.nominalValueStatus).
             append(this.minValueStatus, typedObj.minValueStatus).
             append(this.maxValueStatus, typedObj.maxValueStatus).
+            append(this.unitValueStatus, typedObj.unitValueStatus).
+            append(this.unit, typedObj.unit).
             isEquals();
 
     }

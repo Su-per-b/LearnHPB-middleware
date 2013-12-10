@@ -87,6 +87,8 @@ public class ScalarVariableRealPanel extends JPanel {
 	
 	private JLabel lblValueReference_;
 	
+	private JTextField textFieldValueReference_;
+	
 	
 	
 	/**
@@ -134,7 +136,10 @@ public class ScalarVariableRealPanel extends JPanel {
 		lblValueReference_ = new JLabel("{Value Reference}");
 		lblValueReference_.setFont(new Font("SansSerif", Font.PLAIN, 12));
 
-
+		textFieldValueReference_ = new JTextField();
+		textFieldValueReference_.setColumns(10);
+		
+		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -165,7 +170,7 @@ public class ScalarVariableRealPanel extends JPanel {
 							.addComponent(slider_, GroupLayout.PREFERRED_SIZE, 349, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(lblMax_))
-						.addComponent(lblValueReference_, GroupLayout.PREFERRED_SIZE, 293, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textFieldValueReference_, GroupLayout.PREFERRED_SIZE, 293, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblDescription_, GroupLayout.PREFERRED_SIZE, 408, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(385, Short.MAX_VALUE))
 		);
@@ -196,7 +201,7 @@ public class ScalarVariableRealPanel extends JPanel {
 								.addComponent(lblMin_)
 								.addComponent(slider_, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addGap(18)
-							.addComponent(lblValueReference_, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
+							.addComponent(textFieldValueReference_, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
 						.addComponent(lblMax_))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblDescription_)
@@ -241,8 +246,8 @@ public class ScalarVariableRealPanel extends JPanel {
 
 		String valueReferenceStr = String.valueOf(sv.getValueReference());
 		
-		lblValueReference_.setText("Value Reference: " + valueReferenceStr);
-		lblValueReference_.setToolTipText("Value Reference: " + valueReferenceStr);
+		textFieldValueReference_.setText("Value Reference: " + valueReferenceStr);
+		textFieldValueReference_.setToolTipText("Value Reference: " + valueReferenceStr);
 		
 		slider_.setMinimum((int)sv.getTypeSpecReal().min);
 		slider_.setMaximum((int)sv.getTypeSpecReal().max);

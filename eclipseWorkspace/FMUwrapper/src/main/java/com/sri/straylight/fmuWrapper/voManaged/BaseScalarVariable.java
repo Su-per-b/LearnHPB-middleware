@@ -12,6 +12,7 @@ public class BaseScalarVariable {
 	protected int causality_;
 	protected int variability_;
 	protected String description_;
+	protected String unit_;
 	protected int valueReference_;
 
 	public BaseScalarVariable() {
@@ -31,7 +32,7 @@ public class BaseScalarVariable {
 
 	public static String[] getColumnNamesArray() {
 
-		String[] ary = { "name", "value", "type", "start", "nominal", "min",
+		String[] ary = { "name", "value", "unit", "type", "start", "nominal", "min",
 				"max", "causality", "variability", "description" };
 
 		return ary;
@@ -42,9 +43,13 @@ public class BaseScalarVariable {
 		return name_;
 	}
 
+
 	public void setName(String name_) {
 		this.name_ = name_;
 	}
+
+
+	
 
 	public int getIdx() {
 		return idx_;

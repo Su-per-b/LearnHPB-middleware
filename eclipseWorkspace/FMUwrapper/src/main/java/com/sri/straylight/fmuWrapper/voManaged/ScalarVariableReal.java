@@ -39,12 +39,20 @@ public class ScalarVariableReal
 
 	}
 
-
+	
+	public String getUnit() {
+		
+		String unit = getTypeSpecReal().unit;
+		return unit;
+		
+	}
+	
 	public String[] toStringArray() {
 		
 		String[] ary  = {
 				getName(),
 				"{not set}",
+				getUnit(),
 				"Real",
 				doubleToString(getTypeSpecReal().start),
 				doubleToString(getTypeSpecReal().nominal),

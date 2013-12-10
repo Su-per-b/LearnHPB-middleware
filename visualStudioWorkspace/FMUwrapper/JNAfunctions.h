@@ -65,6 +65,11 @@ extern "C" DllExport int forceCleanup();
  *******************************************************/
 extern "C" DllExport ScalarVariablesAllStruct * getAllScalarVariables();
 
+
+extern "C" DllExport int getAllTypeDefinitions();
+
+
+
 /*******************************************************//**
  * Gets the is simulation complete.
  *

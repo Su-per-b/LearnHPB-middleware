@@ -173,7 +173,6 @@ public interface JNAfmuWrapper extends Library {
 	//public void deleteMessageStruct(MessageStruct messageStruct);
 
 
-
 	/**
 	 * Sets the scalar value real.
 	 *
@@ -183,9 +182,11 @@ public interface JNAfmuWrapper extends Library {
 	 */
 	public fmiStatus setScalarValueReal(int idx, double value);
 
-
 	
 	public ScalarValueResultsStruct  getTest();
+
+	
+//	public int getAllTypeDefinitions();
 	
 	
 	
