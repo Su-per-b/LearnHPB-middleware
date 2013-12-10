@@ -4,9 +4,32 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
+void resultCallback2(ScalarValueResultsStruct * scalarValueResultsStruct) {
+	std::string str;
+}
+
+
+void messageCallback2(MessageStruct * messageStruct) {
+	//printf ("Main.exe messageCallback: %s \n", messageStruct->msgText);
+}
+
+void fmuStateCallback2(SimStateNative simStateNative) {
+	//printf ("Main.exe messageCallback: %s \n", messageStruct->msgText);
+	printf("Main.exe simStateNative: %s \n", _T("simStateNative"));
+}
+
 
 namespace StraylightTests
 {
+
+
+
+
+
+
+
+
+
 
 	TEST_CLASS(UT1)
 	{
@@ -20,10 +43,9 @@ namespace StraylightTests
 		TEST_METHOD(ConnectToFMU)
 		{
 
-			//connect(&messageCallback, &resultCallback, &fmuStateCallback);
+			connect(&messageCallback2, &resultCallback2, &fmuStateCallback2);
 
-			//bool isComplete = isSimulationComplete();
-			//Assert::IsFalse(isComplete, L"isSimulationComplete", LINE_INFO());
+			Assert::IsTrue(true, L"isSimulationComplete", LINE_INFO());
 
 		}
 
