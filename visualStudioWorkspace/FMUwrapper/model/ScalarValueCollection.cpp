@@ -55,9 +55,12 @@ namespace Straylight
 	void ScalarValueCollection::toString( std::string & stringRef)
 	{
 
-		   std::ostringstream sstream;
+		std::ostringstream sstream;
 
-		for(int i=0; i<real_.size(); i++){
+		int size = real_.size();
+
+
+		for (int i = 0; i<size; i++){
 		   ScalarValueRealStruct * realStruct = real_[i];  //Copy the vector to the string
 		   sstream << realStruct->value << _T(" ");
 		}

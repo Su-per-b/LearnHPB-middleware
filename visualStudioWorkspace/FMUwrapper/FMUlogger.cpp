@@ -4,7 +4,6 @@
 
 namespace Straylight
 {
-	#define MAX_MSG_SIZE 4096
 
 	/*******************************************************//**
 	 * <summary> The fmulogger fmu.</summary>
@@ -44,17 +43,17 @@ namespace Straylight
 		fmiString category, fmiString message, ...) {
 			//printf("fmuLogger\n", 1);
 
-			char msg[MAX_MSG_SIZE];
+		char msg[MSG_BUFFER_SIZE];
 			char* copy;
 			va_list argp;
 
 			// Replace C format strings
 			va_start(argp, message);
-			vsprintf(msg, message, argp);
+			vsprintf_s(msg, MSG_BUFFER_SIZE, message, argp);
 
 			// Replace e.g. ## and #r12#
-			copy = strdup(msg);
-			replaceRefsInMessage(copy, msg, MAX_MSG_SIZE, fmu);
+			copy = _strdup(msg);
+			replaceRefsInMessage(copy, msg, MSG_BUFFER_SIZE, fmu);
 			free(copy);
 
 			// Print the final message
@@ -165,12 +164,12 @@ namespace Straylight
 				else {
 					char type = msg[i+1]; // one of ribs
 					fmiValueReference vr;
-					int nvr = sscanf(msg+i+2, "%u", &vr);
+					int nvr = sscanf_s(msg+i+2, "%u", &vr);
 					if (nvr==1) {
 						// vr of type detected, e.g. #r12#
 						ScalarVariable* sv = getSV(fmu, type, vr);
 						const char* name = sv ? getName(sv) : "?";
-						sprintf(buffer+k, "%s", name);
+						sprintf_s(buffer + k, MSG_BUFFER_SIZE,"%s", name);
 						k += strlen(name);
 						i += (n+1);
 						c = msg[i];

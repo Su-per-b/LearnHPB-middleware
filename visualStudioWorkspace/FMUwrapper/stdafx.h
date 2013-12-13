@@ -17,6 +17,8 @@
 #include <SDKDDKVer.h>
 
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+#define MSG_BUFFER_SIZE 4096
+#define MSG_BUFFER_SIZE_SMALL 1024
 
 // Windows Header Files:
 #include <windows.h>

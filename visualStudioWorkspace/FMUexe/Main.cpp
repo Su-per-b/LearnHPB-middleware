@@ -5,11 +5,15 @@
 #include "Utils.h"
 #include <conio.h>
 
+
+#define FMU_FOLDER _T("..\\..\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1")
+
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	//terminate1();
 	//terminate2();
-	terminate4();
+	terminate3();
 
 	_getch();
 
@@ -41,7 +45,7 @@ void terminate1 () {
 void terminate2 () {
 
 	connect(&messageCallback, &resultCallback, &fmuStateCallback);
-	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1"));
+	xmlParse(FMU_FOLDER);
 
 	forceCleanup();
 
@@ -52,11 +56,12 @@ void terminate2 () {
 void terminate3 () {
 
 	connect(&messageCallback, &resultCallback, &fmuStateCallback);
-	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1"));
+	xmlParse(FMU_FOLDER);
 
-	requestStateChange(simStateNative_3_init_requested);
 
-	forceCleanup();
+	TypeDefDataModel * typeDefs = getTypeDefDataModel();
+
+
 
 	return;
 }
@@ -64,7 +69,7 @@ void terminate3 () {
 void terminate4 () {
 
 	connect(&messageCallback, &resultCallback, &fmuStateCallback);
-	xmlParse(_T("E:\\SRI\\straylight_repo\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1"));
+	xmlParse(FMU_FOLDER);
 
 	ScalarVariablesAllStruct * ss = getAllScalarVariables();
 
@@ -78,7 +83,7 @@ void terminate4 () {
 
 /*
 
-
+HKEY_CURRENT_USER/Software/PowerUSB/SystemOptions/printIdleTime
 void test2 () {
 
 
@@ -131,7 +136,7 @@ setScalarValues(ary,2);
 
 void doubleToCommaString(char* buffer, double r){
 	char* comma;
-	sprintf(buffer, _T("%.16g"), r);
+	sprintf_s(buffer, sizeof(buffer), _T("%.16g"), r);
 
 	comma = strchr(buffer, '.');
 	if (comma) *comma = ',';
@@ -140,5 +145,5 @@ void doubleToCommaString(char* buffer, double r){
 
 void doubleToString(char* buffer, double x)
 {
-	sprintf(buffer, _T("%.16g"), x);
+	sprintf_s(buffer, sizeof(buffer),_T("%.16g"), x);
 }

@@ -111,7 +111,6 @@ namespace Straylight
 	void ScalarValueResults::toString( char* buffer, int len )
 	{
 
-
 		std::stringstream ss;
 		ss << _T("Time: ") << time_ << _T("\n    --=input:");
 
@@ -125,7 +124,7 @@ namespace Straylight
 
 		string str4 =  ss.str();
 
-		strncpy(buffer, str4.c_str(), len-1); // copy things, but don't overrun buffer
+		strncpy_s(buffer, sizeof(buffer), str4.c_str(), len - 1); // copy things, but don't overrun buffer
 		buffer[len - 1] = '\0'; // 0 terminates the c-string
 
 

@@ -1,11 +1,7 @@
-/*******************************************************//**
- * @file	Config.h
- *
- * Declares the configuration class.
- *******************************************************/
 #pragma once
 
 #include "stdafx.h"
+#include "Utils.h"
 
 /*******************************************************//**
  * <summary> Defines an alias representing the default experiment structure.</summary>
@@ -90,7 +86,7 @@ namespace Straylight
 		DefaultExperimentStruct * getDefaultExperimentStruct() const { return defaultExperimentStruct_; }
 		void setDefaultExperimentStruct(DefaultExperimentStruct * val) { defaultExperimentStruct_ = val; }
 
-		int getStepDelta() const { return stepDelta_; }
+		double getStepDelta() const { return stepDelta_; }
 		void setStepDelta(int val) { stepDelta_ = val; }
 
 		static Config* getInstance();

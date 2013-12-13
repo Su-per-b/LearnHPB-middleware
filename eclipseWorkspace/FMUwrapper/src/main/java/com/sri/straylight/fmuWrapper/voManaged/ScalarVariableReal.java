@@ -43,6 +43,10 @@ public class ScalarVariableReal
 	public String getUnit() {
 		
 		String unit = getTypeSpecReal().unit;
+		if (unit == null) {
+			unit = "";
+		}
+		
 		return unit;
 		
 	}

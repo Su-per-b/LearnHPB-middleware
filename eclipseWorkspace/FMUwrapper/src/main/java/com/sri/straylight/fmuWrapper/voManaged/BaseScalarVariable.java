@@ -96,6 +96,8 @@ public class BaseScalarVariable {
 	}
 
 	
+	
+	
 	public String getDescription() {
 		return description_;
 	}

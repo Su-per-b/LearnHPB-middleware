@@ -4,7 +4,7 @@
     <ShowAllFiles>true</ShowAllFiles>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LocalDebuggerCommand>javaw.exe</LocalDebuggerCommand>
+    <LocalDebuggerCommand>C:\Program Files %28x86%29\Java\jdk1.7.0_45\bin\javaw.exe</LocalDebuggerCommand>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerAttach>true</LocalDebuggerAttach>
   </PropertyGroup>

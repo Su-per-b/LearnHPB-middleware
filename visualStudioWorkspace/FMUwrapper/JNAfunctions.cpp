@@ -156,6 +156,17 @@ fmiStatus setScalarValueReal (int idx, double value) {
 	return mainController->setScalarValueReal(idx,value);
 }
 
+
+TypeDefDataModel * getTypeDefDataModel() {
+
+	MainDataModel * mainDataModel = mainController->getMainDataModel();
+
+	return mainDataModel->getTypeDefDataModel();
+}
+
+
+
+
 /*******************************************************//**
  * Sets scalar values.
  *

@@ -53,7 +53,7 @@ namespace Straylight
 		ScalarValue * scalarValue = new ScalarValue(idx);
 
 		fmiReal realNumber1;
-		fmiReal realNumber2;
+		//fmiReal realNumber2;
 		fmiReal realNumber3;
 
 		fmiStatus status1;
@@ -165,7 +165,7 @@ namespace Straylight
 	fmiStatus MainDataModel::setScalarValueRealMin( int idx, double value )
 	{
 		ScalarValue * scalarValue = new ScalarValue(idx);
-		fmiReal realNumber;
+		//fmiReal realNumber;
 
 		fmiStatus status;
 		scalarValue->setRealNumber(value);

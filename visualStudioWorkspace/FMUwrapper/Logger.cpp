@@ -5,7 +5,6 @@
 
 namespace Straylight
 {
-	#define MAX_MSG_SIZE 4096
 
 	/*******************************************************//**
 	 * The logger instance.
@@ -66,7 +65,9 @@ namespace Straylight
 	 *******************************************************/
 	void Logger::doubleToCommaString(char* buffer, double r){
 		char* comma;
-		sprintf(buffer, _T("%.16g"), r);
+
+		sprintf_s(buffer, MSG_BUFFER_SIZE, _T("%.16g"), r);
+
 		comma = strchr(buffer, '.');
 		if (comma) *comma = ',';
 	}
@@ -126,9 +127,10 @@ namespace Straylight
 	 *******************************************************/
 	void Logger::printDebug5(const char* str1, const char* str2, const char* str3,
 		const char* str4, const char* str5) {
-			char msg[MAX_MSG_SIZE];
+		char msg[MSG_BUFFER_SIZE];
 
-			sprintf (msg, str1, str2, str3, str4, str5);
+		sprintf_s(msg, MSG_BUFFER_SIZE, str1, str2, str3, str4, str5);
+
 			printDebugHelper(_T("%s\n"), msg);
 	}
 
@@ -139,8 +141,8 @@ namespace Straylight
 	 * @param	str2	The second string.
 	 *******************************************************/
 	void Logger::printDebugHelper(const char* str1, const char* str2 ) {
-		char msg[MAX_MSG_SIZE];
-		sprintf (msg, str1, str2);
+		char msg[MSG_BUFFER_SIZE];
+		sprintf_s(msg, MSG_BUFFER_SIZE, str1, str2);
 
 		if (messageCallbackPtr_ != NULL) {
 			MessageStruct * messageStruct = new MessageStruct;
@@ -179,7 +181,7 @@ namespace Straylight
 	 * @param	i  	Zero-based index of the.
 	 *******************************************************/
 	void Logger::printErrorInt(const char* msg, int i) {
-		char str[MAX_MSG_SIZE];
+		char str[MSG_BUFFER_SIZE];
 		Utils::intToString(str, i);
 
 		printfError(msg, str);
@@ -192,8 +194,8 @@ namespace Straylight
 	 * @param	str2	The second string.
 	 *******************************************************/
 	void Logger::printfError(const char* str1, const char* str2){
-		char msg[MAX_MSG_SIZE];
-		sprintf (msg, str1, str2);
+		char msg[MSG_BUFFER_SIZE];
+		sprintf_s(msg, MSG_BUFFER_SIZE, str1, str2);
 
 		fprintf(stderr, _T("*** Error:%s\n"), msg);
 	//	fprintf(stdout, _T("*** Error:%s\n"), msg);

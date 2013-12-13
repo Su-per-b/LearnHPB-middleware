@@ -6,7 +6,7 @@
 /*******************************************************//**
  * A macro that defines bufsize.
  *******************************************************/
-#define BUFSIZE 4096
+
 
 /*******************************************************//**
  * A macro that defines XML file string.
@@ -32,7 +32,7 @@ namespace Straylight
 		fmu_= NULL;
 		fmiComponent_ = NULL;
 		mainDataModel_ = NULL;
-
+		state_ = simStateNative_0_uninitialized;
 		stateChangeCallbackPtr_ = NULL;
 
 	}
@@ -354,14 +354,15 @@ namespace Straylight
 		//	Logger::instance->printDebug2("MainController::parseXML unzipfolder %s\n", unzipfolder);
 		int len1 = strlen(unzipfolder) + 1;
 
-		unzipFolderPath_ = (char *) calloc(sizeof(char), len1 + 1);
+		unzipFolderPath_ = (char *) calloc(sizeof(char), len1 );
+
 		lstrcpy(unzipFolderPath_, unzipfolder);
 		Logger::getInstance()->printDebug2(_T("MainController::xmlParse unzipFolderPath_ %s\n"), unzipFolderPath_);
 
 		//construct the path to the XML file and
 		// store as member variable
-		int len2 = len1 + 1 + strlen(XML_FILE_STR);
-		xmlFilePath_ = (char *) calloc(sizeof(char), len2 + 1);
+		int len2 = len1 + strlen(XML_FILE_STR);
+		xmlFilePath_ = (char *) calloc(sizeof(char), len2);
 
 
 		std::stringstream xmlFilePathStringStream;
@@ -401,9 +402,9 @@ namespace Straylight
 	 * @return	null if it fails, else the address.
 	 *******************************************************/
 	void* MainController::getAdr(const char* funNam){
-		char name[BUFSIZE];
+		char name[MSG_BUFFER_SIZE];
 		void* fp;
-		sprintf(name, _T("%s_%s"), getModelIdentifier(fmu_->modelDescription), funNam); // Zuo: adding the model name in front of function name
+		sprintf_s(name, MSG_BUFFER_SIZE, _T("%s_%s"), getModelIdentifier(fmu_->modelDescription), funNam); // Zuo: adding the model name in front of function name
 
 		fp = GetProcAddress(fmu_->dllHandle, name);
 
@@ -454,11 +455,15 @@ namespace Straylight
 	int MainController::loadDll( ) {
 		Logger::getInstance()->printDebug2 (_T("MainController::loadDll unzipFolderPath_: %s\n"), unzipFolderPath_);
 		const char* modelId = getModelIdentifier(fmu_->modelDescription);
+		
+		int len = strlen(unzipFolderPath_) + strlen(DLL_DIR_STR)
+			+ strlen(modelId) + strlen(_T(".dll")) + 1;
 
-		dllFilePath_ = (char *) calloc(sizeof(char), strlen(unzipFolderPath_) + strlen(DLL_DIR_STR)
-			+ strlen( modelId ) +  strlen(_T(".dll")) + 1);
+		dllFilePath_ = (char *)calloc(sizeof(char), len);
 
-		sprintf(dllFilePath_,
+
+		sprintf_s(dllFilePath_,
+			len,
 			_T("%s%s%s.dll"),
 			unzipFolderPath_,
 			DLL_DIR_STR,
@@ -678,17 +683,17 @@ namespace Straylight
 		// Print simulation summary
 		if (isLoggingEnabled_) printf("Step %d to t=%.4f\n", nSteps_, time_);
 
-		char msg1[1024];
-		char msg2[1024];
-		char msg3[1024];
+		char msg1[MSG_BUFFER_SIZE_SMALL];
+		char msg2[MSG_BUFFER_SIZE_SMALL];
+		char msg3[MSG_BUFFER_SIZE_SMALL];
 
-		sprintf (msg1, "Simulation from %g to %g terminated successful\n", getStartTime(), getStopTime());
+		sprintf_s(msg1, MSG_BUFFER_SIZE_SMALL,"Simulation from %g to %g terminated successful\n", getStartTime(), getStopTime());
 		Logger::getInstance()->printDebug (msg1);
 
-		sprintf (msg2, "  steps ............ %d\n",  nSteps_);
+		sprintf_s(msg2, MSG_BUFFER_SIZE_SMALL, "  steps ............ %d\n", nSteps_);
 		Logger::getInstance()->printDebug (msg2);
 
-		sprintf (msg3, "  fixed step size .. %g\n",  getStepDelta());
+		sprintf_s(msg3, MSG_BUFFER_SIZE_SMALL, "  fixed step size .. %g\n", getStepDelta());
 		Logger::getInstance()->printDebug (msg3);
 	}
 
@@ -763,7 +768,7 @@ namespace Straylight
 		size_t theSize = slashAndFileName - exePath;
 
 		// Extract directory
-		_tcsnccpy(szDir, exePath, theSize);
+		_tcsnccpy_s(szDir, MAX_PATH, exePath, theSize);
 		szDir[theSize] = '\0';
 	}
 

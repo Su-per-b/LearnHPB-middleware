@@ -66,7 +66,7 @@ extern "C" DllExport int forceCleanup();
 extern "C" DllExport ScalarVariablesAllStruct * getAllScalarVariables();
 
 
-extern "C" DllExport int getAllTypeDefinitions();
+extern "C" DllExport TypeDefDataModel * getTypeDefDataModel();
 
 
 

@@ -1,7 +1,6 @@
 #pragma once
+#include "Config.h"
 
-#include "Config.h";
-#include "Utils.h";
 
 namespace Straylight
 {

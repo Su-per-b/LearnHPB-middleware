@@ -52,8 +52,10 @@ namespace Straylight
 			output.append(str);
 		}
 
-		cstr = new char [output.size()+1];
-		strcpy (cstr, output.c_str());
+		int bufferSize = output.size() + 1;
+		cstr = new char[bufferSize];
+
+		strcpy_s(cstr, bufferSize, output.c_str());
 
 		return cstr;
 	}

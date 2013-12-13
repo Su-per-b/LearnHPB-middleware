@@ -68,7 +68,7 @@ double getDouble(void* element, Att a, ValueStatus* vs){
     double d = 0;
     const char* value = getString(element, a);
     if (!value) { *vs=valueMissing; return d; }
-    *vs = (1==sscanf(value, "%lf", &d)) ? valueDefined : valueIllegal;
+    *vs = (1==sscanf_s(value, "%lf", &d)) ? valueDefined : valueIllegal;
     return d;
 }
 
@@ -78,7 +78,8 @@ int getInt(void* element, Att a, ValueStatus* vs){
     int n = 0;
     const char* value = getString(element, a);
     if (!value) { *vs=valueMissing; return n; }
-    *vs = (1==sscanf(value, "%d", &n)) ? valueDefined : valueIllegal;
+   *vs = (1==sscanf_s(value, "%d", &n)) ? valueDefined : valueIllegal;
+
     return n;
 }
 
@@ -86,7 +87,7 @@ unsigned int getUInt(void* element, Att a, ValueStatus* vs){
     unsigned int u = -1;
     const char* value = getString(element, a);
     if (!value) { *vs=valueMissing; return u; }
-    *vs = (1==sscanf(value, "%u", &u)) ? valueDefined : valueIllegal;
+    *vs = (1==sscanf_s(value, "%u", &u)) ? valueDefined : valueIllegal;
     return u;
 }
 
@@ -255,7 +256,7 @@ const char * getDescription(ModelDescription* md, ScalarVariable* sv) {
 const char * getVariableAttributeString(ModelDescription* md,
         fmiValueReference vr, Elm type, Att a){
     const char* value;
-    const char* declaredType;
+
     Type* tp;
     ScalarVariable* sv = getVariable(md, vr, type);
     if (!sv) return NULL;
@@ -273,7 +274,7 @@ double getVariableAttributeDouble(ModelDescription* md,
     double d = 0;
     const char* value = getVariableAttributeString(md, vr, type, a);
     if (!value) { *vs = valueMissing; return d; }
-    *vs = (1==sscanf(value, "%lf", &d)) ? valueDefined : valueIllegal;
+    *vs = (1==sscanf_s(value, "%lf", &d)) ? valueDefined : valueIllegal;
     return d;
 }
 
@@ -330,7 +331,7 @@ int getIntegerAttribute(ScalarVariable* scalarVariable, ValueStatus * valueStatu
 	if (!valueChar) {
 		*valueStatus = valueMissing;
 	} else {
-		*valueStatus = (1==sscanf(valueChar, "%d", &value)) ? valueDefined : valueIllegal;
+		*valueStatus = (1==sscanf_s(valueChar, "%d", &value)) ? valueDefined : valueIllegal;
 	}
 
 	return value;
@@ -344,7 +345,7 @@ int getElementAttributeInteger(Element* e, ValueStatus * valueStatus, Att attrib
 	if (!valueChar) {
 		*valueStatus = valueMissing;
 	} else {
-		*valueStatus = (1==sscanf(valueChar, "%d", &value)) ? valueDefined : valueIllegal;
+		*valueStatus = (1==sscanf_s(valueChar, "%d", &value)) ? valueDefined : valueIllegal;
 	}
 
 	return value;
@@ -358,7 +359,7 @@ double getElementAttributeReal(Element* e, ValueStatus * valueStatus, Att attrib
 	if (!valueChar) {
 		*valueStatus = valueMissing;
 	} else {
-		*valueStatus = (1==sscanf(valueChar, "%lf", &valueDouble)) ? valueDefined : valueIllegal;
+		*valueStatus = (1==sscanf_s(valueChar, "%lf", &valueDouble)) ? valueDefined : valueIllegal;
 
 		if (*valueStatus == valueIllegal) {
 			int x = 0;
@@ -376,10 +377,10 @@ char getElementAttributeBoolean(Element* e, ValueStatus * valueStatus, Att attri
 	if (!valueChar) {
 		*valueStatus = valueMissing;
 	} else {
-		*valueStatus = (1==sscanf(valueChar, "%lf", &valueDouble)) ? valueDefined : valueIllegal;
+		*valueStatus = (1==sscanf_s(valueChar, "%lf", &valueDouble)) ? valueDefined : valueIllegal;
 	}
 
-	return valueDouble;
+	return (char) valueDouble;
 }
 
 /*
@@ -391,7 +392,7 @@ double getRealAttribute(ScalarVariable* scalarVariable, ValueStatus * valueStatu
 	if (!valueChar) {
 	*valueStatus = valueMissing;
 	} else {
-	*valueStatus = (1==sscanf(valueChar, "%lf", &valueDouble)) ? valueDefined : valueIllegal;
+	*valueStatus = (1==sscanf_s(valueChar, "%lf", &valueDouble)) ? valueDefined : valueIllegal;
 	}
 
 	return valueDouble;
@@ -562,7 +563,7 @@ int addAttributes(Element* el, const char** attr) {
         if (!checkPointer(att)) return 0;
     }
     for (n=0; attr[n]; n+=2) {
-        char* value = strdup(attr[n+1]);
+		char* value = _strdup(attr[n + 1]);
         if (!checkPointer(value)) return 0;
         a = checkAttribute(attr[n]);
         if (a == -1) return 0;  // illegal attribute error
@@ -823,18 +824,19 @@ void XMLCALL handleData(void *context, const XML_Char *s, int len) {
     if (!data) {
         // start a new data string
         if (len == 1 && s[0] == '\n') {
-            data = strdup("");
+            data = _strdup("");
         } else {
             data = malloc(len + 1);
-            strncpy(data, s, len);
+			strncpy_s(data, len + 1, s, len);
             data[len] = '\0';
         }
     }
     else {
         // continue existing string
         n = strlen(data) + len;
+
         data = realloc(data, n+1);
-        strncat(data, s, len);
+		strncat_s(data, n + 1, s, len);
         data[n] = '\0';
     }
     return;
@@ -899,13 +901,21 @@ static void printList(int indent, void** list){
 static void freeList(void** list);
 
 void freeElement(void* element){
-    int i;
+//    int i;
     Element* e = (Element*)element;
     if (!e) return;
+
+
+	//No Need to free const char* data type - Raj Dye
     // free attributes
-    for (i=0; i<e->n; i+=2)
-        free(e->attributes[i+1]);
-    if (e->attributes) free(e->attributes);
+	//for (i = 0; i < e->n; i += 2) {
+	//	const char* attribute = e->attributes[i + 1];
+	//	free(attribute);
+	//}
+        
+    // if (e->attributes) free(e->attributes);
+
+
     // free child nodes
     switch (getAstNodeType(e->type)) {
         case astListElement:
@@ -992,7 +1002,9 @@ ModelDescription* parse(const char* xmlPath) {
     if (!checkPointer(parser)) return NULL;  // failure
     XML_SetElementHandler(parser, startElement, endElement);
     XML_SetCharacterDataHandler(parser, handleData);
-  	file = fopen(xmlPath, "rb");
+
+	fopen_s(&file, xmlPath, "rb");
+
 	if (file == NULL) {
         printf("Cannot open file '%s'\n", xmlPath);
      	XML_ParserFree(parser);

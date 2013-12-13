@@ -56,6 +56,10 @@ public class ScalarVariableRealAdapter extends AdapterBase<ScalarVariableReal> {
 		JsonPrimitive primitive6 = new JsonPrimitive(src.getVariabilityAsInt());
 		jsonObject_.add("valueReference_", primitive6);
 		
+		String unit = src.getUnit();
+		JsonPrimitive primitive7 = new JsonPrimitive(unit);
+		jsonObject_.add("unit_", primitive7);
+		
 		
 		return jsonObject_;
 	}

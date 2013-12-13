@@ -21,10 +21,10 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="unit1.h">
+    <ClInclude Include="fmu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="fmu.h">
+    <ClInclude Include="TestMainController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -32,7 +32,7 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="unit1.cpp">
+    <ClCompile Include="TestMainController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

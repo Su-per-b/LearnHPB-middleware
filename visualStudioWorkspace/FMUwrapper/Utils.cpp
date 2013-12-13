@@ -2,6 +2,9 @@
 
 #include "Utils.h"
 
+
+
+
 namespace Straylight
 {
 	/*******************************************************//**
@@ -18,7 +21,7 @@ namespace Straylight
 		if (!valueChar) {
 			*valueStatus = valueMissing;
 		} else {
-			*valueStatus = (1==sscanf(valueChar, "%lf", &valueDouble)) ? valueDefined : valueIllegal;
+			*valueStatus = (1==sscanf_s(valueChar, "%lf", &valueDouble)) ? valueDefined : valueIllegal;
 		}
 
 		return valueDouble;
@@ -57,7 +60,7 @@ namespace Straylight
 	 * @param	i			  	Zero-based index of the.
 	 *******************************************************/
 	void Utils::intToString(char* buffer, int i) {
-		sprintf( buffer, "%d", i );
+		sprintf_s(buffer, MSG_BUFFER_SIZE, "%d", i);
 	}
 
 	/*******************************************************//**
@@ -68,7 +71,9 @@ namespace Straylight
 	 *******************************************************/
 	void Utils::doubleToCommaString(char* buffer, double r){
 		char* comma;
-		sprintf(buffer, _T("%.16g"), r);
+
+		sprintf_s(buffer, MSG_BUFFER_SIZE, _T("%.16g"), r);
+
 		comma = strchr(buffer, '.');
 		if (comma) *comma = ',';
 	}
