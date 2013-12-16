@@ -7,6 +7,17 @@
 
 #include "..\stdafx.h"
 
+
+
+typedef struct {
+
+	const char * name;
+	const char * value;
+
+} AttributeStruct;
+
+
+
 /*******************************************************//**
  * Defines an alias representing the structure.
  *******************************************************/
@@ -527,5 +538,22 @@ typedef struct {
 
 } TypeDefinitionCollectionStruct;
 
+
+
+typedef struct {
+
+	const char * displayUnit;
+	const char * offset;
+	const char * gain;
+
+} DisplayUnitDefinitionStruct;
+
+
+typedef struct {
+
+	const char * unit;
+	DisplayUnitDefinitionStruct * displayUnitDefinitions;
+
+} BaseUnitStruct;
 
 

@@ -11,10 +11,12 @@
 #include "Logger.h"
 #include "TypeDefFactory.h"
 #include "ScalarVariableFactory.h"
-#include "TypeDefDataModel.h"
+#include "TypeDefinitions.h"
 #include "ScalarVariableCollection.h"
 #include "ScalarVariableDataModel.h"
 #include "ScalarValueResults.h"
+#include "FmiModelAttributes.h"
+#include "UnitDefinitions.h"
 
 using namespace std;
 
@@ -23,7 +25,7 @@ namespace Straylight
 	/*******************************************************//**
 	 * <summary> Main data model.</summary>
 	 *******************************************************/
-	class MainDataModel
+	class DllApi MainDataModel
 	{
 
 
@@ -49,6 +51,11 @@ namespace Straylight
 
 		fmiStatus setScalarValueRealMin(int idx, double value);
 
+		TypeDefinitions * typeDefinitions_;
+		FmiModelAttributes * fmiModelAttributes_;
+
+		UnitDefinitions * unitDefinitions_;
+
 	public:
 		MainDataModel();
 		~MainDataModel(void);
@@ -70,14 +77,12 @@ namespace Straylight
 		void setFmiComponent(fmiComponent fmiComponent_arg);
 		void setStartValues();
 
-		TypeDefDataModel *  getTypeDefDataModel();
+		TypeDefinitions *  getTypeDefinitions();
 
+		UnitDefinitions *  getUnitDefinitions();
 
-		/*******************************************************//**
-		* The type def data model.
-		*******************************************************/
-		TypeDefDataModel * typeDefDataModel_;
 		ScalarVariableDataModel * scalarVariableDataModel_;
+
 		void setScalarValues (ScalarValueRealStruct * scalarValueAry, int length);
 
 		/*******************************************************//**
@@ -88,6 +93,10 @@ namespace Straylight
 		* @return	null if it fails, else the ScalarValueDataModel
 		*******************************************************/
 		ScalarValueResults * getScalarValueResults(double time);
+
+		AttributeStruct * getFmiModelAttributesStruct();
+
+		BaseUnitStruct *  getBaseUnitStructAry();
 
 
 	};

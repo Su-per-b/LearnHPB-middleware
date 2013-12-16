@@ -54,7 +54,7 @@ extern "C" void onMessageCallback(MessageStruct *);
  *
  * @return	.
  *******************************************************/
-extern "C" DllExport int forceCleanup();
+extern "C" DllApi int forceCleanup();
 
 
 
@@ -63,10 +63,10 @@ extern "C" DllExport int forceCleanup();
  *
  * @return	null if it fails, else all scalar variables.
  *******************************************************/
-extern "C" DllExport ScalarVariablesAllStruct * getAllScalarVariables();
+extern "C" DllApi ScalarVariablesAllStruct * getAllScalarVariables();
 
 
-extern "C" DllExport TypeDefDataModel * getTypeDefDataModel();
+//extern "C" DllApi TypeDefDataModel * getTypeDefDataModel();
 
 
 
@@ -75,28 +75,28 @@ extern "C" DllExport TypeDefDataModel * getTypeDefDataModel();
  *
  * @return	.
  *******************************************************/
-extern "C" DllExport int isSimulationComplete();
+extern "C" DllApi int isSimulationComplete();
 
 /*******************************************************//**
  * Gets the run.
  *
  * @return	.
  *******************************************************/
-//extern "C" DllExport int run();
+//extern "C" DllApi int run();
 
 /*******************************************************//**
  * Gets the configuration.
  *
  * @return	null if it fails, else the configuration.
  *******************************************************/
-extern "C" DllExport ConfigStruct * getConfig();
+extern "C" DllApi ConfigStruct * getConfig();
 
 /*******************************************************//**
  * <summary> Gets scalar value results from one time step</summary>
  *
  * <returns> null if it fails, else the scalar value results.</returns>
  *******************************************************/
-extern "C" DllExport ScalarValueResults * getScalarValueResults();
+extern "C" DllApi ScalarValueResults * getScalarValueResults();
 
 /*******************************************************//**
  * Sets a configuration.
@@ -105,14 +105,14 @@ extern "C" DllExport ScalarValueResults * getScalarValueResults();
  *
  * @return	.
  *******************************************************/
-extern "C" DllExport int setConfig(ConfigStruct * configStruct);
+extern "C" DllApi int setConfig(ConfigStruct * configStruct);
 
 /*******************************************************//**
  * Connects the given message callback pointer.
  *
  * @param [in,out]	messageCallbackPtr	If non-null, the message callback pointer to connect.
  *******************************************************/
-extern "C" DllExport void connect(
+extern "C" DllApi void connect(
 	void (*messageCallbackPtr)(MessageStruct *),
 	void (*resultCallbackPtr)(ScalarValueResultsStruct *),
 	void (*stateChangeCallbackPtr)(SimStateNative)
@@ -123,7 +123,7 @@ extern "C" DllExport void connect(
  *
  * @param [in,out]	parameter1	If non-null, the first parameter.
  *******************************************************/
-extern "C" DllExport void xmlParse(char *);
+extern "C" DllApi void xmlParse(char *);
 
 
 
@@ -132,7 +132,7 @@ extern "C" DllExport void xmlParse(char *);
  *
  * @param	newState	State of the new.
  *******************************************************/
-extern "C" DllExport void requestStateChange (SimStateNative newState);
+extern "C" DllApi void requestStateChange (SimStateNative newState);
 
 /*******************************************************//**
  * Sets scalar value real.
@@ -142,7 +142,7 @@ extern "C" DllExport void requestStateChange (SimStateNative newState);
  *
  * @return	.
  *******************************************************/
-extern "C" DllExport fmiStatus setScalarValueReal (int idx, double value);
+extern "C" DllApi fmiStatus setScalarValueReal (int idx, double value);
 
 
 /*******************************************************//**
@@ -151,10 +151,10 @@ extern "C" DllExport fmiStatus setScalarValueReal (int idx, double value);
  * @param [in,out]	scalarValueAry	If non-null, the scalar value ary.
  * @param	length				  	The length.
  *******************************************************/
-extern "C" DllExport  void setScalarValues (ScalarValueRealStruct * scalarValueAry , int length);
+extern "C" DllApi  void setScalarValues (ScalarValueRealStruct * scalarValueAry , int length);
 
 
-extern "C" DllExport ScalarValueResultsStruct* getTest();
+extern "C" DllApi ScalarValueResultsStruct* getTest();
 
 
 

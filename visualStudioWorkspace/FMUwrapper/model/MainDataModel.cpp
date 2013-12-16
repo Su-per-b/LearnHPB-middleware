@@ -10,8 +10,11 @@ namespace Straylight
 		maxInternalScalarVariables = 1000;
 		Logger::getInstance()->printDebug("MainController::staticLogger");
 
-		typeDefDataModel_ = new TypeDefDataModel();
+		typeDefinitions_ = new TypeDefinitions();
 		scalarVariableDataModel_ = new ScalarVariableDataModel();
+		fmiModelAttributes_ = new FmiModelAttributes();
+		unitDefinitions_ = new UnitDefinitions();
+
 	}
 
 	/*******************************************************//**
@@ -19,26 +22,34 @@ namespace Straylight
 	 *******************************************************/
 	MainDataModel::~MainDataModel(void)
 	{
-		delete typeDefDataModel_;
+		delete typeDefinitions_;
 		delete scalarVariableDataModel_;
+		delete fmiModelAttributes_;
+		delete unitDefinitions_;
+
 	}
 
 	/*******************************************************//**
 	 * Extracts this object.
 	 *******************************************************/
 	void MainDataModel::extract() {
-		typeDefDataModel_->extract(fmu_->modelDescription->typeDefinitions);
+
+		fmiModelAttributes_->extract(fmu_->modelDescription->attributes, fmu_->modelDescription->n);
+		unitDefinitions_->extract(fmu_->modelDescription->unitDefinitions);
+
+		typeDefinitions_->extract(fmu_->modelDescription->typeDefinitions);
 		scalarVariableDataModel_->extract(fmu_->modelDescription->modelVariables);
 	}
 
-
-	TypeDefDataModel *  MainDataModel::getTypeDefDataModel() {
-		
-		return typeDefDataModel_;
-
+	TypeDefinitions *  MainDataModel::getTypeDefinitions() {
+		return typeDefinitions_;
 	}
 
+	UnitDefinitions *  MainDataModel::getUnitDefinitions() {
+		return unitDefinitions_;
+	}
 
+	
 
 	/*******************************************************//**
 	 * Sets scalar value real.
@@ -182,8 +193,15 @@ namespace Straylight
 
 
 
+	AttributeStruct * MainDataModel::getFmiModelAttributesStruct() {
+		return fmiModelAttributes_->toStructArray();
+	}
 
 
+	BaseUnitStruct *  MainDataModel::getBaseUnitStructAry() {
+		BaseUnitStruct *  baseUnitStructAry = unitDefinitions_->getBaseUnitStructAry();
+		return baseUnitStructAry;
+	}
 
 
 

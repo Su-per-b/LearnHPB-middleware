@@ -90,7 +90,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="model\DisplayUnitDefinition.h" />
+    <ClInclude Include="model\BaseUnit.h" />
     <ClInclude Include="enums.h" />
+    <ClInclude Include="model\FmiModelAttributes.h" />
     <ClInclude Include="FMUlogger.h" />
     <ClInclude Include=".\qtronic\fmi_cs.h" />
     <ClInclude Include="JNAfunctions.h" />
@@ -113,12 +116,14 @@
     <ClInclude Include="model\ScalarValueResults.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include=".\model\structs.h" />
-    <ClInclude Include=".\model\TypeDefDataModel.h" />
+    <ClInclude Include="model\TypeDefinitions.h" />
     <ClInclude Include=".\model\TypeDefFactory.h" />
-    <ClInclude Include=".\model\UnitDefFactory.h" />
+    <ClInclude Include="model\UnitDefinitions.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="model\DisplayUnitDefinition.cpp" />
+    <ClCompile Include="model\BaseUnit.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -127,6 +132,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="model\FmiModelAttributes.cpp" />
     <ClCompile Include="FMUlogger.cpp" />
     <ClCompile Include="JNAfunctions.cpp" />
     <ClCompile Include="controller\MainController.cpp" />
@@ -139,12 +145,12 @@
     <ClCompile Include=".\model\MainDataModel.cpp" />
     <ClCompile Include=".\model\ScalarVariableDataModel.cpp" />
     <ClCompile Include=".\model\ScalarVariableFactory.cpp" />
-    <ClCompile Include=".\model\TypeDefDataModel.cpp" />
+    <ClCompile Include="model\TypeDefinitions.cpp" />
     <ClCompile Include=".\model\TypeDefFactory.cpp" />
-    <ClCompile Include=".\model\UnitDefFactory.cpp" />
     <ClCompile Include=".\model\ScalarVariableCollection.cpp" />
     <ClCompile Include=".\model\ScalarValueCollection.cpp" />
     <ClCompile Include="model\ScalarValueResults.cpp" />
+    <ClCompile Include="model\UnitDefinitions.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>

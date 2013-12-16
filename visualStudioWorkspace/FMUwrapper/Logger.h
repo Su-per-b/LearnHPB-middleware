@@ -21,7 +21,7 @@ namespace Straylight
 	/*******************************************************//**
 	 * Logger.
 	 *******************************************************/
-	 class DllApi Logger
+	class DllExport Logger
 	{
 		//private member variables
 	private:

@@ -7,6 +7,46 @@
 
 namespace Straylight
 {
+
+
+	vector<AttributeStruct*> Utils::extractAttributesFromElement(Element* element) {
+
+		vector<AttributeStruct*> attributeStructVector;
+
+		for (int i = 0; i < element->n; i = i + 2) {
+
+			AttributeStruct * attributeStruct = new AttributeStruct();
+			attributeStruct->name = element->attributes[i];
+			attributeStruct->value = element->attributes[i + 1];
+
+			attributeStructVector.push_back(attributeStruct);
+		}
+
+		return attributeStructVector;
+
+	}
+
+
+	vector<AttributeStruct*> Utils::extractAttributesFromListElement(ListElement* listElement) {
+
+
+		vector<AttributeStruct*> attributeStructVector;
+
+
+		for (int i = 0; i < listElement->n; i = i + 2) {
+
+			AttributeStruct * attributeStruct = new AttributeStruct();
+			attributeStruct->name = listElement->attributes[i];
+			attributeStruct->value = listElement->attributes[i + 1];
+
+			attributeStructVector.push_back(attributeStruct);
+		}
+
+		return attributeStructVector;
+
+	}
+
+
 	/*******************************************************//**
 	 * Character to double.
 	 *

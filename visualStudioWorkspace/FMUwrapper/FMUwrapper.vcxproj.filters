@@ -39,13 +39,7 @@
     <ClInclude Include=".\Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include=".\model\TypeDefDataModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include=".\model\TypeDefFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include=".\model\UnitDefFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include=".\model\structs.h">
@@ -99,6 +93,21 @@
     <ClInclude Include="model\ScalarValueResults.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="model\FmiModelAttributes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="model\UnitDefinitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="model\BaseUnit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="model\TypeDefinitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="model\DisplayUnitDefinition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -119,13 +128,7 @@
     <ClCompile Include=".\Config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include=".\model\TypeDefDataModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include=".\model\TypeDefFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include=".\model\UnitDefFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include=".\model\MainDataModel.cpp">
@@ -159,6 +162,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="model\ScalarValueResults.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\FmiModelAttributes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\UnitDefinitions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\BaseUnit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\TypeDefinitions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\DisplayUnitDefinition.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

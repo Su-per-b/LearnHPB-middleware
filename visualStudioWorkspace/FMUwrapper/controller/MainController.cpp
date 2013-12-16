@@ -76,8 +76,6 @@ namespace Straylight
 			}
 
 
-
-
 			delete fmu_;
 		}
 
@@ -116,6 +114,7 @@ namespace Straylight
 	//void MainController::setResultClassCallback( void (*resultClassCallbackPtr)(ScalarValueResults *) ) {
 		//resultClassCallbackPtr_ = resultClassCallbackPtr;
 	//	}
+
 
 
 	/*******************************************************//**

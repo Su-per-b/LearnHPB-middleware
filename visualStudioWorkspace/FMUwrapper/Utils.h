@@ -6,6 +6,7 @@
 #pragma once
 
 #include "stdafx.h"
+#include "structs.h"
 
 using namespace std;
 
@@ -19,6 +20,11 @@ namespace Straylight
 	class Utils
 	{
 	public:
+
+		static vector<AttributeStruct*> extractAttributesFromElement(Element* element);
+
+
+		static vector<AttributeStruct*> extractAttributesFromListElement(ListElement* listElement);
 
 		/*******************************************************//**
 		 * <summary> Character to double.</summary>

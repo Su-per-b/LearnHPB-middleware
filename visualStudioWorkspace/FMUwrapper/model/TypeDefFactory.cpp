@@ -31,8 +31,6 @@ namespace Straylight
 	TypeDefinitionReal* TypeDefFactory::makeReal(Type* type) {
 		TypeDefinitionReal* typeDefinitionReal = new TypeDefinitionReal();
 
-
-
 		typeDefinitionReal->name = getName( type );
 
 		ValueStatus startValueStatus;

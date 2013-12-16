@@ -85,6 +85,7 @@ return 0;
  * @return	null if it fails, else all scalar variables.
  *******************************************************/
 ScalarVariablesAllStruct * getAllScalarVariables() {
+
 	Straylight::MainDataModel * model = mainController->getMainDataModel();
 
 	ScalarVariablesAllStruct * allScalarVariables = new ScalarVariablesAllStruct();
@@ -93,6 +94,7 @@ ScalarVariablesAllStruct * getAllScalarVariables() {
 	allScalarVariables->internal = model->scalarVariableDataModel_->svInternal_->toStruct();
 
 	return allScalarVariables;
+
 }
 
 
@@ -157,13 +159,14 @@ fmiStatus setScalarValueReal (int idx, double value) {
 }
 
 
+/*
 TypeDefDataModel * getTypeDefDataModel() {
 
 	MainDataModel * mainDataModel = mainController->getMainDataModel();
 
 	return mainDataModel->getTypeDefDataModel();
 }
-
+*/
 
 
 

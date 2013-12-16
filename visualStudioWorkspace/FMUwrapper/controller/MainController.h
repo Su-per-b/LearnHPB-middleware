@@ -14,6 +14,7 @@
 #include "enums.h"
 #include "Config.h"
 #include "MainDataModel.h"
+#include "TypeDefinitions.h"
 
 using namespace std;
 
@@ -22,7 +23,7 @@ namespace Straylight
 	/*******************************************************//**
 	 * Main controller.
 	 *******************************************************/
-	 class DllApi MainController
+	class DllApi MainController
 	{
 
 	private:
@@ -242,7 +243,7 @@ namespace Straylight
 		 *
 		 * <returns>Pointer to ScalarValueResults object</returns>
 		 *******************************************************/
-	//	ScalarValueResults * getScalarValueResults()  { return scalarValueResults_; }
+
 
 		ScalarValueResultsStruct * getTest();
 

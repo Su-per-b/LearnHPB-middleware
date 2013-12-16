@@ -56,11 +56,10 @@ namespace Straylight
 	{
 
 		std::ostringstream sstream;
-
 		int size = real_.size();
 
 
-		for (int i = 0; i<size; i++){
+		for (int i = 0; i<size; i++) {
 		   ScalarValueRealStruct * realStruct = real_[i];  //Copy the vector to the string
 		   sstream << realStruct->value << _T(" ");
 		}

@@ -4,7 +4,8 @@
 #include <JNAfunctions.h>
 #include <ResultOfStep.h>
 #include <ScalarValue.h>
-
+#include "Utils.h"
+#include <conio.h>
 
 
 using namespace Straylight;

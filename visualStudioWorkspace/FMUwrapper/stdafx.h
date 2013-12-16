@@ -5,9 +5,8 @@
 
 #pragma once
 
-#define DllExport   __declspec( dllexport )
-
 #define DllApi   __declspec( dllexport )
+
 
 // Including SDKDDKVer.h defines the highest available Windows platform.
 

@@ -2,11 +2,11 @@
 //
 
 #include "Main.h"
-#include "Utils.h"
-#include <conio.h>
 
 
-#define FMU_FOLDER _T("..\\..\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1")
+
+//#define FMU_FOLDER _T("..\\..\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_test")
+#define FMU_FOLDER _T("..\\..\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit2")
 
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -59,7 +59,7 @@ void terminate3 () {
 	xmlParse(FMU_FOLDER);
 
 
-	TypeDefDataModel * typeDefs = getTypeDefDataModel();
+	//TypeDefDataModel * typeDefs = getTypeDefDataModel();
 
 
 
