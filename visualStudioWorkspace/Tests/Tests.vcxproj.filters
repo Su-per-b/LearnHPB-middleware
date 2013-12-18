@@ -21,9 +21,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="fmu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TestMainController.h">
       <Filter>Header Files</Filter>
     </ClInclude>

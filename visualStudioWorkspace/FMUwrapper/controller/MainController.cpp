@@ -34,6 +34,8 @@ namespace Straylight
 		mainDataModel_ = NULL;
 		state_ = simStateNative_0_uninitialized;
 		stateChangeCallbackPtr_ = NULL;
+		scalarValueResults_ = NULL;
+		resultOfStep_ = NULL;
 
 	}
 
@@ -56,6 +58,15 @@ namespace Straylight
 			delete configStruct_;
 		}
 
+		if (NULL != scalarValueResults_) {
+			delete scalarValueResults_;
+		}
+
+		if (NULL != resultOfStep_) {
+			delete resultOfStep_;
+		}
+
+		
 
 		// Release FMU
 		if(NULL != fmu_) {
@@ -78,6 +89,7 @@ namespace Straylight
 
 			delete fmu_;
 		}
+
 
 		if(NULL != mainDataModel_) {
 			delete mainDataModel_;
@@ -110,10 +122,6 @@ namespace Straylight
 
 			setState_( simStateNative_1_connect_completed );
 	}
-
-	//void MainController::setResultClassCallback( void (*resultClassCallbackPtr)(ScalarValueResults *) ) {
-		//resultClassCallbackPtr_ = resultClassCallbackPtr;
-	//	}
 
 
 
@@ -720,15 +728,17 @@ namespace Straylight
 			resultCallbackPtr_(scalarValueResults_->toStruct());
 		}
 
-
-
 		nSteps_++;
 		time_ = min(time_+getStepDelta(), getStopTime());
 
 		return 0;
 	}
 
+	ScalarValueResults * MainController::getScalarValueResults() {
 
+		return scalarValueResults_;
+
+	}
 
 	/*******************************************************//**
 	 * Executes the one step operation.
@@ -791,20 +801,6 @@ namespace Straylight
 		if (state_ != simStateNative_4_run_cleanedup ) {
 			mainDataModel_->setScalarValues(scalarValueAry, length);
 		}
-	}
-
-	ScalarValueResultsStruct * MainController::getTest()
-	{
-
-		ScalarValueResults * scalarValueResults = mainDataModel_->getScalarValueResults(time_);
-		ScalarValueResultsStruct * res = scalarValueResults->toStruct();
-
-		return res;
-	}
-
-	ScalarValueResults * MainController::getScalarValueResults()
-	{
-		return NULL;
 	}
 
 

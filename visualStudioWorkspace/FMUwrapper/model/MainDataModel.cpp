@@ -10,10 +10,10 @@ namespace Straylight
 		maxInternalScalarVariables = 1000;
 		Logger::getInstance()->printDebug("MainController::staticLogger");
 
-		typeDefinitions_ = new TypeDefinitions();
-		scalarVariableDataModel_ = new ScalarVariableDataModel();
 		fmiModelAttributes_ = new FmiModelAttributes();
 		unitDefinitions_ = new UnitDefinitions();
+		typeDefinitions_ = new TypeDefinitions();
+		scalarVariableDataModel_ = new ScalarVariableDataModel();
 
 	}
 
@@ -22,10 +22,10 @@ namespace Straylight
 	 *******************************************************/
 	MainDataModel::~MainDataModel(void)
 	{
-		delete typeDefinitions_;
-		delete scalarVariableDataModel_;
 		delete fmiModelAttributes_;
 		delete unitDefinitions_;
+		delete typeDefinitions_;
+		delete scalarVariableDataModel_;
 
 	}
 
@@ -36,7 +36,6 @@ namespace Straylight
 
 		fmiModelAttributes_->extract(fmu_->modelDescription->attributes, fmu_->modelDescription->n);
 		unitDefinitions_->extract(fmu_->modelDescription->unitDefinitions);
-
 		typeDefinitions_->extract(fmu_->modelDescription->typeDefinitions);
 		scalarVariableDataModel_->extract(fmu_->modelDescription->modelVariables);
 	}

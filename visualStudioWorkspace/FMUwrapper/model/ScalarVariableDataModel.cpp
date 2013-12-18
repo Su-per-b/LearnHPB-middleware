@@ -23,6 +23,12 @@ namespace Straylight
 	 *******************************************************/
 	ScalarVariableDataModel::~ScalarVariableDataModel(void)
 	{
+
+		delete svAll_;
+		delete svInput_;
+		delete svOutput_;
+		delete svInternal_;
+
 	}
 
 	/*******************************************************//**

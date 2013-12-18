@@ -48,7 +48,8 @@ public class FMUcontroller extends AbstractController {
 	private MessageCallback messageCallbackFunc_;
 	private ResultCallback resultCallbackFunc_;
 	private StateChangeCallback stateChangeCallbackFunc_;
-
+	private String sessionID_;
+	
 	
 	public FMUcontroller() {
 		super(null);
@@ -68,7 +69,10 @@ public class FMUcontroller extends AbstractController {
 		init();
 	}
 
-
+	public void setSessionID(String sessionID) {
+		sessionID_ = sessionID;
+	}
+	
 	
 	
 	private class MessageCallback implements MessageCallbackInterface {

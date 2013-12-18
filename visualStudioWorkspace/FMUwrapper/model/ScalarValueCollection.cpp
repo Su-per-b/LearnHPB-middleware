@@ -8,7 +8,25 @@ namespace Straylight
 
 	ScalarValueCollection::~ScalarValueCollection(void)
 	{
+
+		int len = real_.size();
+		for (int i = 0; i < len; ++i)
+		{
+			delete real_[i];
+		}
+		real_.clear();
+
+		len = boolean_.size();
+		for (int i = 0; i < len; ++i)
+		{
+			delete boolean_[i];
+		}
+		boolean_.clear();
+
+
 	}
+
+
 
 	ScalarValueCollectionStruct * ScalarValueCollection::toStruct() {
 		ScalarValueCollectionStruct * sValCol = new ScalarValueCollectionStruct();

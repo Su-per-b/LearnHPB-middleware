@@ -98,6 +98,11 @@ extern "C" DllApi ConfigStruct * getConfig();
  *******************************************************/
 extern "C" DllApi ScalarValueResults * getScalarValueResults();
 
+extern "C" DllApi AttributeStruct * getFmiModelAttributes();
+
+extern "C" DllApi BaseUnitStruct * getUnitDefinitions();
+
+
 /*******************************************************//**
  * Sets a configuration.
  *
@@ -154,7 +159,8 @@ extern "C" DllApi fmiStatus setScalarValueReal (int idx, double value);
 extern "C" DllApi  void setScalarValues (ScalarValueRealStruct * scalarValueAry , int length);
 
 
-extern "C" DllApi ScalarValueResultsStruct* getTest();
+
+
 
 
 

@@ -1,6 +1,7 @@
 package com.sri.straylight.socketserver.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.bushe.swing.event.annotation.EventSubscriber;
 import org.eclipse.jetty.util.log.Log;
@@ -20,20 +21,42 @@ public class MainController extends AbstractController  {
 	private WorkerMakeBundle workerMakeBundle_;
 	private WorkerTearDownBundle workerTearDownBundle_;
 	
+	private HashMap<String, ConnectionBundle> sessionID2ConnectionMap_ = 
+			new HashMap<String, ConnectionBundle>();
+	
+	
 	public MainController() {
 		super(null);
 	}
 	 
 	public void init() {
 		
-		connectionBundleList_ = new ArrayList<ConnectionBundle>();
+		//connectionBundleList_ = new ArrayList<ConnectionBundle>();
 		
 		JettyServerController jettyServerController_ = new JettyServerController(this);
 		jettyServerController_.init();
 	}
 	
 	
+	public void registerConnectionBundle(String sessionID,
+			ConnectionBundle connectionBundle_) {
 
+		sessionID2ConnectionMap_.put(sessionID, connectionBundle_);
+		
+	}
+	
+	
+	public ConnectionBundle unregisterConnectionBundle(String sessionID) {
+		
+		ConnectionBundle connectionBundle  = sessionID2ConnectionMap_.get(sessionID);
+		sessionID2ConnectionMap_.remove(sessionID);
+		
+		
+		return connectionBundle;
+	}
+	
+	
+	
 	@EventSubscriber(eventClass=WebSocketConnectionStateEvent.class)
     public void onWebSocketConnectionNotify(WebSocketConnectionStateEvent event) {
 		
@@ -41,51 +64,79 @@ public class MainController extends AbstractController  {
 		WebSocketConnectionState state = event.getPayload();
 		StrayLightWebSocketHandler socketHandler = event.getStronglyTypedSource();
 		
-		if (state == WebSocketConnectionState.opened_new) {
+		String sessionID = socketHandler.getSessionID();
+		//check for existing connection bundle
+		
+		if (sessionID2ConnectionMap_.containsKey(sessionID)) {
 			
-			int idxNew = connectionBundleList_.size();
-			socketHandler.setIdx(idxNew);
 			
-			workerMakeBundle_ = new WorkerMakeBundle(this, socketHandler);
-			workerMakeBundle_.execute();
-		}  else if (state == WebSocketConnectionState.closed) {
+			if (state == WebSocketConnectionState.opened_new) {
+				
+				//reconnecting
+				logger.info("reconnecting");
+				
+				
+			}  else if (state == WebSocketConnectionState.closed) {
+				
+				workerTearDownBundle_ = new WorkerTearDownBundle(this, socketHandler);
+				workerTearDownBundle_.execute();
+				
+			}
 			
-			workerTearDownBundle_ = new WorkerTearDownBundle(this, socketHandler);
-			workerTearDownBundle_.execute();
+			
+		} else {
+			
+			
+			if (state == WebSocketConnectionState.opened_new) {
+				
+				//int idxNew = connectionBundleList_.size();
+				//socketHandler.setIdx(idxNew);
+				
+				workerMakeBundle_ = new WorkerMakeBundle(this, socketHandler);
+				workerMakeBundle_.execute();
+				
+				
+			}  else if (state == WebSocketConnectionState.closed) {
+				
+
+				throw new RuntimeException("WebSocketConnectionState out of sync - sessionID not in sessionID2ConnectionMap_ ");
+				
+				
+			}
 			
 		}
+		
+		
+
 	}
 	
 	
 	protected class WorkerTearDownBundle extends WorkerThreadAbstract {
 		
-	//	private MainController parent_; 
-		private StrayLightWebSocketHandler straylightWebSocket_;
+		private MainController parent_; 
+		private StrayLightWebSocketHandler socketHandler_;
 		private ConnectionBundle connectionBundle_;
 		
 		 
-		WorkerTearDownBundle(MainController parent, StrayLightWebSocketHandler  straylightWebSocket) {
-			//setSyncObject(FMUcontrollerSync_);
+		WorkerTearDownBundle(MainController parent, StrayLightWebSocketHandler socketHandler) {
+			setSyncObject(socketHandler);
 			
-		//	parent_ = parent;
-			straylightWebSocket_ = straylightWebSocket;
-			
-			setSyncObject(connectionBundleList_);
+			parent_ = parent;
+			socketHandler_ = socketHandler;
 			
 		}
 		
 		@Override
 		public void doIt_() {
 			
-			setName_("WorkerTearDownBundle " + straylightWebSocket_.getIdx());
-			int idx = straylightWebSocket_.getIdx();
-			
-			connectionBundle_ = connectionBundleList_.get(idx);
-			connectionBundle_.forceCleanup();
+			String sessionID  = socketHandler_.getSessionID();
+			setName_("WorkerTearDownBundle sessionID: " + sessionID);
 
-			connectionBundleList_.remove(connectionBundle_);
-			
+		
+			ConnectionBundle connectionBundle = parent_.unregisterConnectionBundle(sessionID);
+			connectionBundle.forceCleanup();
 
+			sessionID2ConnectionMap_.remove(sessionID);
 		}
 
 
@@ -103,24 +154,27 @@ public class MainController extends AbstractController  {
 		private ConnectionBundle connectionBundle_;
 		
 		 
-		WorkerMakeBundle(MainController parent, StrayLightWebSocketHandler  straylightWebSocket) {
-			//setSyncObject(FMUcontrollerSync_);
-			parent_ = parent;
-			socketHandler_ = straylightWebSocket;
+		WorkerMakeBundle(MainController parent, StrayLightWebSocketHandler socketHandler) {
+			setSyncObject(socketHandler);
 			
-			setSyncObject(connectionBundleList_);
+			parent_ = parent;
+			socketHandler_ = socketHandler;
+			
 			
 		}
 		
 		@Override
 		public void doIt_() {
 			
-			setName_("WorkerMakeBundle " + socketHandler_.getIdx());
-
-			connectionBundle_ = new ConnectionBundle(parent_, socketHandler_);
-			connectionBundleList_.add(connectionBundle_);
+			String sessionID  = socketHandler_.getSessionID();
+			setName_("WorkerMakeBundle sessionID: " + sessionID);
 			
+			
+			connectionBundle_ = new ConnectionBundle(parent_, socketHandler_, sessionID);
+			
+			parent_.registerConnectionBundle(sessionID, connectionBundle_);
 			connectionBundle_.init();
+			
 		}
 
 
@@ -131,6 +185,12 @@ public class MainController extends AbstractController  {
 			workerMakeBundle_ = null;
 		}
 	}
+
+
+
+
+
+
 	
 	
 	

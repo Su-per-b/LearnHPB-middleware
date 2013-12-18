@@ -2,6 +2,8 @@ package com.sri.straylight.socketserver.controller;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.LogFactory;
 import org.bushe.swing.event.EventBus;
 import org.eclipse.jetty.websocket.WebSocket;
@@ -14,16 +16,24 @@ import com.sri.straylight.socketserver.model.WebSocketConnectionState;
 public class StrayLightWebSocketHandler
 	implements WebSocket.OnTextMessage, WebSocket.OnControl  {
 
+	private static int socketCount_ = 0;
+	private int socketID_ = 0;
+	private String sessionID_;
 	private Connection connection_;
 	private WebSocketConnectionState state_ = WebSocketConnectionState.uninitialized;
 	
 	private int idx_ = -1;
 	private WebSocketConnectionController parentController_;
 	private String messageQueItem_;
+	private HttpSession httpSession_;
 	
 	
-	public StrayLightWebSocketHandler() {
-		
+	public StrayLightWebSocketHandler(HttpSession httpSession) {
+
+		socketID_ = socketCount_;
+		socketCount_++;
+		httpSession_ = httpSession;
+		sessionID_ = httpSession_.getId();
 	}
 	
 	
@@ -31,6 +41,10 @@ public class StrayLightWebSocketHandler
 		idx_ = idx;
 	}
 	
+	
+	public String getSessionID() {
+		return httpSession_.getId();
+	}
 	
 	public int getIdx() {
 		return idx_;

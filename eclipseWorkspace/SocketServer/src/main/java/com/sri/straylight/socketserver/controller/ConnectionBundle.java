@@ -27,16 +27,19 @@ public class ConnectionBundle extends AbstractController {
 
 	private WebSocketConnectionController webSocketConnectionController_;
 	private FMUcontroller fmuController_;
-	private int idx_;
+	//private int idx_;
+	private String sessionID_;
 	private StrayLightWebSocketHandler socketHandler_;
 
 	private ThreadedFMUcontroller threadedFMUcontroller_;
 	
 	
-	public ConnectionBundle(AbstractController parent, StrayLightWebSocketHandler socketHandler) {
+	public ConnectionBundle(AbstractController parent, StrayLightWebSocketHandler socketHandler, String sessionID) {
 		super(null);
 		
-		setIdx_(socketHandler.getIdx());
+		//setIdx_(socketHandler.getIdx());
+		
+		sessionID_ = sessionID;
 		socketHandler_ = socketHandler;
 		webSocketConnectionController_ = new WebSocketConnectionController(this, socketHandler);
 	}
@@ -49,6 +52,9 @@ public class ConnectionBundle extends AbstractController {
 		
 		
 		fmuController_ = new FMUcontroller(this);
+		fmuController_.setSessionID(sessionID_);
+		webSocketConnectionController_.setSessionID(sessionID_);
+		
 		threadedFMUcontroller_ = new ThreadedFMUcontroller(fmuController_);
 		
 		registerSimulationListeners_();
@@ -181,6 +187,7 @@ public class ConnectionBundle extends AbstractController {
 		
 	}
 
+	/*
 	public int getIdx_() {
 		return idx_;
 	}
@@ -188,17 +195,23 @@ public class ConnectionBundle extends AbstractController {
 	public void setIdx_(int idx_) {
 		this.idx_ = idx_;
 	}
-
+*/
+	
 	public void notifyClient() {
 
 		SimStateNativeNotify event = 
 				new  SimStateNativeNotify(this, fmuController_.getSimStateNative());
 		
+		System.out.println("ConnectionBundle.notifyClient() = SessionID: " + sessionID_);
 		
 		webSocketConnectionController_.send(event);
 	}
 
 	public void forceCleanup() {
+		
+		
+		System.out.println("ConnectionBundle.forceCleanup() = SessionID: " + sessionID_);
+		
 		
 		if (null != fmuController_) {
 			fmuController_.forceCleanup();

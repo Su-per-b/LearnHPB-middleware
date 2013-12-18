@@ -8,6 +8,8 @@ public class WebSocketConnectionController
 	extends AbstractController  
 	{
 	
+	private String sessionID_;
+	
 	private StrayLightWebSocketHandler socketHandler_;
 
 	
@@ -67,6 +69,12 @@ public class WebSocketConnectionController
 	
 	public StrayLightWebSocketHandler getStraylightWebSocket() {
 		return socketHandler_;
+	}
+
+
+	public void setSessionID(String sessionID) {
+		sessionID_ = sessionID;
+		
 	}
 
 

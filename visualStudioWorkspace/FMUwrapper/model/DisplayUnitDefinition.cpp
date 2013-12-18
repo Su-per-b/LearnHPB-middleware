@@ -13,6 +13,14 @@ namespace Straylight
 	DisplayUnitDefinition::~DisplayUnitDefinition()
 	{
 
+		int len = attributeStructVector_.size();
+		for (int i = 0; i < len; ++i)
+		{
+			delete attributeStructVector_[i];
+		}
+		attributeStructVector_.clear();
+
+
 	}
 
 	vector<AttributeStruct*> DisplayUnitDefinition::getAttributeStructVector()

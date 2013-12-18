@@ -14,6 +14,44 @@ namespace Straylight
 	 *******************************************************/
 	ScalarVariableCollection::~ScalarVariableCollection(void)
 	{
+
+		int len = real.size();
+		for (int i = 0; i < len; ++i)
+		{
+			delete real[i];
+		}
+		real.clear();
+
+		len = boolean.size();
+		for (int i = 0; i < len; ++i)
+		{
+			delete boolean[i];
+		}
+		boolean.clear();
+
+		len = integer.size();
+		for (int i = 0; i < len; ++i)
+		{
+			delete integer[i];
+		}
+		integer.clear();
+
+		len = enumeration.size();
+		for (int i = 0; i < len; ++i)
+		{
+			delete enumeration[i];
+		}
+		enumeration.clear();
+
+
+		len = string.size();
+		for (int i = 0; i < len; ++i)
+		{
+			delete string[i];
+		}
+		string.clear();
+
+
 	}
 
 	/*******************************************************//**

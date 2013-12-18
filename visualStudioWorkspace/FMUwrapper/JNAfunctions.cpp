@@ -197,10 +197,17 @@ ScalarValueResults * getScalarValueResults()
 }
 
 
-extern "C" DllExport ScalarValueResultsStruct* getTest()
-{
 
-	return mainController->getTest();
+AttributeStruct * getFmiModelAttributes() {
+
+	MainDataModel * mainDataModel = mainController->getMainDataModel();
+	return mainDataModel->getFmiModelAttributesStruct();
 
 }
 
+BaseUnitStruct * getUnitDefinitions() {
+
+	MainDataModel * mainDataModel = mainController->getMainDataModel();
+	return mainDataModel->getBaseUnitStructAry();
+
+}

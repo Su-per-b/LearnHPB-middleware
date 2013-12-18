@@ -6,7 +6,19 @@ namespace Straylight
 	FmiModelAttributes::FmiModelAttributes(){}
 
 
-	FmiModelAttributes::~FmiModelAttributes(){}
+	FmiModelAttributes::~FmiModelAttributes(){
+	
+		int len = attributeStructVector_.size();
+
+		for (int i = 0; i < len; ++i)
+		{
+			delete attributeStructVector_[i];
+		}
+
+
+		attributeStructVector_.clear();
+
+	}
 
 
 	void FmiModelAttributes::extract(const char** attributeAry, int attributeCount)

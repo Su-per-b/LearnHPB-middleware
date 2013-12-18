@@ -13,6 +13,16 @@ namespace Straylight
 
 	UnitDefinitions::~UnitDefinitions()
 	{
+
+		int len = baseUnitVector_.size();
+
+		for (int i = 0; i < len; ++i)
+		{
+			delete baseUnitVector_[i];
+		}
+
+		baseUnitVector_.clear();
+
 	}
 
 	BaseUnitStruct * UnitDefinitions::getBaseUnitStructAry()

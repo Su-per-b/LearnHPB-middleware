@@ -19,6 +19,48 @@ namespace Straylight
 	 *******************************************************/
 	TypeDefinitions::~TypeDefinitions(void)
 	{
+		
+
+		int len = typeDefVectorReal_.size();
+		for (int i = 0; i < len; ++i)
+		{
+			delete typeDefVectorReal_[i];
+		}
+		typeDefVectorReal_.clear();
+
+
+		len = typeDefVectorBoolean_.size();
+		for (int i = 0; i < len; ++i)
+		{
+			delete typeDefVectorBoolean_[i];
+		}
+		typeDefVectorBoolean_.clear();
+
+
+		len = typeDefVectorInteger_.size();
+		for (int i = 0; i < len; ++i)
+		{
+			delete typeDefVectorInteger_[i];
+		}
+		typeDefVectorInteger_.clear();
+
+
+		len = typeDefVectorEnumeration_.size();
+		for (int i = 0; i < len; ++i)
+		{
+			delete typeDefVectorEnumeration_[i];
+		}
+		typeDefVectorEnumeration_.clear();
+
+
+		len = typeDefVectorString_.size();
+		for (int i = 0; i < len; ++i)
+		{
+			delete typeDefVectorString_[i];
+		}
+		typeDefVectorString_.clear();
+
+
 	}
 
 	/*******************************************************//**

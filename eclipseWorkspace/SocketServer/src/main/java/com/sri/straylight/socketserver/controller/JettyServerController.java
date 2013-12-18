@@ -3,6 +3,9 @@ package com.sri.straylight.socketserver.controller;
 import java.util.Properties;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.SessionIdManager;
+import org.eclipse.jetty.server.session.HashSessionIdManager;
+import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 
@@ -38,14 +41,23 @@ public class JettyServerController extends AbstractController {
 	public void start() {
 		
 		//there is only one of these
-		jettyWebSocketHandler_ = new JettyWebSocketHandler();
+
 		
 	//	jettyWebSocketHandler_.setTheParent();
 		
 		try {
 			
+			
+			
 			jettyServer_ = new Server(8081);
-			jettyServer_.setHandler(jettyWebSocketHandler_);
+			
+			jettyWebSocketHandler_ = new JettyWebSocketHandler();
+			
+			SessionHandler sh = new SessionHandler();
+			sh.setHandler(jettyWebSocketHandler_);   
+			
+				
+			jettyServer_.setHandler(sh);
 			jettyServer_.start();
 
 			// Jetty server is stopped when the Thread is interrupted.

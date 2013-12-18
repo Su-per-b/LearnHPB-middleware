@@ -23,9 +23,17 @@ namespace Straylight
 
 	ScalarValueResults::~ScalarValueResults(void)
 	{
-		delete scalarValueCollectionInput_;
-		delete scalarValueCollectionOutput_;
-		delete scalarVariableDataModel_;
+
+		if (NULL != scalarValueCollectionInput_) {
+			delete scalarValueCollectionInput_;
+		}
+
+		if (NULL != scalarValueCollectionOutput_) {
+			delete scalarValueCollectionOutput_;
+		}
+
+
+
 
 	}
 

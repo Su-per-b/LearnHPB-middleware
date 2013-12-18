@@ -245,8 +245,6 @@ namespace Straylight
 		 *******************************************************/
 
 
-		ScalarValueResultsStruct * getTest();
-
 		/*******************************************************//**
 		 * <summary> This is the first function that must be called to start the simulamtion.</summary>
 		 *
