@@ -43,7 +43,7 @@ public class JsonController {
 	private HashMap<String, Type> registeredClasses_;
 
 	/* Prevent direct access to the constructor */
-	private JsonController() {
+	public JsonController() {
 		super();
 		init();
 	}
@@ -129,7 +129,7 @@ public class JsonController {
 	/**
 	 * Inits the.
 	 */
-	private void init() {
+	public void init() {
 
 		gsonBuilder_ = new GsonBuilder();
 

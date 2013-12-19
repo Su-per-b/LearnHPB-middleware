@@ -80,7 +80,12 @@ public class MainController extends AbstractController  {
 				
 				workerTearDownBundle_ = new WorkerTearDownBundle(this, socketHandler);
 				workerTearDownBundle_.execute();
+				 
+			} else if (state == WebSocketConnectionState.closeRequested) {
 				
+				//workerTearDownBundle_ = new WorkerTearDownBundle(this, socketHandler);
+				//workerTearDownBundle_.execute();
+
 			}
 			
 			

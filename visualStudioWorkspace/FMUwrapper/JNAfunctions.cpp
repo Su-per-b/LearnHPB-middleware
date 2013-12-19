@@ -123,7 +123,7 @@ void connect (
 	void (*stateChangeCallbackPtr)(SimStateNative )
 	)
 {
-	Config::getInstance()->setAutoCorrect(true);
+	Config::getInstance()->setAutoCorrect(false);
 
 	mainController = new MainController();
 

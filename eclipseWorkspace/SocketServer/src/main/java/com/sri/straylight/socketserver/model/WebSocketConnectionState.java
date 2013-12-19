@@ -11,7 +11,8 @@ public enum WebSocketConnectionState implements JnaEnum<WebSocketConnectionState
 	closed,
 	timed_out,
 	dropped,
-	reconnected;
+	reconnected,
+	closeRequested;
 	
 	private static int start = 0;
 	

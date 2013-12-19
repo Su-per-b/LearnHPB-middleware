@@ -34,11 +34,14 @@ public class JettyWebSocketHandler extends WebSocketHandler {
 	    if (pathInfo.equals("/")) {
 
 	    	HttpSession httpSession = request.getSession();
+	    	String sessionID = httpSession.getId();
+	    	
+	    	System.out.println("WebSocket.doWebSocketConnect() sessionID: " + sessionID);
 	    	
 	    	StrayLightWebSocketHandler socketHandler = new StrayLightWebSocketHandler(httpSession);
+
 	    	
-	    	String id = httpSession.getId();
-	    	handerMap_.put(id, socketHandler);
+	    	handerMap_.put(sessionID, socketHandler);
 	    	
 	    	
 	    	return socketHandler;

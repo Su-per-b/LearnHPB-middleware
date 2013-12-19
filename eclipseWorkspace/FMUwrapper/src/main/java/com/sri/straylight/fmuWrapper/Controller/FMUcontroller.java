@@ -2,10 +2,17 @@ package com.sri.straylight.fmuWrapper.Controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+
+
+import org.apache.commons.io.FileUtils;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 
 import com.sri.straylight.fmuWrapper.JNAfmuWrapper;
@@ -33,6 +40,8 @@ import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 
+
+
 /**
  * The Class FMUcontroller.
  */
@@ -49,7 +58,9 @@ public class FMUcontroller extends AbstractController {
 	private ResultCallback resultCallbackFunc_;
 	private StateChangeCallback stateChangeCallbackFunc_;
 	private String sessionID_;
-	
+	private Path pathToSessionDLL;
+	private Path pathToTempFolder_;
+	private Path pathToTempFMU_;
 	
 	public FMUcontroller() {
 		super(null);
@@ -210,17 +221,17 @@ public class FMUcontroller extends AbstractController {
 	 */
 	private void xmlParse_() {
 
-		jnaFMUWrapper_.xmlParse(fmuWrapperConfig_.fmuFolderAbsolutePath);
+		System.out.println("FMUcontroller.xmlParse_() sessionID:" + sessionID_);
+		
+		
+		String pathString = pathToTempFMU_.toString();
+		jnaFMUWrapper_.xmlParse(pathString);
 
 		ScalarVariablesAllStruct scalarVariablesAllStruct = jnaFMUWrapper_
 				.getAllScalarVariables();
+			
 		
-//		int result = jnaFMUWrapper_.getAllTypeDefinitions();
-		
-		
-		
-		ScalarVariablesAll scalarVariablesAll = new ScalarVariablesAll(
-				scalarVariablesAllStruct);
+		ScalarVariablesAll scalarVariablesAll = new ScalarVariablesAll(scalarVariablesAllStruct);
 
 		XMLparsedInfo xmlParsed = new XMLparsedInfo(scalarVariablesAll);
 		XMLparsedEvent event = new XMLparsedEvent(this, xmlParsed);
@@ -261,25 +272,59 @@ public class FMUcontroller extends AbstractController {
 	 */
 	private void connect_() throws IOException {
 
+		System.out.println("FMUcontroller.connect_() sessionID:" + sessionID_);
+		
 		checkConfig();
 
-		System.setProperty("jna.library.path",
-				fmuWrapperConfig_.nativeLibFolderAbsolutePath);
 
-		Map<String, Object> options = new HashMap<String, Object>();
-		EnumTypeMapper mp = new EnumTypeMapper();
 		
 		if (null == jnaFMUWrapper_) {
 			
+			//make temp folder for this session
+			pathToTempFolder_ = Files.createTempDirectory("Straylight_");
+			
+			
+			//copy my native libs
+			Path pathToNativeLibs = Paths.get(fmuWrapperConfig_.nativeLibFolderAbsolutePath);
+			
+		    FileUtils.copyFileToDirectory(
+		    		pathToNativeLibs.resolve("FMUwrapper.dll").toFile(), 
+		    		pathToTempFolder_.toFile());
+		    
+		    FileUtils.copyFileToDirectory(
+		    		pathToNativeLibs.resolve("expat.dll").toFile(), 
+		    		pathToTempFolder_.toFile());
+		    
+		    
+		    //copy my FMU folder
+		    Path pathToOriginalFMU = Paths.get(fmuWrapperConfig_.fmuFolderAbsolutePath);
+		    FileUtils.copyDirectoryToDirectory(pathToOriginalFMU.toFile(), pathToTempFolder_.toFile());
+		    
+		    
+		    pathToTempFMU_ = pathToTempFolder_.resolve(pathToOriginalFMU.getFileName());
+		    
+			System.setProperty("jna.library.path", pathToTempFolder_.toString() );
+			
+			
+			Map<String, Object> options = new HashMap<String, Object>();
+			EnumTypeMapper mp = new EnumTypeMapper();
+			
+			
 			options.put(Library.OPTION_TYPE_MAPPER, mp);
+			
 			jnaFMUWrapper_ = (JNAfmuWrapper) Native.loadLibrary("FMUwrapper",
 					JNAfmuWrapper.class, options);
+			
+			
+			
+			jnaFMUWrapper_.connect(messageCallbackFunc_, resultCallbackFunc_,
+					stateChangeCallbackFunc_);
+			
 		};
 		
 
 
-		jnaFMUWrapper_.connect(messageCallbackFunc_, resultCallbackFunc_,
-				stateChangeCallbackFunc_);
+
 
 		// notifyStateChange_(SimStateNative.simStateNative_1_connect_completed);
 	}
@@ -328,6 +373,7 @@ public class FMUcontroller extends AbstractController {
 			forceCleanup();
 			break;
 		default:
+			System.out.println("FMUcontroller.requestStateChange() sessionID:" + sessionID_);
 			jnaFMUWrapper_.requestStateChange(newState);
 		}
 	}

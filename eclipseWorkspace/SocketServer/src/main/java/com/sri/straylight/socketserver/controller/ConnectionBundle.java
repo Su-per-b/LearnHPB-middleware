@@ -13,6 +13,7 @@ import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
+import com.sri.straylight.fmuWrapper.util.WorkerThreadAbstract;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
@@ -33,6 +34,12 @@ public class ConnectionBundle extends AbstractController {
 
 	private ThreadedFMUcontroller threadedFMUcontroller_;
 	
+	private WorkerHandleResultEvent workerHandleResultEvent_;
+	
+	private Object connectionBundleSync_ = new Object();
+	
+	private JsonController jsonController_;
+	
 	
 	public ConnectionBundle(AbstractController parent, StrayLightWebSocketHandler socketHandler, String sessionID) {
 		super(null);
@@ -42,6 +49,9 @@ public class ConnectionBundle extends AbstractController {
 		sessionID_ = sessionID;
 		socketHandler_ = socketHandler;
 		webSocketConnectionController_ = new WebSocketConnectionController(this, socketHandler);
+		
+		jsonController_ = new JsonController();
+		jsonController_.init();
 	}
 
 	public void init() {
@@ -97,6 +107,7 @@ public class ConnectionBundle extends AbstractController {
 					}
 				});
 		
+		
 		//ResultEvent
 		fmuController_
 		.registerEventListener(
@@ -104,9 +115,14 @@ public class ConnectionBundle extends AbstractController {
 				new StraylightEventListener<ResultEvent, ScalarValueResults>() {
 					@Override
 					public void handleEvent(ResultEvent event) {
-						webSocketConnectionController_.send(event);
+						
+						WorkerHandleResultEvent w = new WorkerHandleResultEvent(event);
+						w.execute();
 					}
 				});
+		
+		
+
 
 		
 		//XMLparsedEvent
@@ -133,6 +149,10 @@ public class ConnectionBundle extends AbstractController {
 				});
 	}
 
+	
+	
+	
+	
 	private void registerSocketListeners_() {
 		
 		
@@ -148,11 +168,11 @@ public class ConnectionBundle extends AbstractController {
 					@Override
 					public void handleEvent(MessageReceived event) {
 						
-						System.out.println("MessageReceived Event handled");
+						//System.out.println("MessageReceived Event handled");
 						
 						String messageText = event.getPayload();
 						
-						System.out.println("StraylightEventListener.handleEvent " + messageText);
+						//System.out.println("StraylightEventListener.handleEvent sessionID_: "+ sessionID_ + ' ' + messageText);
 						
 				    	JsonSerializable deserializedEvent = JsonController.getInstance().fromJson(messageText);
 				    	
@@ -160,14 +180,14 @@ public class ConnectionBundle extends AbstractController {
 				    	if (deserializedEvent instanceof SimStateNativeRequest) {
 				    		SimStateNativeRequest newEvent = (SimStateNativeRequest) deserializedEvent;
 				    		
-				    		System.out.println("MessageReceived -> SimStateNativeRequest Event");
+				    		//System.out.println("MessageReceived -> SimStateNativeRequest Event");
 				    		
 				    		threadedFMUcontroller_.requestStateChange(newEvent.getPayload());
 				    	} else if (deserializedEvent instanceof ScalarValueChangeRequest) {
 				    		
 				    		ScalarValueChangeRequest newEvent = (ScalarValueChangeRequest) deserializedEvent;
 				    		
-				    		System.out.println("MessageReceived -> ScalarValueChangeRequest Event");
+				    	//	System.out.println("MessageReceived -> ScalarValueChangeRequest Event");
 				    		threadedFMUcontroller_.setScalarValueCollection(newEvent.getPayload());
 				    	} else {
 				    		
@@ -219,6 +239,35 @@ public class ConnectionBundle extends AbstractController {
 		
 	}
 	
+	
+	
 
+protected class WorkerHandleResultEvent extends WorkerThreadAbstract {
+		
+		private ResultEvent event_;
+		
+		WorkerHandleResultEvent(ResultEvent event) {
+			event_ = event;
+			
+			setSyncObject(connectionBundleSync_);
+			
+		}
+		
+		@Override
+		public void doIt_() {
+			
+			setName_("WorkerHandleResultEvent ");
+			String json = jsonController_.toJson(event_);
+			
+			
+			webSocketConnectionController_.send(json);
+			
+		}
+		
+		@Override
+		public void doneIt_() {
+			//workerHandleResultEvent_ = null;
+		}
+	}
 
 }

@@ -63,6 +63,10 @@ public class WebSocketConnectionController
 		socketHandler_.serializeAndSend(event);
 	}
 
+	public void send(String str) {
+		socketHandler_.sendString_(str);
+	}
+	
 	public void setStraylightWebSocket(StrayLightWebSocketHandler socketHandler) {
 		socketHandler_ = socketHandler;
 	}

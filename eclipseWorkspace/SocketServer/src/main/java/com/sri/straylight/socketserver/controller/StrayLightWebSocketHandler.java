@@ -63,6 +63,9 @@ public class StrayLightWebSocketHandler
 		// Store the opened connection
 		this.connection_ = connection;
 		setState(WebSocketConnectionState.opened_new);
+		
+    	System.out.println("StrayLightWebSocketHandler.onOpen() sessionID: " + sessionID_);
+    	
 		return;
 	}
 	
@@ -85,6 +88,15 @@ public class StrayLightWebSocketHandler
 	//handle control code
 	public boolean onControl(byte controlCode,byte[] data, int offset, int length) {
 		
+		System.out.println("StrayLightWebSocketHandler.onControl() controlCode: " + controlCode);
+		
+		setState(WebSocketConnectionState.closeRequested);
+		
+		if (8 == controlCode) {
+			
+			
+		}
+		
 		
 		return true;
 	}
@@ -94,7 +106,9 @@ public class StrayLightWebSocketHandler
 	
 	public void onClose(int closeCode, String message) {
 		
+
 		setState(WebSocketConnectionState.closed);
+    	System.out.println("StrayLightWebSocketHandler.onClose() sessionID: " + sessionID_);
 	}
 	
 	
@@ -112,9 +126,13 @@ public class StrayLightWebSocketHandler
 	}
 	
 	
-	private void sendString_(String str) {
+	public void sendString_(String str) {
 		
 		LogFactory.getLog(this.getClass()).debug("sendString_ " + str);
+		
+		
+		//System.out.println("StrayLightWebSocketHandler.sendString_() sessionID_: " + sessionID_);
+		
 		
 		try {
 			if (this.connection_.isOpen()) {
