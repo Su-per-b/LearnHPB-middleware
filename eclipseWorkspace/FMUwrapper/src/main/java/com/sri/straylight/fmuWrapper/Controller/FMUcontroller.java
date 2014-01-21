@@ -58,6 +58,7 @@ public class FMUcontroller extends AbstractController {
 //	private Path pathToSessionDLL;
 	private Path pathToTempFolder_;
 	private Path pathToTempFMU_;
+	private boolean concurrency_ = true;
 	
 	public FMUcontroller() {
 		super(null);
@@ -277,31 +278,44 @@ public class FMUcontroller extends AbstractController {
 		
 		if (null == jnaFMUWrapper_) {
 			
-			//make temp folder for this session
-			pathToTempFolder_ = Files.createTempDirectory("Straylight_");
 			
-			
-			//copy my native libs
+		    Path pathToOriginalFMU = Paths.get(fmuWrapperConfig_.fmuFolderAbsolutePath);
 			Path pathToNativeLibs = Paths.get(fmuWrapperConfig_.nativeLibFolderAbsolutePath);
 			
-		    FileUtils.copyFileToDirectory(
-		    		pathToNativeLibs.resolve("FMUwrapper.dll").toFile(), 
-		    		pathToTempFolder_.toFile());
-		    
-		    FileUtils.copyFileToDirectory(
-		    		pathToNativeLibs.resolve("expat.dll").toFile(), 
-		    		pathToTempFolder_.toFile());
-		    
-		    
-		    //copy my FMU folder
-		    Path pathToOriginalFMU = Paths.get(fmuWrapperConfig_.fmuFolderAbsolutePath);
-		    FileUtils.copyDirectoryToDirectory(pathToOriginalFMU.toFile(), pathToTempFolder_.toFile());
-		    
-		    
-		    pathToTempFMU_ = pathToTempFolder_.resolve(pathToOriginalFMU.getFileName());
-		    
-			System.setProperty("jna.library.path", pathToTempFolder_.toString() );
+			if (concurrency_) {
+				
+				
+				//make temp folder for this session
+				pathToTempFolder_ = Files.createTempDirectory("Straylight_");
+				
+				//copy my native libs
+
+				
+			    FileUtils.copyFileToDirectory(
+			    		pathToNativeLibs.resolve("FMUwrapper.dll").toFile(), 
+			    		pathToTempFolder_.toFile());
+			    
+			    FileUtils.copyFileToDirectory(
+			    		pathToNativeLibs.resolve("expat.dll").toFile(), 
+			    		pathToTempFolder_.toFile());
+			    
+			    //copy my FMU folder
+
+			    FileUtils.copyDirectoryToDirectory(pathToOriginalFMU.toFile(), pathToTempFolder_.toFile());
 			
+			    pathToTempFMU_ = pathToTempFolder_.resolve(pathToOriginalFMU.getFileName());
+			    
+				System.setProperty("jna.library.path", pathToTempFolder_.toString() );
+			} else {
+				
+				pathToTempFMU_ = pathToNativeLibs.resolve(pathToOriginalFMU.getFileName());
+				
+				System.setProperty("jna.library.path", pathToNativeLibs.toString() );
+				
+			}
+			
+
+
 			
 			Map<String, Object> options = new HashMap<String, Object>();
 			EnumTypeMapper mp = new EnumTypeMapper();
@@ -311,7 +325,6 @@ public class FMUcontroller extends AbstractController {
 			
 			jnaFMUWrapper_ = (JNAfmuWrapper) Native.loadLibrary("FMUwrapper",
 					JNAfmuWrapper.class, options);
-			
 			
 			
 			jnaFMUWrapper_.connect(messageCallbackFunc_, resultCallbackFunc_,
@@ -425,6 +438,11 @@ public class FMUcontroller extends AbstractController {
 		if (null != jnaFMUWrapper_) {
 			jnaFMUWrapper_.forceCleanup();
 		}
+		
+	}
+
+	public void setConcurrency(boolean b) {
+		concurrency_ = b;
 		
 	}
 

@@ -25,7 +25,7 @@ public class ThreadedFMUcontroller extends AbstractController {
 	private WorkerSetScalarValues workerSetScalarValues_;
 	private WorkerSetScalarValueCollection workerSetScalarValueCollection_;
 
-
+	
 	//private AbstractController parent_;
 	
 	

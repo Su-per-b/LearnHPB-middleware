@@ -15,7 +15,7 @@ public class Main
 {
 	
 	public static SocketServerConfig config;
-	
+	public static MainController mainController_;
 
 	
     public static void main( String[] args )
@@ -28,12 +28,16 @@ public class Main
     	
 		config = ConfigHelper.load();
 		
-		MainController mainController = new MainController();
-		mainController.init();
+		mainController_ = new MainController();
+		mainController_.init();
 
     }
 
-
-
+    
+    public static void stop()
+    {
+    	mainController_.stop();
+    }
+    
     
 }

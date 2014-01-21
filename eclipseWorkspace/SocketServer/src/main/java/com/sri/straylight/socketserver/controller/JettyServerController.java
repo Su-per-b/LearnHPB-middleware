@@ -36,6 +36,25 @@ public class JettyServerController extends AbstractController {
 		banner.show();
 	}
 
+	public void stop() {
+		
+		try {
+			jettyWebSocketHandler_.stop();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		try {
+			jettyServer_.stop();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	
 	public void start() {
 		
 		//there is only one of these

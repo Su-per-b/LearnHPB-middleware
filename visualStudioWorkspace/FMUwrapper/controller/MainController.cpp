@@ -606,7 +606,11 @@ namespace Straylight
 		time_ = getStartTime();
 		double stopTime = getStopTime();
 
+		Logger::getInstance()->printDebug(_T("-=MainController::initializeSlave_=-B\n"));
+
 		fmiStatus status =  fmu_->initializeSlave(fmiComponent_, time_, fmiTrue, stopTime);
+
+		Logger::getInstance()->printDebug(_T("-=MainController::initializeSlave_=-C\n"));
 
 		if (status > fmiWarning) {
 			setStateError_(_T("Could not initialize slaves\n"));

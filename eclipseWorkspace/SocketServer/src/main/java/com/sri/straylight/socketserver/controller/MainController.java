@@ -24,6 +24,8 @@ public class MainController extends AbstractController  {
 			new HashMap<String, ConnectionBundle>();
 	
 	
+	private JettyServerController jettyServerController_;
+	
 	public MainController() {
 		super(null);
 	}
@@ -32,7 +34,7 @@ public class MainController extends AbstractController  {
 		
 		//connectionBundleList_ = new ArrayList<ConnectionBundle>();
 		
-		JettyServerController jettyServerController_ = new JettyServerController(this);
+		jettyServerController_ = new JettyServerController(this);
 		jettyServerController_.init();
 	}
 	
@@ -188,6 +190,12 @@ public class MainController extends AbstractController  {
 			
 			workerMakeBundle_ = null;
 		}
+	}
+
+
+	public void stop() {
+		jettyServerController_.stop();
+		
 	}
 
 

@@ -35,7 +35,7 @@ public class FmuConnectionLocal extends FmuConnectionAbstract {
 		
 		
 		FMUcontroller fmuController = new FMUcontroller();
-		
+		fmuController.setConcurrency(false);
 
 		
 		
