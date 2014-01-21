@@ -13,5 +13,5 @@ cd ..\
 copy ..\..\visualStudioWorkspace\bin\Release\expat.dll native_code\expat.dll
 copy ..\..\visualStudioWorkspace\bin\Release\FMUwrapper.dll native_code\FMUwrapper.dll
 
-java -Xss2048 -jar Client-0.5.3.jar
+"%JAVA_HOME%\bin\java" -Xss2048 -jar Client-0.5.3.jar
 pause
