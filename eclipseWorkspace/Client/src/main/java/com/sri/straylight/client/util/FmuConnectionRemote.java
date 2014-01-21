@@ -1,13 +1,11 @@
 package com.sri.straylight.client.util;
 
 import java.net.URI;
-import java.util.Vector;
 
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.event.SimStateClientRequest;
 import com.sri.straylight.client.event.WebSocketEvent;
 import com.sri.straylight.client.event.WebSocketEventType;
 import com.sri.straylight.client.model.WebSocketState;
@@ -23,7 +21,6 @@ import com.sri.straylight.fmuWrapper.util.WorkerThreadAbstract;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageType;
-import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 import de.roderick.weberknecht.WebSocket;

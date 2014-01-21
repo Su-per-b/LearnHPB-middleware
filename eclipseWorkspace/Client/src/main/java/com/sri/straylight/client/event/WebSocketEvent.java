@@ -1,6 +1,5 @@
 package com.sri.straylight.client.event;
 
-import com.sri.straylight.client.view.BaseView;
 
 
 /**

@@ -22,9 +22,6 @@ package ch.ethz.polyql.jql.domain.shared;
 
 import org.apache.commons.lang.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 // TODO: Auto-generated Javadoc
 /**
  * Author: Michael Gfeller.

@@ -1,6 +1,5 @@
 package com.sri.straylight.socketserver.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bushe.swing.event.annotation.EventSubscriber;
@@ -17,7 +16,7 @@ public class MainController extends AbstractController  {
 	
 	public static Logger logger = Log.getLogger("SocketServer");
 	public static MainController instance;
-	private ArrayList<ConnectionBundle> connectionBundleList_;
+//	private ArrayList<ConnectionBundle> connectionBundleList_;
 	private WorkerMakeBundle workerMakeBundle_;
 	private WorkerTearDownBundle workerTearDownBundle_;
 	

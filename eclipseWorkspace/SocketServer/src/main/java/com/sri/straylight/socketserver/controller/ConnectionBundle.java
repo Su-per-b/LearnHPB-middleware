@@ -30,11 +30,11 @@ public class ConnectionBundle extends AbstractController {
 	private FMUcontroller fmuController_;
 	//private int idx_;
 	private String sessionID_;
-	private StrayLightWebSocketHandler socketHandler_;
+	//private StrayLightWebSocketHandler socketHandler_;
 
 	private ThreadedFMUcontroller threadedFMUcontroller_;
 	
-	private WorkerHandleResultEvent workerHandleResultEvent_;
+	//private WorkerHandleResultEvent workerHandleResultEvent_;
 	
 	private Object connectionBundleSync_ = new Object();
 	
@@ -47,7 +47,7 @@ public class ConnectionBundle extends AbstractController {
 		//setIdx_(socketHandler.getIdx());
 		
 		sessionID_ = sessionID;
-		socketHandler_ = socketHandler;
+		//socketHandler_ = socketHandler;
 		webSocketConnectionController_ = new WebSocketConnectionController(this, socketHandler);
 		
 		jsonController_ = new JsonController();

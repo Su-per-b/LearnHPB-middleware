@@ -3,7 +3,6 @@ package com.sri.straylight.client.event;
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
-import com.sri.straylight.fmuWrapper.voNative.MessageType;
 import com.sun.jna.Structure;
 
 /**

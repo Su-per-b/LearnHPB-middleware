@@ -1,11 +1,8 @@
 package com.sri.straylight.client.util;
 
 
-import java.util.Vector;
-
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
-import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
  

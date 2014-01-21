@@ -9,15 +9,11 @@ import java.util.Vector;
 import javax.swing.JButton;
 
 import org.bushe.swing.event.EventBus;
-import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.controller.InputController;
 import com.sri.straylight.client.controller.TopPanelController2;
 import com.sri.straylight.client.event.ClearViewAction;
 import com.sri.straylight.client.event.SimStateClientRequest;
-import com.sri.straylight.client.model.InputDataModel;
 import com.sri.straylight.client.model.TopPanelDataModel;
-import com.sri.straylight.fmuWrapper.event.SimStateClientNotify;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 public class TopPanelView extends BaseView {
@@ -44,7 +40,7 @@ public class TopPanelView extends BaseView {
 	/** The state map_. */
 	Hashtable<SimStateNative, JButton[]> stateMap_ = new Hashtable<SimStateNative, JButton[]>();
 	private TopPanelDataModel topPanelModel_;
-	private TopPanelController2 topPanelController_;
+//	private TopPanelController2 topPanelController_;
 	
 	
 	public TopPanelView(TopPanelController2 topPanelController, TopPanelDataModel  topPanelModel ) {
@@ -52,7 +48,7 @@ public class TopPanelView extends BaseView {
 		super(TITLE);
 		
 		topPanelModel_ = topPanelModel;
-		topPanelController_ = topPanelController;
+//		topPanelController_ = topPanelController;
 		
 		btnConnect_.setName("TopPanel.Button_Connect");
 		btnXmlParse_.setName("TopPanel.Button_XML_Parse");

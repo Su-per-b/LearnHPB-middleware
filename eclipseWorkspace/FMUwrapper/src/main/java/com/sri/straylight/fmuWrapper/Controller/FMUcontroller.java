@@ -5,12 +5,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
-
-
 
 import org.apache.commons.io.FileUtils;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
@@ -58,7 +55,7 @@ public class FMUcontroller extends AbstractController {
 	private ResultCallback resultCallbackFunc_;
 	private StateChangeCallback stateChangeCallbackFunc_;
 	private String sessionID_;
-	private Path pathToSessionDLL;
+//	private Path pathToSessionDLL;
 	private Path pathToTempFolder_;
 	private Path pathToTempFMU_;
 	
