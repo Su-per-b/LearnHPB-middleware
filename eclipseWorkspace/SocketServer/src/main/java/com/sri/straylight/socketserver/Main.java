@@ -14,7 +14,7 @@ import org.bushe.swing.event.EventService;
 public class Main 
 {
 	
-	public static SocketServerConfig config;
+	//public static SocketServerConfig config;
 	public static MainController mainController_;
 
 	
@@ -26,7 +26,7 @@ public class Main
     	
     	logger.setLevel(Level.WARN);
     	
-		config = ConfigHelper.load();
+		//config = ConfigHelper.load();
 		
 		mainController_ = new MainController();
 		mainController_.init();
