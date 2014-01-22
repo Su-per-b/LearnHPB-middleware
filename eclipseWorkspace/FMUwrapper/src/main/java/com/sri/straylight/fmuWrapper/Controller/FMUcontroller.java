@@ -55,9 +55,8 @@ public class FMUcontroller extends AbstractController {
 	private ResultCallback resultCallbackFunc_;
 	private StateChangeCallback stateChangeCallbackFunc_;
 	private String sessionID_;
-//	private Path pathToSessionDLL;
 	private Path pathToTempFolder_;
-	private Path pathToTempFMU_;
+	private Path pathToWorkingFMU_;
 	private boolean concurrency_ = true;
 	
 	public FMUcontroller() {
@@ -222,7 +221,7 @@ public class FMUcontroller extends AbstractController {
 		System.out.println("FMUcontroller.xmlParse_() sessionID:" + sessionID_);
 		
 		
-		String pathString = pathToTempFMU_.toString();
+		String pathString = pathToWorkingFMU_.toString();
 		jnaFMUWrapper_.xmlParse(pathString);
 
 		ScalarVariablesAllStruct scalarVariablesAllStruct = jnaFMUWrapper_
@@ -303,12 +302,12 @@ public class FMUcontroller extends AbstractController {
 
 			    FileUtils.copyDirectoryToDirectory(pathToOriginalFMU.toFile(), pathToTempFolder_.toFile());
 			
-			    pathToTempFMU_ = pathToTempFolder_.resolve(pathToOriginalFMU.getFileName());
+			    pathToWorkingFMU_ = pathToTempFolder_.resolve(pathToOriginalFMU.getFileName());
 			    
 				System.setProperty("jna.library.path", pathToTempFolder_.toString() );
 			} else {
 				
-				pathToTempFMU_ = pathToNativeLibs.resolve(pathToOriginalFMU.getFileName());
+				pathToWorkingFMU_ = Paths.get(pathToOriginalFMU.toString());
 				
 				System.setProperty("jna.library.path", pathToNativeLibs.toString() );
 				

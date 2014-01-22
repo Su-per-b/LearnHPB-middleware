@@ -121,7 +121,6 @@ public class MainController extends AbstractController  {
 		
 		private MainController parent_; 
 		private StrayLightWebSocketHandler socketHandler_;
-		private ConnectionBundle connectionBundle_;
 		
 		 
 		WorkerTearDownBundle(MainController parent, StrayLightWebSocketHandler socketHandler) {

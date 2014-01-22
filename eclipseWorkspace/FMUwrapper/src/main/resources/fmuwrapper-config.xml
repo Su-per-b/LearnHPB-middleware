@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <config>
 
-	<!--For Debug 
+	<!--For Debug --> 
 	<id>FMUwrapper-Debug</id>
 	<nativeLibFolderRelativePath>\..\..\visualStudioWorkspace\bin\Debug</nativeLibFolderRelativePath>
 	<unzipFolderRelativePath>\..\..\assets\FMUs\</unzipFolderRelativePath>
 	<fmuFolderName>LearnGB_0v4_02_VAVReheat_ClosedLoop_edit2</fmuFolderName>
---> 
 
 
-	<!--For Production-->
+
+	<!--For Publishing	
 	<id>FMUwrapper-Production</id>
 	<nativeLibFolderRelativePath1>\native_code</nativeLibFolderRelativePath1>
 	<unzipFolderRelativePath1>\native_code</unzipFolderRelativePath1>
 	<fmuFolderName1>fmu</fmuFolderName1>
-	
+-->
 	
 </config>

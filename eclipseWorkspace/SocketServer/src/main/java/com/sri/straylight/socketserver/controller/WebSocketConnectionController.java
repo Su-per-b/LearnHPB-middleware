@@ -8,6 +8,7 @@ public class WebSocketConnectionController
 	extends AbstractController  
 	{
 	
+	@SuppressWarnings("unused")
 	private String sessionID_;
 	
 	private StrayLightWebSocketHandler socketHandler_;

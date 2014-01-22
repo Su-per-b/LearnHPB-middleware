@@ -17,7 +17,10 @@ public class StrayLightWebSocketHandler
 	implements WebSocket.OnTextMessage, WebSocket.OnControl  {
 
 	private static int socketCount_ = 0;
+	
+	@SuppressWarnings("unused")
 	private int socketID_ = 0;
+	
 	private String sessionID_;
 	private Connection connection_;
 	private WebSocketConnectionState state_ = WebSocketConnectionState.uninitialized;

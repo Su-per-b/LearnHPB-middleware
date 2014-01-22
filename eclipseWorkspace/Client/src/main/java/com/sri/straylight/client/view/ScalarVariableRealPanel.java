@@ -320,8 +320,6 @@ public class ScalarVariableRealPanel extends JPanel {
 		String newStringValue = textField_.getText();
 		double newDoubleValue = Double.parseDouble(newStringValue);
 		
-		Vector<ScalarValueRealStruct> scalarValueList = new Vector<ScalarValueRealStruct>();
-		
 		ScalarValueRealStruct scalarValue = new ScalarValueRealStruct();
 		scalarValue.idx = scalarVariableReal_.getIdx();
 		scalarValue.value = newDoubleValue;

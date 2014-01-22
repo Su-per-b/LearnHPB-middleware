@@ -129,6 +129,11 @@
 					</executions>
 					<configuration>
 						<mainClass>com.sri.straylight.client.Main</mainClass>
+				        <arguments>
+				            <argument>-Xss2048</argument>
+
+				            <argument>com.example.app.MainClass</argument>
+			        	</arguments>
 					</configuration>
 				</plugin>
 				

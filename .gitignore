@@ -3,3 +3,4 @@
 dsres.mat
 *.metadata
 *.mdmp
+/eclipseWorkspace/Client/dependency-reduced-pom.xml

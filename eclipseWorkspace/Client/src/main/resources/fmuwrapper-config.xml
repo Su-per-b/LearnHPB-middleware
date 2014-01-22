@@ -1,15 +1,13 @@
 <?xml version="1.0"?>
 <config>
 
-	<!--For Debug
+	<!--For Debug	 
 	<id>Client-Debug</id>
 	<nativeLibFolderRelativePath>\..\..\visualStudioWorkspace\bin\Debug</nativeLibFolderRelativePath>
 	<unzipFolderRelativePath>\..\..\assets\FMUs\</unzipFolderRelativePath>
-	<fmuFolderName>LearnGB_0v4_02_VAVReheat_ClosedLoop_edit1</fmuFolderName>
+	<fmuFolderName>LearnGB_0v4_02_VAVReheat_ClosedLoop_edit2</fmuFolderName>
+-->
 
-	 -->
-	 
-	 
 	<!--For Production	 -->
 	<id>Client-Production</id>
 	<nativeLibFolderRelativePath>\native_code</nativeLibFolderRelativePath>

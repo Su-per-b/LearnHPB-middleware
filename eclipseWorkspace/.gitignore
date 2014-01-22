@@ -5,3 +5,6 @@ bin
 *.pyc
 __pycache__
 dsres.mat
+published
+native_code
+dependency-reduced-pom.xml
