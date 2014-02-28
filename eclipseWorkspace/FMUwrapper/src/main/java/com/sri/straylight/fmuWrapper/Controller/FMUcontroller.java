@@ -81,6 +81,9 @@ public class FMUcontroller extends AbstractController {
 		sessionID_ = sessionID;
 	}
 	
+	public String getSessionID( ) {
+		return sessionID_;
+	}
 	
 	
 	private class MessageCallback implements MessageCallbackInterface {

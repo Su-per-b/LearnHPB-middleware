@@ -15,8 +15,6 @@ public class OutputDataModel {
 
     
     
-    
-    
 	public OutputDataModel(XMLparsedInfo xmlParsedArg) {
 		xmlParsed_ = xmlParsedArg;
 	}

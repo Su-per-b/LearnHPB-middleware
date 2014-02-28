@@ -1,13 +1,18 @@
 package com.sri.straylight.socketserver.controller;
 
 import java.util.HashMap;
+import java.util.Vector;
 
 import org.bushe.swing.event.annotation.EventSubscriber;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 
+import com.sri.straylight.fmuWrapper.Controller.ThreadedFMUcontroller;
+import com.sri.straylight.fmuWrapper.event.SessionControlEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
+import com.sri.straylight.fmuWrapper.serialization.SessionControlEventAdapter;
 import com.sri.straylight.fmuWrapper.util.WorkerThreadAbstract;
+import com.sri.straylight.fmuWrapper.voManaged.SessionControl;
 import com.sri.straylight.socketserver.event.WebSocketConnectionStateEvent;
 import com.sri.straylight.socketserver.model.WebSocketConnectionState;
 
@@ -25,6 +30,11 @@ public class MainController extends AbstractController  {
 	
 	
 	private JettyServerController jettyServerController_;
+	
+	private Vector<String> sessionIdList_ = new Vector<String>();
+	
+	private String lastSessionID_ = "";
+	
 	
 	public MainController() {
 		super(null);
@@ -58,6 +68,78 @@ public class MainController extends AbstractController  {
 	
 	
 	
+	@EventSubscriber(eventClass=SessionControlEvent.class)
+    public void onSessionControlEvent(SessionControlEvent event) {
+		
+		SessionControl sessionControl = event.getPayload();
+		
+		int idx = sessionControl.getIdx();
+		if (0 == idx) {
+			
+
+    		Object source = event.getSource();
+    		WebSocketConnectionController ws = (WebSocketConnectionController) source;
+    		
+    		String attachSessionID = ws.getSessionID();
+			String hostSessionID = sessionControl.getValue();
+			
+
+    		if (hostSessionID.equals ("last")) {
+    			
+    			int size = sessionIdList_.size();
+    			hostSessionID = this.getLastSessionID(attachSessionID);
+
+    		}
+    		
+    		System.out.println("hostSessionID: " + hostSessionID );
+    		System.out.println("attachSessionID: " + attachSessionID );
+    		
+    		if (hostSessionID.equals("no_host_sessionID")) {
+    			
+    			return;
+    		}
+    		
+    		
+			ConnectionBundle hostConenctionBundle = sessionID2ConnectionMap_.get(hostSessionID);
+			ConnectionBundle attachConenctionBundle = sessionID2ConnectionMap_.get(attachSessionID);
+			
+			
+			ThreadedFMUcontroller threadedFMUcontroller = hostConenctionBundle.getThreadedFMUcontroller();	
+			attachConenctionBundle.setThreadedFMUcontroller_(threadedFMUcontroller);
+    				
+    		
+		}
+	}
+	
+	
+	
+    private String getLastSessionID(String attachSessionID ) {
+    	
+		int size = sessionIdList_.size();
+		String sessionID = "";
+		
+		for (int i = size - 1; i >= 0; i--) {
+			
+		  sessionID = sessionIdList_.get(i);
+		   
+		   if (!sessionID.equals(attachSessionID)) {
+			   
+			   break;
+		   }
+		   
+		 }
+
+		
+	   if (sessionID.equals(attachSessionID)) {
+		   
+		   sessionID = "no_host_sessionID";
+	   }
+		   
+		return sessionID;
+    }
+    
+    
+	
 	@EventSubscriber(eventClass=WebSocketConnectionStateEvent.class)
     public void onWebSocketConnectionNotify(WebSocketConnectionStateEvent event) {
 		
@@ -66,6 +148,10 @@ public class MainController extends AbstractController  {
 		StrayLightWebSocketHandler socketHandler = event.getStronglyTypedSource();
 		
 		String sessionID = socketHandler.getSessionID();
+		//lastSessionID_ = sessionID;
+		
+		sessionIdList_.add(sessionID);
+		
 		//check for existing connection bundle
 		
 		if (sessionID2ConnectionMap_.containsKey(sessionID)) {
@@ -78,6 +164,9 @@ public class MainController extends AbstractController  {
 				
 				
 			}  else if (state == WebSocketConnectionState.closed) {
+				
+				
+
 				
 				workerTearDownBundle_ = new WorkerTearDownBundle(this, socketHandler);
 				workerTearDownBundle_.execute();

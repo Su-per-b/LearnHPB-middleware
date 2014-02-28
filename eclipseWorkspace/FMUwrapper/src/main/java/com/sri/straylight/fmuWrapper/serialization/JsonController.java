@@ -10,6 +10,7 @@ import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
+import com.sri.straylight.fmuWrapper.event.SessionControlEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
@@ -163,7 +164,7 @@ public class JsonController {
 		register_(ConfigChangeNotify.class, new ConfigChangeNotifyAdapter());
 		
 		register_(ScalarValueChangeRequest.class, new ScalarValueChangeRequestAdapter());
-		
+		register_(SessionControlEvent.class, new SessionControlEventAdapter());
 		
 		
 		gson_ = gsonBuilder_.create();

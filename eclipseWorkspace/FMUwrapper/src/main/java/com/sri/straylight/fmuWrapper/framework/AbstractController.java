@@ -220,7 +220,14 @@ public abstract class AbstractController implements ActionListener, WindowListen
     }
 
 
-    
+    public void unregisterEventListener(
+    		Class<? extends BaseEvent<?>> eventClass, 
+    		StraylightEventListener<? extends BaseEvent<?>,?> eventListener) 
+    {
+    	
+    	
+
+    }
     
     /**
      * Fire an event and pass it into the hierarchy of controllers.

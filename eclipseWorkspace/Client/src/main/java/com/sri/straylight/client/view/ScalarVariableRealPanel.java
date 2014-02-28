@@ -77,7 +77,7 @@ public class ScalarVariableRealPanel extends JPanel {
 	private boolean isTextFieldInitialized_ = false;
 	
 	/** The input detail view_. */
-	private InputView inputFormView_;
+	private TableOfVariablesView inputFormView_;
 	
 	/** The scalar variable real struct_. */
 	private ScalarVariableReal scalarVariableReal_;
@@ -96,7 +96,7 @@ public class ScalarVariableRealPanel extends JPanel {
 	 *
 	 * @param inputFormView the input detail view
 	 */
-	public ScalarVariableRealPanel(InputView inputFormView) {
+	public ScalarVariableRealPanel(TableOfVariablesView inputFormView) {
 		
 		inputFormView_ = inputFormView;
 				

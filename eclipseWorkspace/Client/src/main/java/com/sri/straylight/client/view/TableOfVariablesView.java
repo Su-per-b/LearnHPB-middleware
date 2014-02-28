@@ -12,7 +12,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
-import com.sri.straylight.client.controller.InputController;
+import com.sri.straylight.client.controller.InputVariablesController;
 import com.sri.straylight.client.model.InputDataModel;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
 import com.sri.straylight.fmuWrapper.voManaged.BaseScalarValue;
@@ -25,7 +25,7 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 /**
  * The Class InputFormView.
  */
-public class InputView extends BaseView {
+public class TableOfVariablesView extends BaseView implements TableView {
 
 	/**
 	 * 
@@ -39,7 +39,7 @@ public class InputView extends BaseView {
 	private  JTableEx table_;
 
 	/** The input form controller_. */
-	private InputController inputController_;
+	private InputVariablesController inputController_;
 	
 	/** The input form data model_. */
 	private InputDataModel inputDataModel_;
@@ -59,7 +59,7 @@ public class InputView extends BaseView {
 	 * @param inputFormController the input form controller
 	 * @param inputFormDataModel the input form data model
 	 */
-	public InputView(InputController inputController, InputDataModel inputDataModel) {
+	public TableOfVariablesView(InputVariablesController inputController, InputDataModel inputDataModel) {
 		
 		super(TITLE);
 		

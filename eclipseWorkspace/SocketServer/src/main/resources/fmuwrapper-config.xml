@@ -10,8 +10,8 @@
 	
 	<!--For Publishing	-->
 	<id>Client-Production</id>
-	<nativeLibFolderRelativePath>\native_code</nativeLibFolderRelativePath>
-	<unzipFolderRelativePath>\native_code</unzipFolderRelativePath>
+	<nativeLibFolderRelativePath>\..\FMUwrapper\native_code</nativeLibFolderRelativePath>
+	<unzipFolderRelativePath>\..\FMUwrapper\native_code</unzipFolderRelativePath>
 	<fmuFolderName>fmu</fmuFolderName>
 	
 </config>

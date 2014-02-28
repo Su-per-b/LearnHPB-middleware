@@ -12,6 +12,8 @@ import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.ViewInitialized;
+import com.sri.straylight.client.model.InputDataModel;
+import com.sri.straylight.client.model.InternalDataModel;
 import com.sri.straylight.client.view.BaseView;
 import com.sri.straylight.client.view.JTableEx;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
@@ -22,7 +24,7 @@ import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 /**
  * The Class InternalTableController.
  */
-public class InternalTableController  extends BaseController {
+public class InternalVariablesController  extends BaseController {
 	
 	
     /** The table_. */
@@ -33,12 +35,16 @@ public class InternalTableController  extends BaseController {
     
 	private static final String TITLE = "Internal";
 	
+	
+    private InternalDataModel internalDataModel_;
+    
+    
 	/**
 	 * Instantiates a new internal table controller.
 	 *
 	 * @param parentController the parent controller
 	 */
-	public InternalTableController(AbstractController parentController) {
+	public InternalVariablesController(AbstractController parentController) {
 		super(parentController);	
 	}
 	

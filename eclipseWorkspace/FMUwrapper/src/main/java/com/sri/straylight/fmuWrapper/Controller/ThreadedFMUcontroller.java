@@ -193,6 +193,11 @@ public class ThreadedFMUcontroller extends AbstractController {
 		return fmuController_.getSimStateNative();	
 	}
 
+	public String getSessionID() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 	

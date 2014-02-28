@@ -19,7 +19,7 @@ public class XMLparsedInfo implements JsonSerializable  {
 
 	/** The scalar variables all_. */
 	private ScalarVariablesAll scalarVariablesAll_;
-	
+	private String sessionID_= "xxo";
 	
 	//constructor 1
 	public XMLparsedInfo() {
@@ -36,10 +36,18 @@ public class XMLparsedInfo implements JsonSerializable  {
 		scalarVariablesAll_ = scalarVariablesAll;
 	}
 	
+	public void setSessionID(String sessionID) {
+		sessionID_ = sessionID;
+	}
+	
+	
 	public ScalarVariablesAll getScalarVariablesAll() {
 		return scalarVariablesAll_;
 	}
 	
+	public String getSessionID() {
+		return sessionID_;
+	}
 
 
 

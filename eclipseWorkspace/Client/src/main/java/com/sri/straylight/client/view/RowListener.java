@@ -9,9 +9,9 @@ public class RowListener implements ListSelectionListener   {
 	
 
 	JTableEx table_;
-	InputView view_;
+	TableOfVariablesView view_;
    
-    public RowListener(InputView view)  
+    public RowListener(TableOfVariablesView view)  
     {  
     	view_ = view;
     	table_ = view.getTable();  

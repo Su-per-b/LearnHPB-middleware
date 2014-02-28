@@ -11,7 +11,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
-import com.sri.straylight.client.controller.OutputController;
+import com.sri.straylight.client.controller.OutputVariablesController;
 import com.sri.straylight.client.model.OutputDataModel;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
@@ -38,7 +38,7 @@ public class OutputView extends BaseView {
 
 	/** The input form controller_. */
 	@SuppressWarnings("unused")
-	private OutputController outputController_;
+	private OutputVariablesController outputController_;
 	
 	/** The input form data model_. */
 	@SuppressWarnings("unused")
@@ -58,7 +58,7 @@ public class OutputView extends BaseView {
 	 * @param inputFormController the input form controller
 	 * @param inputFormDataModel the input form data model
 	 */
-	public OutputView(OutputController outputController, OutputDataModel outputDataModel) {
+	public OutputView(OutputVariablesController outputController, OutputDataModel outputDataModel) {
 		
 		super(TITLE);
 		

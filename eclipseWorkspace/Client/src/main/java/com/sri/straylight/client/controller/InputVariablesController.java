@@ -7,7 +7,7 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.ViewInitialized;
 import com.sri.straylight.client.model.InputDataModel;
-import com.sri.straylight.client.view.InputView;
+import com.sri.straylight.client.view.TableOfVariablesView;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
@@ -19,18 +19,19 @@ import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 /**
  * The Class InputFormController.
  */
-public class InputController extends BaseController {
+public class InputVariablesController extends BaseController {
 
 
     /** The input form data model_. */
     private InputDataModel inputDataModel_;
+    
     
 	/**
 	 * Instantiates a new input form controller.
 	 *
 	 * @param parentController the parent controller
 	 */
-	public InputController(AbstractController parentController) {
+	public InputVariablesController(AbstractController parentController) {
 		super(parentController);
 	}
 	
@@ -40,7 +41,7 @@ public class InputController extends BaseController {
 		inputDataModel_ = new InputDataModel();
 		inputDataModel_.xmlParsed = xmlParsed;
 		
-		InputView theView = new InputView(this, inputDataModel_);
+		TableOfVariablesView theView = new TableOfVariablesView(this, inputDataModel_);
 	    setView_(theView);
 	
 	    ViewInitialized e = new ViewInitialized(this, theView);
@@ -67,7 +68,7 @@ public class InputController extends BaseController {
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
 		
-		InputView theView = (InputView) this.getView();
+		TableOfVariablesView theView = (TableOfVariablesView) this.getView();
 		ScalarValueResults svr = event.getPayload();
 		
 		theView.addResult( svr );

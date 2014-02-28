@@ -8,7 +8,9 @@ import org.apache.commons.logging.LogFactory;
 import org.bushe.swing.event.EventBus;
 import org.eclipse.jetty.websocket.WebSocket;
 
+import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
+import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.socketserver.event.WebSocketConnectionStateEvent;
 import com.sri.straylight.socketserver.model.WebSocketConnectionState;
 
@@ -124,6 +126,16 @@ public class StrayLightWebSocketHandler
 	
 	
 	public void serializeAndSend(JsonSerializable obj) {
+		
+		
+		if (obj instanceof XMLparsedEvent) {
+			
+			XMLparsedEvent event = (XMLparsedEvent) obj;
+			
+			XMLparsedInfo  xmlParsedInfo = event.getPayload();
+			xmlParsedInfo.setSessionID(sessionID_);
+		}
+		  
 		String json = obj.toJson();
 		sendString_ (json);
 	}

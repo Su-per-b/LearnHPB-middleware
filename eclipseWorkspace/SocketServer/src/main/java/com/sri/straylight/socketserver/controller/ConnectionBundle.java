@@ -1,11 +1,14 @@
 package com.sri.straylight.socketserver.controller;
 
+import org.bushe.swing.event.EventBus;
+
 import com.sri.straylight.fmuWrapper.Controller.FMUcontroller;
 import com.sri.straylight.fmuWrapper.Controller.ThreadedFMUcontroller;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
+import com.sri.straylight.fmuWrapper.event.SessionControlEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.event.StraylightEventListener;
@@ -21,6 +24,8 @@ import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageType;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sri.straylight.socketserver.event.MessageReceived;
+import com.sri.straylight.socketserver.event.WebSocketConnectionStateEvent;
+import com.sri.straylight.fmuWrapper.voManaged.SessionControl;
 
 
 public class ConnectionBundle extends AbstractController {
@@ -53,7 +58,11 @@ public class ConnectionBundle extends AbstractController {
 		jsonController_ = new JsonController();
 		jsonController_.init();
 	}
-
+	
+	public String getSessionID() {
+		return sessionID_;
+	}
+	
 	public void init() {
 		
 
@@ -78,6 +87,28 @@ public class ConnectionBundle extends AbstractController {
 
 	}
 
+	
+	public ThreadedFMUcontroller getThreadedFMUcontroller() {
+		return threadedFMUcontroller_;
+	
+	}
+	
+	public void setThreadedFMUcontroller_(ThreadedFMUcontroller threadedFMUcontroller) {
+		
+		this.threadedFMUcontroller_ = threadedFMUcontroller;
+		fmuController_ = threadedFMUcontroller.getFMUcontroller();
+		
+		unRegisterSimulationListeners_();
+		registerSimulationListeners_();
+		
+	}
+	
+	private void unRegisterSimulationListeners_() {
+
+		
+	
+	}
+	
 	private void registerSimulationListeners_() {
 		
 		
@@ -92,6 +123,8 @@ public class ConnectionBundle extends AbstractController {
 					@Override
 					public void handleEvent(SimStateNativeNotify event) {
 						webSocketConnectionController_.send(event);
+						
+						System.out.println("SimStateNativeNotify sessionID_: "+ sessionID_ );
 					}
 				});
 		
@@ -189,9 +222,46 @@ public class ConnectionBundle extends AbstractController {
 				    		
 				    	//	System.out.println("MessageReceived -> ScalarValueChangeRequest Event");
 				    		threadedFMUcontroller_.setScalarValueCollection(newEvent.getPayload());
-				    	} else {
+				    	}  else if (deserializedEvent instanceof SessionControlEvent) {
 				    		
-				    		System.out.println("MessageReceived -> Unknown Event");
+				    		SessionControlEvent newEvent = (SessionControlEvent) deserializedEvent;
+				    		
+				    		SessionControl sessionControl = newEvent.getPayload();
+				    		String sessionAttach = sessionControl.getValue();
+				    		
+				    		
+				    		Object source = event.getSource();
+				    		//WebSocketConnectionController ws = (WebSocketConnectionController) source;
+				    		
+				    		//String sessionHost = ws.getSessionID();
+				    		
+				    		
+				    		//String session2 = sessionHost + "." + sessionAttach;
+				    		
+				    		
+				    		SessionControl newSessionControl = new SessionControl(0, sessionAttach);
+				    		
+				    		SessionControlEvent newEventGlobal = new SessionControlEvent(source, newSessionControl);
+				    		EventBus.publish(newEventGlobal);
+				    		
+				    		
+/*				    		int idx = sessionControl.getIdx();
+				    		if (0 == idx) {
+					    		String sessionID = sessionControl.getValue();
+					    		System.out.println("Attach to sessionID: " + sessionID );
+
+				    		}*/
+				    		
+
+				    		
+				    		
+				    		
+				    		
+				    	//	System.out.println("MessageReceived -> SessionControlEvent Event");
+				    		//webSocketConnectionController_
+				    	}  else {
+				    		
+				    		System.out.println("ConnectionBundle.MessageReceived -> Unknown Event");
 				    		MessageEvent newEvent = new MessageEvent(this, "Could not deserialize object ", MessageType.messageType_error);
 				    		fireEvent(newEvent);
 				    		

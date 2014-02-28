@@ -82,7 +82,9 @@ public class WebSocketConnectionController
 		
 	}
 
-
+	public String getSessionID( ) {
+		return sessionID_;
+	}
 
 
 

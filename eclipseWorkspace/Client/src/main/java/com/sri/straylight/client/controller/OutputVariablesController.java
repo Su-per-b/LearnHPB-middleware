@@ -19,7 +19,7 @@ import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 /**
  * The Class ResultsFormController.
  */
-public class OutputController extends BaseController {
+public class OutputVariablesController extends BaseController {
 	
 	
     private OutputDataModel outputDataModel_;
@@ -30,7 +30,7 @@ public class OutputController extends BaseController {
 	 *
 	 * @param parentController the parent controller
 	 */
-	public OutputController(AbstractController parentController) {
+	public OutputVariablesController(AbstractController parentController) {
 		super(parentController);
 	}
 	

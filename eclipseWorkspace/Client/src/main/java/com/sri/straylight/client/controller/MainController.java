@@ -41,13 +41,16 @@ public class MainController extends BaseController {
 	private ConsoleController consoleController_;
 	
 	/** The input form controller_. */
-	private InputController inputController_;
+	private InputVariablesController inputController_;
+	
+	/** The input form controller_. */
+	private InternalVariablesController internalTableController_;
 	
 	/** The results table controller_. */
 	private ResultsLogController resultsLogController_;
 	
 	/** The results form controller_. */
-	private OutputController outputController_;
+	private OutputVariablesController outputController_;
 	
 	/** The top menu controller_. */
 	private TopMenuController topMenuController_;
@@ -84,10 +87,12 @@ public class MainController extends BaseController {
 		
 		simulationController_ = new SimulationController(this, configModel_);
 		consoleController_ = new ConsoleController(this);
-		inputController_ = new InputController(this);
+		inputController_ = new InputVariablesController(this);
+		internalTableController_ = new InternalVariablesController(this);
+		
 		
 		resultsLogController_ = new ResultsLogController(this);
-		outputController_ = new OutputController(this);
+		outputController_ = new OutputVariablesController(this);
 		
 		topMenuController_ = new TopMenuController(this);
 		configController_ = new ConfigController(this);
@@ -195,6 +200,7 @@ public class MainController extends BaseController {
 		addTab_(configController_.getView());
 		addTab_(inputController_.getView());
 		addTab_(outputController_.getView());
+		addTab_(internalTableController_.getView());
 		addTab_(resultsLogController_.getView());
 	}
 	
