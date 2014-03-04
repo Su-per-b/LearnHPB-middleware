@@ -2,6 +2,7 @@ package com.sri.straylight.client.controller;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.Vector;
 
 import javax.swing.SwingUtilities;
 
@@ -16,7 +17,9 @@ import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
+import com.sri.straylight.fmuWrapper.voNative.Enu;
 
 
 // TODO: Auto-generated Javadoc
@@ -26,7 +29,7 @@ import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 public class ResultsLogController extends BaseController {
 	
 
-    private ResultsLogModel resultsLogModel_;
+    private ResultsLogModel dataModel_;
     
 
 	/**
@@ -46,8 +49,11 @@ public class ResultsLogController extends BaseController {
 	 */
 	protected void initXML(XMLparsedInfo xmlParsed) {  
 
-		resultsLogModel_ = new ResultsLogModel(xmlParsed);
-		ResultsLogView theView = new ResultsLogView(this, resultsLogModel_);
+		Vector<ScalarVariableReal> variables = xmlParsed.getVariables(Enu.enu_output);
+		dataModel_ = new ResultsLogModel(variables);
+		
+		
+		ResultsLogView theView = new ResultsLogView(this, dataModel_);
 	    
 	    theView.setPreferredSize(new Dimension(704, 500));
 	    theView.setLayout(new GridLayout(1, 1, 0, 0));
@@ -56,6 +62,8 @@ public class ResultsLogController extends BaseController {
 	    
 	    ViewInitialized e = new ViewInitialized(this, theView);
 	    EventBus.publish(e);
+
+	    
 	    
     }
 	
@@ -81,15 +89,14 @@ public class ResultsLogController extends BaseController {
 	 */
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
-		
-	
-		
+
 		final ScalarValueResults scalarValueResults = event.getPayload();
 		
 		SwingUtilities.invokeLater(new Runnable() {
 		    public void run() {
 		    	
-		    	resultsLogModel_.addNewResult(scalarValueResults);
+		    	dataModel_.addNewResult(scalarValueResults);
+		    	
 		    	ResultsLogView theView = (ResultsLogView) getView();
 		    	theView.update();
 		    }
@@ -108,7 +115,7 @@ public class ResultsLogController extends BaseController {
 	@EventSubscriber(eventClass=ClearViewAction.class)
 	public void onClearDebugConsoleAction(ClearViewAction event) {
 		
-		resultsLogModel_.init();
+		dataModel_.clear();
 		
 		ResultsLogView theView = (ResultsLogView) getView();
 		theView.clear();

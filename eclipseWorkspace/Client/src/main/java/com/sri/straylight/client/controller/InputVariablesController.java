@@ -1,19 +1,26 @@
 package com.sri.straylight.client.controller;
 
+import java.util.Vector;
+
 import javax.swing.SwingUtilities;
 
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.ViewInitialized;
-import com.sri.straylight.client.model.InputDataModel;
+import com.sri.straylight.client.model.VariableDataModel;
 import com.sri.straylight.client.view.TableOfVariablesView;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
+import com.sri.straylight.fmuWrapper.event.StraylightEventListener;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
+import com.sri.straylight.fmuWrapper.voNative.Enu;
+
 
 // TODO: Auto-generated Javadoc
 /**
@@ -23,7 +30,7 @@ public class InputVariablesController extends BaseController {
 
 
     /** The input form data model_. */
-    private InputDataModel inputDataModel_;
+    private VariableDataModel dataModel_;
     
     
 	/**
@@ -38,16 +45,34 @@ public class InputVariablesController extends BaseController {
 
 	public void initXML( XMLparsedInfo xmlParsed) {  
 
-		inputDataModel_ = new InputDataModel();
-		inputDataModel_.xmlParsed = xmlParsed;
+		Vector<ScalarVariableReal> variables = xmlParsed.getVariables(Enu.enu_input);
+		dataModel_ = new VariableDataModel(variables);
+
+		TableOfVariablesView theView = new TableOfVariablesView(this, dataModel_, "Input");
 		
-		TableOfVariablesView theView = new TableOfVariablesView(this, inputDataModel_);
+		
+		registerEventListener (
+				ScalarValueChangeRequest.class,
+				new StraylightEventListener<ScalarValueChangeRequest, ScalarValueCollection>() {
+					@Override
+					public void handleEvent(ScalarValueChangeRequest event) {
+						
+						 EventBus.publish(event);
+					}
+				});
+		
+		
 	    setView_(theView);
 	
 	    ViewInitialized e = new ViewInitialized(this, theView);
 	    EventBus.publish(e);
 
     }
+	
+	
+
+	
+	
 	
 	@EventSubscriber(eventClass=XMLparsedEvent.class)
 	public void onXMLparsedEventEX(final XMLparsedEvent event) {  
@@ -68,23 +93,14 @@ public class InputVariablesController extends BaseController {
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
 		
-		TableOfVariablesView theView = (TableOfVariablesView) this.getView();
 		ScalarValueResults svr = event.getPayload();
 		
-		theView.addResult( svr );
+		ScalarValueCollection svc = svr.getInput();
+		dataModel_.addResult( svc );
 		
 	}
 	
 
-	/**
-	 * On data model update request.
-	 *
-	 * @param event the event
-	 */
-	public void onDataModelUpdateRequest(ScalarValueChangeRequest event) {
-		EventBus.publish(event);
-	}
-	
 	
 
     

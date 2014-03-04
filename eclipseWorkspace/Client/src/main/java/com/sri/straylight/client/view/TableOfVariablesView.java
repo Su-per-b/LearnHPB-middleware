@@ -12,20 +12,16 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
-import com.sri.straylight.client.controller.InputVariablesController;
-import com.sri.straylight.client.model.InputDataModel;
-import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
-import com.sri.straylight.fmuWrapper.voManaged.BaseScalarValue;
-import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
+import com.sri.straylight.client.controller.BaseController;
+import com.sri.straylight.client.model.VariableDataModel;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
-import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class InputFormView.
  */
-public class TableOfVariablesView extends BaseView implements TableView {
+public class TableOfVariablesView extends BaseView   {
 
 	/**
 	 * 
@@ -38,45 +34,33 @@ public class TableOfVariablesView extends BaseView implements TableView {
 	/** The table_. */
 	private  JTableEx table_;
 
-	/** The input form controller_. */
-	private InputVariablesController inputController_;
 	
 	/** The input form data model_. */
-	private InputDataModel inputDataModel_;
+	private VariableDataModel variableDataModel_;
 
 	private JPanel bottomPanel_;
 	
-	private ScalarValueCollection latestInput_;
-
 	protected JSplitPane splitPane_;
 
 	private JScrollPane scrollPaneTable_;
 	 
-	private static final String TITLE = "Input";
+	private String title_ = "{none}";
 	/**
 	 * Instantiates a new input form view.
+	 * @param title 
 	 *
 	 * @param inputFormController the input form controller
 	 * @param inputFormDataModel the input form data model
 	 */
-	public TableOfVariablesView(InputVariablesController inputController, InputDataModel inputDataModel) {
+	public TableOfVariablesView(BaseController parentController, VariableDataModel variableDataModel, String title) {
 		
-		super(TITLE);
+		super(title, parentController);
 		
-		inputDataModel_ = inputDataModel;
-		inputController_ = inputController;
+		title_ = title;
+		variableDataModel_ = variableDataModel;
 		
+		tableModel_ = variableDataModel.getTableModel();
 		
-		Object[][] data = inputDataModel_.xmlParsed.getInputData();
-		String[] columns = inputDataModel_.xmlParsed.getInputFormColumnNames();
-
-		
-		
-		tableModel_ = new DefaultTableModel (	
-				data,
-				columns
-				);
-
 		
 		this.setLayout(new GridLayout(1, 1, 0, 0));
 		this.setAlignmentY(Component.LEFT_ALIGNMENT);
@@ -104,67 +88,41 @@ public class TableOfVariablesView extends BaseView implements TableView {
 		
 		this.add ( splitPane_ );
 		
-	}
-
-	
-	/**
-	 * New result.
-	 *
-	 * @param resultInput the result input
-	 */
-	public void newResult(Vector<String> resultInput) {
-
-		int len = resultInput.size();
-
-		for (int i = 0; i < len; i++) {
-			String str = resultInput.get(i);
-
-			tableModel_.setValueAt(str, i, 1);
-		}
-
-		table_.updateLayout();
-
-	}
-	
-
-	/**
-	 * Sets the result.
-	 *
-	 * @param scalarValueResults the new result
-	 */
-	public void addResult(ScalarValueResults scalarValueResults) {
+		table_.autoResizeColWidth();
 		
-		latestInput_ = scalarValueResults.getInput();
+	}
+
+	
+	
+
+	
+	public void updateLayout() {
 		
-		Vector<String> list = latestInput_.getStringList();
-		int len = list.size();
-
-		for (int i = 0; i < len; i++) {
-			String str = list.get(i);
-			tableModel_.setValueAt(str, i, 1);
-		}
-
 		table_.updateLayout();
-
 	}
 	
+
 	
 	public void selectRow(int idx) {
 		
 		bottomPanel_.removeAll();
 		
-		ScalarVariableRealPanel componentPanel = new ScalarVariableRealPanel(this); // FlowLayout 
-		Vector<ScalarVariableReal> ScalarVarList = inputDataModel_.xmlParsed.getInputVars();
+		Vector<ScalarVariableReal> ScalarVarList = variableDataModel_.getVariables();
 		
-		ScalarVariableReal sv = ScalarVarList.get(idx);
+		ScalarVariableReal sVar = ScalarVarList.get(idx);
+		ScalarValueReal sVal = variableDataModel_.getValueAt(idx);
 		
-		componentPanel.setMetaData(sv);
+		ScalarVariableRealPanel componentPanel = new ScalarVariableRealPanel( parentController_); // FlowLayout 
+		componentPanel.setMetaData(sVar);
 		
-		if (latestInput_ != null) {
+
+		if (sVal != null) {
+			componentPanel.setValue(sVal);
+		}
+		
+		if (title_.equals("Internal") || title_.equals("Ouput")) {
 			
-			BaseScalarValue val =  latestInput_.get(idx);
-			
-			componentPanel.setValue((ScalarValueReal) val);
+			componentPanel.setEnabled(false);
 		}
 
 		bottomPanel_.add(componentPanel);
@@ -180,10 +138,12 @@ public class TableOfVariablesView extends BaseView implements TableView {
 	}
 
 
-	public void onDataModelUpdateRequest(ScalarValueChangeRequest event) {
-		inputController_.onDataModelUpdateRequest(event);
-	}
 
+
+	
+	
+	
+	
 
 
 }

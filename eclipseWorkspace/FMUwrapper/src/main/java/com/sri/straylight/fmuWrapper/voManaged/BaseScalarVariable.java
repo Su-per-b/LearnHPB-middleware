@@ -69,6 +69,13 @@ public class BaseScalarVariable {
 
 		return theEnum;
 	}
+	
+	public String getCausalityAsString() {
+		Enu theEnum = getCausalityAsEnum();
+
+		return theEnum.toString();
+	}
+	
 
 	public void setCausality(int causality) {
 		this.causality_ = causality;

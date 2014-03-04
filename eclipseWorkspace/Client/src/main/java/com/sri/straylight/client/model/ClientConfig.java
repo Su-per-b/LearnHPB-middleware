@@ -20,7 +20,7 @@ public class ClientConfig {
 	public boolean autoInitFlag;
 	
 	/** The connect to. */
-	public ConnectTo connectTo = ConnectTo.connectTo_pfalco_local;
+	public ConnectTo connectTo = ConnectTo.connectTo_file;
 	
 	/** The window icon url. */
 	public URL windowIconUrl;

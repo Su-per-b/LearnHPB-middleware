@@ -10,6 +10,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
+import com.sri.straylight.fmuWrapper.voNative.Enu;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -40,7 +41,6 @@ public class XMLparsedInfo implements JsonSerializable  {
 		sessionID_ = sessionID;
 	}
 	
-	
 	public ScalarVariablesAll getScalarVariablesAll() {
 		return scalarVariablesAll_;
 	}
@@ -51,179 +51,24 @@ public class XMLparsedInfo implements JsonSerializable  {
 
 
 
-	public Vector<ScalarVariableReal> getInputVars() {
+	
+	public Vector<ScalarVariableReal> getInputVariables() {
 		Vector<ScalarVariableReal> realVarList = scalarVariablesAll_.getInput().getRealVarList();
 		return realVarList;
 	}
 	
-	
-	/**
-	 * Gets the output column names.
-	 *
-	 * @return the output column names
-	 */
-	public String[] getOutputColumnNames() {
-		
-		Vector<ScalarVariableReal> realVarList = scalarVariablesAll_.getOutput().getRealVarList();
-		
-
-		int len = realVarList.size() + 1;
-		
-		String[] columnNames = new String[len];
-		columnNames[0] = "time";
-		for (int i =1; i < len; i++) {
-			columnNames[i] = realVarList.get(i-1).getName();
-		}
-		
-		return columnNames;
-	}
-	
-	/**
-	 * Gets the output form column names.
-	 *
-	 * @return the output form column names
-	 */
-	public String[] getOutputFormColumnNames() {
-
-		String[] columnNames = ScalarVariableReal.getColumnNamesArray();
-		return columnNames;
-	}
-	
-	
-	/**
-	 * Gets the internal column names.
-	 *
-	 * @return the internal column names
-	 */
-	public String[] getInternalColumnNames() {
-
-		String[] columnNames  = {
-				"name",
-				"value",
-				"type",
-				"causality",
-				"variability",
-				"description"
-		};
-		
-		return columnNames;
-	}
-	
-	/**
-	 * Gets the input form column names.
-	 *
-	 * @return the input form column names
-	 */
-	public String[] getInputFormColumnNames() {
-
-		String[] columnNames = ScalarVariableReal.getColumnNamesArray();
-		return columnNames;
-	}
-	
-	/**
-	 * Gets the output data.
-	 *
-	 * @return the output data
-	 */
-	public Object[][] getOutputData () {
-		
-		Vector<ScalarVariableReal> realVarList = scalarVariablesAll_.getOutput().getRealVarList();
-		int len = realVarList.size();
-		
-		Object[][] data = new Object[len][];
-
-		for (int i = 0; i < len; i++) {
-			ScalarVariableReal sv = realVarList.get(i);
-			String[] row  = {
-				sv.getName(),
-				"Real",
-				sv.getCausalityAsEnum().toString(),
-				sv.getVariabilityAsEnum().toString(),
-				sv.getDescription()
-			};
-			
-			data[i] = row;
-		}
-
-		return data;
-	}
-	
-	/**
-	 * Gets the output form data.
-	 *
-	 * @return the output form data
-	 */
-	public Object[][] getOutputFormData () {
-		
-		Vector<ScalarVariableReal> realVarList = scalarVariablesAll_.getOutput().getRealVarList();
-		
-		int len = realVarList.size();
-		Object[][] data = new Object[len][];
-
-		for (int i = 0; i < len; i++) {
-			ScalarVariableReal sv = realVarList.get(i);
-			data[i] = sv.toStringArray();
-		}
-
-		return data;
-	}
-	
-	
-	/**
-	 * Gets the internal data.
-	 *
-	 * @return the internal data
-	 */
-	public Object[][] getInternalData () {
-		
+	public Vector<ScalarVariableReal> getInternalVariables() {
 		Vector<ScalarVariableReal> realVarList = scalarVariablesAll_.getInternal().getRealVarList();
-		
-		int len = realVarList.size();
-		Object[][] data = new Object[len][];
-
-		for (int i = 0; i < len; i++) {
-			ScalarVariableReal sv = realVarList.get(i);
-			
-			String[] row  = {
-				sv.getName(),
-				"unknown",
-				"Real",
-				sv.getCausalityAsEnum().toString(),
-				sv.getVariabilityAsEnum().toString(),
-				sv.getDescription()
-			};
-			
-			data[i] = row;
-		}
-
-		return data;
+		return realVarList;
+	}
+	
+	public Vector<ScalarVariableReal> getOutputVariables() {
+		Vector<ScalarVariableReal> realVarList = scalarVariablesAll_.getOutput().getRealVarList();
+		return realVarList;
 	}
 	
 
 	
-	/**
-	 * Gets the input data.
-	 *
-	 * @return the input data
-	 */
-	public Object[][] getInputData() {
-		
-		
-		ScalarVariableCollection input = scalarVariablesAll_.getInput();
-		
-		Vector<ScalarVariableReal> realVarList = input.getRealVarList();
-		
-		int len = realVarList.size();
-		Object[][] data = new Object[len][];
-
-		for (int i = 0; i < len; i++) {
-			ScalarVariableReal sv = realVarList.get(i);
-			data[i] = sv.toStringArray();
-		}
-
-		return data;
-	}
-
 
 	@Override
 	public String toJson() {
@@ -257,5 +102,17 @@ public class XMLparsedInfo implements JsonSerializable  {
             append(this.scalarVariablesAll_, typedObj.getScalarVariablesAll()).
             isEquals();
     }
+
+    
+	public Vector<ScalarVariableReal> getVariables(Enu causality) {
+		
+		ScalarVariableCollection svc = scalarVariablesAll_.getScalarVariableCollection(causality);
+		
+		return svc.getRealVarList();
+	}
+
+
+
+
 
 }

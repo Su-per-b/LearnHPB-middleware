@@ -4,7 +4,6 @@ import com.sri.straylight.client.view.BaseView;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 
 
-
 public abstract class BaseController extends AbstractController {
 	
 	public BaseController(AbstractController parentController) {
@@ -15,7 +14,6 @@ public abstract class BaseController extends AbstractController {
 	//abstract protected void init_(XMLparsedInfo xmlParsed);
 	
 	
-
 	
 	
     /**
@@ -31,6 +29,12 @@ public abstract class BaseController extends AbstractController {
     		return (BaseView) view;
     	}
     }
+
+
+
+
+
+
     
     
 	

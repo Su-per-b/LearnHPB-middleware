@@ -231,8 +231,11 @@ public class FMUcontroller extends AbstractController {
 				.getAllScalarVariables();
 			
 		
-		ScalarVariablesAll scalarVariablesAll = new ScalarVariablesAll(scalarVariablesAllStruct);
+		ScalarVariablesAll scalarVariablesAll = new ScalarVariablesAll(scalarVariablesAllStruct,
+				fmuWrapperConfig_.parseInternalVariablesFlag, fmuWrapperConfig_.parseInternalVariableLimit);
 
+		
+		
 		XMLparsedInfo xmlParsed = new XMLparsedInfo(scalarVariablesAll);
 		XMLparsedEvent event = new XMLparsedEvent(this, xmlParsed);
 

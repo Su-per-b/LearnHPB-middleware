@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
+import com.sri.straylight.fmuWrapper.voNative.Enu;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariablesAllStruct;
 
 // TODO: Auto-generated Javadoc
@@ -17,18 +18,32 @@ public class ScalarVariablesAll implements JsonSerializable{
 	private ScalarVariableCollection output_;
 	private ScalarVariableCollection internal_;
 	
-	public ScalarVariablesAll(ScalarVariablesAllStruct struct) {
+//	public ScalarVariablesAll(ScalarVariablesAllStruct struct) {
+//		input_ = new ScalarVariableCollection(struct.input);
+//		output_ = new ScalarVariableCollection(struct.output);
+//		internal_ = new ScalarVariableCollection(struct.internal, 0);
+//	}
+
+	public ScalarVariablesAll(ScalarVariablesAllStruct struct, Boolean parseInternalVariablesFlag, Integer parseInternalVariableLimit) {
 		input_ = new ScalarVariableCollection(struct.input);
 		output_ = new ScalarVariableCollection(struct.output);
-		internal_ = new ScalarVariableCollection(struct.internal, 100);
+		
+		if (parseInternalVariablesFlag) {
+			internal_ = new ScalarVariableCollection(struct.internal, parseInternalVariableLimit);
+		} else {
+			internal_ = new ScalarVariableCollection();
+		}
+
 	}
-
-
+	
 	public ScalarVariablesAll() {
 		
 	}
 
-
+	public ScalarVariableCollection getScalarVariableCollection() {
+		return input_;
+	}
+	
 	//input
 	public ScalarVariableCollection getInput() {
 		return input_;
@@ -41,6 +56,7 @@ public class ScalarVariablesAll implements JsonSerializable{
 	public ScalarVariableCollection getOutput() {
 		return output_;
 	}
+	
 	public void setOutput(ScalarVariableCollection output) {
 		output_ = output;
 	}
@@ -90,5 +106,32 @@ public class ScalarVariablesAll implements JsonSerializable{
 			append(this.internal_, typedObj.getInternal()).
             isEquals();
     }
+    
+
+
+
+	public ScalarVariableCollection getScalarVariableCollection(Enu causality) {
+
+
+		switch (causality) {
+		
+			case enu_input :  {
+				return getInput();
+			}
+			case enu_output :  {
+				return getOutput();
+			}
+			case enu_internal :  {
+				return getInternal();
+			}
+			
+			default : {
+				return null;
+			}
+
+		}
+
+
+	}
 	
 }

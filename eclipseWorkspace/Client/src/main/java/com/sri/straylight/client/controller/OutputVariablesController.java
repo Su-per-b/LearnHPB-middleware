@@ -1,18 +1,23 @@
 package com.sri.straylight.client.controller;
 
+import java.util.Vector;
+
 import javax.swing.SwingUtilities;
 
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.ViewInitialized;
-import com.sri.straylight.client.model.OutputDataModel;
-import com.sri.straylight.client.view.OutputView;
+import com.sri.straylight.client.model.VariableDataModel;
+import com.sri.straylight.client.view.TableOfVariablesView;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
+import com.sri.straylight.fmuWrapper.voNative.Enu;
 
 
 // TODO: Auto-generated Javadoc
@@ -22,7 +27,7 @@ import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 public class OutputVariablesController extends BaseController {
 	
 	
-    private OutputDataModel outputDataModel_;
+    private VariableDataModel dataModel_;
     
     
 	/**
@@ -34,35 +39,37 @@ public class OutputVariablesController extends BaseController {
 		super(parentController);
 	}
 	
+
+	public void initXML( XMLparsedInfo xmlParsed) {  
+
+		
+		Vector<ScalarVariableReal> variables = xmlParsed.getVariables(Enu.enu_output);
+		
+		dataModel_ = new VariableDataModel(variables);
+		
+		
+//		dataModel_ = new OutputDataModel(xmlParsed);
+
+		TableOfVariablesView theView = new TableOfVariablesView(this, dataModel_, "Output");
+	    setView_(theView);
+	
+	    ViewInitialized e = new ViewInitialized(this, theView);
+	    EventBus.publish(e);
+
+    }
+	
 	
 	@EventSubscriber(eventClass=XMLparsedEvent.class)
 	public void onXMLparsedEventEX(final XMLparsedEvent event) {  
 
 		SwingUtilities.invokeLater(new Runnable() {
 		    public void run() {
-		    	initXML(event.getPayload());
+			    initXML(event.getPayload());
 		    }
 		});
     }
 	
-	/**
-	 * Inits the.
-	 *
-	 * @param xmlParsed the xml parsed
-	 */
-	protected void initXML(XMLparsedInfo xmlParsed) {  
-		
-		outputDataModel_ = new OutputDataModel(xmlParsed);
-		OutputView theView = new OutputView(this, outputDataModel_);
-	    setView_(theView);
-	   
-	    ViewInitialized e = new ViewInitialized(this, theView);
-	    EventBus.publish(e);
-    }
-	
 
-	
-	
 	/**
 	 * On result event.
 	 *
@@ -71,19 +78,16 @@ public class OutputVariablesController extends BaseController {
 	@EventSubscriber(eventClass=ResultEvent.class)
 	public void onResultEvent(ResultEvent event) {
 		
-		final ScalarValueResults scalarValueResults = event.getPayload();
+//		TableOfVariablesView theView = (TableOfVariablesView) this.getView();
 		
-		SwingUtilities.invokeLater(new Runnable() {
-		    public void run() {
-		    	
-		    	OutputView outputView = (OutputView) getView();
-		    	
-		    	outputView.updateResults(scalarValueResults);
-		    }
-		});
+		ScalarValueResults svr = event.getPayload();
+		
+		ScalarValueCollection svc = svr.getOutput();
+		dataModel_.addResult( svc );
 		
 	}
 	
+
 
 
 }

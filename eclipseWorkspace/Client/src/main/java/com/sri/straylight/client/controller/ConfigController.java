@@ -100,7 +100,7 @@ public class ConfigController extends BaseController {
 		txtStepDelta_.setFormatterFactory(fmtFactory);
 		
 	
-		BaseView theView = new BaseView("Config");
+		BaseView theView = new BaseView("Config", this);
 		theView.setLayout(new MigLayout("", "[][grow][290.00,grow]", "[][]"));
 		
 		theView.add(lblStartTime_, "cell 0 0,alignx trailing");

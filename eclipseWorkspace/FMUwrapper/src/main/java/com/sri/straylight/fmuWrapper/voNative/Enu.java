@@ -22,8 +22,25 @@ public enum Enu implements JnaEnum<Enu> {
 
 
 	private static int start = 0;
-
-
+	
+	private static String toStringMap_[] = new String[] {
+		"flat",
+		"structured",
+		"constant",
+		"parameter",
+		"discrete",
+		"continuous",
+		"input",
+		"output",
+		"internal",
+		"none",
+		"noAlias",
+		"alias",
+		"negatedAlias"
+	};
+	
+	
+	
 	public int getIntValue() {
 		return this.ordinal() + start;
 	}
@@ -37,5 +54,14 @@ public enum Enu implements JnaEnum<Enu> {
 		}
 		return null;
 	}
+	
+	public String toString() {
+		int idx = getIntValue();
+		
+		return  toStringMap_[idx];
+		
+	}
+	
+	
 
 }

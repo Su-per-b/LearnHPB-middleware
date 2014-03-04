@@ -62,7 +62,7 @@ public class ScalarVariableReal
 				doubleToString(getTypeSpecReal().nominal),
 				doubleToString(getTypeSpecReal().min),
 				doubleToString(getTypeSpecReal().max),
-				getCausalityAsEnum().toString(),
+				getCausalityAsString(),
 				getVariabilityAsEnum().toString(),
 				getDescription()
 		};

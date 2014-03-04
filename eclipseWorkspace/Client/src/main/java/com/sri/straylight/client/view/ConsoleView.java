@@ -28,10 +28,8 @@ public class ConsoleView extends BaseView {
 	private static final String TITLE = "Console";
 	
 	/** The input form controller_. */
-	@SuppressWarnings("unused")
-	private ConsoleController consoleController_;
-	
-	private ConsoleModel consoleModel_;
+
+	private ConsoleModel dataModel_;
 	
 	/** The doc_. */
 	private Document  doc_;
@@ -45,12 +43,11 @@ public class ConsoleView extends BaseView {
 	
 	
 	
-	public ConsoleView(ConsoleController consoleController, ConsoleModel theModel) {
+	public ConsoleView(ConsoleController parentController, ConsoleModel dataModel) {
 		
-		super(TITLE);
+		super(TITLE, parentController);
 		
-		consoleController_ = consoleController;
-		consoleModel_ = theModel;
+		dataModel_ = dataModel;
 		
 		doc_ = textPane_.getDocument();
 		setLayout(new GridLayout(0, 1, 0, 0));
@@ -59,7 +56,6 @@ public class ConsoleView extends BaseView {
 		add(scrollPaneText);
 		scrollPaneText.setViewportView(textPane_);
 		
-
 	}
 	
 	
@@ -69,7 +65,7 @@ public class ConsoleView extends BaseView {
 	 *
 	 * @param txt the txt
 	 */
-	public void  outputText(final String txt, final Color color ) {
+	public void outputText(final String txt, final Color color ) {
 		
 		
 		final SimpleAttributeSet attributes = new SimpleAttributeSet();
@@ -80,7 +76,7 @@ public class ConsoleView extends BaseView {
 		    public void run() {
 		    	
 		    	
-		    	Long elapsedTimeMillis = consoleModel_.getElepasedTime();
+		    	Long elapsedTimeMillis = dataModel_.getElepasedTime();
 
 				String txt2 = elapsedTimeMillis.toString() + " : " + txt;
 				String initString[] = {txt2};

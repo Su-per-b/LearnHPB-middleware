@@ -3,7 +3,6 @@ package com.sri.straylight.fmuWrapper.voManaged;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import com.sri.straylight.fmuWrapper.event.SessionControlEvent;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 
@@ -60,7 +59,7 @@ public class SessionControl
         if (obj.getClass() != getClass())
             return false;
 
-        SessionControlEvent typedObj = (SessionControlEvent) obj;
+//        SessionControlEvent typedObj = (SessionControlEvent) obj;
         
         return new EqualsBuilder().
             isEquals();

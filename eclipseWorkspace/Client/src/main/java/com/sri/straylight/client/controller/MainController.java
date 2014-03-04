@@ -31,7 +31,7 @@ public class MainController extends BaseController {
 	
 
 	/** The top panel controller_. */
-	private TopPanelController2 topPanelController_;
+	private TopPanelController topPanelController_;
 	
 	/** The simulation controller_. */
 	@SuppressWarnings("unused")
@@ -42,9 +42,9 @@ public class MainController extends BaseController {
 	
 	/** The input form controller_. */
 	private InputVariablesController inputController_;
+
 	
-	/** The input form controller_. */
-	private InternalVariablesController internalTableController_;
+	private InternalVariablesController internalTableController2_;
 	
 	/** The results table controller_. */
 	private ResultsLogController resultsLogController_;
@@ -72,6 +72,8 @@ public class MainController extends BaseController {
 	
 	
 	private Vector<BaseView> views_;
+
+
 	
 	/**
 	 * Instantiates a new main controller.
@@ -83,12 +85,13 @@ public class MainController extends BaseController {
 		
 		mainView_ = new MainView(configModel_);
 
-		topPanelController_  = new TopPanelController2(this);
+		topPanelController_  = new TopPanelController(this);
 		
 		simulationController_ = new SimulationController(this, configModel_);
 		consoleController_ = new ConsoleController(this);
 		inputController_ = new InputVariablesController(this);
-		internalTableController_ = new InternalVariablesController(this);
+
+		internalTableController2_ = new InternalVariablesController(this);
 		
 		
 		resultsLogController_ = new ResultsLogController(this);
@@ -200,7 +203,8 @@ public class MainController extends BaseController {
 		addTab_(configController_.getView());
 		addTab_(inputController_.getView());
 		addTab_(outputController_.getView());
-		addTab_(internalTableController_.getView());
+		addTab_(internalTableController2_.getView());
+		
 		addTab_(resultsLogController_.getView());
 	}
 	

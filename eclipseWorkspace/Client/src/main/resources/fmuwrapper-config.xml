@@ -6,6 +6,8 @@
 	<nativeLibFolderRelativePath>\..\..\visualStudioWorkspace\bin\Debug</nativeLibFolderRelativePath>
 	<unzipFolderRelativePath>\..\..\assets\FMUs\</unzipFolderRelativePath>
 	<fmuFolderName>LearnGB_0v4_02_VAVReheat_ClosedLoop_edit2</fmuFolderName>
+	
+
 -->
 
 	<!--For Production	 -->
@@ -13,6 +15,9 @@
 	<nativeLibFolderRelativePath>\..\FMUwrapper\native_code</nativeLibFolderRelativePath>
 	<unzipFolderRelativePath>\..\FMUwrapper\native_code</unzipFolderRelativePath>
 	<fmuFolderName>fmu</fmuFolderName>
-
+	
+	<parseInternalVariablesFlagStr>true</parseInternalVariablesFlagStr>
+	<parseInternalVariableLimitStr>500</parseInternalVariableLimitStr>
+	
 	
 </config>

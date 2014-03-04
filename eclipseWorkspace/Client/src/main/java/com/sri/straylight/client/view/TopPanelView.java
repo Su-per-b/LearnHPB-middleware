@@ -10,7 +10,7 @@ import javax.swing.JButton;
 
 import org.bushe.swing.event.EventBus;
 
-import com.sri.straylight.client.controller.TopPanelController2;
+import com.sri.straylight.client.controller.TopPanelController;
 import com.sri.straylight.client.event.ClearViewAction;
 import com.sri.straylight.client.event.SimStateClientRequest;
 import com.sri.straylight.client.model.TopPanelDataModel;
@@ -40,12 +40,12 @@ public class TopPanelView extends BaseView {
 	/** The state map_. */
 	Hashtable<SimStateNative, JButton[]> stateMap_ = new Hashtable<SimStateNative, JButton[]>();
 	private TopPanelDataModel topPanelModel_;
-//	private TopPanelController2 topPanelController_;
+
 	
 	
-	public TopPanelView(TopPanelController2 topPanelController, TopPanelDataModel  topPanelModel ) {
+	public TopPanelView(TopPanelController parentController, TopPanelDataModel  topPanelModel ) {
 		
-		super(TITLE);
+		super(TITLE, parentController);
 		
 		topPanelModel_ = topPanelModel;
 //		topPanelController_ = topPanelController;

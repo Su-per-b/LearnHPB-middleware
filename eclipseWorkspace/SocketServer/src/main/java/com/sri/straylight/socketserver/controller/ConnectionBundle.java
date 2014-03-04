@@ -18,14 +18,13 @@ import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.util.WorkerThreadAbstract;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
+import com.sri.straylight.fmuWrapper.voManaged.SessionControl;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageType;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sri.straylight.socketserver.event.MessageReceived;
-import com.sri.straylight.socketserver.event.WebSocketConnectionStateEvent;
-import com.sri.straylight.fmuWrapper.voManaged.SessionControl;
 
 
 public class ConnectionBundle extends AbstractController {

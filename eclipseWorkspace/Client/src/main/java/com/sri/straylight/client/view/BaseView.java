@@ -5,19 +5,28 @@ import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JPanel;
 
+import com.sri.straylight.client.controller.BaseController;
+import com.sri.straylight.fmuWrapper.event.BaseEvent;
+
 public class BaseView extends JPanel {
 
 		private static final long serialVersionUID = 1L;
-		private String title_;
 		
-
+		protected String title_;
+		
+		protected BaseController parentController_;
+		
+		
 		
 		public String getTitle() {
 			return title_;
 		}
 		
-		public BaseView(String title) {
+		public BaseView(String title, BaseController parentController) {
+			
+			parentController_ = parentController;
 			title_ = title;
+			
 		}
 		
 		
@@ -38,6 +47,12 @@ public class BaseView extends JPanel {
 
 
 		
-		
+
+	    
+	    public void fireEvent(BaseEvent<?> event) {
+	    	parentController_.fireEvent(event);
+	    }
+	    
+	    
 		
 }

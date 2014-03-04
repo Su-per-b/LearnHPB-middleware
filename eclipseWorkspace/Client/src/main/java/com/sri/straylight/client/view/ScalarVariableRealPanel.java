@@ -13,13 +13,13 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.sri.straylight.client.controller.BaseController;
 import com.sri.straylight.client.model.DoubleInputVerifier;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
@@ -32,7 +32,7 @@ import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
 /**
  * The Class ScalarVariableRealPanel.
  */
-public class ScalarVariableRealPanel extends JPanel {
+public class ScalarVariableRealPanel extends BaseView {
 
 	/**
 	 * 
@@ -76,8 +76,6 @@ public class ScalarVariableRealPanel extends JPanel {
 	/** The is text field initialized_. */
 	private boolean isTextFieldInitialized_ = false;
 	
-	/** The input detail view_. */
-	private TableOfVariablesView inputFormView_;
 	
 	/** The scalar variable real struct_. */
 	private ScalarVariableReal scalarVariableReal_;
@@ -89,17 +87,20 @@ public class ScalarVariableRealPanel extends JPanel {
 	
 	private JTextField textFieldValueReference_;
 	
+
 	
 	
 	/**
 	 * Create the panel.
 	 *
 	 * @param inputFormView the input detail view
+	 * @param controller_ 
 	 */
-	public ScalarVariableRealPanel(TableOfVariablesView inputFormView) {
+	public ScalarVariableRealPanel( BaseController parentController) {
 		
-		inputFormView_ = inputFormView;
-				
+		super("ScalarVariableRealPanel", parentController);
+		
+		
 		Font normalFont = new Font("sansserif", Font.PLAIN, 12);
 		Font boldFont = new Font("sansserif", Font.BOLD, 12);
 
@@ -214,6 +215,18 @@ public class ScalarVariableRealPanel extends JPanel {
 
 	}
 
+	public void setEnabled(boolean makeEnabled) {
+		
+	    super.setEnabled(makeEnabled);
+	      
+		btnSubmit_.setEnabled(makeEnabled);
+		slider_.setEnabled(makeEnabled);
+		textField_.setEnabled(makeEnabled);
+
+		
+	}
+	
+	
 	/**
 	 * Sets the meta data.
 	 *
@@ -317,6 +330,8 @@ public class ScalarVariableRealPanel extends JPanel {
 	 */
 	public void submitButtonPressed() {
 		
+		btnSubmit_.setEnabled(false);
+		
 		String newStringValue = textField_.getText();
 		double newDoubleValue = Double.parseDouble(newStringValue);
 		
@@ -331,14 +346,12 @@ public class ScalarVariableRealPanel extends JPanel {
 		
 		collection.setRealList(realList);
 		
-	
 		ScalarValueChangeRequest event = new ScalarValueChangeRequest(this, collection);
-		
-		inputFormView_.onDataModelUpdateRequest(event);
-		
-		btnSubmit_.setEnabled(false);
+		fireEvent(event);
 		
 	}
+
+
 
 	/**
 	 * Submit slider change.

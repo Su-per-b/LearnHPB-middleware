@@ -9,7 +9,6 @@ import org.bushe.swing.event.EventServiceLocator;
 
 import com.sri.straylight.client.controller.MainController;
 import com.sri.straylight.fmuWrapper.event.ExceptionThrowingEventService;
-import com.sri.straylight.fmuWrapper.framework.AbstractController;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -18,7 +17,7 @@ import com.sri.straylight.fmuWrapper.framework.AbstractController;
 public class Main {
 	
 	/** The application controller. */
-	public static AbstractController mainController;
+	public static MainController mainController;
 	
 	
     /**

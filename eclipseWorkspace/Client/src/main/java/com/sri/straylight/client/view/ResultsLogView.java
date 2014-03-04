@@ -1,7 +1,6 @@
 package com.sri.straylight.client.view;
 
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.util.Vector;
 
 import javax.swing.JScrollPane;
@@ -16,7 +15,7 @@ import com.sri.straylight.client.model.ResultsLogModel;
 /**
  * The Class OutputView.
  */
-public class ResultsLogView extends BaseView {
+public class ResultsLogView  extends BaseView  {
 
 	/**
 	 * 
@@ -37,27 +36,27 @@ public class ResultsLogView extends BaseView {
 	private ResultsLogController resultsLogController_;
 	
 	/** The input form data model_. */
-	private ResultsLogModel resultsLogModel_;
+	private ResultsLogModel variableDataModel_;
 
 	 
 	private static final String TITLE = "Results Log";
+	
+	
 	/**
 	 * Instantiates a new input form view.
 	 *
 	 * @param inputFormController the input form controller
 	 * @param inputFormDataModel the input form data model
 	 */
-	public ResultsLogView(ResultsLogController resultsLogController, ResultsLogModel resultsLogModel) {
+	public ResultsLogView(ResultsLogController parentController, ResultsLogModel variableDataModel) {
 		
-		super(TITLE);
 		
-		resultsLogController_ = resultsLogController;
-		resultsLogModel_ = resultsLogModel;
+		super(TITLE, parentController);
 		
-	    setPreferredSize(new Dimension(704, 500));
-	    setLayout(new GridLayout(1, 1, 0, 0));
+		variableDataModel_ = variableDataModel;
+		
 
-	    DefaultTableModel tableModel = resultsLogModel.getTableModel();
+	    DefaultTableModel tableModel = variableDataModel_.getTableModel();
 		table_ = new JTableEx(tableModel);
 		
 		table_.setPreferredScrollableViewportSize(new Dimension(700, 600));
@@ -76,7 +75,7 @@ public class ResultsLogView extends BaseView {
 	
 	public void setModel(ResultsLogModel resultsLogModel) {
 		
-		resultsLogModel_ = resultsLogModel;
+		variableDataModel_ = resultsLogModel;
 	    DefaultTableModel tableModel = resultsLogModel.getTableModel();
 	    
 		table_.setModel(tableModel);
@@ -113,7 +112,7 @@ public class ResultsLogView extends BaseView {
 
 
 	public void clear() {
-		setModel(resultsLogModel_);
+		setModel(variableDataModel_);
 		
 	}
 

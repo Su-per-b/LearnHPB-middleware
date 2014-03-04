@@ -10,7 +10,6 @@ import org.eclipse.jetty.util.log.Logger;
 import com.sri.straylight.fmuWrapper.Controller.ThreadedFMUcontroller;
 import com.sri.straylight.fmuWrapper.event.SessionControlEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
-import com.sri.straylight.fmuWrapper.serialization.SessionControlEventAdapter;
 import com.sri.straylight.fmuWrapper.util.WorkerThreadAbstract;
 import com.sri.straylight.fmuWrapper.voManaged.SessionControl;
 import com.sri.straylight.socketserver.event.WebSocketConnectionStateEvent;
@@ -33,7 +32,7 @@ public class MainController extends AbstractController  {
 	
 	private Vector<String> sessionIdList_ = new Vector<String>();
 	
-	private String lastSessionID_ = "";
+
 	
 	
 	public MainController() {
@@ -86,7 +85,7 @@ public class MainController extends AbstractController  {
 
     		if (hostSessionID.equals ("last")) {
     			
-    			int size = sessionIdList_.size();
+//    			int size = sessionIdList_.size();
     			hostSessionID = this.getLastSessionID(attachSessionID);
 
     		}

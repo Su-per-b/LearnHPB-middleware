@@ -25,13 +25,21 @@ public class FMUwrapperConfig {
 	public String nativeLibFolderRelativePath;
 	public String unzipFolderRelativePath;
 	public String fmuFolderName;
-
+	public String parseInternalVariablesFlagStr;
+	public String parseInternalVariableLimitStr;
+	
+	
 	//derived
 	public String unzipFolderAbsolutePath;
 	public String fmuFolderAbsolutePath;
 	public String nativeLibFolderAbsolutePath;
+	public Boolean parseInternalVariablesFlag;
+	public Integer parseInternalVariableLimit;
 
-
+	
+	
+	
+	
 	public static FMUwrapperConfig load() {
 		
 		
@@ -61,9 +69,15 @@ public class FMUwrapperConfig {
 				return null;
 			}
 			
+			
+			
 			config.unzipFolderAbsolutePath = convertRelativeToAbsolute(config.unzipFolderRelativePath);
 			config.fmuFolderAbsolutePath = config.unzipFolderAbsolutePath + "\\" + config.fmuFolderName;
 			config.nativeLibFolderAbsolutePath = convertRelativeToAbsolute(config.nativeLibFolderRelativePath);
+			
+			config.parseInternalVariablesFlag = Boolean.parseBoolean(config.parseInternalVariablesFlagStr);
+			config.parseInternalVariableLimit = Integer.parseInt(config.parseInternalVariableLimitStr);
+			
 		}
 
 		
