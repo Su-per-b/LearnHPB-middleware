@@ -4,15 +4,13 @@ package com.sri.straylight.client.controller;
 
 
 import java.awt.BorderLayout;
-import java.util.Vector;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
 
+import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.event.ViewInitialized;
+import com.sri.straylight.client.event.TabViewInitialized;
 import com.sri.straylight.client.event.WebSocketEvent;
 import com.sri.straylight.client.event.WebSocketEventStruct;
 import com.sri.straylight.client.event.menu.About_Help;
@@ -22,6 +20,10 @@ import com.sri.straylight.client.model.ClientConfigXML;
 import com.sri.straylight.client.view.BaseView;
 import com.sri.straylight.client.view.MainView;
 import com.sri.straylight.client.view.SimulationEngineDialog;
+import com.sri.straylight.client.view.TopPanelView;
+import com.sri.straylight.fmuWrapper.event.SimStateClientNotify;
+import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
+import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -43,14 +45,14 @@ public class MainController extends BaseController {
 	/** The input form controller_. */
 	private InputVariablesController inputController_;
 
+	private InternalVariablesController internalTableController_;
 	
-	private InternalVariablesController internalTableController2_;
+	/** The results form controller_. */
+	private OutputVariablesController outputController_;
 	
 	/** The results table controller_. */
 	private ResultsLogController resultsLogController_;
 	
-	/** The results form controller_. */
-	private OutputVariablesController outputController_;
 	
 	/** The top menu controller_. */
 	private TopMenuController topMenuController_;
@@ -58,22 +60,17 @@ public class MainController extends BaseController {
 	/** The config controller_. */
 	private ConfigController configController_;
 	
-	/** The tabbed pane_. */
-	private JTabbedPane tabbedPane_;
-    
+
     /** The config model_. */
     private ClientConfig configModel_;
 	
 	/** The main view_. */
-	private MainView mainView_;
+	private MainView view_;
 	
-	/** The instance. */
-	public static MainController instance;
-	
-	
-	private Vector<BaseView> views_;
 
-
+	private FMUInfoController fmuInfoController;
+	
+	
 	
 	/**
 	 * Instantiates a new main controller.
@@ -82,45 +79,31 @@ public class MainController extends BaseController {
 		super(null);
 		
 		configModel_ = ClientConfigXML.load();
-		
-		mainView_ = new MainView(configModel_);
-
-		topPanelController_  = new TopPanelController(this);
+		view_ = new MainView(configModel_);
 		
 		simulationController_ = new SimulationController(this, configModel_);
-		consoleController_ = new ConsoleController(this);
-		inputController_ = new InputVariablesController(this);
+		
+		topPanelController_  = new TopPanelController(this);
+		TopPanelView topPanelView = topPanelController_.getView();
+		view_.add(topPanelView, BorderLayout.NORTH);
 
-		internalTableController2_ = new InternalVariablesController(this);
-		
-		
-		resultsLogController_ = new ResultsLogController(this);
-		outputController_ = new OutputVariablesController(this);
-		
 		topMenuController_ = new TopMenuController(this);
-		configController_ = new ConfigController(this);
-	
-		BaseView view = topPanelController_.getView();
-		mainView_.add(view, BorderLayout.NORTH);
-
-		tabbedPane_ = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_.addTab("Console", null, consoleController_.getView(), null);
-
-		mainView_.add(tabbedPane_, BorderLayout.CENTER);
-
-		// Display the window
-		mainView_.pack();
-		mainView_.setLocation(300,0);
-		mainView_.setVisible(true);
-
-		mainView_.setJMenuBar(topMenuController_.getMenuBar());
-		setView_(mainView_);
 		
-		instance = this;
-		views_ = new Vector<BaseView>();
-
+		consoleController_ = new ConsoleController(this);
+		configController_ = new ConfigController(this);
+		inputController_ = new InputVariablesController(this);
+		internalTableController_ = new InternalVariablesController(this);
+		outputController_ = new OutputVariablesController(this);
+		resultsLogController_ = new ResultsLogController(this);
+		
+		view_.setJMenuBar(topMenuController_.getMenuBar());
+		view_.showWindow();
+		
 	}
 	
+
+
+
 
 	/**
 	 * On select simulation engine.
@@ -130,7 +113,7 @@ public class MainController extends BaseController {
 	@EventSubscriber(eventClass=Options_SelectSimulationEngine.class)
 	public void onSelectSimulationEngine(Options_SelectSimulationEngine event) {
 		@SuppressWarnings("unused")
-		SimulationEngineDialog dialog =  new SimulationEngineDialog( mainView_ , configModel_);
+		SimulationEngineDialog dialog =  new SimulationEngineDialog( view_ , configModel_);
 	}
 
 	
@@ -142,7 +125,7 @@ public class MainController extends BaseController {
 	@EventSubscriber(eventClass=About_Help.class)
 	public void onAbout_Help(About_Help event) {
 		JOptionPane.showMessageDialog(
-				mainView_, 
+				view_, 
 				"Version: " + ClientConfigXML.VERSION,
 				"About Straylight Simulation Client",
 				JOptionPane.INFORMATION_MESSAGE
@@ -151,16 +134,6 @@ public class MainController extends BaseController {
 
 	
 
-	private void addTab_(BaseView view) {
-		
-		tabbedPane_.addTab(
-				view.getTitle(),
-				null, 
-				view, 
-				null);
-
-	}
-	
 	
 	
 	@EventSubscriber(eventClass=WebSocketEvent.class)
@@ -169,8 +142,7 @@ public class MainController extends BaseController {
 		WebSocketEventStruct payload = event.getPayload();
 		
 		JOptionPane.showMessageDialog(
-				mainView_, 
-
+				view_, 
 				payload.eventDetail,
 				"Error: " + payload.eventTitle,
 				JOptionPane.ERROR_MESSAGE
@@ -179,35 +151,21 @@ public class MainController extends BaseController {
 	}
 	
 	
-	@EventSubscriber(eventClass=ViewInitialized.class)
-	public void onViewInitialized(ViewInitialized event) {
+	
+	
+	@EventSubscriber(eventClass=TabViewInitialized.class)
+	public void onTabViewInitialized(TabViewInitialized event) {
 		
-		BaseView view = event.getPayload();
-		boolean isViewInitialized = views_.contains(view);
-		
-		if (!isViewInitialized) {
-			views_.add(view);
-		}
-		
-		if (views_.size() > 3) {
-			SwingUtilities.invokeLater(new Runnable() {
-			    public void run() {
-			    	initTabs_();
-			    }
-			});
-		}
-	}
 
-
-	private void initTabs_() {
-		addTab_(configController_.getView());
-		addTab_(inputController_.getView());
-		addTab_(outputController_.getView());
-		addTab_(internalTableController2_.getView());
-		
-		addTab_(resultsLogController_.getView());
+		BaseView tabView = event.getPayload();
+		view_.addTab(tabView);
 	}
 	
+	
+
+
+
+
 	
 
 	

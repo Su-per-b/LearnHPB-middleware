@@ -10,7 +10,7 @@ import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.ClearViewAction;
-import com.sri.straylight.client.event.ViewInitialized;
+import com.sri.straylight.client.event.TabViewInitialized;
 import com.sri.straylight.client.model.ResultsLogModel;
 import com.sri.straylight.client.view.ResultsLogView;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
@@ -31,7 +31,9 @@ public class ResultsLogController extends BaseController {
 
     private ResultsLogModel dataModel_;
     
+    private ResultsLogView view_;
 
+    
 	/**
 	 * Instantiates a new results table controller.
 	 *
@@ -48,20 +50,30 @@ public class ResultsLogController extends BaseController {
 	 * @param xmlParsed the xml parsed
 	 */
 	protected void initXML(XMLparsedInfo xmlParsed) {  
-
+		
+		
 		Vector<ScalarVariableReal> variables = xmlParsed.getVariables(Enu.enu_output);
-		dataModel_ = new ResultsLogModel(variables);
+
 		
+		if (view_ == null) {
+			
+			dataModel_ = new ResultsLogModel("ResultsLog", variables);
+			view_ = new ResultsLogView( dataModel_, this);
+		    
+			view_.setPreferredSize(new Dimension(704, 500));
+			view_.setLayout(new GridLayout(1, 1, 0, 0));
+		    
+		    setView_(view_);
+		    
+		    TabViewInitialized event = new TabViewInitialized(this, view_);
+		    EventBus.publish(event);
+		} else {
+			dataModel_.clear();
+			view_.update();
+			
+		}
 		
-		ResultsLogView theView = new ResultsLogView(this, dataModel_);
-	    
-	    theView.setPreferredSize(new Dimension(704, 500));
-	    theView.setLayout(new GridLayout(1, 1, 0, 0));
-	    
-	    setView_(theView);
-	    
-	    ViewInitialized e = new ViewInitialized(this, theView);
-	    EventBus.publish(e);
+
 
 	    
 	    
@@ -116,9 +128,6 @@ public class ResultsLogController extends BaseController {
 	public void onClearDebugConsoleAction(ClearViewAction event) {
 		
 		dataModel_.clear();
-		
-		ResultsLogView theView = (ResultsLogView) getView();
-		theView.clear();
     	
 	}
 

@@ -7,18 +7,17 @@ import javax.swing.table.DefaultTableModel;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
-import com.sri.straylight.fmuWrapper.voNative.Enu;
 
-public class VariableDataModel {
+public class VariableDataModel extends BaseModel {
 	
     
     protected Vector<ScalarVariableReal> variables_;
     protected ScalarValueCollection latestValues_;
     protected DefaultTableModel tableModel_;
-	protected Enu causality_;
-    
-	
-	public VariableDataModel(Vector<ScalarVariableReal> variables) {
+
+  
+	public VariableDataModel(String title, Vector<ScalarVariableReal> variables) {
+		super(title);
 		
 		variables_ = variables;
 		makeTableModel();
@@ -62,6 +61,7 @@ public class VariableDataModel {
 	}
 
 
+
 	public Vector<ScalarVariableReal> getVariables() {
 		return variables_;
 	}
@@ -83,6 +83,19 @@ public class VariableDataModel {
 	}
 
 
+	public void clear() {
+		
+		int rowCount = variables_.size();
+
+
+		for (int i = 0; i < rowCount; i++) {
+			tableModel_.setValueAt("{not set}", i, 1);
+		}
+		
+		
+	}
+	
+	
 
 	public ScalarValueReal getValueAt(int idx) {
 		

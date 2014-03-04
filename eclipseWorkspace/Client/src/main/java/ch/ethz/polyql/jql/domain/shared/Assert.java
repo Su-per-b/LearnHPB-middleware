@@ -20,6 +20,7 @@
  */
 package ch.ethz.polyql.jql.domain.shared;
 
+
 // TODO: Auto-generated Javadoc
 /**
  * Author: Michael Gfeller.
@@ -90,4 +91,14 @@ public final class Assert {
       throw new IllegalArgumentException( "'" + expression + "' expected false" );
     }
   }
+
+	public static void notNull(final Object o, final String s) {
+		assertNotNull(o,s);
+	}
+	
+	public static void isTrue(final boolean b, final String expression) {
+		assertTrue(b, expression);
+	}
+
+
 }

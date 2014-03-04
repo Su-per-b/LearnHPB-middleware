@@ -37,15 +37,9 @@ public class FmuConnectionLocal extends FmuConnectionAbstract {
 		FMUcontroller fmuController = new FMUcontroller();
 		fmuController.setConcurrency(false);
 
-		
-		
 		threadedFMUcontroller_ = new ThreadedFMUcontroller(fmuController);
 		registerSimulationListeners_();
 		
-		//threadedFMUcontroller_.requestStateChange(SimStateNative.simStateNative_1_connect_requested  );
-		
-		//threadedFMUcontroller_ = new ThreadedFMUcontroller();
-		//threadedFMUcontroller_.instantiateFMU();
 	}
 	
 private void registerSimulationListeners_() {
@@ -144,10 +138,7 @@ private void registerSimulationListeners_() {
 	
 	@Override
 	public void setScalarValueCollection(ScalarValueCollection collection) {
-		// TODO Auto-generated method stub
-		
-		//Vector<ScalarValueRealStruct> list = collection.getRealStructList();
-		
+
 		threadedFMUcontroller_.setScalarValueCollection(collection);
 		
 		

@@ -6,7 +6,7 @@ import com.sri.straylight.client.view.BaseView;
 /**
  * The Class SimStateRequest.
  */
-public class ViewInitialized extends BaseEventForClient<BaseView> {
+public class TabViewInitialized extends BaseEventForClient<BaseView> {
 
     /**
 	 * 
@@ -19,7 +19,7 @@ public class ViewInitialized extends BaseEventForClient<BaseView> {
      * @param source the source
      * @param newState the new state
      */
-    public ViewInitialized(Object source, BaseView payload) {
+    public TabViewInitialized(Object source, BaseView payload) {
         super(source, payload);
     }
     

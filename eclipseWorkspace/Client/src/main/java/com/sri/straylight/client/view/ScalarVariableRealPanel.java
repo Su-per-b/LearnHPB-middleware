@@ -19,8 +19,11 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import ch.ethz.polyql.jql.domain.shared.Assert;
+
 import com.sri.straylight.client.controller.BaseController;
 import com.sri.straylight.client.model.DoubleInputVerifier;
+import com.sri.straylight.client.model.ScalarVariableRealDataModel;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
@@ -63,9 +66,6 @@ public class ScalarVariableRealPanel extends BaseView {
 	
 	/** The text field_. */
 	private JTextField textField_;
-
-	/** The scalar value real struct_. */
-	private ScalarValueReal scalarValueReal_;
 	
 	/** The btn submit_. */
 	private JButton btnSubmit_;
@@ -77,8 +77,6 @@ public class ScalarVariableRealPanel extends BaseView {
 	private boolean isTextFieldInitialized_ = false;
 	
 	
-	/** The scalar variable real struct_. */
-	private ScalarVariableReal scalarVariableReal_;
 	
 	/** The lbl description_. */
 	private JLabel lblDescription_;
@@ -87,7 +85,7 @@ public class ScalarVariableRealPanel extends BaseView {
 	
 	private JTextField textFieldValueReference_;
 	
-
+	protected ScalarVariableRealDataModel dataModel_;
 	
 	
 	/**
@@ -96,9 +94,11 @@ public class ScalarVariableRealPanel extends BaseView {
 	 * @param inputFormView the input detail view
 	 * @param controller_ 
 	 */
-	public ScalarVariableRealPanel( BaseController parentController) {
+	public ScalarVariableRealPanel(ScalarVariableRealDataModel dataModel,  BaseController parentController) {
 		
-		super("ScalarVariableRealPanel", parentController);
+		super(dataModel, parentController);
+		
+		dataModel_ = dataModel;
 		
 		
 		Font normalFont = new Font("sansserif", Font.PLAIN, 12);
@@ -210,7 +210,7 @@ public class ScalarVariableRealPanel extends BaseView {
 		);
 		setLayout(groupLayout);
 
-
+		init_();
 		//setMaximumSize( new Dimension(400, 170) );
 
 	}
@@ -232,9 +232,9 @@ public class ScalarVariableRealPanel extends BaseView {
 	 *
 	 * @param sv the new meta data
 	 */
-	public void setMetaData(ScalarVariableReal sv) {
+	private void init_() {
 		
-		scalarVariableReal_ = sv;
+		ScalarVariableReal sv = dataModel_.getScalarVariableReal();
 		
 		lblName_.setText(sv.getName());
 		lblName_.setToolTipText("Name: " + sv.getName());
@@ -332,16 +332,18 @@ public class ScalarVariableRealPanel extends BaseView {
 		
 		btnSubmit_.setEnabled(false);
 		
+		ScalarVariableReal sv = dataModel_.getScalarVariableReal();
+		
 		String newStringValue = textField_.getText();
 		double newDoubleValue = Double.parseDouble(newStringValue);
 		
 		ScalarValueRealStruct scalarValue = new ScalarValueRealStruct();
-		scalarValue.idx = scalarVariableReal_.getIdx();
+		scalarValue.idx = sv.getIdx();
 		scalarValue.value = newDoubleValue;
 		
 		ScalarValueCollection collection = new ScalarValueCollection();
 		Vector<ScalarValueReal> realList = new Vector<ScalarValueReal>();
-		ScalarValueReal real = new ScalarValueReal(scalarVariableReal_.getIdx(), newDoubleValue);
+		ScalarValueReal real = new ScalarValueReal(sv.getIdx(), newDoubleValue);
 		realList.add(real);
 		
 		collection.setRealList(realList);
@@ -361,7 +363,11 @@ public class ScalarVariableRealPanel extends BaseView {
 		int newIntValue = slider_.getValue();
 		double newDoubleValue = (double) newIntValue;
 
-		btnSubmit_.setEnabled(newDoubleValue != scalarValueReal_.getValue());
+		ScalarValueReal scalarValueReal = dataModel_.getScalarValueReal();
+		Assert.notNull(scalarValueReal, "scalarValueReal_");
+		
+		double existingDoubleValue = scalarValueReal.getValue();
+		btnSubmit_.setEnabled(newDoubleValue != existingDoubleValue);
 			
 		String newStringValue = String.valueOf(newDoubleValue);
 		textField_.setText(newStringValue);
@@ -388,7 +394,9 @@ public class ScalarVariableRealPanel extends BaseView {
 		int valueInt = newDoubleValue.intValue();
 		slider_.setValue(valueInt);
 		
-		btnSubmit_.setEnabled(newDoubleValue != scalarValueReal_.getValue());
+		ScalarValueReal scalarValueReal = dataModel_.getScalarValueReal();
+		
+		btnSubmit_.setEnabled(newDoubleValue != scalarValueReal.getValue());
 		
 	}
 
@@ -400,10 +408,10 @@ public class ScalarVariableRealPanel extends BaseView {
 	 */
 	public void setValue(ScalarValueReal scalarValueReal) {
 
-		scalarValueReal_ = scalarValueReal;
-		String valueStr = scalarValueReal_.toString();
+		dataModel_.setScalarValueReal(scalarValueReal);
+		String valueStr = scalarValueReal.toString();
 		
-		Double doubleValue = scalarValueReal_.getValue();
+		Double doubleValue = scalarValueReal.getValue();
 		int valueInt = doubleValue.intValue();
 		
 		lblValue_.setText(valueStr);

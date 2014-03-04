@@ -45,7 +45,7 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 	private JsonController gsonController_ = JsonController.getInstance();
 	private WebSocket webSocketConnection_;
 	private WebSocketState webSocketState_;
-//	private WebSocketState requestedWebSocketState_;
+
 	
 	private final String urlString_;
 

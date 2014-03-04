@@ -2,8 +2,10 @@
 <config>
 
 	<windowIconFileName>blue_flame32.png</windowIconFileName>
-	<autoConnectString>true</autoConnectString>
-	<autoParseXMLString>true</autoParseXMLString>
-	<autoInitString>false</autoInitString>
+	
+	<autoConnectFlag>false</autoConnectFlag>
+	<autoParseXMLFlag>false</autoParseXMLFlag>
+	<autoInitFlag>false</autoInitFlag>
+	
 	
 </config>

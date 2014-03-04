@@ -33,7 +33,7 @@ public class DoubleInputVerifier extends InputVerifier  {
 	private final boolean scientific;
 	
 	/** The locale. */
-	private final Locale locale = ConfigProperties.DEFAULT_LOCALE;
+	private final Locale locale = ClientConfig.DEFAULT_LOCALE;
 
 	/** The min. */
 	private BigDecimal min;
@@ -97,11 +97,11 @@ public class DoubleInputVerifier extends InputVerifier  {
 		
 		//show state
 		if (isValid) {
-			input.setBackground(Constants.BACKGROUND_VERIFICATION_OK);
+			input.setBackground(ClientConfig.BACKGROUND_VERIFICATION_OK);
 			field.setText(validateAndFormat(stringValue));
 			return true;
 		} else {
-			input.setBackground(Constants.BACKGROUND_VERIFICATION_ERROR);
+			input.setBackground(ClientConfig.BACKGROUND_VERIFICATION_ERROR);
 			return false;
 		}
 	}

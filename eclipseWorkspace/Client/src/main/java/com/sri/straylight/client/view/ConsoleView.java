@@ -11,6 +11,8 @@ import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
+import ch.ethz.polyql.jql.domain.shared.Assert;
+
 import com.sri.straylight.client.controller.ConsoleController;
 import com.sri.straylight.client.model.ConsoleModel;
 
@@ -25,11 +27,7 @@ public class ConsoleView extends BaseView {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static final String TITLE = "Console";
 	
-	/** The input form controller_. */
-
-	private ConsoleModel dataModel_;
 	
 	/** The doc_. */
 	private Document  doc_;
@@ -41,11 +39,14 @@ public class ConsoleView extends BaseView {
 	/** The text pane_. */
 	private JTextPane textPane_ = new JTextPane();
 	
+	protected ConsoleModel dataModel_;
 	
 	
-	public ConsoleView(ConsoleController parentController, ConsoleModel dataModel) {
+	
+	public ConsoleView(ConsoleModel dataModel, ConsoleController parentController) {
 		
-		super(TITLE, parentController);
+		super(dataModel, parentController);
+		
 		
 		dataModel_ = dataModel;
 		
@@ -75,6 +76,7 @@ public class ConsoleView extends BaseView {
 		SwingUtilities.invokeLater(new Runnable() {
 		    public void run() {
 		    	
+		    	Assert.assertNotNull(dataModel_, "dataModel_");
 		    	
 		    	Long elapsedTimeMillis = dataModel_.getElepasedTime();
 

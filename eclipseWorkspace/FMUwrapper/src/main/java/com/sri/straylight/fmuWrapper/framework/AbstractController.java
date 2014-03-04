@@ -47,7 +47,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
     private static Log log = LogFactory.getLog(AbstractController.class);
 
     /** The view. */
-    protected Container view;
+    protected Container view_;
     
     /** The parent controller. */
     private AbstractController parentController;
@@ -109,7 +109,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
     private void init_(Container view, AbstractController parentController) {
     	AnnotationProcessor.process(this);
     	
-        this.view = view;
+        this.view_ = view;
 
         // Check if this is a subcontroller or a root controller
         if (parentController != null) {
@@ -134,7 +134,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
      * @return the view
      */
     public Container getView() {
-        return view;
+        return view_;
     }
     
     /**
@@ -143,7 +143,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
      * @param c the new view_
      */
     protected void setView_(Container c) {
-        view = c;
+        view_ = c;
     }
     
     /**

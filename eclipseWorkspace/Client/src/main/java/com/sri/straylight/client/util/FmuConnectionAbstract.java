@@ -11,18 +11,10 @@ import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
  */
 public abstract class FmuConnectionAbstract {
 
-
-//	public abstract void connect();
 	
-//	public abstract void xmlParse();
-	
-//	public abstract void run();
-
 	public abstract void setConfig(ConfigStruct configStruct);
 
 	public abstract void requestStateChange(SimStateNative newState);
-
-//	public abstract void setScalarValues(Vector<ScalarValueRealStruct> scalrValueList);
 
 	public abstract void setScalarValueCollection(ScalarValueCollection collection);
 	

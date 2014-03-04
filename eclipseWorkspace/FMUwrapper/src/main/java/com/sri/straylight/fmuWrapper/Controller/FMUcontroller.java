@@ -386,6 +386,7 @@ public class FMUcontroller extends AbstractController {
 			break;
 		case simStateNative_8_tearDown_requested:
 			forceCleanup();
+			
 			break;
 		default:
 			System.out.println("FMUcontroller.requestStateChange() sessionID:" + sessionID_);
@@ -443,6 +444,17 @@ public class FMUcontroller extends AbstractController {
 		if (null != jnaFMUWrapper_) {
 			jnaFMUWrapper_.forceCleanup();
 		}
+		
+		SimStateNative simStateNative = SimStateNative.simStateNative_8_tearDown_completed;
+		
+		SimStateNativeNotify e = new SimStateNativeNotify(this, simStateNative);
+		fireEvent(e);
+		
+		
+		SimStateNative simStateNative2 = SimStateNative.simStateNative_0_uninitialized;
+		
+		SimStateNativeNotify e2 = new SimStateNativeNotify(this, simStateNative2);
+		fireEvent(e2);
 		
 	}
 

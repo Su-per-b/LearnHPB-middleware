@@ -13,16 +13,10 @@ import com.sri.straylight.fmuWrapper.voNative.JnaEnum;
 public enum WebSocketState implements JnaEnum<WebSocketState>  {
 	
 	uninitialized, 
-	
 	open, 
-	
 	dropped,
-	
 	closed,
-	
 	error;
-	
-	
 	
 	     
 	/** The start. */

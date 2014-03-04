@@ -18,11 +18,10 @@ public class TopPanelController extends BaseController {
 
 
 	/** The simulation state_. */
-
+	private TopPanelDataModel dataModel_;
 	
-	private TopPanelDataModel topPanelDataModel_;
+	private TopPanelView view_;
 	
-	///private TopPanelView topPanelView_;
 	
 	
 	/**
@@ -34,14 +33,18 @@ public class TopPanelController extends BaseController {
 
 		super(parentController);
 
-		
-		topPanelDataModel_ = new TopPanelDataModel();
-		TopPanelView theView = new TopPanelView(this, topPanelDataModel_);
-		setView_(theView);
-		//BaseView theView = new BaseView("Top Panel");
+		dataModel_ = new TopPanelDataModel("TopPanel");
+		view_ = new TopPanelView(dataModel_, this);
+		setView_(view_);
 	}
 
+	
 
+	public TopPanelView getView() {
+		
+		return view_;
+	}
+	
 	
 	/**
 	 * On sim state notify.

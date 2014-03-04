@@ -1,11 +1,12 @@
 package com.sri.straylight.client.model;
 
-public class ConsoleModel {
+public class ConsoleModel extends BaseModel{
 	
 	/** The start time_. */
 	private long startTime_ = 0;
 	
-	public ConsoleModel() {
+	public ConsoleModel(String title) {
+		super(title);
 		startTime_ = System.currentTimeMillis();
 	}
 

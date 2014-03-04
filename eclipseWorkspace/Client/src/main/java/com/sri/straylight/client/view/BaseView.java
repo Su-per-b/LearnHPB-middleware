@@ -5,29 +5,28 @@ import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JPanel;
 
+import ch.ethz.polyql.jql.domain.shared.Assert;
+
 import com.sri.straylight.client.controller.BaseController;
+import com.sri.straylight.client.model.BaseModel;
 import com.sri.straylight.fmuWrapper.event.BaseEvent;
 
 public class BaseView extends JPanel {
 
 		private static final long serialVersionUID = 1L;
 		
-		protected String title_;
-		
 		protected BaseController parentController_;
 		
+		protected BaseModel dataModel_;
 		
 		
-		public String getTitle() {
-			return title_;
-		}
-		
-		public BaseView(String title, BaseController parentController) {
+		public BaseView(BaseModel dataModel, BaseController parentController) {
 			
 			parentController_ = parentController;
-			title_ = title;
-			
+			dataModel_ = dataModel;
+					
 		}
+		
 		
 		
 		/**
@@ -46,12 +45,17 @@ public class BaseView extends JPanel {
 		}
 
 
-		
-
-	    
 	    public void fireEvent(BaseEvent<?> event) {
 	    	parentController_.fireEvent(event);
 	    }
+
+
+
+		public String getTitle() {
+			
+			Assert.assertNotNull(dataModel_, "dataModel_");
+			return dataModel_.getTitle();
+		}
 	    
 	    
 		

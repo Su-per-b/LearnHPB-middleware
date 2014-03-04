@@ -20,7 +20,6 @@ public class TopPanelView extends BaseView {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private static final String TITLE = "Top Panel";
 	
 	
 	/** Declare Buttons */
@@ -39,16 +38,15 @@ public class TopPanelView extends BaseView {
 	
 	/** The state map_. */
 	Hashtable<SimStateNative, JButton[]> stateMap_ = new Hashtable<SimStateNative, JButton[]>();
-	private TopPanelDataModel topPanelModel_;
+	private TopPanelDataModel dataModel_;
 
 	
 	
-	public TopPanelView(TopPanelController parentController, TopPanelDataModel  topPanelModel ) {
+	public TopPanelView(TopPanelDataModel dataModel, TopPanelController parentController ) {
 		
-		super(TITLE, parentController);
+		super(dataModel, parentController);
 		
-		topPanelModel_ = topPanelModel;
-//		topPanelController_ = topPanelController;
+		dataModel_ = dataModel;
 		
 		btnConnect_.setName("TopPanel.Button_Connect");
 		btnXmlParse_.setName("TopPanel.Button_XML_Parse");
@@ -118,7 +116,7 @@ public class TopPanelView extends BaseView {
 		
 		stateMap_.put(
 				SimStateNative.simStateNative_4_run_started,
-				new JButton[]{btnStop_, btnTearDown_}
+				new JButton[]{btnStop_}
 				);
 		
 		stateMap_.put(
@@ -129,6 +127,11 @@ public class TopPanelView extends BaseView {
 		stateMap_.put(
 				SimStateNative.simStateNative_7_terminate_completed,
 				new JButton[]{btnInit_, btnClear_, btnTearDown_}
+				);
+		
+		stateMap_.put(
+				SimStateNative.simStateNative_8_tearDown_completed,
+				new JButton[]{btnConnect_, btnClear_}
 				);
 
 		
@@ -242,7 +245,7 @@ public class TopPanelView extends BaseView {
 			buttons_.get(i).setEnabled(false);
 		}
 		
-		JButton[] activeButtons = stateMap_.get(topPanelModel_.simStateNative);
+		JButton[] activeButtons = stateMap_.get(dataModel_.simStateNative);
 		
 		if (activeButtons != null) {
 			
@@ -268,7 +271,7 @@ public class TopPanelView extends BaseView {
 
 	
 	public void updateSimStateClient(SimStateNative simStateNative) {
-		topPanelModel_.simStateNative = simStateNative;
+		dataModel_.simStateNative = simStateNative;
 		updateGUI_();
 	}
 	

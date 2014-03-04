@@ -10,11 +10,7 @@ public abstract class BaseController extends AbstractController {
 		super(parentController);
 	}
 	
-	
-	//abstract protected void init_(XMLparsedInfo xmlParsed);
-	
-	
-	
+		
 	
     /**
      * Gets the view.
@@ -23,10 +19,10 @@ public abstract class BaseController extends AbstractController {
      */
     public BaseView getView() {
     	
-    	if (view == null) {
+    	if (view_ == null) {
     		return null;
     	} else {
-    		return (BaseView) view;
+    		return (BaseView) view_;
     	}
     }
 

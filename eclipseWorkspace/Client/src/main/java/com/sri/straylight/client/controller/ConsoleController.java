@@ -2,13 +2,14 @@ package com.sri.straylight.client.controller;
 
 import java.awt.Color;
 
+import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.ClearViewAction;
+import com.sri.straylight.client.event.TabViewInitialized;
 import com.sri.straylight.client.model.ConsoleModel;
 import com.sri.straylight.client.view.ConsoleView;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
-import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
@@ -23,7 +24,8 @@ import com.sri.straylight.fmuWrapper.voNative.MessageType;
  */
 public class ConsoleController extends BaseController {
 
-
+	protected ConsoleModel dataModel_;
+	
 	/**
 	 * Instantiates a new debug console controller.
 	 *
@@ -32,11 +34,13 @@ public class ConsoleController extends BaseController {
 	public ConsoleController (AbstractController parentController) {
 		super(parentController);
 
-		ConsoleModel theModel = new ConsoleModel();
+		dataModel_ = new ConsoleModel("Console");
 		
-		ConsoleView theView = new ConsoleView(this, theModel);
+		ConsoleView theView = new ConsoleView(dataModel_, this);
 		setView_(theView);
 		
+	    TabViewInitialized event = new TabViewInitialized(this, theView);
+	    EventBus.publish(event);
 	}
 	
 	
@@ -70,13 +74,13 @@ public class ConsoleController extends BaseController {
 	 *
 	 * @param event the event
 	 */
-	@EventSubscriber(eventClass=ResultEvent.class)
-	public void onResultEvent(ResultEvent event) {
-		
+//	@EventSubscriber(eventClass=ResultEvent.class)
+//	public void onResultEvent(ResultEvent event) {
+//		
 //		ScalarValueResults scalarValueResults = event.getPayload();
 //		ConsoleView view = (ConsoleView) getView();
-		//view.outputText (scalarValueResults.toString(), Color.black);
-	}
+//		view.outputText (scalarValueResults.toString(), Color.black);
+//	}
 	
 
 	/**

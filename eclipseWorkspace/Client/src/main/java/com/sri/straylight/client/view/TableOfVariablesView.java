@@ -13,6 +13,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
 import com.sri.straylight.client.controller.BaseController;
+import com.sri.straylight.client.model.ScalarVariableRealDataModel;
 import com.sri.straylight.client.model.VariableDataModel;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
@@ -36,7 +37,7 @@ public class TableOfVariablesView extends BaseView   {
 
 	
 	/** The input form data model_. */
-	private VariableDataModel variableDataModel_;
+	private VariableDataModel dataModel_;
 
 	private JPanel bottomPanel_;
 	
@@ -44,7 +45,7 @@ public class TableOfVariablesView extends BaseView   {
 
 	private JScrollPane scrollPaneTable_;
 	 
-	private String title_ = "{none}";
+
 	/**
 	 * Instantiates a new input form view.
 	 * @param title 
@@ -52,14 +53,14 @@ public class TableOfVariablesView extends BaseView   {
 	 * @param inputFormController the input form controller
 	 * @param inputFormDataModel the input form data model
 	 */
-	public TableOfVariablesView(BaseController parentController, VariableDataModel variableDataModel, String title) {
+	public TableOfVariablesView( VariableDataModel dataModel, BaseController parentController) {
 		
-		super(title, parentController);
+		super(dataModel, parentController);
 		
-		title_ = title;
-		variableDataModel_ = variableDataModel;
+
+		dataModel_ = dataModel;
 		
-		tableModel_ = variableDataModel.getTableModel();
+		tableModel_ = dataModel.getTableModel();
 		
 		
 		this.setLayout(new GridLayout(1, 1, 0, 0));
@@ -107,20 +108,24 @@ public class TableOfVariablesView extends BaseView   {
 		
 		bottomPanel_.removeAll();
 		
-		Vector<ScalarVariableReal> ScalarVarList = variableDataModel_.getVariables();
+		Vector<ScalarVariableReal> scalarVarList = dataModel_.getVariables();
 		
-		ScalarVariableReal sVar = ScalarVarList.get(idx);
-		ScalarValueReal sVal = variableDataModel_.getValueAt(idx);
+		ScalarVariableReal sVar = scalarVarList.get(idx);
+		ScalarValueReal sVal = dataModel_.getValueAt(idx);
 		
-		ScalarVariableRealPanel componentPanel = new ScalarVariableRealPanel( parentController_); // FlowLayout 
-		componentPanel.setMetaData(sVar);
 		
+		ScalarVariableRealDataModel theDataModel = new ScalarVariableRealDataModel("ScalarVariableRealDataModel", sVar, sVal);
+		
+		ScalarVariableRealPanel componentPanel = new ScalarVariableRealPanel(theDataModel,  parentController_); // FlowLayout 
+	
 
 		if (sVal != null) {
 			componentPanel.setValue(sVal);
 		}
 		
-		if (title_.equals("Internal") || title_.equals("Ouput")) {
+		String theTitle = dataModel_.getTitle();
+		
+		if (theTitle.equals("Internal") || theTitle.equals("Ouput")) {
 			
 			componentPanel.setEnabled(false);
 		}

@@ -37,10 +37,9 @@ public class SimulationController extends BaseController  {
 	public SimulationController (AbstractController parentController, ClientConfig configModel) {
         super(parentController);
         configModel_ = configModel;
-        
-        
+                
         if (configModel_.autoConnectFlag) {
-        	fireSimStateRequest_(SimStateNative.simStateNative_1_connect_requested);
+        	requestStateChange(SimStateNative.simStateNative_1_connect_requested);
         }
 	}
 	
@@ -73,6 +72,7 @@ public class SimulationController extends BaseController  {
 				fmuConnect_ = new FmuConnectionRemote("192.168.0.12");
 				break;
 			case connectTo_file :
+
 				fmuConnect_ = new FmuConnectionLocal();
 				fmuConnect_.requestStateChange(SimStateNative.simStateNative_1_connect_requested  );
 				break;
@@ -99,12 +99,12 @@ public class SimulationController extends BaseController  {
 		switch (simStateNative_) {
 			case simStateNative_1_connect_completed:
 		        if (configModel_.autoParseXMLFlag) {
-		        	fireSimStateRequest_(SimStateNative.simStateNative_2_xmlParse_requested);
+		        	requestStateChange(SimStateNative.simStateNative_2_xmlParse_requested);
 		        }
 				break;
 			case simStateNative_2_xmlParse_completed :
 		        if (configModel_.autoInitFlag) {
-		        	fireSimStateRequest_(SimStateNative.simStateNative_3_init_requested);
+		        	requestStateChange(SimStateNative.simStateNative_3_init_requested);
 		        }
 				break;
 			default:
@@ -139,11 +139,22 @@ public class SimulationController extends BaseController  {
 		
 		ScalarValueCollection collection = event.getPayload();
 		
-		//Vector<ScalarValueReal> list = collection.getRealList();
-		
+
 		
 		fmuConnect_.setScalarValueCollection(collection);
 	}
+	
+	
+	private void requestStateChange(SimStateNative simStateNative) {
+		
+		if (simStateNative == SimStateNative.simStateNative_1_connect_requested ) {
+			connect_();
+		} else {
+			fmuConnect_.requestStateChange(simStateNative);
+		}
+		
+	}
+	
 	
 	
 	//this event comes from the GUI
@@ -151,35 +162,9 @@ public class SimulationController extends BaseController  {
     public void onSimStateClientRequest(SimStateClientRequest event) {
 		
 		SimStateNative requestedState = event.getPayload();
-		
-//		switch (requestedState) {
-//			case simStateNative_1_connect_requested :
-//				connect_();
-//				break;
-//			default:
-//				fmuConnect_.requestStateChange(requestedState);
-//		}
-		
-		if (requestedState == SimStateNative.simStateNative_1_connect_requested ) {
-			connect_();
-		} else {
-			fmuConnect_.requestStateChange(requestedState);
-		}
-		
+		requestStateChange(requestedState);
 
     }
-	
-	
-
-	
-	
-
-	private void fireSimStateRequest_(SimStateNative simStateNative)
-	{
-		SimStateClientRequest event = new SimStateClientRequest(this, simStateNative);
-		EventBus.publish(event);
-		
-	}
 	
 
 

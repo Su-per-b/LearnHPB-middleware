@@ -5,33 +5,15 @@ import java.util.Vector;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 
-public class ResultsLogModel  extends VariableDataModel {
+public class ResultsLogModel extends VariableDataModel {
 	
 
 	
-	public ResultsLogModel(Vector<ScalarVariableReal> variables) {
-		
-		super(variables);
-
+	public ResultsLogModel(String title, Vector<ScalarVariableReal> variables) {
+		super(title,variables);
 	}
 
-/*	
-	public DefaultTableModel makeTableModel() {
-		
-		Object[][] data = {{}};
-		
-		String[] columns = getColumns();
-		
-		tableModel_ = new DefaultTableModel(data, columns);
-		tableModel_.removeRow(0);
-		
-		return tableModel_;
-	}*/
-	
-//	public DefaultTableModel getTableModel() {
-//
-//		return tableModel_;
-//	}
+
 	
 	public void clear() {
 		tableModel_.setRowCount(0);
@@ -50,19 +32,9 @@ public class ResultsLogModel  extends VariableDataModel {
 
 
 	protected String[][] getRows() {
-		
-
-//		String[][] rows = new String[][];
-//
-//		
-//		for (int i = 0; i < rowCount; i++) {
-//			ScalarVariableReal sv = variables_.get(i);
-//			rows[i] = sv.toStringArray();
-//		}
-
 		return null;
-	
 	}
+	
 	
 	public  String[] getColumns() {
 

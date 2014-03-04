@@ -36,10 +36,9 @@ public class ResultsLogView  extends BaseView  {
 	private ResultsLogController resultsLogController_;
 	
 	/** The input form data model_. */
-	private ResultsLogModel variableDataModel_;
+	private ResultsLogModel dataModel_;
 
-	 
-	private static final String TITLE = "Results Log";
+	
 	
 	
 	/**
@@ -48,15 +47,15 @@ public class ResultsLogView  extends BaseView  {
 	 * @param inputFormController the input form controller
 	 * @param inputFormDataModel the input form data model
 	 */
-	public ResultsLogView(ResultsLogController parentController, ResultsLogModel variableDataModel) {
+	public ResultsLogView( ResultsLogModel dataModel, ResultsLogController parentController) {
 		
 		
-		super(TITLE, parentController);
+		super(dataModel, parentController);
 		
-		variableDataModel_ = variableDataModel;
+		dataModel_ = dataModel;
 		
 
-	    DefaultTableModel tableModel = variableDataModel_.getTableModel();
+	    DefaultTableModel tableModel = dataModel_.getTableModel();
 		table_ = new JTableEx(tableModel);
 		
 		table_.setPreferredScrollableViewportSize(new Dimension(700, 600));
@@ -72,15 +71,6 @@ public class ResultsLogView  extends BaseView  {
 
 	}
 	
-	
-	public void setModel(ResultsLogModel resultsLogModel) {
-		
-		variableDataModel_ = resultsLogModel;
-	    DefaultTableModel tableModel = resultsLogModel.getTableModel();
-	    
-		table_.setModel(tableModel);
-		
-	}
 
 	
 	/**
@@ -108,12 +98,6 @@ public class ResultsLogView  extends BaseView  {
 		table_.validate();
 		table_.updateUI();
 		table_.updateLayout();
-	}
-
-
-	public void clear() {
-		setModel(variableDataModel_);
-		
 	}
 
 

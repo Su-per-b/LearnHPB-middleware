@@ -25,13 +25,13 @@ public class ClientConfigXML {
 	public String windowIconFileName;
 	
 	/** The auto connect string. */
-	public String autoConnectString;
+	public String autoConnectFlag;
 	
 	/** The auto parse xml string. */
-	public String autoParseXMLString;
+	public String autoParseXMLFlag;
 	
 	/** The auto init string. */
-	public String autoInitString;
+	public String autoInitFlag;
 	
 	
 	/**
@@ -72,9 +72,9 @@ public class ClientConfigXML {
 		//clientConfig.connectTo = ConnectTo.connecTo_localhost;
 
 		clientConfig.windowIconUrl = classLoader.getResource(configXML.windowIconFileName);
-		clientConfig.autoConnectFlag = Boolean.valueOf(configXML.autoConnectString);
-		clientConfig.autoParseXMLFlag = Boolean.valueOf(configXML.autoParseXMLString);
-		clientConfig.autoInitFlag = Boolean.valueOf(configXML.autoInitString);
+		clientConfig.autoConnectFlag = Boolean.valueOf(configXML.autoConnectFlag);
+		clientConfig.autoParseXMLFlag = Boolean.valueOf(configXML.autoParseXMLFlag);
+		clientConfig.autoInitFlag = Boolean.valueOf(configXML.autoInitFlag);
 		
 		
 		

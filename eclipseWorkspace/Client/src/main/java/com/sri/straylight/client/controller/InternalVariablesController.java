@@ -7,7 +7,7 @@ import javax.swing.SwingUtilities;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import com.sri.straylight.client.event.ViewInitialized;
+import com.sri.straylight.client.event.TabViewInitialized;
 import com.sri.straylight.client.model.VariableDataModel;
 import com.sri.straylight.client.view.TableOfVariablesView;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
@@ -40,15 +40,14 @@ public class InternalVariablesController extends BaseController {
 	public void initXML( XMLparsedInfo xmlParsed) {  
 		
 		Vector<ScalarVariableReal> variables = xmlParsed.getVariables(Enu.enu_internal);
-		dataModel_ = new VariableDataModel(variables);
+		dataModel_ = new VariableDataModel("Internal", variables);
 		
-		TableOfVariablesView theView = new TableOfVariablesView(this, dataModel_, "Internal");
+		TableOfVariablesView theView = new TableOfVariablesView(dataModel_, this);
 	    setView_(theView);
 	
-	    ViewInitialized e = new ViewInitialized(this, theView);
-	    EventBus.publish(e);
+	    TabViewInitialized event = new TabViewInitialized(this, theView);
+	    EventBus.publish(event);
 	    
-	    theView.updateLayout( );
     }
 	
 	
