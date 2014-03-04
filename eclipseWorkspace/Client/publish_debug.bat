@@ -14,5 +14,5 @@ cd ..\
 copy run.template.txt published\run.bat
 
 cd published
-"%JAVA_HOME%\bin\java" -Xss2048 -jar Client-0.5.3.jar
+"%JAVA_HOME%\bin\java" -Xss2048 -jar Client-0.6.0.jar
 pause
