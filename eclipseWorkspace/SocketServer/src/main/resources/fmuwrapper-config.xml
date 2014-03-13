@@ -14,4 +14,7 @@
 	<unzipFolderRelativePath>\..\FMUwrapper\native_code</unzipFolderRelativePath>
 	<fmuFolderName>fmu</fmuFolderName>
 	
+	<parseInternalVariablesFlagStr>false</parseInternalVariablesFlagStr>
+	<parseInternalVariableLimitStr>0</parseInternalVariableLimitStr>
+	
 </config>

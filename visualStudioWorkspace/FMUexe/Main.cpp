@@ -58,10 +58,7 @@ void terminate3 () {
 	connect(&messageCallback, &resultCallback, &fmuStateCallback);
 	xmlParse(FMU_FOLDER);
 
-
 	//TypeDefDataModel * typeDefs = getTypeDefDataModel();
-
-
 
 	return;
 }
@@ -80,6 +77,8 @@ void terminate4 () {
 
 	return;
 }
+
+
 
 /*
 
