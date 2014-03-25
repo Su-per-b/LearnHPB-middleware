@@ -30,6 +30,7 @@ import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.EnumTypeMapper;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
+import com.sri.straylight.fmuWrapper.voNative.MessageType;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueResultsStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariablesAllStruct;
@@ -135,25 +136,37 @@ public class FMUcontroller extends AbstractController {
 
 			return true;
 		}
-
 	}
+	
 
 	private class StateChangeCallback implements StateChangeCallbackInterface {
 
 		public boolean stateChangeCallback(SimStateNative simStateNative) {
 
+			String msgText = "simStateNative Change from " + simStateNative_.toString() +
+					" to " + simStateNative.toString();
+			
 			simStateNative_ = simStateNative;
-
+			MessageStruct messageStruct = new MessageStruct();
+			messageStruct.msgText = msgText;
+	    	
+			messageStruct.setMessageTypeEnum(MessageType.messageType_debug);
+	    	
+	    	MessageEvent msgEvent = new MessageEvent(this, messageStruct);
+			fireEvent(msgEvent);
+			
+			
 			if (fireEventsForStates_.containsKey(simStateNative)) {
 				SimStateNativeNotify e = new SimStateNativeNotify(this, simStateNative);
 				fireEvent(e);
 				
-				
+				//System.out.println("FMUcontroller.stateChangeCallback() sessionID:" + simStateNative.getIntValue());
+		    	
+
 			}
 
 			return true;
 		}
-
 	}
 
 
@@ -187,15 +200,22 @@ public class FMUcontroller extends AbstractController {
 		fireEventsForStates_.put(
 				SimStateNative.simStateNative_2_xmlParse_completed, true);
 
+		fireEventsForStates_.put(
+				SimStateNative.simStateNative_3_init_completed, true);
+		
+		
 		fireEventsForStates_.put(SimStateNative.simStateNative_3_ready, true);
 
 		fireEventsForStates_.put(SimStateNative.simStateNative_4_run_completed,
 				true);
+		
 		fireEventsForStates_.put(SimStateNative.simStateNative_4_run_started,
 				true);
 
+		
 	//	fireEventsForStates_.put(SimStateNative.simStateNative_5_step_started,
 	//			true);
+		
 		fireEventsForStates_.put(
 				SimStateNative.simStateNative_5_step_completed, true);
 

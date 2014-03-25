@@ -3,19 +3,19 @@
 
 
 
--->
-	<!--For Debug	 
+
+	<!--For Debug -->
 	<id>Client-Debug</id>
-	<nativeLibFolderRelativePath>\..\FMUwrapper\native_code</nativeLibFolderRelativePath>
-	<unzipFolderRelativePath>\..\FMUwrapper\native_code</unzipFolderRelativePath>
-	<fmuFolderName>fmu</fmuFolderName>
+	<nativeLibFolderRelativePath>\..\..\visualStudioWorkspace\bin\Debug</nativeLibFolderRelativePath>
+	<unzipFolderRelativePath>\..\..\assets\FMUs\</unzipFolderRelativePath>
+	<fmuFolderName>LearnGB_0v4_02_VAVReheat_ClosedLoop_edit2</fmuFolderName>
 	
 	<parseInternalVariablesFlagStr>false</parseInternalVariablesFlagStr>
 	<parseInternalVariableLimitStr>500</parseInternalVariableLimitStr>
--->
+
 
 	<!--For Production		
-	 -->
+
 	<id>Client-Production</id>
 	<nativeLibFolderRelativePath>\native_code</nativeLibFolderRelativePath>
 	<unzipFolderRelativePath>\native_code</unzipFolderRelativePath>
@@ -23,6 +23,6 @@
 	
 	<parseInternalVariablesFlagStr>true</parseInternalVariablesFlagStr>
 	<parseInternalVariableLimitStr>500</parseInternalVariableLimitStr>
-
+	 -->
 	 
 </config>

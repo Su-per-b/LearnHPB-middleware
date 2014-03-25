@@ -127,11 +127,12 @@ namespace Straylight
 	 *******************************************************/
 	void Logger::printDebug5(const char* str1, const char* str2, const char* str3,
 		const char* str4, const char* str5) {
+
 		char msg[MSG_BUFFER_SIZE];
 
 		sprintf_s(msg, MSG_BUFFER_SIZE, str1, str2, str3, str4, str5);
 
-			printDebugHelper(_T("%s\n"), msg);
+		printDebugHelper(_T("%s\n"), msg);
 	}
 
 	/*******************************************************//**

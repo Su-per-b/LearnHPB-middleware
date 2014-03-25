@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <meta charset="UTF-8" />
+
+    <!-- =========================  CSS  ============================ -->
+    <link type="text/css" href="css/tipped.css" rel="stylesheet" />
+    <link type="text/css" href="css/kendo/kendo.common.css" rel="stylesheet"/>
+    <link type="text/css" href="css/kendo/kendo.lgb.css" rel="stylesheet"/>
+    
+    
+    <link type="text/css" href="css/laura/panels.css"  rel="stylesheet" />
+    <link type="text/css" href="css/laura/lhpb.css"  rel="stylesheet" />
+    
+    
+    <!-- =========================   JavaScript  ============================ -->
+    <script src="test/js/includes/Main.js"></script>
+    <script src="test/js/includes/MainLibs.js"></script>
+    
+    
+    
+    <!--{BLOCK_START:Jquery}-->
+    
+      <!-- Jquery -->
+      <script src="js/lib/jquery.src.js"></script>
+      <script src="js/lib/tipped.js"></script>
+
+  
+    <!--{BLOCK_END:Jquery}-->
+    
+    
+
+    
+    <title>Stand Alone Scenario</title>
+    
+
+    <script>
+      test.includes.MainLibs.initChart2();
+    </script>
+
+      
+      
+    <script>
+      goog.require('lgb');
+      goog.require('lgb.core.EventBus');
+      goog.require('lgb.core.Global');
+      goog.require('lgb.core.MainControllerSimple');
+    </script>
+    
+  </head>
+
+
+  <body id="theBody"></body>
+  
+
+  <script>
+  
+
+    
+      lgb.init();
+      var controller = new lgb.core.MainControllerSimple();
+    
+    
+  </script>
+  
+
+
+  
+</html>

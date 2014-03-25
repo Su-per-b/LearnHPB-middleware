@@ -98,10 +98,10 @@ namespace StraylightTests
 			Config::getInstance()->setAutoCorrect(true);
 
 			SimStateNative state = mainController->getState();
-			Assert::AreEqual(state, SimStateNative::simStateNative_0_uninitialized);
+			Assert::AreEqual(SimStateNative::simStateNative_0_uninitialized, state);
 
 			int state2 = (int)state;
-			Assert::AreEqual(state2, 0);
+			Assert::AreEqual(0, state2);
 
 			mainController->connect(
 				messageCallback2,
@@ -112,8 +112,8 @@ namespace StraylightTests
 
 			state = mainController->getState();
 
-			Assert::AreEqual(state, SimStateNative::simStateNative_1_connect_completed );
-			Assert::AreEqual(static_simStateNative, SimStateNative::simStateNative_1_connect_completed);
+			Assert::AreEqual(SimStateNative::simStateNative_1_connect_completed, state);
+			Assert::AreEqual(SimStateNative::simStateNative_1_connect_completed, static_simStateNative);
 
 			MainDataModel *  mainDataModel = mainController->getMainDataModel();
 			Assert::IsNotNull(mainDataModel);
@@ -128,8 +128,8 @@ namespace StraylightTests
 
 			int result = mainController->xmlParse(FMU_FOLDER);
 
-			Assert::AreEqual(static_simStateNative, SimStateNative::simStateNative_2_xmlParse_completed);
-			Assert::AreEqual(mainController->getState(), SimStateNative::simStateNative_2_xmlParse_completed);
+			Assert::AreEqual(SimStateNative::simStateNative_2_xmlParse_completed, static_simStateNative);
+			Assert::AreEqual(SimStateNative::simStateNative_2_xmlParse_completed, mainController->getState());
 
 			MainDataModel * mainDataModel = mainController->getMainDataModel();
 			
@@ -147,7 +147,7 @@ namespace StraylightTests
 			ConfigStruct * config = mainController->getConfig();
 			Assert::IsNotNull(config);
 
-			Assert::AreEqual(config->stepDelta, 1.0 );
+			Assert::AreEqual(config->stepDelta, 1.0);
 
 
 			DefaultExperimentStruct * defaultExperimentStruct = config->defaultExperimentStruct;
@@ -171,38 +171,38 @@ namespace StraylightTests
 
 			AttributeStruct  att = ary[0];
 
-			Assert::AreEqual(ary[0].name, "fmiVersion");
-			Assert::AreEqual(ary[0].value, "1.0");
+			Assert::AreEqual("fmiVersion", ary[0].name);
+			Assert::AreEqual("1.0", ary[0].value);
 
-			Assert::AreEqual(ary[1].name, "modelName");
-			Assert::AreEqual(ary[1].value, "LearnGB_v4_2.VAVReheat.ClosedLoop");
+			Assert::AreEqual("modelName", ary[1].name);
+			Assert::AreEqual("LearnGB_v4_2.VAVReheat.ClosedLoop", ary[1].value);
 
-			Assert::AreEqual(ary[2].name, "modelIdentifier");
-			Assert::AreEqual(ary[2].value, "LearnGB_0v4_02_VAVReheat_ClosedLoop");
+			Assert::AreEqual("modelIdentifier", ary[2].name);
+			Assert::AreEqual("LearnGB_0v4_02_VAVReheat_ClosedLoop", ary[2].value);
 
-			Assert::AreEqual(ary[3].name, "guid");
-			Assert::AreEqual(ary[3].value, "{a682377c-3cd5-4bb9-9844-b0e426b1eb15}");
+			Assert::AreEqual("guid", ary[3].name);
+			Assert::AreEqual("{a682377c-3cd5-4bb9-9844-b0e426b1eb15}", ary[3].value);
 
-			Assert::AreEqual(ary[4].name, "description");
-			Assert::AreEqual(ary[4].value, "Variable air volume flow system with terminal reheat and five thermal zones");
+			Assert::AreEqual("description", ary[4].name);
+			Assert::AreEqual("Variable air volume flow system with terminal reheat and five thermal zones", ary[4].value);
 
-			Assert::AreEqual(ary[5].name, "version");
-			Assert::AreEqual(ary[5].value, "5");
+			Assert::AreEqual("version", ary[5].name);
+			Assert::AreEqual("5", ary[5].value);
 
-			Assert::AreEqual(ary[6].name, "generationTool");
-			Assert::AreEqual(ary[6].value, "Dymola Version 2013 (32-bit), 2012-03-28");
+			Assert::AreEqual("generationTool", ary[6].name);
+			Assert::AreEqual("Dymola Version 2013 (32-bit), 2012-03-28", ary[6].value);
 
-			Assert::AreEqual(ary[7].name, "generationDateAndTime");
-			Assert::AreEqual(ary[7].value, "2012-09-07T23:42:12Z");
+			Assert::AreEqual("generationDateAndTime", ary[7].name);
+			Assert::AreEqual("2012-09-07T23:42:12Z", ary[7].value);
 
-			Assert::AreEqual(ary[8].name, "variableNamingConvention");
-			Assert::AreEqual(ary[8].value, "structured");
+			Assert::AreEqual("variableNamingConvention", ary[8].name);
+			Assert::AreEqual("structured", ary[8].value);
 
-			Assert::AreEqual(ary[9].name, "numberOfContinuousStates");
-			Assert::AreEqual(ary[9].value, "358");
+			Assert::AreEqual("numberOfContinuousStates", ary[9].name);
+			Assert::AreEqual("358", ary[9].value);
 
-			Assert::AreEqual(ary[10].name, "numberOfEventIndicators");
-			Assert::AreEqual(ary[10].value, "1352");
+			Assert::AreEqual("numberOfEventIndicators", ary[10].name);
+			Assert::AreEqual("1352", ary[10].value);
 
 		}
 
@@ -217,29 +217,29 @@ namespace StraylightTests
 
 			BaseUnitStruct * baseUnitStructAry = mainDataModel->getBaseUnitStructAry();
 			BaseUnitStruct  buStruct = baseUnitStructAry[0];
-			Assert::AreEqual(buStruct.unit, "K");
+			Assert::AreEqual("K", buStruct.unit);
 
 			DisplayUnitDefinitionStruct * duStructAry = buStruct.displayUnitDefinitions;
 
 			DisplayUnitDefinitionStruct  duStruct1 = duStructAry[0];
-			Assert::AreEqual(duStruct1.displayUnit, "K");
-			
+			Assert::AreEqual("K", duStruct1.displayUnit);
+
 			DisplayUnitDefinitionStruct  duStruct2 = duStructAry[1];
-			Assert::AreEqual(duStruct2.displayUnit, "degC");
-			Assert::AreEqual(duStruct2.offset, "-273.15");
+			Assert::AreEqual("degC", duStruct2.displayUnit);
+			Assert::AreEqual("-273.15", duStruct2.offset);
 
 			buStruct = baseUnitStructAry[1];
-			Assert::AreEqual(buStruct.unit, "Pa");
+			Assert::AreEqual("Pa", buStruct.unit);
 
 			duStructAry = buStruct.displayUnitDefinitions;
 
 			duStruct1 = duStructAry[0];
-			Assert::AreEqual(duStruct1.displayUnit, "Pa");
+			Assert::AreEqual("Pa", duStruct1.displayUnit);
 
 			duStruct2 = duStructAry[1];
-			Assert::AreEqual(duStruct2.displayUnit, "bar");
-			Assert::AreEqual(duStruct2.offset, "{not set}");
-			Assert::AreEqual(duStruct2.gain, "1E-005");
+			Assert::AreEqual("bar", duStruct2.displayUnit);
+			Assert::AreEqual("{not set}", duStruct2.offset);
+			Assert::AreEqual("1E-005", duStruct2.gain);
 
 		}
 
@@ -299,12 +299,12 @@ namespace StraylightTests
 			ConfigStruct * configStruct = getConfig();
 
 			DefaultExperimentStruct * defaultExperimentStruct = configStruct->defaultExperimentStruct;
-			Assert::AreEqual(defaultExperimentStruct->startTime, 28000.0);
-			Assert::AreEqual(defaultExperimentStruct->stopTime, 86400.0);
-			Assert::AreEqual(defaultExperimentStruct->tolerance, 9.9999999999999995e-007);
+			Assert::AreEqual(28000.0, defaultExperimentStruct->startTime);
+			Assert::AreEqual(86400.0, defaultExperimentStruct->stopTime);
+			Assert::AreEqual(9.9999999999999995e-007, defaultExperimentStruct->tolerance);
 
 			double stepDelta = configStruct->stepDelta;
-			Assert::AreEqual(stepDelta, 1.0);
+			Assert::AreEqual(1.0, stepDelta);
 
 
 			forceCleanup();
@@ -331,38 +331,35 @@ namespace StraylightTests
 
 			AttributeStruct  att = ary[0];
 
-			Assert::AreEqual(ary[0].name, "fmiVersion");
-			Assert::AreEqual(ary[0].value, "1.0");
+			Assert::AreEqual("fmiVersion", ary[0].name);
+			Assert::AreEqual("1.0", ary[0].value);
 
-			Assert::AreEqual(ary[1].name, "modelName");
-			Assert::AreEqual(ary[1].value, "LearnGB_v4_2.VAVReheat.ClosedLoop");
+			Assert::AreEqual("modelName", ary[1].name);
+			Assert::AreEqual("LearnGB_v4_2.VAVReheat.ClosedLoop", ary[1].value);
 
-			Assert::AreEqual(ary[2].name, "modelIdentifier");
-			Assert::AreEqual(ary[2].value, "LearnGB_0v4_02_VAVReheat_ClosedLoop");
+			Assert::AreEqual("modelIdentifier", ary[2].name);
+			Assert::AreEqual("LearnGB_0v4_02_VAVReheat_ClosedLoop", ary[2].value);
 
-			Assert::AreEqual(ary[3].name, "guid");
-			Assert::AreEqual(ary[3].value, "{a682377c-3cd5-4bb9-9844-b0e426b1eb15}");
+			Assert::AreEqual("guid", ary[3].name);
+			Assert::AreEqual("{a682377c-3cd5-4bb9-9844-b0e426b1eb15}", ary[3].value);
 
-			Assert::AreEqual(ary[4].name, "description");
-			Assert::AreEqual(ary[4].value, "Variable air volume flow system with terminal reheat and five thermal zones");
+			Assert::AreEqual("description", ary[4].name);
+			Assert::AreEqual("Variable air volume flow system with terminal reheat and five thermal zones", ary[4].value);
 
-			Assert::AreEqual(ary[5].name, "version");
-			Assert::AreEqual(ary[5].value, "5");
+			Assert::AreEqual("version", ary[5].name);
+			Assert::AreEqual("5", ary[5].value);
 
-			Assert::AreEqual(ary[6].name, "generationTool");
-			Assert::AreEqual(ary[6].value, "Dymola Version 2013 (32-bit), 2012-03-28");
+			Assert::AreEqual("generationTool", ary[6].name);
+			Assert::AreEqual("Dymola Version 2013 (32-bit), 2012-03-28", ary[6].value);
 
-			Assert::AreEqual(ary[7].name, "generationDateAndTime");
-			Assert::AreEqual(ary[7].value, "2012-09-07T23:42:12Z");
+			Assert::AreEqual("generationDateAndTime", ary[7].name);
+			Assert::AreEqual("2012-09-07T23:42:12Z", ary[7].value);
 
-			Assert::AreEqual(ary[8].name, "variableNamingConvention");
-			Assert::AreEqual(ary[8].value, "structured");
+			Assert::AreEqual("variableNamingConvention", ary[8].name);
+			Assert::AreEqual("structured", ary[8].value);
 
-			Assert::AreEqual(ary[9].name, "numberOfContinuousStates");
-			Assert::AreEqual(ary[9].value, "358");
-
-			Assert::AreEqual(ary[10].name, "numberOfEventIndicators");
-			Assert::AreEqual(ary[10].value, "1352");
+			Assert::AreEqual("numberOfContinuousStates", ary[9].name);
+			Assert::AreEqual("358", ary[9].value);
 
 
 			forceCleanup();
@@ -388,32 +385,32 @@ namespace StraylightTests
 			DisplayUnitDefinitionStruct duStruct;
 
 			baseUnitStruct = baseUnitStructAry[0];
-			Assert::AreEqual(baseUnitStruct.unit, "K");
+			Assert::AreEqual("K", baseUnitStruct.unit);
 
 			duStruct = baseUnitStruct.displayUnitDefinitions[0];
-			Assert::AreEqual(duStruct.displayUnit, "K");
+			Assert::AreEqual("K", duStruct.displayUnit);
 
 			duStruct = baseUnitStruct.displayUnitDefinitions[1];
-			Assert::AreEqual(duStruct.displayUnit, "degC");
-			Assert::AreEqual(duStruct.offset, "-273.15");
-		
+			Assert::AreEqual("degC", duStruct.displayUnit);
+			Assert::AreEqual("-273.15", duStruct.offset);
+
 
 			baseUnitStruct = baseUnitStructAry[1];
-			Assert::AreEqual(baseUnitStruct.unit, "Pa");
+			Assert::AreEqual("Pa", baseUnitStruct.unit);
 
 			duStruct = baseUnitStruct.displayUnitDefinitions[0];
-			Assert::AreEqual(duStruct.displayUnit, "Pa");
+			Assert::AreEqual("Pa", duStruct.displayUnit);
 			duStruct = baseUnitStruct.displayUnitDefinitions[1];
-			Assert::AreEqual(duStruct.displayUnit, "bar");
-			Assert::AreEqual(duStruct.gain, "1E-005");
+			Assert::AreEqual("bar", duStruct.displayUnit );
+			Assert::AreEqual("1E-005", duStruct.gain);
 
 
 			baseUnitStruct = baseUnitStructAry[2];
-			Assert::AreEqual(baseUnitStruct.unit, "W");
+			Assert::AreEqual("W", baseUnitStruct.unit);
 
 			duStruct = baseUnitStruct.displayUnitDefinitions[0];
-			Assert::AreEqual(duStruct.displayUnit, "kW");
-			Assert::AreEqual(duStruct.gain, "0.001");
+			Assert::AreEqual("kW", duStruct.displayUnit);
+			Assert::AreEqual("0.001", duStruct.gain);
 
 
 			forceCleanup();
@@ -441,94 +438,93 @@ namespace StraylightTests
 			ScalarVariableCollectionStruct * input = svStruct.input;
 			ScalarVariableCollectionStruct * output = svStruct.output;
 			ScalarVariableCollectionStruct * internal = svStruct.internal;
-			
+
 			ScalarVariableRealStruct realValue = input->realValue[0];
-			Assert::AreEqual(input->realSize, 107);
+			Assert::AreEqual(107, input->realSize);
 
 
-			Assert::AreEqual(realValue.name, "occSch.occupancy[1]");
-			Assert::AreEqual(realValue.idx, 2711);
-			Assert::AreEqual((int)realValue.causality, 6); //enu_input
-			Assert::AreEqual((int)realValue.variability, 3); //enu_parameter
-			Assert::AreEqual(realValue.description, "Occupancy table, each entry switching occupancy on or off");
-			Assert::AreEqual(realValue.valueReference, (unsigned int)16777475);
+			Assert::AreEqual("occSch.occupancy[1]", realValue.name);
+			Assert::AreEqual(2711, realValue.idx);
+			Assert::AreEqual(6, (int)realValue.causality); //enu_input
+			Assert::AreEqual(3, (int)realValue.variability); //enu_parameter
+			Assert::AreEqual("Occupancy table, each entry switching occupancy on or off", realValue.description);
+			Assert::AreEqual((unsigned int)16777475, realValue.valueReference);
 
 			TypeSpecReal  * typeSpecReal = realValue.typeSpecReal;
 
-			Assert::AreEqual(typeSpecReal->start, 21600.0);
-			Assert::AreEqual(typeSpecReal->nominal, 0.0);
+			Assert::AreEqual(21600.0, typeSpecReal->start);
+			Assert::AreEqual(0.0, typeSpecReal->nominal);
 
-			Assert::AreEqual(typeSpecReal->min, 0.0);
-			Assert::AreEqual(typeSpecReal->max, 86400.0);
+			Assert::AreEqual(0.0, typeSpecReal->min);
+			Assert::AreEqual(86400.0, typeSpecReal->max);
 
-			Assert::AreEqual(typeSpecReal->startValueStatus, 1);
-			Assert::AreEqual(typeSpecReal->nominalValueStatus, 0);
+			Assert::AreEqual(1, typeSpecReal->startValueStatus);
+			Assert::AreEqual(0, typeSpecReal->nominalValueStatus);
 
-			Assert::AreEqual(typeSpecReal->minValueStatus, 0);
-			Assert::AreEqual(typeSpecReal->maxValueStatus, 1);
+			Assert::AreEqual(0, typeSpecReal->minValueStatus);
+			Assert::AreEqual(1, typeSpecReal->maxValueStatus);
 
-			Assert::AreEqual(typeSpecReal->unit, "{no unit}");
+			Assert::AreEqual("{no unit}", typeSpecReal->unit);
 
 
 			realValue = input->realValue[1];
-			Assert::AreEqual(realValue.name, "occSch.occupancy[2]");
-			Assert::AreEqual(realValue.idx, 2712);
-			Assert::AreEqual((int)realValue.causality, 6); //enu_input
-			Assert::AreEqual((int)realValue.variability, 3); //enu_parameter
-			Assert::AreEqual(realValue.description, "Occupancy table, each entry switching occupancy on or off");
-			Assert::AreEqual(realValue.valueReference, (unsigned int)16777476);
+			Assert::AreEqual("occSch.occupancy[2]", realValue.name);
+			Assert::AreEqual(2712, realValue.idx);
+			Assert::AreEqual(6, (int)realValue.causality); //enu_input
+			Assert::AreEqual(3, (int)realValue.variability); //enu_parameter
+			Assert::AreEqual("Occupancy table, each entry switching occupancy on or off", realValue.description);
+			Assert::AreEqual((unsigned int)16777476, realValue.valueReference);
 
 			typeSpecReal = realValue.typeSpecReal;
 
-			Assert::AreEqual(typeSpecReal->start, 68400.0);
-			Assert::AreEqual(typeSpecReal->nominal, 0.0);
+			Assert::AreEqual(68400.0, typeSpecReal->start);
+			Assert::AreEqual(0.0, typeSpecReal->nominal);
 
-			Assert::AreEqual(typeSpecReal->min, 0.0);
-			Assert::AreEqual(typeSpecReal->max, 86400.0);
+			Assert::AreEqual(0.0, typeSpecReal->min);
+			Assert::AreEqual(86400.0, typeSpecReal->max);
 
-			Assert::AreEqual(typeSpecReal->startValueStatus, 1);
-			Assert::AreEqual(typeSpecReal->nominalValueStatus, 0);
+			Assert::AreEqual(1, typeSpecReal->startValueStatus);
+			Assert::AreEqual(0, typeSpecReal->nominalValueStatus);
 
-			Assert::AreEqual(typeSpecReal->minValueStatus, 0);
-			Assert::AreEqual(typeSpecReal->maxValueStatus, 1);
+			Assert::AreEqual(0, typeSpecReal->minValueStatus);
+			Assert::AreEqual(1, typeSpecReal->maxValueStatus);
 
-			Assert::AreEqual(typeSpecReal->unit, "{no unit}");
+			Assert::AreEqual("{no unit}", typeSpecReal->unit);
 
 
 			realValue = input->realValue[2];
-			Assert::AreEqual(realValue.name, "u_ZN[1]");
-			Assert::AreEqual(realValue.idx, 56960);
-			Assert::AreEqual((int)realValue.causality, 6); //enu_input
-			Assert::AreEqual((int)realValue.variability, 5); //enu_parameter
-			Assert::AreEqual(realValue.description, "Zone 1 (North) heating set point");
-			Assert::AreEqual(realValue.valueReference, (unsigned int)352321536);
+			Assert::AreEqual("u_ZN[1]", realValue.name);
+			Assert::AreEqual(56960, realValue.idx);
+			Assert::AreEqual(6, (int)realValue.causality); //enu_input
+			Assert::AreEqual(5, (int)realValue.variability); //enu_parameter
+			Assert::AreEqual("Zone 1 (North) heating set point", realValue.description);
+			Assert::AreEqual((unsigned int)352321536, realValue.valueReference);
 
 			typeSpecReal = realValue.typeSpecReal;
 
-			Assert::AreEqual(typeSpecReal->start, 291.14999999999998);
-			Assert::AreEqual(typeSpecReal->nominal, 291.14999999999998);
+			Assert::AreEqual(291.14999999999998, typeSpecReal->start);
+			Assert::AreEqual(291.14999999999998, typeSpecReal->nominal);
 
-			Assert::AreEqual(typeSpecReal->min, 283.14999999999998);
-			Assert::AreEqual(typeSpecReal->max, 313.14999999999998);
+			Assert::AreEqual(283.14999999999998, typeSpecReal->min);
+			Assert::AreEqual(313.14999999999998, typeSpecReal->max);
 
-			Assert::AreEqual(typeSpecReal->startValueStatus, 1);
-			Assert::AreEqual(typeSpecReal->nominalValueStatus, 1);
+			Assert::AreEqual(1, typeSpecReal->startValueStatus);
+			Assert::AreEqual(1, typeSpecReal->nominalValueStatus);
 
-			Assert::AreEqual(typeSpecReal->minValueStatus, 1);
-			Assert::AreEqual(typeSpecReal->maxValueStatus, 1);
+			Assert::AreEqual(1, typeSpecReal->minValueStatus);
+			Assert::AreEqual(1, typeSpecReal->maxValueStatus);
 
-			Assert::AreEqual(typeSpecReal->unit, "{no unit}");
+			Assert::AreEqual("{no unit}", typeSpecReal->unit);
 
 			forceCleanup();
 			Assert::IsTrue(true);
 		}
 
 
-
-		TEST_METHOD(TestScalarValues)
+		TEST_METHOD(TestOutputScalarValuesAfterOneStep)
 		{
 
-			Assert::AreEqual(static_simStateNative, SimStateNative::simStateNative_0_uninitialized);
+			Assert::AreEqual(SimStateNative::simStateNative_0_uninitialized, static_simStateNative);
 
 			connect(
 				messageCallback2,
@@ -536,35 +532,105 @@ namespace StraylightTests
 				fmuStateCallback2
 				);
 
-			Assert::AreEqual(static_simStateNative, SimStateNative::simStateNative_1_connect_completed);
+			Assert::AreEqual(SimStateNative::simStateNative_1_connect_completed, static_simStateNative);
 
 			xmlParse(FMU_FOLDER);
-			Assert::AreEqual(static_simStateNative, SimStateNative::simStateNative_2_xmlParse_completed);
+			Assert::AreEqual(SimStateNative::simStateNative_2_xmlParse_completed, static_simStateNative);
 
 			requestStateChange(simStateNative_3_init_requested);
-			Assert::AreEqual(static_simStateNative, SimStateNative::simStateNative_3_ready);
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, static_simStateNative);
 
+			//run the simulation for one step
 			requestStateChange(simStateNative_5_step_requested);
-			Assert::AreEqual(static_simStateNative, SimStateNative::simStateNative_3_ready);
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, static_simStateNative);
+
+			//these are the input and output values after one step
+			ScalarValueCollectionStruct * outputAry = static_scalarValueResultsStruct->output;
+
+			//Check to see that there a certain number of input values
+			ScalarValueCollectionStruct outputScalarValueCollection = outputAry[0];
+			int len = outputScalarValueCollection.realSize;
+			Assert::AreEqual(138, len, L"unexpected number of output values");
+
+			ScalarValueRealStruct * realValueStruct = outputScalarValueCollection.realValue;
+
+			ScalarValueRealStruct realValueStruct_0 = realValueStruct[0];
+
+			int idx_0 = realValueStruct_0.idx;
+			double value_0 = realValueStruct_0.value;
+
+			Assert::AreEqual(61807, idx_0, L"unexpected idx for ScalarValueRealStruct");
+			Assert::AreEqual(293.14999999999867, value_0, L"unexpected value for ScalarValueRealStruct");
 
 
+			ScalarValueRealStruct realValueStruct_1 = realValueStruct[1];
+
+			int idx_1 = realValueStruct_1.idx;
+			double value_1 = realValueStruct_1.value;
+
+			Assert::AreEqual(61808, idx_1 , L"unexpected idx for ScalarValueRealStruct");
+			Assert::AreEqual(293.14999995506417, value_1, L"unexpected value for ScalarValueRealStruct");
+
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, static_simStateNative);
+
+
+			forceCleanup();
+
+		}
+
+
+		TEST_METHOD(TestInputScalarValuesAfterOneStep)
+		{
+
+			Assert::AreEqual(SimStateNative::simStateNative_0_uninitialized, static_simStateNative);
+
+			connect(
+				messageCallback2,
+				resultCallback2,
+				fmuStateCallback2
+				);
+
+			Assert::AreEqual(SimStateNative::simStateNative_1_connect_completed, static_simStateNative);
+
+			xmlParse(FMU_FOLDER);
+			Assert::AreEqual(SimStateNative::simStateNative_2_xmlParse_completed, static_simStateNative);
+
+			requestStateChange(simStateNative_3_init_requested);
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, static_simStateNative);
+
+			//run the simulation for one step
+			requestStateChange(simStateNative_5_step_requested);
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, static_simStateNative);
+
+			//these are the input and output values after one step
 			ScalarValueCollectionStruct * inputAry = static_scalarValueResultsStruct->input;
 			ScalarValueCollectionStruct * outputAry = static_scalarValueResultsStruct->output;
 
-			ScalarValueCollectionStruct intputReal = inputAry[0];
-			int realSize = intputReal.realSize;
-			Assert::AreEqual(realSize, 107);
+			//Check to see that there a certain number of input values
+			ScalarValueCollectionStruct intputScalarValueCollection = inputAry[0];
+			int len = intputScalarValueCollection.realSize;
+			Assert::AreEqual(107, len, L"unexpected number of input values");
 
-			ScalarValueRealStruct * realValueStruct = intputReal.realValue;
+			ScalarValueRealStruct * realValueStruct = intputScalarValueCollection.realValue;
 
-			int idx = realValueStruct->idx;
-			double value = realValueStruct->value;
+			ScalarValueRealStruct realValueStruct_0 = realValueStruct[0];
 
-			Assert::AreEqual(idx, 2711);
-			Assert::AreEqual(value, 21600.0);
+			int idx_0 = realValueStruct_0.idx;
+			double value_0 = realValueStruct_0.value;
+
+			Assert::AreEqual(2711, idx_0, L"unexpected idx for ScalarValueRealStruct");
+			Assert::AreEqual(21600.0, value_0, L"unexpected value for ScalarValueRealStruct");
 
 
-			Assert::AreEqual(static_simStateNative, SimStateNative::simStateNative_3_ready);
+			ScalarValueRealStruct realValueStruct_1 = realValueStruct[1];
+
+			int idx_1 = realValueStruct_1.idx;
+			double value_1 = realValueStruct_1.value;
+
+			Assert::AreEqual(2712, idx_1, L"unexpected idx for ScalarValueRealStruct");
+			Assert::AreEqual(68400.0, value_1, L"unexpected value for ScalarValueRealStruct");
+
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, static_simStateNative);
 
 
 			forceCleanup();
@@ -574,7 +640,7 @@ namespace StraylightTests
 		TEST_METHOD(TestTerminate)
 		{
 
-			Assert::AreEqual(static_simStateNative, SimStateNative::simStateNative_0_uninitialized);
+			Assert::AreEqual(SimStateNative::simStateNative_0_uninitialized, static_simStateNative);
 
 			connect(
 				messageCallback2,
@@ -582,23 +648,22 @@ namespace StraylightTests
 				fmuStateCallback2
 				);
 
-			Assert::AreEqual(static_simStateNative, SimStateNative::simStateNative_1_connect_completed);
+			Assert::AreEqual(SimStateNative::simStateNative_1_connect_completed, static_simStateNative);
 
 			xmlParse(FMU_FOLDER);
-			Assert::AreEqual(static_simStateNative, SimStateNative::simStateNative_2_xmlParse_completed);
+			Assert::AreEqual(SimStateNative::simStateNative_2_xmlParse_completed, static_simStateNative);
 
 			requestStateChange(simStateNative_3_init_requested);
-			Assert::AreEqual(static_simStateNative, SimStateNative::simStateNative_3_ready);
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, static_simStateNative);
 
 			requestStateChange(simStateNative_5_step_requested);
-			Assert::AreEqual(static_simStateNative, SimStateNative::simStateNative_3_ready);
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, static_simStateNative);
 
 			requestStateChange(simStateNative_5_step_requested);
-			Assert::AreEqual(static_simStateNative, SimStateNative::simStateNative_3_ready);
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, static_simStateNative);
 
 			requestStateChange(simStateNative_7_terminate_requested);
-			Assert::AreEqual(static_simStateNative, SimStateNative::simStateNative_7_terminate_completed);
-
+			Assert::AreEqual(SimStateNative::simStateNative_7_terminate_completed, static_simStateNative);
 			forceCleanup();
 
 		}

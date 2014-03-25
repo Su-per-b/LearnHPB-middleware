@@ -140,6 +140,7 @@ namespace Straylight
 				int result = init();
 
 				if (0 == result) { 
+					setState_(simStateNative_3_init_completed);
 					setState_(simStateNative_3_ready);
 				} else {
 					setStateError_(_T("Could not init after XML parse\n"));

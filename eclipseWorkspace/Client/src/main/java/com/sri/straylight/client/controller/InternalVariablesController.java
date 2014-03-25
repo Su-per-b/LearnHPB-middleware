@@ -40,13 +40,17 @@ public class InternalVariablesController extends BaseController {
 	public void initXML( XMLparsedInfo xmlParsed) {  
 		
 		Vector<ScalarVariableReal> variables = xmlParsed.getVariables(Enu.enu_internal);
-		dataModel_ = new VariableDataModel("Internal", variables);
 		
-		TableOfVariablesView theView = new TableOfVariablesView(dataModel_, this);
-	    setView_(theView);
-	
-	    TabViewInitialized event = new TabViewInitialized(this, theView);
-	    EventBus.publish(event);
+		if (null != variables) {
+			dataModel_ = new VariableDataModel("Internal", variables);
+			
+			TableOfVariablesView theView = new TableOfVariablesView(dataModel_, this);
+		    setView_(theView);
+		
+		    TabViewInitialized event = new TabViewInitialized(this, theView);
+		    EventBus.publish(event);
+		}
+
 	    
     }
 	

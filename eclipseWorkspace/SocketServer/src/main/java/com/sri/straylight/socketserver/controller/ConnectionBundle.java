@@ -17,6 +17,7 @@ import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.util.WorkerThreadAbstract;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.SessionControl;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
@@ -218,9 +219,10 @@ public class ConnectionBundle extends AbstractController {
 				    	} else if (deserializedEvent instanceof ScalarValueChangeRequest) {
 				    		
 				    		ScalarValueChangeRequest newEvent = (ScalarValueChangeRequest) deserializedEvent;
+				    		ScalarValueCollection collection = newEvent.getPayload();
 				    		
 				    	//	System.out.println("MessageReceived -> ScalarValueChangeRequest Event");
-				    		threadedFMUcontroller_.setScalarValueCollection(newEvent.getPayload());
+				    		threadedFMUcontroller_.setScalarValueCollection(collection);
 				    	}  else if (deserializedEvent instanceof SessionControlEvent) {
 				    		
 				    		SessionControlEvent newEvent = (SessionControlEvent) deserializedEvent;

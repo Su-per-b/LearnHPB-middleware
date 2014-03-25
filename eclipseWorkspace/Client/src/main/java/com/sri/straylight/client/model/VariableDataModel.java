@@ -42,6 +42,8 @@ public class VariableDataModel extends BaseModel {
 	
 	protected String[][] getRows() {
 		
+		
+		
 		int rowCount = variables_.size();
 		String[][] rows = new String[rowCount][];
 
