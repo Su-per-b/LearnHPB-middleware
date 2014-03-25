@@ -46,25 +46,25 @@ typedef enum {
  *******************************************************/
 typedef enum {
 	/** uninitialized. */
-	simStateNative_0_uninitialized,
+	simStateNative_0_uninitialized, /** 0 **/
 	
 	/** connect */
-	simStateNative_1_connect_requested,
-	simStateNative_1_connect_completed,
+	simStateNative_1_connect_requested,/** 1 **/
+	simStateNative_1_connect_completed,/** 2 **/
 	
 	/** XML parse */
-	simStateNative_2_xmlParse_requested,
+	simStateNative_2_xmlParse_requested,/** 3 **/
 	simStateNative_2_xmlParse_completed,
 	
 	/** init */
-	simStateNative_3_init_requested,
+	simStateNative_3_init_requested,/** 5 **/
 	simStateNative_3_init_dllLoaded,
 	simStateNative_3_init_instantiatedSlaves,
 	simStateNative_3_init_initializedSlaves,
 	simStateNative_3_init_completed,
 
 	/** ready */
-	simStateNative_3_ready,
+	simStateNative_3_ready,/** 10 **/
 	
 	/** run */
 	simStateNative_4_run_requested,
@@ -73,7 +73,7 @@ typedef enum {
 	simStateNative_4_run_cleanedup,
 	
 	/** stop. */
-	simStateNative_5_stop_requested,
+	simStateNative_5_stop_requested,/** 15 **/
 	simStateNative_5_stop_completed,
 	
 	/** step */
@@ -82,7 +82,7 @@ typedef enum {
 	simStateNative_5_step_completed,
 	
 	/** pause */
-	simStateNative_6_pause_requested,
+	simStateNative_6_pause_requested, /** 20 **/
 	simStateNative_6_pause_completed,
 	
 	/** terminate */
@@ -91,7 +91,7 @@ typedef enum {
 	
 	/** reset */
 	simStateNative_7_reset_requested,
-	simStateNative_7_reset_completed,
+	simStateNative_7_reset_completed,/** 25 **/
 	
 	/** resume */
 	simStateNative_7_resume_requested,
@@ -102,6 +102,6 @@ typedef enum {
 
 	/** tear down */
 	simStateNative_8_tearDown_requested,
-	simStateNative_8_tearDown_completed
+	simStateNative_8_tearDown_completed /** 30 **/
 
 } SimStateNative;

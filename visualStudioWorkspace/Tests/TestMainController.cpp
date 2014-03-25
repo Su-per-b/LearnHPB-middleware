@@ -254,7 +254,7 @@ namespace StraylightTests
 	TEST_CLASS(TestJNAfunctions)
 	{
 
-		TEST_METHOD(TestConnect)
+		TEST_METHOD(T01_Connect)
 		{
 
 			connect(
@@ -268,7 +268,7 @@ namespace StraylightTests
 			Assert::IsTrue(true);
 		}
 
-		TEST_METHOD(TestXmlParse)
+		TEST_METHOD(T01B_XmlParse)
 		{
 
 			connect(
@@ -285,7 +285,7 @@ namespace StraylightTests
 
 
 
-		TEST_METHOD(TestConfig)
+		TEST_METHOD(T02_Config)
 		{
 
 			connect(
@@ -313,7 +313,7 @@ namespace StraylightTests
 
 
 
-		TEST_METHOD(TestAttributes)
+		TEST_METHOD(T03_Attributes)
 		{
 
 			connect(
@@ -367,7 +367,7 @@ namespace StraylightTests
 		}
 
 
-		TEST_METHOD(TestUnitDefinitions)
+		TEST_METHOD(T04_UnitDefinitions)
 		{
 
 
@@ -420,7 +420,7 @@ namespace StraylightTests
 
 		
 
-		TEST_METHOD(TestScalarVariables)
+		TEST_METHOD(T05_ScalarVariables)
 		{
 
 			connect(
@@ -521,10 +521,15 @@ namespace StraylightTests
 		}
 
 
-		TEST_METHOD(TestOutputScalarValuesAfterOneStep)
+		TEST_METHOD(T06_OutputScalarValuesAfterOneStep)
 		{
 
-			Assert::AreEqual(SimStateNative::simStateNative_0_uninitialized, static_simStateNative);
+			bool isCorrectState = (
+				static_simStateNative == simStateNative_0_uninitialized ||
+				static_simStateNative == simStateNative_8_tearDown_completed
+				);
+
+			Assert::IsTrue(isCorrectState);
 
 			connect(
 				messageCallback2,
@@ -579,10 +584,15 @@ namespace StraylightTests
 		}
 
 
-		TEST_METHOD(TestInputScalarValuesAfterOneStep)
+		TEST_METHOD(T07_InputScalarValuesAfterOneStep)
 		{
 
-			Assert::AreEqual(SimStateNative::simStateNative_0_uninitialized, static_simStateNative);
+			bool isCorrectState = (
+				static_simStateNative == simStateNative_0_uninitialized ||
+				static_simStateNative == simStateNative_8_tearDown_completed
+				);
+
+			Assert::IsTrue(isCorrectState);
 
 			connect(
 				messageCallback2,
@@ -637,10 +647,15 @@ namespace StraylightTests
 
 		}
 
-		TEST_METHOD(TestTerminate)
+		TEST_METHOD(T08_Terminate)
 		{
 
-			Assert::AreEqual(SimStateNative::simStateNative_0_uninitialized, static_simStateNative);
+			bool isCorrectState = (
+				static_simStateNative == simStateNative_0_uninitialized ||
+				static_simStateNative == simStateNative_8_tearDown_completed
+				);
+
+			Assert::IsTrue(isCorrectState);
 
 			connect(
 				messageCallback2,
