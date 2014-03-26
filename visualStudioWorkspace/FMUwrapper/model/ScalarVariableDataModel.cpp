@@ -16,6 +16,9 @@ namespace Straylight
 		svInput_= new ScalarVariableCollection();
 		svOutput_= new ScalarVariableCollection();
 		svInternal_= new ScalarVariableCollection();
+
+
+
 	}
 
 	/*******************************************************//**
@@ -31,6 +34,18 @@ namespace Straylight
 
 	}
 
+	ScalarVariableRealStruct * ScalarVariableDataModel::getOneScalarVariableStruct(int idx) {
+
+
+		
+		ScalarVariableRealStruct* scalarVariableRealStruct = idx2Real2_[idx];
+
+		return scalarVariableRealStruct;
+
+	}
+
+
+
 	/*******************************************************//**
 	 * Extracts the given scalarVariableArray.
 	 *
@@ -44,6 +59,9 @@ namespace Straylight
 		for (i=0; scalarVariable = scalarVariableArray[i]; i++) {
 			//Enu causality = getCausality(scalarVariable);
 			Elm theType = scalarVariable->typeSpec->type;
+
+
+
 
 			switch(theType) {
 			case elm_Real :
@@ -61,6 +79,14 @@ namespace Straylight
 							svInternal_->real.push_back(svs);
 							break;
 					}
+
+
+
+
+					idx2Real2_[svs->idx] = svs;
+
+
+					//idx2Real_.insert(svs->idx, svs);
 
 					break;
 				}

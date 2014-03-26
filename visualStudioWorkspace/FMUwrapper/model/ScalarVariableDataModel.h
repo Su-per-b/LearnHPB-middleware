@@ -4,6 +4,9 @@
 #include "structs.h"
 #include "ScalarVariableFactory.h"
 #include "ScalarVariableCollection.h"
+#include <hash_map>
+#include <map>
+
 
 namespace Straylight
 {
@@ -25,10 +28,14 @@ namespace Straylight
 		ScalarVariableCollection * svInput_;
 		ScalarVariableCollection * svOutput_;
 		ScalarVariableCollection * svInternal_;
+		 
+		ScalarVariableRealStruct * getOneScalarVariableStruct(int idx);
 
 	private:
+		vector<int> idxMap_;
 
-
+		hash_map<int, ScalarVariableRealStruct* > idx2Real_;
+		map<int, ScalarVariableRealStruct* > idx2Real2_;
 
 	};
 

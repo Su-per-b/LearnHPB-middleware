@@ -24,9 +24,36 @@ namespace Microsoft
 				wstring str = ss.str();
 
 				return str;
-
-
 			}
+
+			template<>
+			static std::wstring ToString<fmiStatus>(const fmiStatus& val)
+			{
+				int valInt = (int)val;
+
+
+				wstringstream ss;
+				ss << valInt;
+				wstring str = ss.str();
+
+				return str;
+			}
+
+			template<>
+			static std::wstring ToString<Enu>(const Enu& val)
+			{
+				int valInt = (int)val;
+
+
+				wstringstream ss;
+				ss << valInt;
+				wstring str = ss.str();
+
+				return str;
+			}
+
+			
+
 		}
 	}
 }
@@ -93,7 +120,7 @@ namespace StraylightTests
 		}
 
 
-		TEST_METHOD(Init01_Connect)
+		TEST_METHOD(C01_Connect)
 		{
 			Config::getInstance()->setAutoCorrect(true);
 
@@ -121,10 +148,10 @@ namespace StraylightTests
 		}
 
 
-		TEST_METHOD(Init02_XMLParse)
+		TEST_METHOD(C02_XMLParse)
 		{
 
-			Init01_Connect();
+			C01_Connect();
 
 			int result = mainController->xmlParse(FMU_FOLDER);
 
@@ -139,16 +166,15 @@ namespace StraylightTests
 		}
 
 
-		TEST_METHOD(Init03_GetConfig)
+		TEST_METHOD(C03_GetConfig)
 		{
 
-			Init02_XMLParse();
+			C02_XMLParse();
 
 			ConfigStruct * config = mainController->getConfig();
 			Assert::IsNotNull(config);
 
 			Assert::AreEqual(config->stepDelta, 1.0);
-
 
 			DefaultExperimentStruct * defaultExperimentStruct = config->defaultExperimentStruct;
 			Assert::IsNotNull(defaultExperimentStruct);
@@ -160,10 +186,10 @@ namespace StraylightTests
 		}
 
 
-		TEST_METHOD(Test04_FMImodelAttributes)
+		TEST_METHOD(C04_FMImodelAttributes)
 		{
 
-			Init03_GetConfig();
+			C03_GetConfig();
 
 			MainDataModel * mainDataModel = mainController->getMainDataModel();
 			AttributeStruct * ary = mainDataModel->getFmiModelAttributesStruct();
@@ -207,10 +233,14 @@ namespace StraylightTests
 		}
 
 
-		TEST_METHOD(Test05_BaseUnitStruct)
+
+
+
+
+		TEST_METHOD(C05_BaseUnitStruct)
 		{
 
-			Init03_GetConfig();
+			C03_GetConfig();
 
 			MainDataModel * mainDataModel = mainController->getMainDataModel();
 			Assert::IsNotNull(mainDataModel);
@@ -242,6 +272,165 @@ namespace StraylightTests
 			Assert::AreEqual("1E-005", duStruct2.gain);
 
 		}
+
+
+		TEST_METHOD(C06_Step)
+		{
+
+			C03_GetConfig();
+			Assert::AreEqual(SimStateNative::simStateNative_2_xmlParse_completed, static_simStateNative);
+
+			mainController->requestStateChange(SimStateNative::simStateNative_3_init_requested);
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, static_simStateNative);
+
+			mainController->requestStateChange(SimStateNative::simStateNative_5_step_requested);
+			ScalarValueResults * scalarValueResult = mainController->getScalarValueResults();
+
+
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, static_simStateNative);
+		}
+
+
+
+
+		TEST_METHOD(C07_GetOneScalarValue)
+		{
+
+			C03_GetConfig();
+			Assert::AreEqual(SimStateNative::simStateNative_2_xmlParse_completed, static_simStateNative);
+
+			mainController->requestStateChange(SimStateNative::simStateNative_3_init_requested);
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, static_simStateNative);
+
+
+			//make request
+			ScalarValueRealStruct * scalarValueRealStruct = mainController->getOneScalarValueStruct(56960);
+
+			Assert::AreEqual(56960, scalarValueRealStruct->idx);
+			Assert::AreEqual(291.14999999999998, scalarValueRealStruct->value);
+
+			return;
+		}
+
+
+		TEST_METHOD(C08_GetOneScalarVariable)
+		{
+
+			C03_GetConfig();
+			Assert::AreEqual(SimStateNative::simStateNative_2_xmlParse_completed, static_simStateNative);
+
+			mainController->requestStateChange(SimStateNative::simStateNative_3_init_requested);
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, static_simStateNative);
+
+
+			//make request
+			ScalarVariableRealStruct * scalarVariableRealStruct = mainController->getOneScalarVariableStruct(56960);
+			Assert::AreEqual(56960, scalarVariableRealStruct->idx);
+
+			Assert::AreEqual("u_ZN[1]", scalarVariableRealStruct->name);
+
+			Assert::AreEqual("Zone 1 (North) heating set point", scalarVariableRealStruct->description);
+			Assert::AreEqual((unsigned int) 352321536, scalarVariableRealStruct->valueReference);
+
+			Assert::AreEqual(Enu::enu_input, scalarVariableRealStruct->causality);
+			Assert::AreEqual(Enu::enu_continuous, scalarVariableRealStruct->variability);
+
+			Assert::AreEqual(291.14999999999998, scalarVariableRealStruct->typeSpecReal->start);
+			Assert::AreEqual(291.14999999999998, scalarVariableRealStruct->typeSpecReal->nominal);
+
+			Assert::AreEqual(283.14999999999998, scalarVariableRealStruct->typeSpecReal->min);
+			Assert::AreEqual(313.14999999999998, scalarVariableRealStruct->typeSpecReal->max);
+
+			Assert::AreEqual("{no unit}", scalarVariableRealStruct->typeSpecReal->unit);
+
+			Assert::AreEqual(1, scalarVariableRealStruct->typeSpecReal->startValueStatus);
+			Assert::AreEqual(1, scalarVariableRealStruct->typeSpecReal->nominalValueStatus);
+			Assert::AreEqual(1, scalarVariableRealStruct->typeSpecReal->minValueStatus);
+			Assert::AreEqual(1, scalarVariableRealStruct->typeSpecReal->maxValueStatus);
+
+			Assert::AreEqual(0, scalarVariableRealStruct->typeSpecReal->unitValueStatus);
+
+			return;
+		}
+
+
+
+		TEST_METHOD(C09_SetOneScalarValueContinous)
+		{
+
+			C03_GetConfig();
+			Assert::AreEqual(SimStateNative::simStateNative_2_xmlParse_completed, static_simStateNative);
+
+			mainController->requestStateChange(SimStateNative::simStateNative_3_init_requested);
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, static_simStateNative);
+
+
+
+			//formulate request
+			ScalarValueRealStruct * scalarValueRealStruct1 = new ScalarValueRealStruct();
+			scalarValueRealStruct1->idx = 56960;
+			scalarValueRealStruct1->value = 301.1;
+
+			//make request
+			fmiStatus status = mainController->setOneScalarValue(scalarValueRealStruct1);
+
+			Assert::AreEqual(fmiStatus::fmiOK, status);
+
+		}
+
+
+		TEST_METHOD(C10_SetOneScalarValue)
+		{
+
+			C03_GetConfig();
+			Assert::AreEqual(SimStateNative::simStateNative_2_xmlParse_completed, static_simStateNative);
+
+			mainController->requestStateChange(SimStateNative::simStateNative_3_init_requested);
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, static_simStateNative);
+
+
+			//change a scalarValue
+			ScalarValueRealStruct * scalarValueRealStruct1 = new ScalarValueRealStruct();
+			scalarValueRealStruct1->idx = 56960;
+			scalarValueRealStruct1->value = 301.1;
+
+			fmiStatus status = mainController->setOneScalarValue(scalarValueRealStruct1);
+
+			Assert::AreEqual(fmiStatus::fmiOK, status);
+
+		}
+
+
+
+
+		//TEST_METHOD(C07_SetOneScalarValue)
+		//{
+
+		//	C03_GetConfig();
+		//	Assert::AreEqual(SimStateNative::simStateNative_2_xmlParse_completed, static_simStateNative);
+
+		//	mainController->requestStateChange(SimStateNative::simStateNative_3_init_requested);
+		//	Assert::AreEqual(SimStateNative::simStateNative_3_ready, static_simStateNative);
+
+		//	mainController->requestStateChange(SimStateNative::simStateNative_5_step_requested);
+		//	ScalarValueResults * scalarValueResult = mainController->getScalarValueResults();
+
+		//	Assert::AreEqual(SimStateNative::simStateNative_3_ready, static_simStateNative);
+
+
+		//	ScalarValueRealStruct * ary = new ScalarValueRealStruct[1];
+
+		//	ScalarValueRealStruct * scalarValueRealStruct = new ScalarValueRealStruct();
+		//	scalarValueRealStruct->idx = 56960;
+		//	scalarValueRealStruct->value = 301.1;
+
+		//	ary[0] = *scalarValueRealStruct;
+
+
+		//	mainController->setScalarValues(ary, 1);
+
+
+		//}
 
 
 

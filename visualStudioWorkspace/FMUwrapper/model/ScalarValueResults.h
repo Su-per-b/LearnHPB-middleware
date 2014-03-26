@@ -49,7 +49,7 @@ typedef struct {
 		 *******************************************************/
 		~ScalarValueResults(void);
 
-		void extractAll(ScalarVariableDataModel* pScalarVariableDataModel_);
+		//void extractAll(ScalarVariableDataModel* pScalarVariableDataModel_);
 		ScalarValueCollection * getScalarValueCollectionInput() const { return scalarValueCollectionInput_; }
 		ScalarValueCollection * getScalarValueCollectionOutput() const { return scalarValueCollectionOutput_; }
 		ScalarValueResultsStruct *  toStruct();
@@ -62,6 +62,13 @@ typedef struct {
 		 * <summary>Creates the scalarValueCollection objects.</summary>
 		 *******************************************************/
 		void extract();
+
+
+
+		void extractOne(
+			ScalarVariableCollection *  scalarVariableCollection,
+			ScalarValueCollection * scalarValueCollection
+			);
 
 		/*******************************************************//**
 		 * Extracts the real.
@@ -87,7 +94,7 @@ typedef struct {
 		double time_;
 		ScalarValueCollection * scalarValueCollectionInput_;
 		ScalarValueCollection * scalarValueCollectionOutput_;
-		ScalarVariableDataModel * scalarVariableDataModel_;
+		//ScalarVariableDataModel * scalarVariableDataModel_;
 
 	};
 

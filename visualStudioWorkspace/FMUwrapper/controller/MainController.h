@@ -420,8 +420,17 @@ namespace Straylight
 		 *******************************************************/
 		void setScalarValues (ScalarValueRealStruct * scalarValueAry, int length);
 
+		fmiStatus setOneScalarValue(ScalarValueRealStruct * scalarValue);
+
+
+		ScalarValue * getOneScalarValue(int idx);
+
+
+		ScalarValueRealStruct *  getOneScalarValueStruct(int idx);
 
 		ScalarValueResults * getScalarValueResults();
+
+		ScalarVariableRealStruct * getOneScalarVariableStruct(int idx);
 
 
 		/*******************************************************//**

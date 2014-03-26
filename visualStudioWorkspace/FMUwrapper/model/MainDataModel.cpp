@@ -146,7 +146,7 @@ namespace Straylight
 	void MainDataModel::setScalarValues (ScalarValueRealStruct * scalarValueAry, int length) {
 		for (int i = 0; i < length; i++)
 		{
-			ScalarValueRealStruct   sv = scalarValueAry[i];
+			ScalarValueRealStruct  sv = scalarValueAry[i];
 			fmiStatus status = setScalarValueReal(sv.idx, sv.value);
 
 			if (status == fmiOK) {
@@ -156,6 +156,24 @@ namespace Straylight
 			}
 		}
 	}
+
+
+	fmiStatus  MainDataModel::setOneScalarValue(ScalarValueRealStruct * scalarValue) {
+
+		fmiStatus status = setScalarValueReal(scalarValue->idx, scalarValue->value);
+
+		if (status == fmiOK) {
+			//Logger::instance->printDebug("setScalarValueReal fmiOK \n");
+		}
+		else {
+			Logger::getInstance()->printError("setScalarValueReal ERROR \n");
+		}
+
+		return status;
+		
+	}
+
+
 
 
 
@@ -201,6 +219,28 @@ namespace Straylight
 		BaseUnitStruct *  baseUnitStructAry = unitDefinitions_->getBaseUnitStructAry();
 		return baseUnitStructAry;
 	}
+
+
+	ScalarValue * MainDataModel::getOneScalarValue(int idx) {
+
+		ScalarValue * scalarValue = new ScalarValue(idx);
+		
+
+		return scalarValue;
+
+	}
+
+	ScalarVariableRealStruct * MainDataModel::getOneScalarVariableStruct(int idx) {
+
+
+		ScalarVariableRealStruct * scalarVariableRealStruct = scalarVariableDataModel_->getOneScalarVariableStruct(idx);
+
+		return scalarVariableRealStruct;
+
+	}
+
+
+
 
 
 

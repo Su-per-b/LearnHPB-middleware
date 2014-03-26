@@ -808,6 +808,46 @@ namespace Straylight
 		}
 	}
 
+	fmiStatus MainController::setOneScalarValue(ScalarValueRealStruct * scalarValue) {
+
+		if (state_ != simStateNative_4_run_cleanedup) {
+			fmiStatus status = mainDataModel_->setOneScalarValue(scalarValue);
+			return status;
+		}
+		else {
+			return fmiStatus::fmiDiscard;
+		}
+
+	}
+
+
+	ScalarValue * MainController::getOneScalarValue(int idx) {
+
+		ScalarValue * scalarValue = mainDataModel_->getOneScalarValue(idx);
+		return scalarValue;
+	}
+
+
+	ScalarValueRealStruct * MainController::getOneScalarValueStruct(int idx) {
+
+		ScalarValue * scalarValue = mainDataModel_->getOneScalarValue(idx);
+		ScalarValueRealStruct * scalarValueRealStruct = scalarValue->toStruct();
+
+
+		return scalarValueRealStruct;
+	}
+
+
+	ScalarVariableRealStruct * MainController::getOneScalarVariableStruct(int idx) {
+
+		ScalarVariableRealStruct * scalarVariableRealStruct = mainDataModel_->getOneScalarVariableStruct(idx);
+
+		return scalarVariableRealStruct;
+	}
+
+
+
+
 
 
 }

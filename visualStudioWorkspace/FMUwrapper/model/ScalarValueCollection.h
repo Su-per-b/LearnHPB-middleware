@@ -40,6 +40,10 @@ namespace Straylight
 		ScalarValueCollection(void);
 		~ScalarValueCollection(void);
 
+
+		
+
+
 		/*******************************************************//**
 		 * Converts this object to a structure.
 		 *

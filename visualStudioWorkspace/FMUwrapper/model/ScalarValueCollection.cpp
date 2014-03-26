@@ -6,6 +6,12 @@ namespace Straylight
 	{
 	}
 
+
+
+
+
+
+
 	ScalarValueCollection::~ScalarValueCollection(void)
 	{
 

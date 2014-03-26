@@ -57,7 +57,7 @@ namespace Straylight
 
 		string  getString();
 		fmiReal getRealNumber();
-		fmiBoolean getBoolean(void);
+		fmiBoolean getBoolean();
 
 		void setRealNumber(double value);
 
@@ -73,6 +73,10 @@ namespace Straylight
 		 * @param	fmiComponent_arg	The fmi component argument.
 		 *******************************************************/
 		static void setFmiComponent(fmiComponent fmiComponent_arg);
+
+		fmiValueReference getTheValueReference();
+
+		ScalarValueRealStruct * toStruct();
 
 	private:
 		fmiValueReference valueReference_;

@@ -83,7 +83,6 @@ namespace Straylight
 
 		ScalarVariableDataModel * scalarVariableDataModel_;
 
-		void setScalarValues (ScalarValueRealStruct * scalarValueAry, int length);
 
 		/*******************************************************//**
 		* Gets ScalarValueDataModel
@@ -97,6 +96,17 @@ namespace Straylight
 		AttributeStruct * getFmiModelAttributesStruct();
 
 		BaseUnitStruct *  getBaseUnitStructAry();
+
+		void setScalarValues(ScalarValueRealStruct * scalarValueAry, int length);
+
+		fmiStatus setOneScalarValue(ScalarValueRealStruct * scalarValue);
+
+		ScalarValue * getOneScalarValue(int idx);
+
+		ScalarVariableRealStruct * getOneScalarVariableStruct(int idx);
+
+		
+
 
 
 	};

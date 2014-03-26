@@ -81,6 +81,8 @@ public class ScalarVariableRealPanel extends BaseView {
 	/** The lbl description_. */
 	private JLabel lblDescription_;
 	
+	private JLabel lblIdx_;
+	
 	private JLabel lblValueReference_;
 	
 	private JTextField textFieldValueReference_;
@@ -134,6 +136,8 @@ public class ScalarVariableRealPanel extends BaseView {
 		
 		lblDescription_ = new JLabel("{Description Not Set}");
 		
+		lblIdx_ = new JLabel("idx: {Idx Not Set}");
+		
 		lblValueReference_ = new JLabel("{Value Reference}");
 		lblValueReference_.setFont(new Font("SansSerif", Font.PLAIN, 12));
 
@@ -172,7 +176,8 @@ public class ScalarVariableRealPanel extends BaseView {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(lblMax_))
 						.addComponent(textFieldValueReference_, GroupLayout.PREFERRED_SIZE, 293, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblDescription_, GroupLayout.PREFERRED_SIZE, 408, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblDescription_, GroupLayout.PREFERRED_SIZE, 408, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblIdx_, GroupLayout.PREFERRED_SIZE, 408, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(385, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
@@ -206,7 +211,8 @@ public class ScalarVariableRealPanel extends BaseView {
 						.addComponent(lblMax_))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblDescription_)
-					.addContainerGap(19, Short.MAX_VALUE))
+					.addComponent(lblIdx_)
+						)
 		);
 		setLayout(groupLayout);
 
@@ -320,7 +326,12 @@ public class ScalarVariableRealPanel extends BaseView {
 		});
 
 		
-		lblDescription_.setText(sv.getDescription());
+		String descriptionStr = "Description: " + sv.getDescription();
+		lblDescription_.setText(descriptionStr);
+		
+		
+		String idxStr = "idx: " + sv.getIdx();
+		lblIdx_.setText(idxStr);
 		
 		
 	}

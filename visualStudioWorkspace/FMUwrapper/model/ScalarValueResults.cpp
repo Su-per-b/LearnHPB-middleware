@@ -15,11 +15,23 @@ namespace Straylight
 		scalarValueCollectionInput_ = new ScalarValueCollection();
 		scalarValueCollectionOutput_ = new ScalarValueCollection();
 
-		scalarVariableDataModel_ = scalarVariableDataModel;
+		extractOne(scalarVariableDataModel->svInput_, scalarValueCollectionInput_);
+		extractOne(scalarVariableDataModel->svOutput_, scalarValueCollectionOutput_);
 
-		extract();
 	}
 
+	void ScalarValueResults::extractOne(
+		ScalarVariableCollection *  scalarVariableCollection,
+		ScalarValueCollection * scalarValueCollection
+		)
+	{
+
+		vector<ScalarValueRealStruct*> realList = extractReal(scalarVariableCollection->real);
+		vector<ScalarValueBooleanStruct*> booleanList = extractBoolean(scalarVariableCollection->boolean);
+
+		scalarValueCollection->setReal(realList);
+		scalarValueCollection->setBoolean(booleanList);
+	}
 
 	ScalarValueResults::~ScalarValueResults(void)
 	{
@@ -33,19 +45,29 @@ namespace Straylight
 		}
 
 
-
-
 	}
 
+	//void ScalarValueResults::extractOneTo(
+	//	ScalarVariableCollection *  scalarVariableCollection,
+	//	ScalarValueCollection * scalarValueCollection
+	//	)
+	//{
+	//	scalarValueCollectionInput_->setReal(extractReal(scalarVariableDataModel_->svInput_->real));
+	//	scalarValueCollectionInput_->setBoolean(extractBoolean(scalarVariableDataModel_->svInput_->boolean));
 
-	void ScalarValueResults::extract()
-	{
-		scalarValueCollectionInput_->setReal(extractReal(scalarVariableDataModel_->svInput_->real)) ;
-		scalarValueCollectionInput_->setBoolean(extractBoolean(scalarVariableDataModel_->svInput_->boolean));
+	//	scalarValueCollectionOutput_->setReal(extractReal(scalarVariableDataModel_->svOutput_->real));
+	//	scalarValueCollectionOutput_->setBoolean(extractBoolean(scalarVariableDataModel_->svOutput_->boolean));
+	//}
 
-		scalarValueCollectionOutput_->setReal(extractReal(scalarVariableDataModel_->svOutput_->real));
-		scalarValueCollectionOutput_->setBoolean(extractBoolean(scalarVariableDataModel_->svOutput_->boolean));
-	}
+
+	//void ScalarValueResults::extract()
+	//{
+	//	scalarValueCollectionInput_->setReal(extractReal(scalarVariableDataModel_->svInput_->real)) ;
+	//	scalarValueCollectionInput_->setBoolean(extractBoolean(scalarVariableDataModel_->svInput_->boolean));
+
+	//	scalarValueCollectionOutput_->setReal(extractReal(scalarVariableDataModel_->svOutput_->real));
+	//	scalarValueCollectionOutput_->setBoolean(extractBoolean(scalarVariableDataModel_->svOutput_->boolean));
+	//}
 
 
 
@@ -60,9 +82,7 @@ namespace Straylight
 			ScalarVariableRealStruct * scalarVariableRealStruct =  *list_iter;
 			ScalarValue * scalarValue = new ScalarValue(scalarVariableRealStruct->idx);
 
-			ScalarValueRealStruct * scalarValueRealStruct = new ScalarValueRealStruct();
-			scalarValueRealStruct->idx = scalarValue->getIdx();
-			scalarValueRealStruct->value = scalarValue->getRealNumber();
+			ScalarValueRealStruct * scalarValueRealStruct = scalarValue->toStruct();
 
 			realList.push_back(scalarValueRealStruct);
 		}
@@ -99,11 +119,11 @@ namespace Straylight
 	}
 
 
-	void ScalarValueResults::extractAll( ScalarVariableDataModel* pScalarVariableDataModel_ )
-	{
-		//extractReal(scalarVariableCollection->real, causality);
-		//extractBoolean(scalarVariableCollection->boolean, causality);
-	}
+	//void ScalarValueResults::extractAll( ScalarVariableDataModel* pScalarVariableDataModel_ )
+	//{
+	//	//extractReal(scalarVariableCollection->real, causality);
+	//	//extractBoolean(scalarVariableCollection->boolean, causality);
+	//}
 
 	ScalarValueResultsStruct * ScalarValueResults::toStruct()
 	{

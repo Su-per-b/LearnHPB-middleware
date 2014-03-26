@@ -54,7 +54,7 @@ namespace Straylight
 		idx_ = idx_local;
 		scalarVariable_ = (ScalarVariable*)fmu_->modelDescription->modelVariables[idx_];
 
-		valueReference_ = getValueReference(scalarVariable_); //unsigned int
+		valueReference_ = ::getValueReference(scalarVariable_); //unsigned int
 	}
 
 	/*******************************************************//**
@@ -69,7 +69,7 @@ namespace Straylight
 	 *
 	 * @return	The real number.
 	 *******************************************************/
-	fmiReal ScalarValue::getRealNumber(void)
+	fmiReal ScalarValue::getRealNumber()
 	{
 		fmiReal realNumber;
 		status_ =  fmu_->getReal(fmiComponent_, &valueReference_, 1, &realNumber);
@@ -77,7 +77,7 @@ namespace Straylight
 		return realNumber;
 	}
 
-	fmiBoolean ScalarValue::getBoolean(void)
+	fmiBoolean ScalarValue::getBoolean()
 	{
 		fmiBoolean booleanValue;
 		status_ =  fmu_->getBoolean(fmiComponent_, &valueReference_, 1, &booleanValue);
@@ -138,4 +138,24 @@ namespace Straylight
 			break;
 		}
 	}
+
+
+	fmiValueReference ScalarValue::getTheValueReference()	{
+
+		return valueReference_;
+	}
+
+	
+	ScalarValueRealStruct * ScalarValue::toStruct() {
+
+		ScalarValueRealStruct * scalarValueRealStruct = new ScalarValueRealStruct();
+		scalarValueRealStruct->idx = getIdx();
+		scalarValueRealStruct->value = getRealNumber();
+
+		return scalarValueRealStruct;
+
+	}
+
+
+
 }
