@@ -75,7 +75,6 @@ public class MainController extends AbstractController  {
 		int idx = sessionControl.getIdx();
 		if (0 == idx) {
 			
-
     		Object source = event.getSource();
     		WebSocketConnectionController ws = (WebSocketConnectionController) source;
     		
@@ -98,16 +97,26 @@ public class MainController extends AbstractController  {
     			return;
     		}
     		
-    		
 			ConnectionBundle hostConenctionBundle = sessionID2ConnectionMap_.get(hostSessionID);
 			ConnectionBundle attachConenctionBundle = sessionID2ConnectionMap_.get(attachSessionID);
 			
-			
 			ThreadedFMUcontroller threadedFMUcontroller = hostConenctionBundle.getThreadedFMUcontroller();	
 			attachConenctionBundle.setThreadedFMUcontroller_(threadedFMUcontroller);
-    				
     		
+			
+    		
+		} else if (1 == idx) {
+			
+    		Object source = event.getSource();
+    		WebSocketConnectionController ws = (WebSocketConnectionController) source;
+    		
+    		String sessionID = ws.getSessionID();
+    		
+			ConnectionBundle hostConenctionBundle = sessionID2ConnectionMap_.get(sessionID);
+    		
+			
 		}
+		
 	}
 	
 	

@@ -230,36 +230,13 @@ public class ConnectionBundle extends AbstractController {
 				    		SessionControl sessionControl = newEvent.getPayload();
 				    		String sessionAttach = sessionControl.getValue();
 				    		
-				    		
 				    		Object source = event.getSource();
-				    		//WebSocketConnectionController ws = (WebSocketConnectionController) source;
-				    		
-				    		//String sessionHost = ws.getSessionID();
-				    		
-				    		
-				    		//String session2 = sessionHost + "." + sessionAttach;
-				    		
-				    		
+
 				    		SessionControl newSessionControl = new SessionControl(0, sessionAttach);
 				    		
 				    		SessionControlEvent newEventGlobal = new SessionControlEvent(source, newSessionControl);
 				    		EventBus.publish(newEventGlobal);
-				    		
-				    		
-/*				    		int idx = sessionControl.getIdx();
-				    		if (0 == idx) {
-					    		String sessionID = sessionControl.getValue();
-					    		System.out.println("Attach to sessionID: " + sessionID );
 
-				    		}*/
-				    		
-
-				    		
-				    		
-				    		
-				    		
-				    	//	System.out.println("MessageReceived -> SessionControlEvent Event");
-				    		//webSocketConnectionController_
 				    	}  else {
 				    		
 				    		System.out.println("ConnectionBundle.MessageReceived -> Unknown Event");
