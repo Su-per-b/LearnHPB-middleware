@@ -4,15 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.util.Hashtable;
-import java.util.Vector;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
 import com.sri.straylight.client.model.ClientConfig;
-import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 // TODO: Auto-generated Javadoc
 /**

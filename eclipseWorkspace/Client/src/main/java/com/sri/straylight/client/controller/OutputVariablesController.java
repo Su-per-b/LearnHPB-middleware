@@ -1,7 +1,5 @@
 package com.sri.straylight.client.controller;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.util.Vector;
 
 import javax.swing.SwingUtilities;
@@ -10,9 +8,7 @@ import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.TabViewInitialized;
-import com.sri.straylight.client.model.ResultsLogModel;
 import com.sri.straylight.client.model.VariableDataModel;
-import com.sri.straylight.client.view.ResultsLogView;
 import com.sri.straylight.client.view.TableOfVariablesView;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateClientNotify;

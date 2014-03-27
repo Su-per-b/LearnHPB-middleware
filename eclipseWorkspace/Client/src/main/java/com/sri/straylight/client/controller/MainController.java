@@ -7,7 +7,6 @@ import java.awt.BorderLayout;
 
 import javax.swing.JOptionPane;
 
-import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import com.sri.straylight.client.event.TabViewInitialized;
@@ -21,9 +20,6 @@ import com.sri.straylight.client.view.BaseView;
 import com.sri.straylight.client.view.MainView;
 import com.sri.straylight.client.view.SimulationEngineDialog;
 import com.sri.straylight.client.view.TopPanelView;
-import com.sri.straylight.fmuWrapper.event.SimStateClientNotify;
-import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
-import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -40,17 +36,22 @@ public class MainController extends BaseController {
 	private SimulationController simulationController_;
 	
 	/** The debug console controller_. */
+	@SuppressWarnings("unused")
 	private ConsoleController consoleController_;
 	
 	/** The input form controller_. */
+	@SuppressWarnings("unused")
 	private InputVariablesController inputController_;
 
+	@SuppressWarnings("unused")
 	private InternalVariablesController internalTableController_;
 	
 	/** The results form controller_. */
+	@SuppressWarnings("unused")
 	private OutputVariablesController outputController_;
 	
 	/** The results table controller_. */
+	@SuppressWarnings("unused")
 	private ResultsLogController resultsLogController_;
 	
 	
@@ -58,6 +59,7 @@ public class MainController extends BaseController {
 	private TopMenuController topMenuController_;
 	
 	/** The config controller_. */
+	@SuppressWarnings("unused")
 	private ConfigController configController_;
 	
 
@@ -67,7 +69,7 @@ public class MainController extends BaseController {
 	/** The main view_. */
 	private MainView view_;
 	
-
+	@SuppressWarnings("unused")
 	private FMUInfoController fmuInfoController;
 	
 	
