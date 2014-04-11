@@ -6,7 +6,9 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
+import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
+import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 
 
 /**
@@ -16,8 +18,11 @@ public class ConfigChangeNotifyAdapter
 	extends AdapterEventBase<ConfigChangeNotify, ConfigStruct>
 
 {
-
-
+	
+	public ConfigChangeNotifyAdapter() {
+		super(ConfigChangeNotify.class, ConfigStruct.class);
+	}
+	
     @Override
     public ConfigChangeNotify deserialize(
     		JsonElement jsonElement, 
@@ -26,9 +31,9 @@ public class ConfigChangeNotifyAdapter
         throws JsonParseException {
 
     	
-    	super.deserializeHelper_(jsonElement, typeOfT, context, ConfigStruct.class);
-    	
-    	ConfigChangeNotify event = new ConfigChangeNotify(this, payload_);
+    	ConfigStruct payload = deserializePayload_(jsonElement, typeOfT, context);	
+    	ConfigChangeNotify event = new ConfigChangeNotify(this, payload);
+    
     	
         return event;
 

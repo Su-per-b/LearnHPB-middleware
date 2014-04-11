@@ -41,7 +41,9 @@ public class JsonController {
 
 	private GsonBuilder gsonBuilder_;
 
-	private HashMap<String, Type> registeredClasses_;
+
+	private HashMap<String, Class<?>> registeredClasses_;
+
 
 	/* Prevent direct access to the constructor */
 	public JsonController() {
@@ -54,19 +56,19 @@ public class JsonController {
 	}
 
 	
-	public String toJson(Object src, Type typeOfSrc) {
+	public String toJsonString(Object src, Type typeOfSrc) {
 
 		if (src == null) {
-			return toJson(JsonNull.INSTANCE);
+			return toJsonString(JsonNull.INSTANCE);
 		}
 
 		return gson_.toJson(src, typeOfSrc);
 	}
 	
-	public String toJson(Object src) {
+	public String toJsonString(Object src) {
 
 		if (src == null) {
-			return toJson(JsonNull.INSTANCE);
+			return toJsonString(JsonNull.INSTANCE);
 		}
 
 		return gson_.toJson(src, src.getClass());
@@ -100,19 +102,13 @@ public class JsonController {
 		SerializeableObject obj = gson_.fromJson(jsonString,
 				SerializeableObject.class);
 		
-		String classString = obj.type;
+		String classString = obj.t;
 
-        Class<?> cl;
-		try {
-			
-			cl = Class.forName(classString);
-			JsonSerializable jsonSerializable = (JsonSerializable) gson_.fromJson(jsonString, cl);
-			return jsonSerializable;
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} 
+        Class<?> cl = registeredClasses_.get(classString);
 		
-		return null;
+		JsonSerializable jsonSerializable = (JsonSerializable) gson_.fromJson(jsonString, cl);
+		return jsonSerializable;
+
 
 	}
 	
@@ -134,7 +130,7 @@ public class JsonController {
 
 		gsonBuilder_ = new GsonBuilder();
 
-		registeredClasses_ = new HashMap<String, Type>();
+		registeredClasses_ = new HashMap<String, Class<?>>();
 		
 		register_(MessageStruct.class, new MessageStructAdapter());
 		register_(MessageEvent.class, new MessageEventAdapter());
@@ -154,6 +150,7 @@ public class JsonController {
 		register_(ScalarVariableReal.class, new ScalarVariableRealAdapter());
 		
 		register_(ScalarVariableCollection.class, new ScalarVariableCollectionAdapter());
+		
 		register_(ScalarVariablesAll.class, new ScalarVariablesAllAdapter());
 		
 		register_(XMLparsedInfo.class, new XMLparsedInfoAdapter());
@@ -161,10 +158,13 @@ public class JsonController {
 		
 		register_(ConfigStruct.class, new ConfigStructAdapter());
 		register_(DefaultExperimentStruct.ByReference.class, new DefaultExperimentStructAdapter());
-		register_(ConfigChangeNotify.class, new ConfigChangeNotifyAdapter());
 		
+		register_(ConfigChangeNotify.class, new ConfigChangeNotifyAdapter());
 		register_(ScalarValueChangeRequest.class, new ScalarValueChangeRequestAdapter());
 		register_(SessionControlEvent.class, new SessionControlEventAdapter());
+		
+		//register_(Vector.class, new VectorAdapter());
+		
 		
 		
 		gson_ = gsonBuilder_.create();
@@ -172,12 +172,16 @@ public class JsonController {
 	
 	
 
-	private void register_(Type type, Object typeAdapter) {
+	private void register_(Class<?> cl, AdapterBase<?> typeAdapter) {
 
-		gsonBuilder_.registerTypeAdapter(type, typeAdapter);
-		String classNameString = type.toString();
-
-		registeredClasses_.put(classNameString, type);
+		gsonBuilder_.registerTypeAdapter(cl, typeAdapter);
+		
+		String typeString = typeAdapter.getTypeString();
+		
+//		String typeString = typeAdapter.getTypeString(cl);
+//		typeAdapter.setTypeString(typeString);
+		
+		registeredClasses_.put(typeString, cl);
 
 	}
 

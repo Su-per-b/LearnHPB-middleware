@@ -6,8 +6,10 @@ import java.lang.reflect.Type;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
+import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 
 
 
@@ -18,7 +20,10 @@ public class ScalarValueChangeRequestAdapter
 	extends AdapterEventBase<ScalarValueChangeRequest, ScalarValueCollection>
 {
 
-
+	public ScalarValueChangeRequestAdapter() {
+		super(ScalarValueChangeRequest.class, ScalarValueCollection.class);
+	}
+	
     @Override
     public ScalarValueChangeRequest deserialize(
     		JsonElement jsonElement, 
@@ -27,9 +32,9 @@ public class ScalarValueChangeRequestAdapter
         throws JsonParseException {
 
     	
+    	ScalarValueCollection payload = deserializePayload_(jsonElement, typeOfT, context);	
+    	ScalarValueChangeRequest event = new ScalarValueChangeRequest(this, payload);
     	
-    	super.deserializeHelper_(jsonElement, typeOfT, context, ScalarValueCollection.class);
-    	ScalarValueChangeRequest event = new ScalarValueChangeRequest(this, payload_);
     	
         return event;
 

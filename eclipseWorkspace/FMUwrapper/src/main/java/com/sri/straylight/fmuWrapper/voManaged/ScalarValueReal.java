@@ -43,6 +43,12 @@ public class ScalarValueReal extends BaseScalarValue {
 	}
 	
 	
+	public void setValue(Double value) {
+		value_ = value;
+	}
+	
+	
+	
 	public String toString() {
 		
 		BigDecimal bd = new BigDecimal(value_).setScale(

@@ -7,6 +7,6 @@ package com.sri.straylight.fmuWrapper.serialization;
 public class SerializeableObject {
 
 	/** The type. */
-	public String type;
+	public String t;
 	
 }

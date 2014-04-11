@@ -74,8 +74,8 @@ public class BaseEvent<PAYLOAD> extends EventObject implements JsonSerializable 
     }
 
     
-    public String toJson() {
-    	return JsonController.getInstance().toJson(this);
+    public String toJsonString() {
+    	return JsonController.getInstance().toJsonString(this);
     }
 
     @Override

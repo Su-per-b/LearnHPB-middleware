@@ -12,7 +12,6 @@ public class BaseScalarVariable {
 	protected int causality_;
 	protected int variability_;
 	protected String description_;
-	protected String unit_;
 	protected int valueReference_;
 
 	public BaseScalarVariable() {
@@ -94,7 +93,12 @@ public class BaseScalarVariable {
 
 		return theEnum;
 	}
+	public String getVariabilityAsString() {
+		Enu theEnum = getVariabilityAsEnum();
 
+		return theEnum.toString();
+	}
+	
 	public void setVariability(int variability) {
 		variability_ = variability;
 	}

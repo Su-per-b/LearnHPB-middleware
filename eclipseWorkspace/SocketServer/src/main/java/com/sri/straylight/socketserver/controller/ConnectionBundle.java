@@ -305,7 +305,7 @@ protected class WorkerHandleResultEvent extends WorkerThreadAbstract {
 		public void doIt_() {
 			
 			setName_("WorkerHandleResultEvent ");
-			String json = jsonController_.toJson(event_);
+			String json = jsonController_.toJsonString(event_);
 			
 			
 			webSocketConnectionController_.send(json);

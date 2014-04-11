@@ -99,8 +99,8 @@ public enum SimStateNative implements JnaEnum<SimStateNative>, JsonSerializable 
 	}
 	
 	@Override
-	public String toJson() {
-		return JsonController.getInstance().toJson(this);
+	public String toJsonString() {
+		return JsonController.getInstance().toJsonString(this);
 	}
 	
 

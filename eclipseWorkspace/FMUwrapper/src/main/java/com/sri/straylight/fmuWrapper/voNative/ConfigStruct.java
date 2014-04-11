@@ -23,8 +23,8 @@ public class ConfigStruct
 	public double stepDelta;
 
 	
-	public String toJson() {
-		return JsonController.getInstance().toJson(this);
+	public String toJsonString() {
+		return JsonController.getInstance().toJsonString(this);
 	}
 	
 	

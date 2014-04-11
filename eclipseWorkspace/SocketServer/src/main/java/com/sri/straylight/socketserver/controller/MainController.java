@@ -251,7 +251,7 @@ public class MainController extends AbstractController  {
 	
 	protected class WorkerMakeBundle extends WorkerThreadAbstract {
 		
-		private MainController parent_; 
+		private MainController parent_;
 		private StrayLightWebSocketHandler  socketHandler_;
 		private ConnectionBundle connectionBundle_;
 		

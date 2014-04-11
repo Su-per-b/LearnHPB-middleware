@@ -136,7 +136,7 @@ public class StrayLightWebSocketHandler
 			xmlParsedInfo.setSessionID(sessionID_);
 		}
 		  
-		String json = obj.toJson();
+		String json = obj.toJsonString();
 		sendString_ (json);
 	}
 	

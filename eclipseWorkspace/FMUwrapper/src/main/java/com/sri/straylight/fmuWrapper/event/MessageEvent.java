@@ -18,7 +18,8 @@ public class MessageEvent extends BaseEvent<MessageStruct>
 	private static final long serialVersionUID = 1L;
 
 
-	/**
+
+    /**
      * Instantiates a new message event.
      *
      * @param source the source

@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 
+import junit.framework.Assert;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -11,6 +13,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
 
 public class AdapterBase<T extends JsonSerializable>
 	implements JsonSerializer<T>, JsonDeserializer<T>
@@ -22,7 +25,7 @@ public class AdapterBase<T extends JsonSerializable>
 
 	protected T sourceObject_;
 	protected T destObject_;
-
+	
 	protected Type typeOfT_;
 	protected JsonSerializationContext serializationContext_;
 	protected JsonDeserializationContext deserializationContext_;
@@ -30,31 +33,71 @@ public class AdapterBase<T extends JsonSerializable>
 	protected HashMap<Type, SerializeBase> serializeMap_ = new HashMap<Type, SerializeBase>();
 	protected HashMap<Type, DeserializeBase> deserializeMap_ = new HashMap<Type, DeserializeBase>();
 	
-	protected String[] fieldNames_ = { };
+
+	
+	protected String typeString_ = "";
+	private Class<T> clazz_;
+
+	protected String[] fieldNames_ = null;
+	private String[][] fieldNamesEx_ = null;
 	
 
+	
+	//==main functions==//
 	public AdapterBase() {
 	}
 	
-	public void setFieldNames(String[] fieldNames) {
+	public AdapterBase(Class<T> clazz) {
+		clazz_ = clazz;
+		setClass_();
+	}
+	
+	
+	public void init(String[] fieldNames) {
 		fieldNames_ = fieldNames;
 		initMap_();
+	}
+	
+	public void init(String[][] fieldNamesEx) {
+		fieldNamesEx_ = fieldNamesEx;
+		initMap_();
+	}
+	
+	
+
+
+	
+	public void setTypeString(String typeString) {
+		typeString_ = typeString;
+	}
+	
+	public String getTypeString() {
+		return typeString_;
 	}
 	
 	private void initMap_() {
 		
 		serializeMap_.put(String.class, new SerializeString());
+
 		serializeMap_.put(int.class, new Serializeint());
+		serializeMap_.put(Integer.class, new Serializeint());
+		
 		serializeMap_.put(Double.class, new SerializeDouble());
 		serializeMap_.put(double.class, new SerializeDouble());
-		serializeMap_.put(Boolean.class, new SerializeBoolean());
 		
+		serializeMap_.put(Boolean.class, new SerializeBoolean());
+		serializeMap_.put(boolean.class, new SerializeBoolean());
+				
 		deserializeMap_.put(String.class, new DeserializeString());
 		deserializeMap_.put(int.class, new Deserializeint());
+		deserializeMap_.put(Integer.class, new Deserializeint());
+		
 		deserializeMap_.put(Double.class, new DeserializeDouble());
 		deserializeMap_.put(double.class, new DeserializeDouble());
-		deserializeMap_.put(Boolean.class, new DeserializeBoolean());
 		
+		deserializeMap_.put(Boolean.class, new DeserializeBoolean());
+		deserializeMap_.put(boolean.class, new DeserializeBoolean());
+
 	}
 	
 	protected JsonElement init(T src, Type typeOfSrc,
@@ -65,87 +108,149 @@ public class AdapterBase<T extends JsonSerializable>
 
 		serializationContext_ = context;
 		jsonObject_ = new JsonObject();
-		jsonObject_.add("type", new JsonPrimitive(src.getClass()
-				.getCanonicalName()));
+		
+		if ("" == typeString_) {
+			jsonObject_.add("t", new JsonPrimitive(src.getClass()
+					.getCanonicalName()));
+		} else {
+			jsonObject_.add("t", new JsonPrimitive(typeString_));
+		}
+		
 
 		return jsonObject_;
 	}
 
-
+	private Field getField_(String javaFieldName) {
+		
+		Field field = null;
+		
+		try {
+			//getDeclaredFields will give all fields (no matter the accessibility) but only of the current class
+			field = clazz_.getDeclaredField(javaFieldName);
+			
+		} catch (NoSuchFieldException e1) {
+			try {
+				
+				field = clazz_.getField(javaFieldName);
+				
+			} catch (NoSuchFieldException | SecurityException e) {
+				
+				
+				try {
+					
+					Class<?> superKlass = clazz_.getSuperclass();
+					field = superKlass.getDeclaredField(javaFieldName);
+					
+				} catch (NoSuchFieldException | SecurityException e2) {
+					e2.printStackTrace();
+				}
+			}
+		}
+		
+		return field;
+		
+	}
+	
+	//== serialize ==//
 	public JsonElement serialize(T src, Type typeOfSrc,
 			JsonSerializationContext context) {
 
 		init(src, typeOfSrc, context);
 		
-		if(fieldNames_.length > 0) {
-			serializeFields(fieldNames_);
+		if(null != fieldNamesEx_ && fieldNamesEx_.length > 0) {
+			serializeFieldsEx();
+		}
+		
+		if(null != fieldNames_ && fieldNames_.length > 0) {
+			serializeFields();
 		}
 		
 		return jsonObject_;
 	}
 	
-	
-	protected void serializeFields(String[] fieldNames) {
+	protected void serializeFieldsEx() {
 
-		int len = fieldNames.length;
+		int len = fieldNamesEx_.length;
 		for (int i = 0; i < len; i++) {
-			String fieldName = fieldNames[i];
-			serializeOneField_(fieldName);
+			
+			String javaFieldName = fieldNamesEx_[i][0];
+			String jsonFieldName = fieldNamesEx_[i][1];
+			
+			
+			serializeOneFieldEx_(javaFieldName, jsonFieldName);
 		}
 	}
+	
+	protected void serializeFields() {
+
+		int len = fieldNames_.length;
+		for (int i = 0; i < len; i++) {
+			String fieldName = fieldNames_[i];
+			serializeOneFieldEx_(fieldName, fieldName);
+		}
+	}
+	
+
+	private void serializeOneFieldEx_(String javaFieldName, String jsonFieldName) {
+		
+		
+		Field field = getField_(javaFieldName);
+		field.setAccessible(true);
+		
+		Type type = field.getGenericType();
+		
+		SerializeBase serializeObject = serializeMap_.get(type);
+		
+		serializeObject.setFieldEx(field, jsonFieldName);
+
+		
+		try {
+			serializeObject.run();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+
 	
 	protected void serializeOneField_(String fieldName, Object obj) {
 		
 		JsonElement element = serializationContext_.serialize(obj, obj.getClass());
 		jsonObject_.add(fieldName, element);
-		
 	}
 
 	
-	protected void serializeOneField_(String fieldName) {
 
-		
-		Field field = null;
-		Class<?> cl = sourceObject_.getClass();
-		
-		try {
-			
-			field = cl.getDeclaredField(fieldName);
-			
-		} catch (NoSuchFieldException e1) {
-			try {
-				field = cl.getField(fieldName);
-			} catch (NoSuchFieldException | SecurityException e) {
-				e.printStackTrace();
-			}
-		}
-		try {
 
-			field.setAccessible(true);
 
-			try {
-				Type type = field.getGenericType();
-				SerializeBase serializeObject = serializeMap_.get(type);
-				serializeObject.setField(field);
-
-				try {
-					serializeObject.run();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
-
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			}
-
-		} catch ( SecurityException e) {
-			e.printStackTrace();
-		}
-	}
 	
+	//== deserialize ==//
 	
 	public T deserialize(JsonElement jsonElement, Type typeOfT,
 			JsonDeserializationContext context) {
+		
+		
+		try {
+			destObject_ = clazz_.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		
+		deserializeHelper_(jsonElement, typeOfT, context);
+		
+		
+		return destObject_;
+	}
+	
+	
+	public T deserializeHelper_(JsonElement jsonElement, Type typeOfT,
+			JsonDeserializationContext context) {
+		
+		
+		Assert.assertNotNull(destObject_);
 
 		jsonElement_ = jsonElement;
 
@@ -153,46 +258,90 @@ public class AdapterBase<T extends JsonSerializable>
 			jsonObject_ = jsonElement_.getAsJsonObject();
 		}
 
-		typeOfT_ = typeOfT;
 		deserializationContext_ = context;
 
-		int len = fieldNames_.length;
-		for (int i = 0; i < len; i++) {
-			String fieldName = fieldNames_[i];
-			deserializeOneField(fieldName);
+		if(null != fieldNamesEx_ && fieldNamesEx_.length > 0) {
+			deserializeFieldsEx_();
 		}
+		
+		if(null != fieldNames_ && fieldNames_.length > 0) {
+			deserializeFields_();
+		}
+		
 		
 		return destObject_;
 	}
 	
 	
+	private void deserializeFieldsEx_() {
+		
+		
+		int len = fieldNamesEx_.length;
+		for (int i = 0; i < len; i++) {
+			
+			String javaFieldName = fieldNamesEx_[i][0];
+			String jsonFieldName = fieldNamesEx_[i][1];
+			
+			
+			deserializeOneFieldEx_(javaFieldName, jsonFieldName);
+		}
+		
 
+	}
+	
 
-	private void deserializeOneField(String fieldName) {
+	private void deserializeFields_() {
+		int len = fieldNames_.length;
+		for (int i = 0; i < len; i++) {
+			String fieldName = fieldNames_[i];
+			deserializeOneFieldEx_(fieldName, fieldName);
+		}
+	}
+	
+	
+	private void deserializeOneFieldEx_(String javaFieldName, String jsonFieldName) {
 
+		Field field = getField_(javaFieldName);
+		field.setAccessible(true);
+		
+		Type type = field.getGenericType();
+		
+		DeserializeBase deserializeObject = deserializeMap_.get(type);
+		deserializeObject.setFieldEx(field, jsonFieldName);
+		
+		
 		try {
-			
-			Class<?> cl = destObject_.getClass();
-			
-			Field field = cl.getDeclaredField(fieldName);
-			field.setAccessible(true);
-			
-			Type type = field.getGenericType();
-			DeserializeBase deserializeObject = deserializeMap_.get(type);
-
-			deserializeObject.setField(field);
-			
-			try {
-				deserializeObject.run();
-			} catch (IllegalArgumentException | IllegalAccessException e) {
-				e.printStackTrace();
-			}
-
-		} catch (NoSuchFieldException | SecurityException e) {
+			deserializeObject.run();
+		} catch (IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
 
 	}
+	
+
+//	private void deserializeOneField(String fieldName) {
+//
+//		try {
+//			
+//			Field field = klass_.getDeclaredField(fieldName);
+//			field.setAccessible(true);
+//			
+//			Type type = field.getGenericType();
+//			DeserializeBase deserializeObject = deserializeMap_.get(type);
+//
+//			deserializeObject.setField(field);
+//			
+//			try {
+//				deserializeObject.run();
+//			} catch (IllegalArgumentException | IllegalAccessException e) {
+//				e.printStackTrace();
+//			}
+//
+//		} catch (NoSuchFieldException | SecurityException e) {
+//			e.printStackTrace();
+//		}
+//
+//	}
 
 	protected void deserializeStrings(String[] ary) {
 
@@ -211,7 +360,7 @@ public class AdapterBase<T extends JsonSerializable>
 
 		try {
 
-			Field field = destObject_.getClass().getField(fieldName);
+			Field field = clazz_.getField(fieldName);
 			field.setAccessible(true);
 
 			try {
@@ -228,12 +377,26 @@ public class AdapterBase<T extends JsonSerializable>
 
 
 	private class SerializeBase {
-		protected Field field_;
+		protected Field javaField_;
+		protected String jsonFieldName_;
 
-		public void setField(Field field) {
-			field_ = field;
+
+		public void setFieldEx(Field field, String jsonFieldName) {
+			javaField_ = field;
+			jsonFieldName_ = jsonFieldName;
 		}
 
+
+		protected String getJsonFieldName_()  {
+			if (null != jsonFieldName_) {
+				return jsonFieldName_;
+			} else {
+				return javaField_.getName();
+			}
+		}
+		
+		
+		
 		public void run() throws IllegalArgumentException,
 				IllegalAccessException {
 
@@ -241,13 +404,16 @@ public class AdapterBase<T extends JsonSerializable>
 	}
 
 	
+
+	
+	
 	private class SerializeString extends SerializeBase {
 		@Override
 		public void run() throws IllegalArgumentException,
-				IllegalAccessException {
-			Object obj = field_.get(sourceObject_);
+		IllegalAccessException {
+			Object obj = javaField_.get(sourceObject_);
 			JsonPrimitive primitive = new JsonPrimitive((String) obj);
-			jsonObject_.add(field_.getName(), primitive);
+			jsonObject_.add(getJsonFieldName_(), primitive);
 		}
 	}
 
@@ -255,9 +421,9 @@ public class AdapterBase<T extends JsonSerializable>
 		@Override
 		public void run() throws IllegalArgumentException,
 				IllegalAccessException {
-			Object obj = field_.get(sourceObject_);
+			Object obj = javaField_.get(sourceObject_);
 			JsonPrimitive primitive = new JsonPrimitive((int) obj);
-			jsonObject_.add(field_.getName(), primitive);
+			jsonObject_.add(getJsonFieldName_(), primitive);
 		}
 	}
 
@@ -266,9 +432,9 @@ public class AdapterBase<T extends JsonSerializable>
 		@Override
 		public void run() throws IllegalArgumentException,
 				IllegalAccessException {
-			Object obj = field_.get(sourceObject_);
+			Object obj = javaField_.get(sourceObject_);
 			JsonPrimitive primitive = new JsonPrimitive((Double) obj);
-			jsonObject_.add(field_.getName(), primitive);
+			jsonObject_.add(getJsonFieldName_(), primitive);
 		}
 
 	}
@@ -279,9 +445,9 @@ public class AdapterBase<T extends JsonSerializable>
 		@Override
 		public void run() throws IllegalArgumentException,
 		IllegalAccessException {
-			Object obj = field_.get(sourceObject_);
+			Object obj = javaField_.get(sourceObject_);
 			JsonPrimitive primitive = new JsonPrimitive((Boolean) obj);
-			jsonObject_.add(field_.getName(), primitive);
+			jsonObject_.add(getJsonFieldName_(), primitive);
 		}
 		
 	}
@@ -291,12 +457,17 @@ public class AdapterBase<T extends JsonSerializable>
 	
 	
 	private class DeserializeBase {
-		protected Field field_;
-
-		public void setField(Field field) {
-			field_ = field;
+		protected Field javaField_;
+		protected String jsonFieldName_;
+		
+		
+		public void setFieldEx(Field field, String jsonFieldName) {
+			javaField_ = field;
+			jsonFieldName_ = jsonFieldName;
 		}
+		
 
+		
 		public void run() throws IllegalArgumentException, IllegalAccessException {
 
 		}
@@ -307,13 +478,12 @@ public class AdapterBase<T extends JsonSerializable>
 		@Override
 		public void run() throws IllegalArgumentException, IllegalAccessException {
 
-			String fieldName = field_.getName();
-			JsonElement jsonElement = jsonObject_.get(fieldName);
+			JsonElement jsonElement = jsonObject_.get(jsonFieldName_);
 
 			String fieldValue = jsonElement.getAsString();
 			
-			field_.setAccessible(true);
-			field_.set(destObject_, fieldValue);
+			javaField_.setAccessible(true);
+			javaField_.set(destObject_, fieldValue);
 
 		}
 	}
@@ -324,13 +494,12 @@ public class AdapterBase<T extends JsonSerializable>
 		@Override
 		public void run() throws IllegalArgumentException, IllegalAccessException {
 			
-			String fieldName = field_.getName();
-			JsonElement jsonElement = jsonObject_.get(fieldName);
+			JsonElement jsonElement = jsonObject_.get(jsonFieldName_);
 			
 			int fieldValue = jsonElement.getAsInt();
 			
-			field_.setAccessible(true);
-			field_.set(destObject_, fieldValue);
+			javaField_.setAccessible(true);
+			javaField_.set(destObject_, fieldValue);
 			
 		}
 	}
@@ -340,13 +509,12 @@ public class AdapterBase<T extends JsonSerializable>
 		@Override
 		public void run() throws IllegalArgumentException, IllegalAccessException {
 			
-			String fieldName = field_.getName();
-			JsonElement jsonElement = jsonObject_.get(fieldName);
+			JsonElement jsonElement = jsonObject_.get(jsonFieldName_);
 			
 			Double fieldValue = jsonElement.getAsDouble();
 			
-			field_.setAccessible(true);
-			field_.set(destObject_, fieldValue);
+			javaField_.setAccessible(true);
+			javaField_.set(destObject_, fieldValue);
 			
 		}
 	}
@@ -356,16 +524,37 @@ public class AdapterBase<T extends JsonSerializable>
 		@Override
 		public void run() throws IllegalArgumentException, IllegalAccessException {
 			
-			String fieldName = field_.getName();
-			JsonElement jsonElement = jsonObject_.get(fieldName);
+			JsonElement jsonElement = jsonObject_.get(jsonFieldName_);
 			
 			Boolean fieldValue = jsonElement.getAsBoolean();
 			
-			field_.setAccessible(true);
-			field_.set(destObject_, fieldValue);
+			javaField_.setAccessible(true);
+			javaField_.set(destObject_, fieldValue);
 			
 		}
 	}
+
+
+
+	private void setClass_() {
+		
+		String classNameString = clazz_.toString();
+		String[] parts = classNameString.split("\\.");
+		int len = parts.length;
+		
+		String shortClassName = parts[len-1];
+		
+		String[] parts2 = shortClassName.split("\\$");
+		shortClassName = parts2[0];
+		
+		typeString_ = shortClassName;
+
+	}
+
+
+
+
+
 
 
 

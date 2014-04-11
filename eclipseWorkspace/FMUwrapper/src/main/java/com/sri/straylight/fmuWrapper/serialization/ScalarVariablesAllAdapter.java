@@ -20,7 +20,7 @@ public class ScalarVariablesAllAdapter extends AdapterBase<ScalarVariablesAll> {
 
 
 	public ScalarVariablesAllAdapter() {
-		super();
+		super(ScalarVariablesAll.class);
 	}
 	
 	
@@ -30,9 +30,9 @@ public class ScalarVariablesAllAdapter extends AdapterBase<ScalarVariablesAll> {
 
 		super.serialize(src, typeOfSrc, context);
 
-		serializeOneField_("input_", src.getInput());
-		serializeOneField_("output_", src.getOutput());
-		serializeOneField_("internal_", src.getInternal());
+		serializeOneField_("input", src.getInput());
+		serializeOneField_("output", src.getOutput());
+		serializeOneField_("internal", src.getInternal());
 
 		return jsonObject_;
 	}
@@ -51,7 +51,7 @@ public class ScalarVariablesAllAdapter extends AdapterBase<ScalarVariablesAll> {
     	
     	
     	//input
-        JsonElement jsonElement1 = jsonObject_.get("input_");
+        JsonElement jsonElement1 = jsonObject_.get("input");
         
         ScalarVariableCollection sVarColl = deserializationContext_.deserialize
         		(jsonElement1, ScalarVariableCollection.class);
@@ -60,7 +60,7 @@ public class ScalarVariablesAllAdapter extends AdapterBase<ScalarVariablesAll> {
         
         
         //output
-        JsonElement jsonElement2 = jsonObject_.get("output_");
+        JsonElement jsonElement2 = jsonObject_.get("output");
         
         ScalarVariableCollection sVarColl2 = deserializationContext_.deserialize
         		(jsonElement2, ScalarVariableCollection.class);
@@ -69,7 +69,7 @@ public class ScalarVariablesAllAdapter extends AdapterBase<ScalarVariablesAll> {
         
         
         //internal
-        JsonElement jsonElement3 = jsonObject_.get("internal_");
+        JsonElement jsonElement3 = jsonObject_.get("internal");
         
         ScalarVariableCollection sVarColl3 = deserializationContext_.deserialize
         		(jsonElement3, ScalarVariableCollection.class);

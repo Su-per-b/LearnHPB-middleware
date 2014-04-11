@@ -17,19 +17,22 @@ public class MessageEventAdapter
 	extends AdapterEventBase<MessageEvent, MessageStruct>
 {
 
+	
+	public MessageEventAdapter() {
+		super(MessageEvent.class, MessageStruct.class);
+	}
 
     @Override
-    public MessageEvent deserialize(
+    public MessageEvent deserialize (
     		JsonElement jsonElement, 
     		Type typeOfT, 
     		JsonDeserializationContext context)
         throws JsonParseException {
 
-    	super.deserializeHelper_(jsonElement, typeOfT, context, MessageStruct.class);
-    	MessageEvent event = new MessageEvent(this, payload_);
+    	MessageStruct messageStruct = deserializePayload_(jsonElement, typeOfT, context);	
+    	MessageEvent event = new MessageEvent(this, messageStruct);
     	
         return event;
-
     }
     
 }

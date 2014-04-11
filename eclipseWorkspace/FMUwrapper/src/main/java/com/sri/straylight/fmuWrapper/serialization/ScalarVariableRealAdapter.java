@@ -8,7 +8,6 @@ import java.lang.reflect.Type;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
@@ -19,12 +18,20 @@ import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
  */
 public class ScalarVariableRealAdapter extends AdapterBase<ScalarVariableReal> {
 
-	//final protected String[] fieldNames_ = { "name_" };
+	final protected String[][] fieldNamesEx_ = { 
+			{ "name_", "n" },
+			{ "idx_", "i" },
+			{ "causality_", "c" },
+			{ "variability_", "vb" },
+			{ "description_", "d" },
+			{ "valueReference_", "vr" }
+		};
 	
 	
 	public ScalarVariableRealAdapter() {
-		super();
-		super.setFieldNames(fieldNames_);
+		super(ScalarVariableReal.class);
+		
+		super.init(fieldNamesEx_);
 	}
 	
 	
@@ -36,31 +43,8 @@ public class ScalarVariableRealAdapter extends AdapterBase<ScalarVariableReal> {
 		
 		TypeSpecReal typeSpecReal =  src.getTypeSpecReal();
 		JsonElement element = serializationContext_.serialize(typeSpecReal, TypeSpecReal.class);
-		jsonObject_.add("typeSpecReal_", element);
-		
-		JsonPrimitive primitive1 = new JsonPrimitive(src.getName());
-		jsonObject_.add("name_", primitive1);
-		
-		JsonPrimitive primitive2 = new JsonPrimitive(src.getIdx());
-		jsonObject_.add("idx_", primitive2);
-		
-		JsonPrimitive primitive3 = new JsonPrimitive(src.getCausalityAsInt());
-		jsonObject_.add("causality_", primitive3);
-		
-		JsonPrimitive primitive4 = new JsonPrimitive(src.getVariabilityAsInt());
-		jsonObject_.add("variability_", primitive4);
-		
-		JsonPrimitive primitive5 = new JsonPrimitive(src.getDescription());
-		jsonObject_.add("description_", primitive5);
-		
-		JsonPrimitive primitive6 = new JsonPrimitive(src.getVariabilityAsInt());
-		jsonObject_.add("valueReference_", primitive6);
-		
-		String unit = src.getUnit();
-		JsonPrimitive primitive7 = new JsonPrimitive(unit);
-		jsonObject_.add("unit_", primitive7);
-		
-		
+		jsonObject_.add("typeSpecReal", element);
+
 		return jsonObject_;
 	}
 	
@@ -71,36 +55,11 @@ public class ScalarVariableRealAdapter extends AdapterBase<ScalarVariableReal> {
 
 	throws JsonParseException {
 
-		destObject_ = new ScalarVariableReal();
     	super.deserialize(jsonElement, typeOfT, context);
     	
-        JsonElement jsonElementInput = jsonObject_.get("typeSpecReal_");
+        JsonElement jsonElementInput = jsonObject_.get("typeSpecReal");
         TypeSpecReal typeSpecReal = context.deserialize(jsonElementInput, TypeSpecReal.class);
         destObject_.setTypeSpecReal(typeSpecReal);
-        
-        String name = jsonObject_.get("name_").getAsString();
-        destObject_.setName(name);
-        
-        int idx = jsonObject_.get("idx_").getAsInt();
-        destObject_.setIdx(idx);
-        
-        int causality = jsonObject_.get("causality_").getAsInt();
-        destObject_.setCausality(causality);
-        
-        
-        int variability = jsonObject_.get("variability_").getAsInt();
-        destObject_.setVariability(variability);
-        
-        
-        String description = jsonObject_.get("description_").getAsString();
-        destObject_.setDescription(description);
-        
-        int valueReference = jsonObject_.get("valueReference_").getAsInt();
-        destObject_.setValueReference(valueReference);
-        
-        
-        
-
         
 		return destObject_;
 
@@ -108,6 +67,9 @@ public class ScalarVariableRealAdapter extends AdapterBase<ScalarVariableReal> {
 	
 	
 	
+	
+	
+
 	
 	
 	

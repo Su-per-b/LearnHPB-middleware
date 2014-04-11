@@ -54,8 +54,8 @@ public class ScalarValueCollection implements JsonSerializable {
 	
 	
 	@Override
-	public String toJson() {
-		return JsonController.getInstance().toJson(this);
+	public String toJsonString() {
+		return JsonController.getInstance().toJsonString(this);
 	}
 	
 	private void init_(ScalarValueCollectionStruct struct) {

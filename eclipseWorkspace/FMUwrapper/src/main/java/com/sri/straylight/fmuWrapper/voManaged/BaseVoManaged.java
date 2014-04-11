@@ -6,8 +6,8 @@ import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 public class BaseVoManaged implements JsonSerializable {
 	
 	
-	public String toJson() {
-		return JsonController.getInstance().toJson(this);
+	public String toJsonString() {
+		return JsonController.getInstance().toJsonString(this);
 	}
 	
 	

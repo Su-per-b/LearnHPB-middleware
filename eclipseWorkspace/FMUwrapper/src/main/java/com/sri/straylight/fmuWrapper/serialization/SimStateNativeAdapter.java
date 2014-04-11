@@ -18,9 +18,11 @@ import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 public class SimStateNativeAdapter 
 	extends AdapterBase<SimStateNative> {
 
+	//final protected String[] fieldNames_ = null;
+	
+	
 	public SimStateNativeAdapter() {
-		super();
-
+		super(SimStateNative.class);
 	}
 	
 	
@@ -47,7 +49,7 @@ public class SimStateNativeAdapter
         throws JsonParseException {
     	
         destObject_ = SimStateNative.simStateNative_0_uninitialized;
-        super.deserialize(jsonElement, typeOfT, context);
+        super.deserializeHelper_(jsonElement, typeOfT, context);
 
 		int intValue = jsonObject_.get("intValue").getAsInt();
         destObject_ = destObject_.getForValue(intValue);

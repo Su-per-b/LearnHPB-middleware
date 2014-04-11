@@ -22,8 +22,8 @@ public class BaseScalarValue implements JsonSerializable {
 
 
 	@Override
-	public String toJson() {
-		return JsonController.getInstance().toJson(this);
+	public String toJsonString() {
+		return JsonController.getInstance().toJsonString(this);
 	}
 
 	public int getIdx() {
@@ -34,5 +34,6 @@ public class BaseScalarValue implements JsonSerializable {
 		this.idx_ = idx_;
 	}
 	
+
 	
 }

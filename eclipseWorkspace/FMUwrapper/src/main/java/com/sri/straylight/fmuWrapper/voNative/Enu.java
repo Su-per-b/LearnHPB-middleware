@@ -6,12 +6,12 @@ package com.sri.straylight.fmuWrapper.voNative;
  */
 public enum Enu implements JnaEnum<Enu> {
 
-	enu_flat, 
+	enu_flat,  // 0
 	enu_structured, 
 	enu_constant, 
 	enu_parameter, 
 	enu_discrete, 
-	enu_continuous,
+	enu_continuous, //5
 	enu_input,
 	enu_output,
 	enu_internal,

@@ -54,8 +54,8 @@ public class ScalarValueResults implements JsonSerializable {
 
 
 	@Override
-	public String toJson() {
-		return JsonController.getInstance().toJson(this);
+	public String toJsonString() {
+		return JsonController.getInstance().toJsonString(this);
 	}
 	
 	@Override
@@ -82,11 +82,15 @@ public class ScalarValueResults implements JsonSerializable {
 
         ScalarValueResults typedObj = (ScalarValueResults) obj;
         
-        return new EqualsBuilder().
+        EqualsBuilder eqb = new EqualsBuilder().
                 append(this.time_, typedObj.getTime()).
                 append(this.input_, typedObj.getInput()).
-                append(this.output_, typedObj.getOutput()).
-                isEquals();
+                append(this.output_, typedObj.getOutput());
+        
+        
+        boolean isEqual = eqb.isEquals();
+        
+        return isEqual;
 
     }
 	

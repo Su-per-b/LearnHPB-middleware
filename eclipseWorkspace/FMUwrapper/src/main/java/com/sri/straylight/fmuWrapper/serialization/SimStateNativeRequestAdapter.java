@@ -8,6 +8,7 @@ import java.lang.reflect.Type;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
@@ -16,7 +17,11 @@ public class SimStateNativeRequestAdapter
 	extends AdapterEventBase<SimStateNativeRequest, SimStateNative> {
 
 	
-
+	public SimStateNativeRequestAdapter() {
+		super(SimStateNativeRequest.class, SimStateNative.class);
+	}
+	
+	
 
     @Override
     public SimStateNativeRequest deserialize (
@@ -25,11 +30,11 @@ public class SimStateNativeRequestAdapter
     		JsonDeserializationContext context)
         throws JsonParseException {
     	
-    	payload_ = SimStateNative.simStateNative_0_uninitialized;
-    	super.deserializeHelper_(jsonElement, typeOfT, context, SimStateNative.class);
     	
-    	SimStateNativeRequest event = new SimStateNativeRequest(this, payload_);
-        
+    	SimStateNative payload = deserializePayload_(jsonElement, typeOfT, context);	
+    	SimStateNativeRequest event = new SimStateNativeRequest(this, payload);
+    	
+    	
         return event;
 
     }

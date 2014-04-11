@@ -4,6 +4,7 @@ package com.sri.straylight.fmuWrapper.serialization;
 import java.lang.reflect.Type;
 import java.util.Vector;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
@@ -23,8 +24,13 @@ public class ScalarValueCollectionAdapter
 	final protected Type realListType_ = new TypeToken<Vector<ScalarValueReal>>(){}.getType();
 	final protected Type booleanListType_ = new TypeToken<Vector<ScalarValueBoolean>>(){}.getType();
 	
+
+
+	
 	public ScalarValueCollectionAdapter() {
-		super();
+		
+		super(ScalarValueCollection.class);
+		//super.init(fieldNames_, new ScalarValueCollection());
 	}
 	
 	@Override
@@ -51,19 +57,39 @@ public class ScalarValueCollectionAdapter
 
 	throws JsonParseException {
 
-
 		super.deserialize(jsonElement, typeOfT, context);
 		
-		JsonElement jsonElementReal = jsonObject_.get("realList");
-		Vector<ScalarValueReal> realList = context.deserialize(jsonElementReal, realListType_);
-//		destObject_.setRealList(realList);
+		Vector<ScalarValueReal> realList = new Vector<ScalarValueReal>();
 		
-		JsonElement jsonElementBoolean = jsonObject_.get("booleanList");
-		Vector<ScalarValueBoolean> booleanList = context.deserialize(jsonElementBoolean, booleanListType_);
-//		destObject_.setBooleanList(booleanList);
+		JsonArray jsonArray = jsonObject_.getAsJsonArray("realList");
+		int len = jsonArray.size();
+		
+		for (int i = 0; i < len; i++) {
+			
+ 			JsonElement jsonElementReal = jsonArray.get(i);
+			ScalarValueReal scalarValueReal = context.deserialize(jsonElementReal, ScalarValueReal.class);
+			realList.add(scalarValueReal);
+			
+		}
+		
+		destObject_.setRealList(realList);
+		
+		Vector<ScalarValueBoolean> booleanList = new Vector<ScalarValueBoolean>();
+		
+		JsonArray jsonArray2 = jsonObject_.getAsJsonArray("booleanList");
+		int len2 = jsonArray2.size();
+		for (int j = 0; j < len2; j++) {
+			
+			JsonElement jsonElementReal = jsonArray.get(j);
+			ScalarValueBoolean scalarValueBoolean = context.deserialize(jsonElementReal, ScalarValueBoolean.class);
+			booleanList.add(scalarValueBoolean);
+			
+		}
+		
+		destObject_.setBooleanList(booleanList);
+		
 
-		destObject_ = new ScalarValueCollection(realList, booleanList);
-		
+
 		
 		return destObject_;
 

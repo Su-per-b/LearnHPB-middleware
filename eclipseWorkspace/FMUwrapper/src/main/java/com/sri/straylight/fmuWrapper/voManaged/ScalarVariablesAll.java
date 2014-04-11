@@ -71,8 +71,8 @@ public class ScalarVariablesAll implements JsonSerializable{
 	
 	
 	@Override
-	public String toJson() {
-		return JsonController.getInstance().toJson(this);
+	public String toJsonString() {
+		return JsonController.getInstance().toJsonString(this);
 	}
 	
 	

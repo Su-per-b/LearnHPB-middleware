@@ -26,18 +26,17 @@ public class TypeSpecReal
 	public double nominal;
 	public double min;
 	public double max;
+	public String unit = "";
 	
-	public int startValueStatus;
-	public int nominalValueStatus;
-	public int minValueStatus;
-	public int maxValueStatus;
-	
-	public String unit;
-	public int unitValueStatus;
+	public int startValueStatus = 0;
+	public int nominalValueStatus = 0;
+	public int minValueStatus = 0;
+	public int maxValueStatus = 0;
+	public int unitValueStatus = 0;
 
 
-	public String toJson() {
-		return JsonController.getInstance().toJson(this);
+	public String toJsonString() {
+		return JsonController.getInstance().toJsonString(this);
 	}
 	
 	

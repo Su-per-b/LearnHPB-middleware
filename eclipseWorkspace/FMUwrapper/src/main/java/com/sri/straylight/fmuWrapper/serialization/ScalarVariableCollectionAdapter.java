@@ -22,8 +22,11 @@ public class ScalarVariableCollectionAdapter extends AdapterBase<ScalarVariableC
 	final protected Type realListType_ = new TypeToken<Vector<ScalarVariableReal>>(){}.getType();
 	
 	public ScalarVariableCollectionAdapter() {
-		super();
-		super.setFieldNames(fieldNames_);
+		
+		super(ScalarVariableCollection.class);
+		super.init(fieldNames_);
+		
+
 	}
 	
 	

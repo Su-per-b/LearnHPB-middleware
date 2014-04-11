@@ -21,8 +21,11 @@ public class ScalarValueResultsAdapter extends AdapterBase<ScalarValueResults> {
 
 	
 	public ScalarValueResultsAdapter() {
-		super();
-		super.setFieldNames(fieldNames_);
+		
+		super(ScalarValueResults.class);
+		super.init(fieldNames_);
+		
+
 	}
 	
 	

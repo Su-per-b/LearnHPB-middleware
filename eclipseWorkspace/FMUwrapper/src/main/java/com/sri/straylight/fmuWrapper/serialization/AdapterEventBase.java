@@ -5,8 +5,12 @@ import java.lang.reflect.Type;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.sri.straylight.fmuWrapper.event.BaseEvent;
+import com.sri.straylight.fmuWrapper.event.MessageEvent;
+import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
+
 
 
 public class AdapterEventBase<T extends BaseEvent<P>, P> 
@@ -14,7 +18,17 @@ public class AdapterEventBase<T extends BaseEvent<P>, P>
 {
 	
 	protected P payload_;
+	private Class<P> payloadClazz_;
 	
+
+	public AdapterEventBase(Class<T> clazz,
+			Class<P> payloadClazz) {
+		
+		super(clazz);
+		payloadClazz_ = payloadClazz;
+	}
+
+
 
 	public JsonElement serialize(
 			T src, 
@@ -33,14 +47,23 @@ public class AdapterEventBase<T extends BaseEvent<P>, P>
 	
 	
 
-	public void deserializeHelper_(JsonElement jsonElement, Type typeOfT,
-			JsonDeserializationContext context, Class<P> class1) {
+    
+	protected P deserializePayload_(JsonElement jsonElement, Type typeOfT,
+			JsonDeserializationContext context) {
 
-    	super.deserialize(jsonElement, typeOfT, context);
-    	
-        JsonElement jsonElement1 = jsonObject_.get("payload");
-        payload_ = context.deserialize(jsonElement1, class1);
 		
+		jsonElement_ = jsonElement;
+
+		if (jsonElement_.isJsonObject()) {
+			jsonObject_ = jsonElement_.getAsJsonObject();
+		}
+
+		deserializationContext_ = context;
+
+        JsonElement jsonElement1 = jsonObject_.get("payload");
+        P payload = context.deserialize(jsonElement1, payloadClazz_);
+        
+		return payload;
 	}
 
 	

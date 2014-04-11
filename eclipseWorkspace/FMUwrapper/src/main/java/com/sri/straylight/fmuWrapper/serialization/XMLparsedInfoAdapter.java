@@ -19,7 +19,7 @@ public class XMLparsedInfoAdapter extends AdapterBase<XMLparsedInfo> {
 
 	
 	public XMLparsedInfoAdapter() {
-		super();
+		super(XMLparsedInfo.class);
 	}
 	
 	
@@ -33,9 +33,6 @@ public class XMLparsedInfoAdapter extends AdapterBase<XMLparsedInfo> {
 		
 		JsonPrimitive primitive1 = new JsonPrimitive(src.getSessionID());
 		jsonObject_.add("sessionID_", primitive1);
-		
-		
-		
 		
 		return jsonObject_;
 	}

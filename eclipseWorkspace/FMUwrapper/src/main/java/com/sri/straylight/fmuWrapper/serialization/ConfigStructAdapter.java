@@ -16,8 +16,8 @@ public class ConfigStructAdapter extends AdapterBase<ConfigStruct> {
 	final protected String[] fieldNames_ = { "stepDelta" };
 
 	public ConfigStructAdapter() {
-		super();
-		super.setFieldNames(fieldNames_);
+		super(ConfigStruct.class);
+		super.init(fieldNames_);
 	}
 
 	@Override
@@ -30,6 +30,7 @@ public class ConfigStructAdapter extends AdapterBase<ConfigStruct> {
 
 		JsonElement element = serializationContext_.serialize(struct,
 				DefaultExperimentStruct.ByReference.class);
+		
 		jsonObject_.add("defaultExperimentStruct", element);
 
 		return jsonObject_;
@@ -42,7 +43,7 @@ public class ConfigStructAdapter extends AdapterBase<ConfigStruct> {
 
 	throws JsonParseException {
 
-		destObject_ = new ConfigStruct();
+
 		super.deserialize(jsonElement, typeOfT, context);
 
 		JsonElement je = jsonObject_.get("defaultExperimentStruct");
