@@ -1,4 +1,4 @@
-package com.sri.straylight.fmuWrapper.test;
+package com.sri.straylight.client.test;
 
 import static org.junit.Assert.assertEquals;
 
@@ -13,6 +13,9 @@ import org.junit.Test;
 
 
 
+
+
+
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueBoolean;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
@@ -21,6 +24,8 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
+import com.sri.straylight.fmuWrapper.voManaged.SessionControlAction;
+import com.sri.straylight.fmuWrapper.voManaged.SessionControlModel;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.Enu;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueBooleanStruct;
@@ -525,7 +530,6 @@ public class VoManagedSerialization {
 		assertEquals( 22.25, typeSpecReal_0.min, 0.0);
 		assertEquals( 23.25, typeSpecReal_0.max, 0.0);
 		
-		ScalarVariableCollection output = scalarVariablesAll_0.getOutput();
 		
 		Vector<ScalarVariableReal> realList_1 = input.getRealVarList();
 		ScalarVariableReal scalarVariableReal_1 = realList_1.get(1);
@@ -668,6 +672,103 @@ public class VoManagedSerialization {
 		
 	}
 	
+	
+	
+	@Test
+    public void sessionControlAction_serialize() {
+	
+		
+		SessionControlAction sessionControlAction_0 = SessionControlAction.attachToSession;
+		
+		String jsonString_0 = sessionControlAction_0.toJsonString();
+		
+		assertEquals(
+				"{\"t\":\"SessionControlAction\",\"intValue\":0}", 
+				jsonString_0);
+		
+		
+		SessionControlAction sessionControlAction_1 = SessionControlAction.getInfo;
+		
+		String jsonString_1 = sessionControlAction_1.toJsonString();
+		
+		assertEquals(
+				"{\"t\":\"SessionControlAction\",\"intValue\":1}", 
+				jsonString_1);
+		
+		
+	}
+	
+	
+	@Test
+	public void sessionControlAction_deserialize() {
+		
+		
+		String jsonString_0 = "{\"t\":\"SessionControlAction\",\"intValue\":0}";
+		Object deserializedObject_0 = gsonController_.fromJson(jsonString_0);
+		
+		assertEquals(SessionControlAction.class, deserializedObject_0.getClass());
+		SessionControlAction sessionControlAction_0 = (SessionControlAction) deserializedObject_0;
+		
+		assertEquals(SessionControlAction.attachToSession , sessionControlAction_0);
+		
+		
+		String jsonString_1 = "{\"t\":\"SessionControlAction\",\"intValue\":1}";
+		Object deserializedObject_1 = gsonController_.fromJson(jsonString_1);
+		
+		assertEquals(SessionControlAction.class, deserializedObject_1.getClass());
+		SessionControlAction sessionControlAction_1 = (SessionControlAction) deserializedObject_1;
+		
+		assertEquals(SessionControlAction.getInfo , sessionControlAction_1);
+
+		
+	}
+	
+	
+	
+	@Test
+    public void SessionControlModel_serialize() {
+	
+		
+		SessionControlAction sessionControlAction_0 = SessionControlAction.attachToSession;
+		SessionControlModel sessionControlModel_0 = new SessionControlModel(sessionControlAction_0, "SESS1342");
+		
+		String jsonString_0 = sessionControlModel_0.toJsonString();
+		
+		assertEquals(
+				"{\"t\":\"SessionControlModel\",\"v\":\"SESS1342\",\"action\":{\"t\":\"SessionControlAction\",\"intValue\":0}}", 
+				jsonString_0);
+		
+		
+
+		SessionControlAction sessionControlAction_1 = SessionControlAction.getInfo;
+		SessionControlModel sessionControlModel_1 = new SessionControlModel(sessionControlAction_1);
+		
+		String jsonString_1 = sessionControlModel_1.toJsonString();
+		
+		assertEquals(
+				"{\"t\":\"SessionControlModel\",\"v\":\"\",\"action\":{\"t\":\"SessionControlAction\",\"intValue\":1}}", 
+				jsonString_1);
+
+	}
+	
+	
+	
+	@Test
+    public void SessionControlModel_deserialize() {
+		
+		String jsonString_0 = "{\"t\":\"SessionControlModel\",\"v\":\"SESS1342\",\"action\":{\"t\":\"SessionControlAction\",\"intValue\":0}}";
+		Object deserializedObject_0 = gsonController_.fromJson(jsonString_0);
+		
+		assertEquals(SessionControlModel.class, deserializedObject_0.getClass());
+		SessionControlModel sessionControlModel_0 = (SessionControlModel) deserializedObject_0;
+		
+		
+		assertEquals(SessionControlAction.attachToSession , sessionControlModel_0.getAction());
+		assertEquals("SESS1342" , sessionControlModel_0.getValue());
+		
+		
+		
+	}
 	
 	
 	

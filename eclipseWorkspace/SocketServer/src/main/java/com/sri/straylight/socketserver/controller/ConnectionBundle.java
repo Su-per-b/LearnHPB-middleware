@@ -1,14 +1,12 @@
 package com.sri.straylight.socketserver.controller;
 
-import org.bushe.swing.event.EventBus;
-
 import com.sri.straylight.fmuWrapper.Controller.FMUcontroller;
 import com.sri.straylight.fmuWrapper.Controller.ThreadedFMUcontroller;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
-import com.sri.straylight.fmuWrapper.event.SessionControlEvent;
+import com.sri.straylight.fmuWrapper.event.SessionControlClientRequest;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.event.StraylightEventListener;
@@ -19,7 +17,6 @@ import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.util.WorkerThreadAbstract;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
-import com.sri.straylight.fmuWrapper.voManaged.SessionControl;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
@@ -223,19 +220,21 @@ public class ConnectionBundle extends AbstractController {
 				    		
 				    	//	System.out.println("MessageReceived -> ScalarValueChangeRequest Event");
 				    		threadedFMUcontroller_.setScalarValueCollection(collection);
-				    	}  else if (deserializedEvent instanceof SessionControlEvent) {
+				    	}  else if (deserializedEvent instanceof SessionControlClientRequest) {
 				    		
-				    		SessionControlEvent newEvent = (SessionControlEvent) deserializedEvent;
-				    		
-				    		SessionControl sessionControl = newEvent.getPayload();
-				    		String sessionAttach = sessionControl.getValue();
-				    		
-				    		Object source = event.getSource();
-
-				    		SessionControl newSessionControl = new SessionControl(0, sessionAttach);
-				    		
-				    		SessionControlEvent newEventGlobal = new SessionControlEvent(source, newSessionControl);
-				    		EventBus.publish(newEventGlobal);
+//				    		SessionControlClientRequest newEvent = (SessionControlClientRequest) deserializedEvent;
+//				    		
+//				    		SessionControlModel sessionControl = newEvent.getPayload();
+//				    		String sessionAttach = sessionControl.getValue();
+//				    		
+//				    		Object source = event.getSource();
+//
+//				    		SessionControlAction
+//				    		
+//				    		SessionControlModel sessionControlModel = new SessionControlModel(0, sessionAttach);
+//				    		
+//				    		SessionControlClientRequest newEventGlobal = new SessionControlClientRequest(source, newSessionControl);
+//				    		EventBus.publish(newEventGlobal);
 
 				    	}  else {
 				    		

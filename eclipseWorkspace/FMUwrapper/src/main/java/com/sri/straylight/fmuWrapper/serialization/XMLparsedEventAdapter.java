@@ -5,10 +5,8 @@ import java.lang.reflect.Type;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
-import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 
 /**

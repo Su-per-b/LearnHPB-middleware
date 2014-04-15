@@ -19,6 +19,7 @@ namespace Straylight
 		for (int i = 0; i < len; ++i)
 		{
 			delete baseUnitVector_[i];
+			baseUnitVector_[i] = NULL;
 		}
 
 		baseUnitVector_.clear();

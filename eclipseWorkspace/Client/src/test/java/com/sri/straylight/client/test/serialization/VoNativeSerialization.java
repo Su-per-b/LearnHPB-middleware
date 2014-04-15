@@ -1,4 +1,4 @@
-package com.sri.straylight.fmuWrapper.test;
+package com.sri.straylight.client.test.serialization;
 
 import static org.junit.Assert.assertEquals;
 

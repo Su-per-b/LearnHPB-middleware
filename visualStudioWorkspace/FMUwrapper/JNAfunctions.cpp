@@ -6,6 +6,33 @@
 #include "JNAfunctions.h"
 
 
+/*******************************************************//**
+ * Message callback pointer.
+ *
+ * @param [in,out]	parameter1	If non-null, the first parameter.
+ *******************************************************/
+void (*messageCallbackPtr_)(MessageStruct *);
+
+/*******************************************************//**
+ * Result callback pointer.
+ *
+ * @param [in,out]	parameter1	If non-null, the first parameter.
+ *******************************************************/
+void (*resultCallbackPtr_)(ResultOfStepStruct *);
+
+/*******************************************************//**
+ * State change callback pointer.
+ *
+ * @param	parameter1	The first parameter.
+ *******************************************************/
+void (*stateChangeCallbackPtr_)(SimStateNative );
+
+
+/*******************************************************//**
+ * The main controller.
+ *******************************************************/
+MainController *  mainController;
+
 
 /*******************************************************//**
  * Request state change.
@@ -42,6 +69,7 @@ void onMessageCallbackC(MessageStruct * messageStruct)
 {
 	messageCallbackPtr_(messageStruct);
 	delete messageStruct;
+	messageStruct = NULL;
 
 /*******************************************************//**
  * Cleanups this object.
@@ -65,10 +93,17 @@ void cleanup() {
  *******************************************************/
 int forceCleanup()
 {
-	mainController->forceCleanup();
-	delete mainController;
 
-	return 0;
+	if (NULL == mainController) {
+		return 0;
+	}
+	else {
+		mainController->forceCleanup();
+		delete mainController;
+		mainController = NULL;
+		return 0;
+	}
+
 }
 
 /*
@@ -88,12 +123,13 @@ ScalarVariablesAllStruct * getAllScalarVariables() {
 
 	Straylight::MainDataModel * model = mainController->getMainDataModel();
 
-	ScalarVariablesAllStruct * allScalarVariables = new ScalarVariablesAllStruct();
-	allScalarVariables->input = model->scalarVariableDataModel_->svInput_->toStruct();
-	allScalarVariables->output = model->scalarVariableDataModel_->svOutput_->toStruct();
-	allScalarVariables->internal = model->scalarVariableDataModel_->svInternal_->toStruct();
+	ScalarVariablesAllStruct * scalarVariablesAllStruct = new ScalarVariablesAllStruct();
 
-	return allScalarVariables;
+	ScalarVariableCollection * inputCollection = model->scalarVariableDataModel_->svInput_;
+	ScalarVariableCollectionStruct * inputStruct = inputCollection->toStruct();
+
+	scalarVariablesAllStruct->input = inputStruct;	
+	return scalarVariablesAllStruct;
 
 }
 
@@ -197,13 +233,15 @@ ScalarValueResults * getScalarValueResults()
 }
 
 
-
-AttributeStruct * getFmiModelAttributes() {
+FMImodelAttributesStruct * getFMImodelAttributesStruct() {
 
 	MainDataModel * mainDataModel = mainController->getMainDataModel();
-	return mainDataModel->getFmiModelAttributesStruct();
+	FMImodelAttributesStruct *  fmiModelAttributesStruct = mainDataModel->getFMImodelAttributesStruct();
 
+	return fmiModelAttributesStruct;
 }
+
+
 
 BaseUnitStruct * getUnitDefinitions() {
 
@@ -211,3 +249,16 @@ BaseUnitStruct * getUnitDefinitions() {
 	return mainDataModel->getBaseUnitStructAry();
 
 }
+
+
+SimStateNative getSimStateNative() {
+
+	if (NULL == mainController) {
+		return simStateNative_0_uninitialized;
+	}
+	else {
+		return mainController->getState();
+	}
+
+}
+

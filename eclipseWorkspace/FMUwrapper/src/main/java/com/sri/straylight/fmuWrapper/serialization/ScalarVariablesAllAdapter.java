@@ -30,9 +30,9 @@ public class ScalarVariablesAllAdapter extends AdapterBase<ScalarVariablesAll> {
 
 		super.serialize(src, typeOfSrc, context);
 
-		serializeOneField_("input", src.getInput());
-		serializeOneField_("output", src.getOutput());
-		serializeOneField_("internal", src.getInternal());
+		jsonObjectAdd_("input", src.getInput());
+		jsonObjectAdd_("output", src.getOutput());
+		jsonObjectAdd_("internal", src.getInternal());
 
 		return jsonObject_;
 	}
@@ -49,6 +49,7 @@ public class ScalarVariablesAllAdapter extends AdapterBase<ScalarVariablesAll> {
 		destObject_ = new ScalarVariablesAll();
     	super.deserialize(jsonElement, typeOfT, context);
     	
+
     	
     	//input
         JsonElement jsonElement1 = jsonObject_.get("input");

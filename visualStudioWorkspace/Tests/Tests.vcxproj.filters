@@ -21,7 +21,13 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TestMainController.h">
+    <ClInclude Include="MainControllerT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JNAfunctionsT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -29,7 +35,13 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestMainController.cpp">
+    <ClCompile Include="MainControllerT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JNAfunctionsT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

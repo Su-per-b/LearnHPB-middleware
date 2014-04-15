@@ -1,4 +1,4 @@
-package com.sri.straylight.fmuWrapper.test;
+package com.sri.straylight.fmuWrapper.test.base;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;

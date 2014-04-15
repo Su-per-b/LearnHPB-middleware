@@ -109,7 +109,16 @@ public class GUI {
     	 		
             	
             	applicationController = new MainController();
-        		mainView_ = applicationController.getView();
+
+        		
+        		
+        		while(null == mainView_ ) {
+        			robot_.delay(250);
+            		mainView_ = applicationController.getView();
+        		}
+        		
+        		
+        		return;
             }
         });
 	}

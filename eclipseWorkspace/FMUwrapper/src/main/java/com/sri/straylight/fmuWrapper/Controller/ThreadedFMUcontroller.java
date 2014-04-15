@@ -73,27 +73,7 @@ public class ThreadedFMUcontroller extends AbstractController {
 	}
 	
 	
-/*	
-	protected class WorkerInstantiateFMU extends WorkerThreadAbstract {
-		
-		WorkerInstantiateFMU() {
-			setSyncObject(FMUcontrollerSync_);
-		}
-		
-		//called by superclass
-		@Override
-		public void doIt_() {
-			setName_("WorkerInstantiateFMU");
-			fmuController_ = new FMUcontrollerGlobal(parent_);
-		}
-		
-		//called by superclass
-		@Override
-		public void doneIt_() {
-			workerInstantiateFMU_ = null;
-		}
-	}
-	*/
+
 	
 	
 	protected class WorkerSetConfig extends WorkerThreadAbstract {

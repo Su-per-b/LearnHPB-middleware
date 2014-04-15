@@ -13,6 +13,7 @@ namespace Straylight
 		for (int i = 0; i < len; ++i)
 		{
 			delete attributeStructVector_[i];
+			attributeStructVector_[i] = NULL;
 		}
 
 
@@ -36,23 +37,31 @@ namespace Straylight
 		}
 	}
 
-	AttributeStruct * FmiModelAttributes::toStructArray() {
+	FMImodelAttributesStruct * FmiModelAttributes::toStruct() {
 
-		int count = attributeStructVector_.size();
+		int size = attributeStructVector_.size();
+		AttributeStruct *ary;
 
-		if (count > 0) {
+		if (size > 0) {
 
-			AttributeStruct *ary = new AttributeStruct[count];
+			ary = new AttributeStruct[size];
 
-			for (int i = 0; i < count; i++) {
+			for (int i = 0; i < size; i++) {
 				ary[i] = *attributeStructVector_[i];
 			}
 
-			return ary;
 		}
+
 		else {
-			return new AttributeStruct();
+			ary = new AttributeStruct();
 		}
+
+		FMImodelAttributesStruct * fmiModelAttributesStruct = new FMImodelAttributesStruct();
+
+		fmiModelAttributesStruct->attributeStructAry = ary;
+		fmiModelAttributesStruct->attributeStructSize = size;
+
+		return fmiModelAttributesStruct;
 
 	}
 }

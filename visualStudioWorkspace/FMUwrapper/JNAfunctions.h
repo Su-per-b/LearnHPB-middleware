@@ -16,31 +16,7 @@
 
 using namespace Straylight;
 
-/*******************************************************//**
- * Message callback pointer.
- *
- * @param [in,out]	parameter1	If non-null, the first parameter.
- *******************************************************/
-void (*messageCallbackPtr_)(MessageStruct *);
 
-/*******************************************************//**
- * Result callback pointer.
- *
- * @param [in,out]	parameter1	If non-null, the first parameter.
- *******************************************************/
-void (*resultCallbackPtr_)(ResultOfStepStruct *);
-
-/*******************************************************//**
- * State change callback pointer.
- *
- * @param	parameter1	The first parameter.
- *******************************************************/
-void (*stateChangeCallbackPtr_)(SimStateNative );
-
-/*******************************************************//**
- * The main controller.
- *******************************************************/
-Straylight::MainController *  mainController;
 
 /*******************************************************//**
  * Executes the message callback action.
@@ -98,7 +74,6 @@ extern "C" DllApi ConfigStruct * getConfig();
  *******************************************************/
 extern "C" DllApi ScalarValueResults * getScalarValueResults();
 
-extern "C" DllApi AttributeStruct * getFmiModelAttributes();
 
 extern "C" DllApi BaseUnitStruct * getUnitDefinitions();
 
@@ -131,13 +106,13 @@ extern "C" DllApi void connect(
 extern "C" DllApi void xmlParse(char *);
 
 
-
 /*******************************************************//**
  * Request state change.
  *
  * @param	newState	State of the new.
  *******************************************************/
 extern "C" DllApi void requestStateChange (SimStateNative newState);
+
 
 /*******************************************************//**
  * Sets scalar value real.
@@ -158,9 +133,9 @@ extern "C" DllApi fmiStatus setScalarValueReal (int idx, double value);
  *******************************************************/
 extern "C" DllApi  void setScalarValues (ScalarValueRealStruct * scalarValueAry , int length);
 
+extern "C" DllApi SimStateNative getSimStateNative();
 
-
-
+extern "C" DllApi FMImodelAttributesStruct * getFMImodelAttributesStruct();
 
 
 

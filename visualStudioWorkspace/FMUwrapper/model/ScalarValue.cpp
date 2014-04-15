@@ -54,7 +54,7 @@ namespace Straylight
 		idx_ = idx_local;
 		scalarVariable_ = (ScalarVariable*)fmu_->modelDescription->modelVariables[idx_];
 
-		valueReference_ = ::getValueReference(scalarVariable_); //unsigned int
+		valueReference_ = ::getValueReference(scalarVariable_);  //unsigned int
 	}
 
 	/*******************************************************//**

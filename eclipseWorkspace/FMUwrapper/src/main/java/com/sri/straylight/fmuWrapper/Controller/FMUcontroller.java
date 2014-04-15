@@ -247,9 +247,13 @@ public class FMUcontroller extends AbstractController {
 		String pathString = pathToWorkingFMU_.toString();
 		jnaFMUWrapper_.xmlParse(pathString);
 
-		ScalarVariablesAllStruct scalarVariablesAllStruct = jnaFMUWrapper_
-				.getAllScalarVariables();
-			
+//		ScalarVariablesAllStruct scalarVariablesAllStruct = jnaFMUWrapper_
+//				.getAllScalarVariables();
+//			
+		
+		
+		ScalarVariablesAllStruct  scalarVariablesAllStruct = jnaFMUWrapper_.getAllScalarVariables();
+		
 		
 		ScalarVariablesAll scalarVariablesAll = new ScalarVariablesAll(scalarVariablesAllStruct,
 				fmuWrapperConfig_.parseInternalVariablesFlag, fmuWrapperConfig_.parseInternalVariableLimit);

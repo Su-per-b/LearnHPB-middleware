@@ -8,7 +8,6 @@ import com.sun.jna.Structure;
  */
 public class ScalarVariablesAllStruct extends Structure {
 	
-	public static class ByReference extends ScalarVariablesAllStruct implements Structure.ByReference { }
 	
 	public ScalarVariableCollectionStruct.ByReference input;
 	public ScalarVariableCollectionStruct.ByReference output;

@@ -10,6 +10,8 @@
 // Headers for CppUnitTest
 #include "CppUnitTest.h"
 
-
+#include <JNAfunctions.h>
+#include <JNAdataTypes.h>
+#include <Logger.h>
 
 // TODO: reference additional headers your program requires here

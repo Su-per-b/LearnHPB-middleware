@@ -4,6 +4,7 @@ package com.sri.straylight.fmuWrapper;
 
 
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
+import com.sri.straylight.fmuWrapper.voNative.FMImodelAttributesStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.ResultOfStepStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
@@ -82,13 +83,7 @@ public interface JNAfmuWrapper extends Library {
 	 */
 	public void xmlParse(String unzipFolder);
 	
-	/**
-	 * Inits the.
-	 *
-	 * @return the int
-	 */
-	public int init();
-	
+
 	/**
 	 * Checks if is simulation complete.
 	 *
@@ -186,8 +181,13 @@ public interface JNAfmuWrapper extends Library {
 	public ScalarValueResultsStruct  getTest();
 
 	
-//	public int getAllTypeDefinitions();
+	public SimStateNative getSimStateNative();
+
 	
+	public FMImodelAttributesStruct getFMImodelAttributesStruct();
+	
+
+
 	
 	
 	

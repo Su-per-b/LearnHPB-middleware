@@ -18,7 +18,7 @@ namespace Straylight
 
 		void extract(const char** attributes, int attributeCount);
 
-		AttributeStruct * toStructArray();
+		FMImodelAttributesStruct * toStruct();
 
 	private:
 

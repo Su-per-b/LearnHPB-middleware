@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config>
+
+
+
+
+	<!--For Debug -->
+	<id>Client-Debug</id>
+	<nativeLibFolderRelativePath>\..\..\visualStudioWorkspace\bin\Debug</nativeLibFolderRelativePath>
+	<unzipFolderRelativePath>\..\..\assets\FMUs\</unzipFolderRelativePath>
+	<fmuFolderName>LearnGB_0v4_02_VAVReheat_ClosedLoop_test</fmuFolderName>
+	
+	<parseInternalVariablesFlagStr>false</parseInternalVariablesFlagStr>
+	<parseInternalVariableLimitStr>500</parseInternalVariableLimitStr>
+
+	<!--For Production		
+
+	<id>Client-Production</id>
+	<nativeLibFolderRelativePath>\native_code</nativeLibFolderRelativePath>
+	<unzipFolderRelativePath>\native_code</unzipFolderRelativePath>
+	<fmuFolderName>fmu</fmuFolderName>
+	
+	<parseInternalVariablesFlagStr>true</parseInternalVariablesFlagStr>
+	<parseInternalVariableLimitStr>500</parseInternalVariableLimitStr>
+	 -->
+	 
+</config>

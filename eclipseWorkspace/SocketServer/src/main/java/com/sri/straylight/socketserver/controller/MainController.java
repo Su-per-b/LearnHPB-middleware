@@ -8,10 +8,10 @@ import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 
 import com.sri.straylight.fmuWrapper.Controller.ThreadedFMUcontroller;
-import com.sri.straylight.fmuWrapper.event.SessionControlEvent;
+import com.sri.straylight.fmuWrapper.event.SessionControlClientRequest;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.util.WorkerThreadAbstract;
-import com.sri.straylight.fmuWrapper.voManaged.SessionControl;
+import com.sri.straylight.fmuWrapper.voManaged.SessionControlModel;
 import com.sri.straylight.socketserver.event.WebSocketConnectionStateEvent;
 import com.sri.straylight.socketserver.model.WebSocketConnectionState;
 
@@ -67,19 +67,19 @@ public class MainController extends AbstractController  {
 	
 	
 	
-	@EventSubscriber(eventClass=SessionControlEvent.class)
-    public void onSessionControlEvent(SessionControlEvent event) {
+	@EventSubscriber(eventClass=SessionControlClientRequest.class)
+    public void onSessionControlEvent(SessionControlClientRequest event) {
 		
-		SessionControl sessionControl = event.getPayload();
+		SessionControlModel sessionControlModel = event.getPayload();
 		
-		int idx = sessionControl.getIdx();
+		int idx = sessionControlModel.getActionAsInt();
 		if (0 == idx) {
 			
     		Object source = event.getSource();
     		WebSocketConnectionController ws = (WebSocketConnectionController) source;
     		
     		String attachSessionID = ws.getSessionID();
-			String hostSessionID = sessionControl.getValue();
+			String hostSessionID = sessionControlModel.getValue();
 			
 
     		if (hostSessionID.equals ("last")) {

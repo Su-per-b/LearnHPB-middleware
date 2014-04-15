@@ -7,32 +7,30 @@ import java.lang.reflect.Type;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
-import com.sri.straylight.fmuWrapper.event.SessionControlEvent;
-import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
-import com.sri.straylight.fmuWrapper.voManaged.SessionControl;
+import com.sri.straylight.fmuWrapper.event.SessionControlClientRequest;
+import com.sri.straylight.fmuWrapper.voManaged.SessionControlModel;
 
 
 
 public class SessionControlEventAdapter 
-	extends AdapterEventBase<SessionControlEvent, SessionControl>
+	extends AdapterEventBase<SessionControlClientRequest, SessionControlModel>
 {
 
 
 	public SessionControlEventAdapter() {
-		super(SessionControlEvent.class, SessionControl.class);
+		super(SessionControlClientRequest.class, SessionControlModel.class);
 	}
 	
     
     @Override
-    public SessionControlEvent deserialize (
+    public SessionControlClientRequest deserialize (
     		JsonElement jsonElement, 
     		Type typeOfT, 
     		JsonDeserializationContext context)
         throws JsonParseException {
 
-    	SessionControl payload = deserializePayload_(jsonElement, typeOfT, context);	
-    	SessionControlEvent event = new SessionControlEvent(this, payload);
+    	SessionControlModel payload = deserializePayload_(jsonElement, typeOfT, context);	
+    	SessionControlClientRequest event = new SessionControlClientRequest(this, payload);
     	
         return event;
 

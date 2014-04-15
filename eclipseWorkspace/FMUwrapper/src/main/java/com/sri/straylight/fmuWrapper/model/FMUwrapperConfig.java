@@ -17,7 +17,7 @@ import com.thoughtworks.xstream.XStream;
 public class FMUwrapperConfig {
 	
 	/** The Constant configFile_. */
-	private static final String configFile_ = "fmuwrapper-config.xml";
+	private static String configFile_ = "fmuwrapper-config.xml";
 	private static FMUwrapperConfig config;
 	
 	//in XML file
@@ -38,7 +38,10 @@ public class FMUwrapperConfig {
 
 	
 	
-	
+	public static FMUwrapperConfig load(String configFile) {
+		configFile_ = configFile;
+		return FMUwrapperConfig.load();
+	}
 	
 	public static FMUwrapperConfig load() {
 		

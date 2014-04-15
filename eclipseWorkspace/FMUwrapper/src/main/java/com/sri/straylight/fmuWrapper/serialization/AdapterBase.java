@@ -13,7 +13,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
 
 public class AdapterBase<T extends JsonSerializable>
 	implements JsonSerializer<T>, JsonDeserializer<T>
@@ -201,21 +200,27 @@ public class AdapterBase<T extends JsonSerializable>
 		
 		SerializeBase serializeObject = serializeMap_.get(type);
 		
+		
+
+			
+			
 		serializeObject.setFieldEx(field, jsonFieldName);
 
-		
 		try {
 			serializeObject.run();
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
 		
+		
+
+		
 	}
 	
 	
 
 	
-	protected void serializeOneField_(String fieldName, Object obj) {
+	protected void jsonObjectAdd_(String fieldName, Object obj) {
 		
 		JsonElement element = serializationContext_.serialize(obj, obj.getClass());
 		jsonObject_.add(fieldName, element);
@@ -240,7 +245,7 @@ public class AdapterBase<T extends JsonSerializable>
 		
 		
 		deserializeHelper_(jsonElement, typeOfT, context);
-		
+
 		
 		return destObject_;
 	}

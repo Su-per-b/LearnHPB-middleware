@@ -25,6 +25,7 @@ namespace Straylight
 		for (int i = 0; i < len; ++i)
 		{
 			delete typeDefVectorReal_[i];
+			typeDefVectorReal_[i] = NULL;
 		}
 		typeDefVectorReal_.clear();
 
@@ -33,6 +34,7 @@ namespace Straylight
 		for (int i = 0; i < len; ++i)
 		{
 			delete typeDefVectorBoolean_[i];
+			typeDefVectorBoolean_[i] = NULL;
 		}
 		typeDefVectorBoolean_.clear();
 
@@ -41,6 +43,7 @@ namespace Straylight
 		for (int i = 0; i < len; ++i)
 		{
 			delete typeDefVectorInteger_[i];
+			typeDefVectorInteger_[i] = NULL;
 		}
 		typeDefVectorInteger_.clear();
 
@@ -49,6 +52,7 @@ namespace Straylight
 		for (int i = 0; i < len; ++i)
 		{
 			delete typeDefVectorEnumeration_[i];
+			typeDefVectorEnumeration_[i] = NULL;
 		}
 		typeDefVectorEnumeration_.clear();
 
@@ -57,6 +61,7 @@ namespace Straylight
 		for (int i = 0; i < len; ++i)
 		{
 			delete typeDefVectorString_[i];
+			typeDefVectorString_[i] = NULL;
 		}
 		typeDefVectorString_.clear();
 

@@ -23,9 +23,16 @@ namespace Straylight
 	MainDataModel::~MainDataModel(void)
 	{
 		delete fmiModelAttributes_;
+		fmiModelAttributes_ = NULL;
+
 		delete unitDefinitions_;
+		unitDefinitions_ = NULL;
+
 		delete typeDefinitions_;
+		typeDefinitions_ = NULL;
+
 		delete scalarVariableDataModel_;
+		scalarVariableDataModel_ = NULL;
 
 	}
 
@@ -210,8 +217,11 @@ namespace Straylight
 
 
 
-	AttributeStruct * MainDataModel::getFmiModelAttributesStruct() {
-		return fmiModelAttributes_->toStructArray();
+	FMImodelAttributesStruct * MainDataModel::getFMImodelAttributesStruct() {
+
+		FMImodelAttributesStruct * fmiModelAttributesStruct = fmiModelAttributes_->toStruct();
+
+		return fmiModelAttributesStruct;
 	}
 
 

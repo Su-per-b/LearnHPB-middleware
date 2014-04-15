@@ -1,4 +1,4 @@
-package com.sri.straylight.fmuWrapper.test;
+package com.sri.straylight.fmuWrapper.test.serialization;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,11 +14,11 @@ import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
+import com.sri.straylight.fmuWrapper.event.SessionControlClientRequest;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
-import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueBoolean;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
@@ -26,6 +26,8 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
+import com.sri.straylight.fmuWrapper.voManaged.SessionControlAction;
+import com.sri.straylight.fmuWrapper.voManaged.SessionControlModel;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct;
@@ -483,11 +485,53 @@ public class EventSerialization {
 		assertEquals(1, scalarValueReal_0.getIdx());
 		assertEquals(2.0, scalarValueReal_0.getValue(), 0.0);
 		
+	}
+	
+	
+	@Test
+	public void sessionControlClientRequest_serialize() {
+		
+
+		SessionControlAction sessionControlAction_0 = SessionControlAction.attachToSession;
+		SessionControlModel sessionControlModel_0 = new SessionControlModel(sessionControlAction_0, "SESS1342");
+		
+		SessionControlClientRequest event_0 = new SessionControlClientRequest(this, sessionControlModel_0);
+
+		String jsonString_0 = event_0.toJsonString();
+		
+		assertEquals(
+				"{\"t\":\"SessionControlClientRequest\",\"payload\":{\"t\":\"SessionControlModel\",\"v\":\"SESS1342\",\"action\":{\"t\":\"SessionControlAction\",\"intValue\":0}}}",
+				jsonString_0);
+		
 		
 	}
 	
 	
+	
+	
+	@Test
+	public void sessionControlClientRequest_deserialize() {
+		
+		String jsonString = "{\"t\":\"SessionControlClientRequest\",\"payload\":{\"t\":\"SessionControlModel\",\"v\":\"SESS1342\",\"action\":{\"t\":\"SessionControlAction\",\"intValue\":0}}}";
+				
+		Object deserializedObject = gsonController_.fromJson(jsonString);
+		assertEquals(SessionControlClientRequest.class, deserializedObject.getClass());
+		
+		SessionControlClientRequest event_0 = (SessionControlClientRequest) deserializedObject;
+		SessionControlModel sessionControlModel_0 = event_0.getPayload();
+		
+		assertEquals(SessionControlAction.attachToSession , sessionControlModel_0.getAction());
+		assertEquals("SESS1342" , sessionControlModel_0.getValue());
 
+		
+		
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 }

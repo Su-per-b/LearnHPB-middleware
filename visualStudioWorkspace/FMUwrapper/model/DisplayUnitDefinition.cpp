@@ -17,6 +17,7 @@ namespace Straylight
 		for (int i = 0; i < len; ++i)
 		{
 			delete attributeStructVector_[i];
+			attributeStructVector_[i] = NULL;
 		}
 		attributeStructVector_.clear();
 

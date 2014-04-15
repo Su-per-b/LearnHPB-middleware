@@ -93,7 +93,7 @@ namespace Straylight
 		*******************************************************/
 		ScalarValueResults * getScalarValueResults(double time);
 
-		AttributeStruct * getFmiModelAttributesStruct();
+		FMImodelAttributesStruct * getFMImodelAttributesStruct();
 
 		BaseUnitStruct *  getBaseUnitStructAry();
 
@@ -104,8 +104,6 @@ namespace Straylight
 		ScalarValue * getOneScalarValue(int idx);
 
 		ScalarVariableRealStruct * getOneScalarVariableStruct(int idx);
-
-		
 
 
 

@@ -2,18 +2,18 @@ package com.sri.straylight.fmuWrapper.event;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
-import com.sri.straylight.fmuWrapper.voManaged.SessionControl;
+import com.sri.straylight.fmuWrapper.voManaged.SessionControlModel;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class ConfigChangeNotify.
  */
-public class SessionControlEvent extends BaseEvent<SessionControl> {
+public class SessionControlClientRequest extends BaseEvent<SessionControlModel> {
 	
 
 	private static final long serialVersionUID = 1L;
 
-	public SessionControlEvent(Object source, SessionControl payload) {
+	public SessionControlClientRequest(Object source, SessionControlModel payload) {
         super(source, payload);
     }
 	
@@ -29,7 +29,7 @@ public class SessionControlEvent extends BaseEvent<SessionControl> {
         if (obj.getClass() != getClass())
             return false;
 
-        SessionControlEvent typedObj = (SessionControlEvent) obj;
+        SessionControlClientRequest typedObj = (SessionControlClientRequest) obj;
         
         return new EqualsBuilder().
                 append(this.payload_, typedObj.getPayload()).

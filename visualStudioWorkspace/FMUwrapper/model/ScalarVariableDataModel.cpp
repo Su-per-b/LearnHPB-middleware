@@ -28,9 +28,16 @@ namespace Straylight
 	{
 
 		delete svAll_;
+		svAll_ = NULL;
+
 		delete svInput_;
+		svInput_ = NULL;
+
 		delete svOutput_;
+		svOutput_ = NULL;
+
 		delete svInternal_;
+		svInternal_ = NULL;
 
 	}
 

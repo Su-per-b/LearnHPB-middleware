@@ -38,36 +38,16 @@ namespace Straylight
 
 		if (NULL != scalarValueCollectionInput_) {
 			delete scalarValueCollectionInput_;
+			scalarValueCollectionInput_ = NULL;
 		}
 
 		if (NULL != scalarValueCollectionOutput_) {
 			delete scalarValueCollectionOutput_;
+			scalarValueCollectionOutput_ = NULL;
 		}
 
 
 	}
-
-	//void ScalarValueResults::extractOneTo(
-	//	ScalarVariableCollection *  scalarVariableCollection,
-	//	ScalarValueCollection * scalarValueCollection
-	//	)
-	//{
-	//	scalarValueCollectionInput_->setReal(extractReal(scalarVariableDataModel_->svInput_->real));
-	//	scalarValueCollectionInput_->setBoolean(extractBoolean(scalarVariableDataModel_->svInput_->boolean));
-
-	//	scalarValueCollectionOutput_->setReal(extractReal(scalarVariableDataModel_->svOutput_->real));
-	//	scalarValueCollectionOutput_->setBoolean(extractBoolean(scalarVariableDataModel_->svOutput_->boolean));
-	//}
-
-
-	//void ScalarValueResults::extract()
-	//{
-	//	scalarValueCollectionInput_->setReal(extractReal(scalarVariableDataModel_->svInput_->real)) ;
-	//	scalarValueCollectionInput_->setBoolean(extractBoolean(scalarVariableDataModel_->svInput_->boolean));
-
-	//	scalarValueCollectionOutput_->setReal(extractReal(scalarVariableDataModel_->svOutput_->real));
-	//	scalarValueCollectionOutput_->setBoolean(extractBoolean(scalarVariableDataModel_->svOutput_->boolean));
-	//}
 
 
 

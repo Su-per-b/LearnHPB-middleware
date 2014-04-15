@@ -10,7 +10,7 @@ import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
-import com.sri.straylight.fmuWrapper.event.SessionControlEvent;
+import com.sri.straylight.fmuWrapper.event.SessionControlClientRequest;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
@@ -21,6 +21,8 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
+import com.sri.straylight.fmuWrapper.voManaged.SessionControlAction;
+import com.sri.straylight.fmuWrapper.voManaged.SessionControlModel;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct;
@@ -161,9 +163,10 @@ public class JsonController {
 		
 		register_(ConfigChangeNotify.class, new ConfigChangeNotifyAdapter());
 		register_(ScalarValueChangeRequest.class, new ScalarValueChangeRequestAdapter());
-		register_(SessionControlEvent.class, new SessionControlEventAdapter());
+		register_(SessionControlClientRequest.class, new SessionControlEventAdapter());
 		
-		//register_(Vector.class, new VectorAdapter());
+		register_(SessionControlAction.class, new SessionControlActionAdapter());
+		register_(SessionControlModel.class, new SessionControlModelAdapter());
 		
 		
 		

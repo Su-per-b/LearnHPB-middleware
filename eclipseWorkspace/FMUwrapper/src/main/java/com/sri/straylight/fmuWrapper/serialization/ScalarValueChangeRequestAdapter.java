@@ -6,10 +6,8 @@ import java.lang.reflect.Type;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
-import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 
 
 

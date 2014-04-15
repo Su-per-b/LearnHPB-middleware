@@ -56,14 +56,17 @@ namespace Straylight
 
 		if(NULL != configStruct_ ) {
 			delete configStruct_;
+			configStruct_ = NULL;
 		}
 
 		if (NULL != scalarValueResults_) {
 			delete scalarValueResults_;
+			scalarValueResults_ = NULL;
 		}
 
 		if (NULL != resultOfStep_) {
 			delete resultOfStep_;
+			resultOfStep_ = NULL;
 		}
 
 		
@@ -88,15 +91,19 @@ namespace Straylight
 
 
 			delete fmu_;
+			fmu_ = NULL;
 		}
 
 
 		if(NULL != mainDataModel_) {
 			delete mainDataModel_;
+			mainDataModel_ = NULL;
 		}
 		
+		Logger* logger = Logger::getInstance();
 
-		delete Logger::getInstance();
+		delete logger;
+		logger = NULL;
 
 		printf(_T("deconstructor done"));
 	}

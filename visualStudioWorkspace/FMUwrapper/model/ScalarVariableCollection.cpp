@@ -19,6 +19,7 @@ namespace Straylight
 		for (int i = 0; i < len; ++i)
 		{
 			delete real[i];
+			real[i] = NULL;
 		}
 		real.clear();
 
@@ -26,6 +27,7 @@ namespace Straylight
 		for (int i = 0; i < len; ++i)
 		{
 			delete boolean[i];
+			boolean[i] = NULL;
 		}
 		boolean.clear();
 
@@ -33,6 +35,7 @@ namespace Straylight
 		for (int i = 0; i < len; ++i)
 		{
 			delete integer[i];
+			integer[i] = NULL;
 		}
 		integer.clear();
 
@@ -40,6 +43,7 @@ namespace Straylight
 		for (int i = 0; i < len; ++i)
 		{
 			delete enumeration[i];
+			enumeration[i] = NULL;
 		}
 		enumeration.clear();
 
@@ -48,6 +52,7 @@ namespace Straylight
 		for (int i = 0; i < len; ++i)
 		{
 			delete string[i];
+			string[i] = NULL;
 		}
 		string.clear();
 

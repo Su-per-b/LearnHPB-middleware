@@ -56,7 +56,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;$(SolutionDir)expat;$(SolutionDir)FMUwrapper\qtronic;$(SolutionDir)FMUwrapper\model;$(SolutionDir)FMUwrapper\controller;$(SolutionDir)FMUwrapper</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;$(SolutionDir)expat;$(SolutionDir)FMUwrapper\qtronic;$(SolutionDir)FMUwrapper\model;$(SolutionDir)FMUwrapper\test;$(SolutionDir)FMUwrapper\controller;$(SolutionDir)FMUwrapper</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <PrecompiledHeaderOutputFile>$(SolutionDir)tmp\$(MSBuildProjectName)\$(TargetName).pch</PrecompiledHeaderOutputFile>
@@ -90,16 +90,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="JNAfunctionsT.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TestMainController.h" />
+    <ClInclude Include="MainControllerT.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="JNAfunctionsT.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TestMainController.cpp" />
+    <ClCompile Include="MainControllerT.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\expat\expat.vcxproj">

@@ -6,31 +6,52 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 
-public class SessionControl 
+public class SessionControlModel 
 		implements JsonSerializable
 {
 
-	protected int idx_;
-	protected String value_;
+	protected SessionControlAction action_;
+	protected String value_ = "";
 	
-
-
 	
 	//constructor 1
-	public SessionControl(int idx, String value) {
+	public SessionControlModel() {
+		super();
+	}
+	
+	
+	//constructor 2
+	public SessionControlModel(SessionControlAction action, String value) {
 		super();
 		
-		idx_ = idx;
+		action_ = action;
 		value_ = value;
 	}
+	
+	//constructor 3
+	public SessionControlModel(SessionControlAction action) {
+		super();
+		setAction(action);
 
+	}
+	
+	
 	
 	public String getValue() {
 		return value_;
 	}
 	
-	public int getIdx() {
-		return idx_;
+	
+	public SessionControlAction getAction() {
+		return action_;
+	}
+
+	public int getActionAsInt() {
+		return action_.getIntValue();
+	}
+
+	public String getActionAsString() {
+		return action_.toString();
 	}
 	
 
@@ -59,11 +80,19 @@ public class SessionControl
         if (obj.getClass() != getClass())
             return false;
 
-//        SessionControlEvent typedObj = (SessionControlEvent) obj;
+        SessionControlModel typedObj = (SessionControlModel) obj;
         
         return new EqualsBuilder().
-            isEquals();
+                append(this.action_, typedObj.getAction()).
+        		append(this.value_, typedObj.getValue()).
+                isEquals();
+        
     }
+
+
+	public void setAction(SessionControlAction action) {
+		action_ = action;
+	}
 
 
 

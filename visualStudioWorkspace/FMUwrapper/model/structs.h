@@ -17,6 +17,15 @@ typedef struct {
 } AttributeStruct;
 
 
+typedef struct {
+
+	AttributeStruct * attributeStructAry;
+	int attributeStructSize;
+
+} FMImodelAttributesStruct;
+
+
+
 
 /*******************************************************//**
  * Defines an alias representing the structure.

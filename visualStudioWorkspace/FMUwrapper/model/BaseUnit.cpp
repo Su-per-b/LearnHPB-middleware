@@ -40,6 +40,7 @@ namespace Straylight
 		for (int i = 0; i < len; ++i)
 		{
 			delete attributeStructVector_[i];
+			attributeStructVector_[i] = NULL;
 		}
 		attributeStructVector_.clear();
 
@@ -48,6 +49,7 @@ namespace Straylight
 		for (int i = 0; i < len; ++i)
 		{
 			delete displayUnitDefinitionVector_[i];
+			displayUnitDefinitionVector_[i] = NULL;
 		}
 		displayUnitDefinitionVector_.clear();
 
