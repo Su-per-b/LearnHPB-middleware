@@ -12,6 +12,7 @@
 using namespace Straylight;
 
 
+
 extern "C" DllApi ScalarVariablesAllStruct * test_GetScalarVariablesAllStruct();
 
 extern "C" DllApi ScalarVariablesAllStruct * test_GetScalarVariablesAllStruct2();
@@ -22,5 +23,4 @@ extern "C" DllApi ScalarValueRealStruct * test_GetScalarValueRealStruct();
 
 extern "C" DllApi ScalarVariableRealStruct * test_GetScalarVariableRealStruct();
 
-
-
+extern "C" DllApi TypeSpecReal * test_GetTypeSpecReal();

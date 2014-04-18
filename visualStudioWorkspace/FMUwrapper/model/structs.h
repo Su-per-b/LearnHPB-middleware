@@ -54,6 +54,8 @@ typedef struct {
 	double min;
 	double max;
 
+	const char * unit;
+
 	/*******************************************************//**
 	 * The start value status.
 	 *******************************************************/
@@ -66,7 +68,6 @@ typedef struct {
 	int minValueStatus;
 	int maxValueStatus;
 
-	const char * unit;
 	int unitValueStatus;
 
 

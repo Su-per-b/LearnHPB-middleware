@@ -4,6 +4,7 @@ import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableCollectionStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariablesAllStruct;
+import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
 import com.sun.jna.Library;
 
 
@@ -15,12 +16,17 @@ public interface JNAdataTypes extends Library {
 	
 	public ScalarVariablesAllStruct test_GetScalarVariablesAllStruct2();
 	
-	public ScalarVariableCollectionStruct test_GetScalarVariableCollectionStruct();
+	public ScalarVariableCollectionStruct.ByReference test_GetScalarVariableCollectionStruct();
 	
 	public ScalarValueRealStruct test_GetScalarValueRealStruct();
 	
 	public ScalarVariableRealStruct test_GetScalarVariableRealStruct();
 	
 	
+	public TypeSpecReal test_GetTypeSpecReal();
+	
+	
+	
+
 }
 

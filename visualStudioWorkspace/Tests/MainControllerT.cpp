@@ -41,7 +41,7 @@ namespace StraylightTests
 
 	public:
 
-		TEST_METHOD(C01_Connect)
+		TEST_METHOD(T01_Connect)
 		{
 			Config::getInstance()->setAutoCorrect(true);
 
@@ -69,10 +69,10 @@ namespace StraylightTests
 		}
 
 
-		TEST_METHOD(C02_XMLParse)
+		TEST_METHOD(T02_XMLParse)
 		{
 
-			C01_Connect();
+			T01_Connect();
 
 			int result = mainController_->xmlParse(FMU_FOLDER);
 
@@ -87,10 +87,10 @@ namespace StraylightTests
 		}
 
 
-		TEST_METHOD(C03_GetConfig)
+		TEST_METHOD(T03_GetConfig)
 		{
 
-			C02_XMLParse();
+			T02_XMLParse();
 
 			ConfigStruct * config = mainController_->getConfig();
 			Assert::IsNotNull(config);
@@ -107,10 +107,10 @@ namespace StraylightTests
 		}
 
 
-		TEST_METHOD(C04_FMImodelAttributes)
+		TEST_METHOD(T04_FMImodelAttributes)
 		{
 
-			C03_GetConfig();
+			T03_GetConfig();
 
 			MainDataModel * mainDataModel = mainController_->getMainDataModel();
 			FMImodelAttributesStruct * fmiModelAttributesStruct = mainDataModel->getFMImodelAttributesStruct();
@@ -158,10 +158,10 @@ namespace StraylightTests
 		}
 
 
-		TEST_METHOD(C05_BaseUnitStruct)
+		TEST_METHOD(T05_BaseUnitStruct)
 		{
 
-			C03_GetConfig();
+			T03_GetConfig();
 
 			MainDataModel * mainDataModel = mainController_->getMainDataModel();
 			Assert::IsNotNull(mainDataModel);
@@ -195,10 +195,10 @@ namespace StraylightTests
 		}
 
 
-		TEST_METHOD(C06_Step)
+		TEST_METHOD(T06_Step)
 		{
 
-			C03_GetConfig();
+			T03_GetConfig();
 			Assert::AreEqual(SimStateNative::simStateNative_2_xmlParse_completed, Utils::simStateNative);
 
 			mainController_->requestStateChange(SimStateNative::simStateNative_3_init_requested);
@@ -214,10 +214,10 @@ namespace StraylightTests
 
 
 
-		TEST_METHOD(C07_GetOneScalarValue)
+		TEST_METHOD(T07_GetOneScalarValue)
 		{
 
-			C03_GetConfig();
+			T03_GetConfig();
 			Assert::AreEqual(SimStateNative::simStateNative_2_xmlParse_completed, Utils::simStateNative);
 
 			mainController_->requestStateChange(SimStateNative::simStateNative_3_init_requested);
@@ -234,10 +234,10 @@ namespace StraylightTests
 		}
 
 
-		TEST_METHOD(C08_GetOneScalarVariable)
+		TEST_METHOD(T08_GetOneScalarVariable)
 		{
 
-			C03_GetConfig();
+			T03_GetConfig();
 			Assert::AreEqual(SimStateNative::simStateNative_2_xmlParse_completed, Utils::simStateNative);
 
 			mainController_->requestStateChange(SimStateNative::simStateNative_3_init_requested);
@@ -276,16 +276,14 @@ namespace StraylightTests
 
 
 
-		TEST_METHOD(C09_SetOneScalarValueContinous)
+		TEST_METHOD(T09_SetOneScalarValueContinous)
 		{
 
-			C03_GetConfig();
+			T03_GetConfig();
 			Assert::AreEqual(SimStateNative::simStateNative_2_xmlParse_completed, Utils::simStateNative);
 
 			mainController_->requestStateChange(SimStateNative::simStateNative_3_init_requested);
 			Assert::AreEqual(SimStateNative::simStateNative_3_ready, Utils::simStateNative);
-
-
 
 			//formulate request
 			ScalarValueRealStruct * scalarValueRealStruct1 = new ScalarValueRealStruct();
@@ -300,15 +298,14 @@ namespace StraylightTests
 		}
 
 
-		TEST_METHOD(C10_SetOneScalarValue)
+		TEST_METHOD(T10_SetOneScalarValue)
 		{
 
-			C03_GetConfig();
+			T03_GetConfig();
 			Assert::AreEqual(SimStateNative::simStateNative_2_xmlParse_completed, Utils::simStateNative);
 
 			mainController_->requestStateChange(SimStateNative::simStateNative_3_init_requested);
 			Assert::AreEqual(SimStateNative::simStateNative_3_ready, Utils::simStateNative);
-
 
 			//change a scalarValue
 			ScalarValueRealStruct * scalarValueRealStruct1 = new ScalarValueRealStruct();

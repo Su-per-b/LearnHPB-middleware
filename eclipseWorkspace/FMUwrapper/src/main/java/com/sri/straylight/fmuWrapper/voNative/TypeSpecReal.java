@@ -26,7 +26,7 @@ public class TypeSpecReal
 	public double nominal;
 	public double min;
 	public double max;
-	public String unit = "";
+	public String unit;
 	
 	public int startValueStatus = 0;
 	public int nominalValueStatus = 0;

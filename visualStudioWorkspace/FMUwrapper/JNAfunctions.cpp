@@ -127,10 +127,17 @@ ScalarVariablesAllStruct * getAllScalarVariables() {
 
 	ScalarVariableCollection * inputCollection = model->scalarVariableDataModel_->svInput_;
 	ScalarVariableCollectionStruct * inputStruct = inputCollection->toStruct();
-
 	scalarVariablesAllStruct->input = inputStruct;	
-	return scalarVariablesAllStruct;
 
+	ScalarVariableCollection * outputCollection = model->scalarVariableDataModel_->svOutput_;
+	ScalarVariableCollectionStruct * outputStruct = outputCollection->toStruct();
+	scalarVariablesAllStruct->output = outputStruct;
+
+	ScalarVariableCollection * internalCollection = model->scalarVariableDataModel_->svInternal_;
+	ScalarVariableCollectionStruct * internalStruct = internalCollection->toStruct();
+	scalarVariablesAllStruct->internal = internalStruct;
+
+	return scalarVariablesAllStruct;
 }
 
 

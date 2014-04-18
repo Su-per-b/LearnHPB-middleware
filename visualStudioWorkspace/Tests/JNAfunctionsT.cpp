@@ -10,11 +10,11 @@ namespace StraylightTests
 {
 
 
-	TEST_CLASS(JNAfunctionsTest)
+	TEST_CLASS(JNAfunctionsT)
 	{
 
 
-		void JNAfunctionsTest::assertSimState_(SimStateNative simStateNativeExpected) {
+		void JNAfunctionsT::assertSimState_(SimStateNative simStateNativeExpected) {
 
 			SimStateNative simStateNativeActual = getSimStateNative();
 			Assert::AreEqual(simStateNativeExpected, simStateNativeActual);
