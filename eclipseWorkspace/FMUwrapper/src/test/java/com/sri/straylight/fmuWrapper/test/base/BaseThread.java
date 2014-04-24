@@ -29,19 +29,22 @@ public abstract class BaseThread extends Thread {
 
 	
 	/** The next state expected. */
-	private static SimStateNative nextStateExpected_;
+	private SimStateNative nextStateExpected_;
 	
 	private FMUcontroller fmuController_;
 	
 	/** The main barrier. */
-	private final CyclicBarrier mainBarrier_ = new CyclicBarrier(2);
+	private CyclicBarrier mainBarrier_;
 	
-	private final CyclicBarrier stateChangeBarrier_ = new CyclicBarrier(2);
+	protected CyclicBarrier stateChangeBarrier_;
 	
 	
 	
 	public BaseThread(){
 		AnnotationProcessor.process(this);
+		mainBarrier_ = new CyclicBarrier(2);
+		stateChangeBarrier_ = new CyclicBarrier(2);
+		
 	}
 	
 	
@@ -75,7 +78,14 @@ public abstract class BaseThread extends Thread {
 	    SimStateNative simStateNative = event.getPayload();
 	    Assert.assertEquals(nextStateExpected_, simStateNative);
 	    
-		awaitOnStateChangeBarrier();
+	    if (nextStateExpected_ == simStateNative) {
+			awaitOnStateChangeBarrier();
+	    } else {
+	    	
+			throw new RuntimeException();
+	    }
+	    
+
 	}
 	
 	
@@ -93,6 +103,17 @@ public abstract class BaseThread extends Thread {
 	private void awaitOnStateChangeBarrier() {
 		awaitOnBarrier(stateChangeBarrier_);
 	}
+	
+	
+	public void cleanup() {
+
+
+		mainBarrier_.reset();
+		stateChangeBarrier_.reset();
+
+		
+	}
+	
 	
 	
 	/**
@@ -120,6 +141,8 @@ public abstract class BaseThread extends Thread {
 	
 	
 	private void registerSimulationListeners_() {
+		
+
 		
 		//SimStateNativeNotify
 		fmuController_.registerEventListener(

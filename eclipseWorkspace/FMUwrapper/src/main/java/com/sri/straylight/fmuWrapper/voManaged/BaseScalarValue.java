@@ -1,13 +1,10 @@
 package com.sri.straylight.fmuWrapper.voManaged;
 
-import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 
-public class BaseScalarValue implements JsonSerializable {
+public class BaseScalarValue extends JsonSerializable {
 	
 
-	
-	
 	/** The idx. */
 	protected int idx_;
 	
@@ -20,11 +17,6 @@ public class BaseScalarValue implements JsonSerializable {
 		
 	}
 
-
-	@Override
-	public String toJsonString() {
-		return JsonController.getInstance().toJsonString(this);
-	}
 
 	public int getIdx() {
 		return idx_;

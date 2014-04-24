@@ -1,7 +1,7 @@
 package com.sri.straylight.fmuWrapper.voNative;
 
+import com.sri.straylight.fmuWrapper.serialization.Iserializable;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
-import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sun.jna.Structure;
 
 /**
@@ -9,7 +9,7 @@ import com.sun.jna.Structure;
  */
 public class DefaultExperimentStruct
 	extends Structure
-	implements JsonSerializable {
+	implements Iserializable {
 	
 	/**
 	 * The Class ByReference.

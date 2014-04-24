@@ -9,14 +9,14 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 import com.sri.straylight.client.event.WebSocketEvent;
 import com.sri.straylight.client.event.WebSocketEventType;
 import com.sri.straylight.client.model.WebSocketState;
-import com.sri.straylight.fmuWrapper.event.BaseEvent;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
+import com.sri.straylight.fmuWrapper.event.SerializableEvent;
 import com.sri.straylight.fmuWrapper.event.SimStateClientNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
+import com.sri.straylight.fmuWrapper.serialization.Iserializable;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
-import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.util.WorkerThreadAbstract;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
@@ -117,10 +117,10 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 				
 				System.out.println( "onMessage : " + jsonString);
 				
-				JsonSerializable deserializedObject = gsonController_
+				Iserializable deserializedObject = gsonController_
 						.fromJson(jsonString);
 
-				if (deserializedObject instanceof BaseEvent) {
+				if (deserializedObject instanceof SerializableEvent) {
 					EventBus.publish(deserializedObject);
 				}
 

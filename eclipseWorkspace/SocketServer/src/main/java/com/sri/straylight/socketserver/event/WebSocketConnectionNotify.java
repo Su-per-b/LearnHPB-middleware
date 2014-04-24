@@ -1,9 +1,9 @@
 package com.sri.straylight.socketserver.event;
 
-import com.sri.straylight.fmuWrapper.event.BaseEvent;
+import com.sri.straylight.fmuWrapper.event.SerializableEvent;
 import com.sri.straylight.socketserver.controller.StrayLightWebSocketHandler;
 
-public class WebSocketConnectionNotify extends BaseEvent<StrayLightWebSocketHandler> {
+public class WebSocketConnectionNotify extends SerializableEvent<StrayLightWebSocketHandler> {
 
 	private static final long serialVersionUID = 1L;
 //	private StraylightWebSocket payload_;

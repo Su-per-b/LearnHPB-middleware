@@ -12,6 +12,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.reflect.TypeToken;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
+import com.sri.straylight.fmuWrapper.voManaged.SerializableVector;
 
 
 /**
@@ -19,7 +20,7 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
  */
 public class ScalarVariableCollectionAdapter extends AdapterBase<ScalarVariableCollection> {
 
-	final protected Type realListType_ = new TypeToken<Vector<ScalarVariableReal>>(){}.getType();
+	final protected Type realListType_ = new TypeToken<SerializableVector<ScalarVariableReal>>(){}.getType();
 	
 	public ScalarVariableCollectionAdapter() {
 		
@@ -35,9 +36,9 @@ public class ScalarVariableCollectionAdapter extends AdapterBase<ScalarVariableC
 			JsonSerializationContext context) {
 
 		super.serialize(src, typeOfSrc, context);
-		Vector<ScalarVariableReal> realVarList = src.getRealVarList();
+		SerializableVector<ScalarVariableReal> realVarList = src.getRealVarList();
 		
-		JsonElement element = serializationContext_.serialize(realVarList, realListType_);
+		JsonElement element = serializationContext_.serialize(realVarList);
 		
 		jsonObject_.add("realVarList_", element);
 		return jsonObject_;
@@ -54,7 +55,7 @@ public class ScalarVariableCollectionAdapter extends AdapterBase<ScalarVariableC
 		super.deserialize(jsonElement, typeOfT, context);
 		
 		JsonElement jsonElementReal = jsonObject_.get("realVarList_");
-		Vector<ScalarVariableReal> realVarList = context.deserialize(jsonElementReal, realListType_);
+		SerializableVector<ScalarVariableReal> realVarList = context.deserialize(jsonElementReal, realListType_);
 		
 		destObject_.setRealVarList(realVarList);
 		

@@ -1,11 +1,11 @@
 package com.sri.straylight.fmuWrapper.voManaged;
 
+import com.sri.straylight.fmuWrapper.serialization.Iserializable;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
-import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.voNative.JnaEnum;
 
 
-public enum SessionControlAction implements JnaEnum<SessionControlAction>, JsonSerializable  {
+public enum SessionControlAction implements JnaEnum<SessionControlAction>,  Iserializable   {
 	
 	attachToSession,  // 0 - value is sessionID
 	getInfo; // value is not used
@@ -43,10 +43,9 @@ public enum SessionControlAction implements JnaEnum<SessionControlAction>, JsonS
 	}
 
 
-	@Override
+
 	public String toJsonString() {
 		return JsonController.getInstance().toJsonString(this);
 	}
-
 	
 }

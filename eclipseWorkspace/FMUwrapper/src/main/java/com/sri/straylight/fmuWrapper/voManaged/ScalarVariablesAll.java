@@ -12,7 +12,7 @@ import com.sri.straylight.fmuWrapper.voNative.ScalarVariablesAllStruct;
 /**
  * The Class ScalarVariablesAll.
  */
-public class ScalarVariablesAll implements JsonSerializable{
+public class ScalarVariablesAll extends JsonSerializable{
 
 	private ScalarVariableCollection input_;
 	private ScalarVariableCollection output_;

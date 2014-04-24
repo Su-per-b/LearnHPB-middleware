@@ -4,17 +4,16 @@
 
 
 		ScalarVariablesAllStruct * test_GetScalarVariablesAllStruct() {
+
 			ScalarVariablesAllStruct * theStruct = new ScalarVariablesAllStruct();
+
+			theStruct->input = test_GetScalarVariableCollectionStruct();
+			theStruct->output = test_GetScalarVariableCollectionStruct();
+			theStruct->internal = test_GetScalarVariableCollectionStruct();
+
 			return theStruct;
 		}
 
-
-		ScalarVariablesAllStruct * test_GetScalarVariablesAllStruct2() {
-			ScalarVariablesAllStruct * theStruct = new ScalarVariablesAllStruct();
-
-
-			return theStruct;
-		}
 
 
 

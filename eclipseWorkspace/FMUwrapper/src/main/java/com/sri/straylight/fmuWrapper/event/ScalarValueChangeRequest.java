@@ -8,7 +8,7 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 /**
  * The Class ScalarValueChangeRequest.
  */
-public class ScalarValueChangeRequest extends BaseEvent<ScalarValueCollection> {
+public class ScalarValueChangeRequest extends SerializableEvent<ScalarValueCollection> {
 	
 	
 	

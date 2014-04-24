@@ -1,23 +1,18 @@
 package com.sri.straylight.fmuWrapper.voManaged;
 
-import java.util.Vector;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import com.sri.straylight.fmuWrapper.serialization.JsonController;
-import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
 
 public class ScalarVariableReal 
 		extends BaseScalarVariable 
-		implements JsonSerializable
 {
 
 	private TypeSpecReal typeSpecReal_;
 	
-
+	
 	public TypeSpecReal getTypeSpecReal() {
 		return typeSpecReal_;
 	}
@@ -39,6 +34,7 @@ public class ScalarVariableReal
 
 	}
 
+	
 	
 	public String getUnit() {
 		
@@ -72,10 +68,10 @@ public class ScalarVariableReal
 	}
 
 
-	public static Vector<ScalarVariableReal> makeList (
+	public static SerializableVector<ScalarVariableReal> makeList (
 			ScalarVariableRealStruct[] realVarStruct) {
 			
-		Vector<ScalarVariableReal> list = new Vector<ScalarVariableReal>();
+		SerializableVector<ScalarVariableReal> list = new SerializableVector<ScalarVariableReal>("ScalarVariableReal");
 		
 		int len = realVarStruct.length;
 		for (int i = 0; i < len; i++) {
@@ -89,11 +85,6 @@ public class ScalarVariableReal
 	}
 
 
-	@Override
-	public String toJsonString() {
-		return JsonController.getInstance().toJsonString(this);
-	}
-	
 	
 	 @Override
     public int hashCode() {

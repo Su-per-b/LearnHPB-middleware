@@ -2,9 +2,12 @@ package com.sri.straylight.fmuWrapper.serialization;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.util.HashMap;
 
-import junit.framework.Assert;
+import org.junit.Assert;
+
+import org.apache.commons.math.util.MathUtils;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -14,7 +17,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-public class AdapterBase<T extends JsonSerializable>
+public class AdapterBase<T>
 	implements JsonSerializer<T>, JsonDeserializer<T>
 
 {
@@ -32,10 +35,12 @@ public class AdapterBase<T extends JsonSerializable>
 	protected HashMap<Type, SerializeBase> serializeMap_ = new HashMap<Type, SerializeBase>();
 	protected HashMap<Type, DeserializeBase> deserializeMap_ = new HashMap<Type, DeserializeBase>();
 	
+	
 
 	
+	
 	protected String typeString_ = "";
-	private Class<T> clazz_;
+	protected Class<T> clazz_;
 
 	protected String[] fieldNames_ = null;
 	private String[][] fieldNamesEx_ = null;
@@ -66,9 +71,6 @@ public class AdapterBase<T extends JsonSerializable>
 
 
 	
-	public void setTypeString(String typeString) {
-		typeString_ = typeString;
-	}
 	
 	public String getTypeString() {
 		return typeString_;
@@ -99,6 +101,7 @@ public class AdapterBase<T extends JsonSerializable>
 
 	}
 	
+	
 	protected JsonElement init(T src, Type typeOfSrc,
 			JsonSerializationContext context) {
 
@@ -108,6 +111,7 @@ public class AdapterBase<T extends JsonSerializable>
 		serializationContext_ = context;
 		jsonObject_ = new JsonObject();
 		
+
 		if ("" == typeString_) {
 			jsonObject_.add("t", new JsonPrimitive(src.getClass()
 					.getCanonicalName()));
@@ -437,8 +441,20 @@ public class AdapterBase<T extends JsonSerializable>
 		@Override
 		public void run() throws IllegalArgumentException,
 				IllegalAccessException {
-			Object obj = javaField_.get(sourceObject_);
-			JsonPrimitive primitive = new JsonPrimitive((Double) obj);
+ 			Object obj = javaField_.get(sourceObject_);
+			
+			Double theDouble = (Double) obj;
+			Double theDoubleRouded = MathUtils.round(theDouble, 0, BigDecimal.ROUND_HALF_DOWN);
+			
+			JsonPrimitive primitive;
+			
+			if( (double) theDouble == (double)theDoubleRouded) {
+				int theInt = theDouble.intValue();
+				primitive = new JsonPrimitive(theInt);
+			} else {
+				primitive = new JsonPrimitive(theDouble);
+			}
+			
 			jsonObject_.add(getJsonFieldName_(), primitive);
 		}
 
@@ -541,7 +557,7 @@ public class AdapterBase<T extends JsonSerializable>
 
 
 
-	private void setClass_() {
+	protected void setClass_() {
 		
 		String classNameString = clazz_.toString();
 		String[] parts = classNameString.split("\\.");
@@ -551,6 +567,8 @@ public class AdapterBase<T extends JsonSerializable>
 		
 		String[] parts2 = shortClassName.split("\\$");
 		shortClassName = parts2[0];
+		
+		
 		
 		typeString_ = shortClassName;
 

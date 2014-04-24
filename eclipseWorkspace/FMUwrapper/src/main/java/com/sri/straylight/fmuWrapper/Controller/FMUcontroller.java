@@ -157,12 +157,11 @@ public class FMUcontroller extends AbstractController {
 			
 			
 			if (fireEventsForStates_.containsKey(simStateNative)) {
+				
 				SimStateNativeNotify e = new SimStateNativeNotify(this, simStateNative);
 				fireEvent(e);
 				
 				//System.out.println("FMUcontroller.stateChangeCallback() sessionID:" + simStateNative.getIntValue());
-		    	
-
 			}
 
 			return true;

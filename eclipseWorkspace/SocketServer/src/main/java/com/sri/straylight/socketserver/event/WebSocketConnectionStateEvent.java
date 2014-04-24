@@ -1,11 +1,11 @@
 package com.sri.straylight.socketserver.event;
 
-import com.sri.straylight.fmuWrapper.event.BaseEvent;
+import com.sri.straylight.fmuWrapper.event.SerializableEvent;
 import com.sri.straylight.socketserver.controller.StrayLightWebSocketHandler;
 import com.sri.straylight.socketserver.model.WebSocketConnectionState;
 
 
-public class WebSocketConnectionStateEvent extends BaseEvent<WebSocketConnectionState> {
+public class WebSocketConnectionStateEvent extends SerializableEvent<WebSocketConnectionState> {
 	
 	
 	private static final long serialVersionUID = 1L;

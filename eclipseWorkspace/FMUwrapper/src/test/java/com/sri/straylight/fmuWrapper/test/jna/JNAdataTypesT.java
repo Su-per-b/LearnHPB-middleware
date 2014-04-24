@@ -11,20 +11,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sri.straylight.fmuWrapper.JNAfmuWrapper;
 import com.sri.straylight.fmuWrapper.JNAfmuWrapper.MessageCallbackInterface;
 import com.sri.straylight.fmuWrapper.JNAfmuWrapper.ResultCallbackInterface;
 import com.sri.straylight.fmuWrapper.JNAfmuWrapper.StateChangeCallbackInterface;
 import com.sri.straylight.fmuWrapper.test.base.JNAdataTypes;
-import com.sri.straylight.fmuWrapper.voManaged.FMImodelAttributes;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
-import com.sri.straylight.fmuWrapper.voNative.AttributeStruct;
-import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
-import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct;
 import com.sri.straylight.fmuWrapper.voNative.Enu;
 import com.sri.straylight.fmuWrapper.voNative.EnumTypeMapper;
-import com.sri.straylight.fmuWrapper.voNative.FMImodelAttributesStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueResultsStruct;
@@ -83,8 +77,6 @@ public class JNAdataTypesT {
 		ScalarVariablesAllStruct scalarVariablesAllStruct_0 = jnaDataTypes_.test_GetScalarVariablesAllStruct();
 		assertNotNull(scalarVariablesAllStruct_0);
 		
-		ScalarVariablesAllStruct scalarVariablesAllStruct_1 = jnaDataTypes_.test_GetScalarVariablesAllStruct2();
-		assertNotNull(scalarVariablesAllStruct_1);
 		
 		
 		ScalarVariableCollectionStruct scalarVariableCollectionStruct = jnaDataTypes_.test_GetScalarVariableCollectionStruct();
@@ -180,15 +172,12 @@ public class JNAdataTypesT {
 		
 		Assert.assertEquals(2, realSize);
 		
-		
 		ScalarVariableRealStruct  scalarVariableReal_0 = realVariableAry[0];
 		ScalarVariableRealStruct  scalarVariableReal_1 = realVariableAry[1];
-		
 		
 		assertNotNull(scalarVariableReal_0);
 		assertNotNull(scalarVariableReal_1);
 		
-
 		int causality = Enu.enu_input.getIntValue();
 		Assert.assertEquals(causality, scalarVariableReal_0.causality);
 		Assert.assertEquals("The Description", scalarVariableReal_0.description);

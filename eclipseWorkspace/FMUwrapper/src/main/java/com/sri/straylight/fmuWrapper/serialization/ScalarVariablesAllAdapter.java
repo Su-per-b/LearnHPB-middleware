@@ -32,7 +32,13 @@ public class ScalarVariablesAllAdapter extends AdapterBase<ScalarVariablesAll> {
 
 		jsonObjectAdd_("input", src.getInput());
 		jsonObjectAdd_("output", src.getOutput());
-		jsonObjectAdd_("internal", src.getInternal());
+		
+		
+		ScalarVariableCollection internal = src.getInternal();
+		if (null != internal) {
+			jsonObjectAdd_("internal", internal);
+		}
+
 
 		return jsonObject_;
 	}

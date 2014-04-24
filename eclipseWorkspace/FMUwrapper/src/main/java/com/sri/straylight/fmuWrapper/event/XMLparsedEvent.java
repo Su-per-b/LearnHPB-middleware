@@ -8,7 +8,7 @@ import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 /**
  * The Class XMLparsedEvent.
  */
-public class XMLparsedEvent extends BaseEvent<XMLparsedInfo> {
+public class XMLparsedEvent extends SerializableEvent<XMLparsedInfo> {
 	
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

@@ -8,8 +8,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bushe.swing.event.EventBus;
 
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
-import com.sri.straylight.fmuWrapper.serialization.JsonController;
-import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -20,7 +18,7 @@ import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
  * @param <PAYLOAD> the generic type
  * @author Christian Bauer
  */
-public class BaseEvent<PAYLOAD> extends EventObject implements JsonSerializable {
+public class BaseEvent<PAYLOAD> extends EventObject  {
 
 
     protected PAYLOAD payload_;
@@ -74,9 +72,7 @@ public class BaseEvent<PAYLOAD> extends EventObject implements JsonSerializable 
     }
 
     
-    public String toJsonString() {
-    	return JsonController.getInstance().toJsonString(this);
-    }
+
 
     @Override
     public int hashCode() {

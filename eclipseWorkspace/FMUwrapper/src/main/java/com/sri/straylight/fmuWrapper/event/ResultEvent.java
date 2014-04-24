@@ -10,7 +10,7 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 /**
  * The Class ResultEvent.
  */
-public class ResultEvent extends BaseEvent<ScalarValueResults> {
+public class ResultEvent extends SerializableEvent<ScalarValueResults> {
 
 	/**
 	 * 

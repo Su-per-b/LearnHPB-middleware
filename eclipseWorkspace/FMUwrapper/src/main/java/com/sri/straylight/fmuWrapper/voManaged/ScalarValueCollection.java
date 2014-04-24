@@ -4,17 +4,15 @@ import java.util.Vector;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
-import com.sri.straylight.fmuWrapper.voNative.ScalarValueBooleanStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueCollectionStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 
-public class ScalarValueCollection implements JsonSerializable {
+public class ScalarValueCollection extends JsonSerializable {
 	
 	
-	private Vector<ScalarValueReal> realList_;
-	private Vector<ScalarValueBoolean> booleanList_;
+	private SerializableVector<ScalarValueReal> realList_;
+	//private SerializableVector<ScalarValueBoolean> booleanList_;
 	
 	private Vector<BaseScalarValue> valueList_;
 	
@@ -37,30 +35,28 @@ public class ScalarValueCollection implements JsonSerializable {
 	}
 	
 	
-	public ScalarValueCollection(Vector<ScalarValueReal> realList, Vector<ScalarValueBoolean> booleanList) {
+	public ScalarValueCollection(SerializableVector<ScalarValueReal> realList) {
 		init2_();
 		
 		setRealList(realList);
-		setBooleanList(booleanList);
+//		setBooleanList(booleanList);
 		
 	}
 	
 	private void init2_() {
-		valueList_ = new Vector<BaseScalarValue>();
-		realList_ = new Vector<ScalarValueReal>();
-		booleanList_ = new Vector<ScalarValueBoolean>();
+	//	valueList_ = new Vector<BaseScalarValue>();
+		realList_ = new SerializableVector<ScalarValueReal>("ScalarValueReal");
+		
+		//booleanList_ = new Vector<ScalarValueBoolean>();
 	}
 	
 	
 	
-	@Override
-	public String toJsonString() {
-		return JsonController.getInstance().toJsonString(this);
-	}
+
 	
 	private void init_(ScalarValueCollectionStruct struct) {
 		initReal_(struct);
-		initBoolean_(struct);
+		//initBoolean_(struct);
 	}
 	
 
@@ -73,54 +69,46 @@ public class ScalarValueCollection implements JsonSerializable {
 		return size;
 	}
 
-	private void initBoolean_(ScalarValueCollectionStruct struct) {
-		
-		booleanList_ = new Vector<ScalarValueBoolean>();
-		
-		
-		if (struct.booleanSize > 0) {
-			
-			ScalarValueBooleanStruct[] aryBoolean = struct.getBooleanAsArray(0);	
-			int len = aryBoolean.length;
-			
-			if (struct.booleanSize != len) {
-				try {
-					throw new Exception("Error converting Array");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			
-			
-			
-			for (int i = 0; i < len; i++) {
-				ScalarValueBooleanStruct boolStruct = aryBoolean[i];
-				
-				ScalarValueBoolean sv = new ScalarValueBoolean(boolStruct);
-				
-				
-				booleanList_.add(sv);
-				valueList_.add(sv);
-				
-			}
-			
-		}
-
-	}
+//	private void initBoolean_(ScalarValueCollectionStruct struct) {
+//		
+//		booleanList_ = new Vector<ScalarValueBoolean>();
+//		
+//		
+//		if (struct.booleanSize > 0) {
+//			
+//			ScalarValueBooleanStruct[] aryBoolean = struct.getBooleanAsArray(0);	
+//			int len = aryBoolean.length;
+//			
+//			if (struct.booleanSize != len) {
+//				try {
+//					throw new Exception("Error converting Array");
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//			
+//			
+//			
+//			for (int i = 0; i < len; i++) {
+//				ScalarValueBooleanStruct boolStruct = aryBoolean[i];
+//				
+//				ScalarValueBoolean sv = new ScalarValueBoolean(boolStruct);
+//				
+//				
+//				booleanList_.add(sv);
+//				valueList_.add(sv);
+//				
+//			}
+//			
+//		}
+//
+//	}
 	
-	public void setRealList(Vector<ScalarValueReal> realList) {
+	public void setRealList(SerializableVector<ScalarValueReal> realList) {
 		realList_ = realList;
-		
-		
-		int len = realList_.size();
-		for (int i = 0; i < len; i++) {
-			ScalarValueReal sv = realList_.get(i);
-			valueList_.add(sv);
-		}
-		
 	}
 	
-	public Vector<ScalarValueReal> getRealList() {
+	public SerializableVector<ScalarValueReal> getRealList() {
 		return realList_;
 	}
 	
@@ -144,23 +132,23 @@ public class ScalarValueCollection implements JsonSerializable {
 		return ary;
 	}
 	
-	public void setBooleanList(Vector<ScalarValueBoolean> booleanList) {
-		booleanList_ = booleanList;
-		
-		int len = booleanList_.size();
-		
-		for (int i = 0; i < len; i++) {
-			ScalarValueBoolean sv = booleanList_.get(i);
-			valueList_.add(sv);
-		}
-	}
+//	public void setBooleanList(Vector<ScalarValueBoolean> booleanList) {
+//		booleanList_ = booleanList;
+//		
+//		int len = booleanList_.size();
+//		
+//		for (int i = 0; i < len; i++) {
+//			ScalarValueBoolean sv = booleanList_.get(i);
+//			valueList_.add(sv);
+//		}
+//	}
 	
-	public Vector<ScalarValueBoolean> getBooleanList() {
-		return booleanList_;
-		
-		
-
-	}
+//	public Vector<ScalarValueBoolean> getBooleanList() {
+//		return booleanList_;
+//		
+//		
+//
+//	}
 	
 	
 	private void initReal_(ScalarValueCollectionStruct struct) {
@@ -168,7 +156,7 @@ public class ScalarValueCollection implements JsonSerializable {
 		ScalarValueRealStruct[] aryReal = struct.getRealAsArray(0);	
 		int len = aryReal.length;
 		
-		realList_ = new Vector<ScalarValueReal>();
+		realList_ = new SerializableVector<ScalarValueReal>("ScalarValueReal");
 		
 		
 		for (int i = 0; i < len; i++) {
@@ -227,7 +215,7 @@ public class ScalarValueCollection implements JsonSerializable {
         return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
 
             append(this.realList_).
-            append(this.booleanList_).
+           // append(this.booleanList_).
             toHashCode();
     }
 
@@ -258,19 +246,19 @@ public class ScalarValueCollection implements JsonSerializable {
         	}
 		}
         
-        Vector<ScalarValueBoolean> booleanList2 = typedObj.getBooleanList();
-        
-        int len2 = booleanList_.size();
-        for (int j = 0; j < len2; j++) {
-        	
-        	ScalarValueBoolean scalarValueBoolean1 = booleanList_.get(j);
-        	ScalarValueBoolean scalarValueBoolean2 = booleanList2.get(j);
-        	
-        	isEqual = scalarValueBoolean1.equals(scalarValueBoolean2);
-        	if (!isEqual) {
-        		return false;
-        	}
-		}
+//        Vector<ScalarValueBoolean> booleanList2 = typedObj.getBooleanList();
+//        
+//        int len2 = booleanList_.size();
+//        for (int j = 0; j < len2; j++) {
+//        	
+//        	ScalarValueBoolean scalarValueBoolean1 = booleanList_.get(j);
+//        	ScalarValueBoolean scalarValueBoolean2 = booleanList2.get(j);
+//        	
+//        	isEqual = scalarValueBoolean1.equals(scalarValueBoolean2);
+//        	if (!isEqual) {
+//        		return false;
+//        	}
+//		}
         
         
         Vector<BaseScalarValue> valueList2 = typedObj.getValueList();

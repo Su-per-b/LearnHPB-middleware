@@ -8,7 +8,7 @@ import com.sri.straylight.fmuWrapper.voManaged.SessionControlModel;
 /**
  * The Class ConfigChangeNotify.
  */
-public class SessionControlClientRequest extends BaseEvent<SessionControlModel> {
+public class SessionControlClientRequest extends SerializableEvent<SessionControlModel> {
 	
 
 	private static final long serialVersionUID = 1L;

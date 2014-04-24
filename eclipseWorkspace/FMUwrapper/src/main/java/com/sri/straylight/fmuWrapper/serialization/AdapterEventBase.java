@@ -6,11 +6,11 @@ import java.lang.reflect.Type;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
-import com.sri.straylight.fmuWrapper.event.BaseEvent;
+import com.sri.straylight.fmuWrapper.event.SerializableEvent;
 
 
 
-public class AdapterEventBase<T extends BaseEvent<P>, P> 
+public class AdapterEventBase<T extends SerializableEvent<P>, P extends Iserializable> 
 	extends AdapterBase<T> 
 {
 	

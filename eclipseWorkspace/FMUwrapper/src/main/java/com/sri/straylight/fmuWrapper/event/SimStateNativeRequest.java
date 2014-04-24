@@ -4,7 +4,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
-public class SimStateNativeRequest extends BaseEvent<SimStateNative> {
+public class SimStateNativeRequest extends SerializableEvent<SimStateNative> {
 
     /**
 	 * 
@@ -29,7 +29,7 @@ public class SimStateNativeRequest extends BaseEvent<SimStateNative> {
             return false;
         
         SimStateNativeRequest event;
-        if (obj instanceof BaseEvent) {
+        if (obj instanceof SerializableEvent) {
         	 event = (SimStateNativeRequest) obj;
         	 
              return new EqualsBuilder().

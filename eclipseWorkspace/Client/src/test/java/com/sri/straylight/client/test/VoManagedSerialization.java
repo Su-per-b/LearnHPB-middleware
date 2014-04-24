@@ -16,6 +16,7 @@ import org.junit.Test;
 
 
 
+
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueBoolean;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
@@ -24,6 +25,7 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
+import com.sri.straylight.fmuWrapper.voManaged.SerializableVector;
 import com.sri.straylight.fmuWrapper.voManaged.SessionControlAction;
 import com.sri.straylight.fmuWrapper.voManaged.SessionControlModel;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
@@ -188,15 +190,15 @@ public class VoManagedSerialization {
 		assertEquals(2, scalarValueReal_1.getIdx());
 		assertEquals(3.53, scalarValueReal_1.getValue(), 0.0);
 		
-		Vector<ScalarValueBoolean> boolList = scalarValueCollection_0.getBooleanList();
-		
-		ScalarValueBoolean scalarValueBoolean_0 = boolList.get(0);
-		assertEquals(1, scalarValueBoolean_0.getIdx());
-		assertEquals(false, scalarValueBoolean_0.getValue());
-		
-		ScalarValueBoolean scalarValueBoolean_1 = boolList.get(1);
-		assertEquals(2, scalarValueBoolean_1.getIdx());
-		assertEquals(false, scalarValueBoolean_1.getValue());
+//		Vector<ScalarValueBoolean> boolList = scalarValueCollection_0.getBooleanList();
+//		
+//		ScalarValueBoolean scalarValueBoolean_0 = boolList.get(0);
+//		assertEquals(1, scalarValueBoolean_0.getIdx());
+//		assertEquals(false, scalarValueBoolean_0.getValue());
+//		
+//		ScalarValueBoolean scalarValueBoolean_1 = boolList.get(1);
+//		assertEquals(2, scalarValueBoolean_1.getIdx());
+//		assertEquals(false, scalarValueBoolean_1.getValue());
 
 	}
 	
@@ -218,7 +220,7 @@ public class VoManagedSerialization {
 		ScalarValueReal scalarValueReal2 = new ScalarValueReal(struct2);
 		
 		//make real list
-		Vector<ScalarValueReal> realList = new Vector<ScalarValueReal>();
+		SerializableVector<ScalarValueReal> realList = new SerializableVector<ScalarValueReal>("ScalarValueReal");
 		realList.add(scalarValueReal1);
 		realList.add(scalarValueReal2);
 		
@@ -253,7 +255,7 @@ public class VoManagedSerialization {
 		"[{\"t\":\"ScalarValueBoolean\",\"i\":1,\"v\":true},{\"t\":\"ScalarValueBoolean\",\"i\":2,\"v\":false}]", 
 		json_1);
 		
-		ScalarValueCollection scalarValueCollection_0 = new ScalarValueCollection(realList, boolList);
+		ScalarValueCollection scalarValueCollection_0 = new ScalarValueCollection(realList);
 		
 		String json_2 = scalarValueCollection_0.toJsonString();
 		
@@ -318,7 +320,7 @@ public class VoManagedSerialization {
 		ScalarValueReal scalarValueReal2 = new ScalarValueReal(struct2);
 		
 		//make real list
-		Vector<ScalarValueReal> realList = new Vector<ScalarValueReal>();
+		SerializableVector<ScalarValueReal> realList = new SerializableVector<ScalarValueReal>("ScalarValueReal");
 		realList.add(scalarValueReal1);
 		realList.add(scalarValueReal2);
 		
@@ -342,7 +344,7 @@ public class VoManagedSerialization {
 		//make ScalarValueCollection
 		ScalarValueCollection scalarValueCollection1 = new ScalarValueCollection();
 		scalarValueCollection1.setRealList(realList);
-		scalarValueCollection1.setBooleanList(boolList);
+//		scalarValueCollection1.setBooleanList(boolList);
 		
 		//make ScalarValueResults
 		ScalarValueResults scalarValueResults = new ScalarValueResults();
@@ -477,7 +479,7 @@ public class VoManagedSerialization {
 		sVarReal2.setDescription("The Description");
 		sVarReal2.setValueReference(125420);
 		
-		Vector<ScalarVariableReal> realVarList = new Vector<ScalarVariableReal>();
+		SerializableVector<ScalarVariableReal> realVarList = new SerializableVector<ScalarVariableReal>("ScalarVariableReal");
 		realVarList.add(sVarReal);
 		realVarList.add(sVarReal2);
 		
@@ -600,7 +602,7 @@ public class VoManagedSerialization {
 		scalarVariableReal_1.setDescription("The Description");
 		scalarVariableReal_1.setValueReference(125420);
 		
-		Vector<ScalarVariableReal> realVarList = new Vector<ScalarVariableReal>();
+		SerializableVector<ScalarVariableReal> realVarList = new SerializableVector<ScalarVariableReal>("ScalarVariableReal");
 		realVarList.add(scalarVariableReal_0);
 		realVarList.add(scalarVariableReal_1);
 		

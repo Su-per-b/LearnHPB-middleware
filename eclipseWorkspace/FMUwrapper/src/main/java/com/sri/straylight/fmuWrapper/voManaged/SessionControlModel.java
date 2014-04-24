@@ -7,7 +7,7 @@ import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 
 public class SessionControlModel 
-		implements JsonSerializable
+		extends JsonSerializable
 {
 
 	protected SessionControlAction action_;

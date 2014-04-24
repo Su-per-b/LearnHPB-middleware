@@ -4,7 +4,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
-public class SimStateNativeNotify extends BaseEvent<SimStateNative> {
+public class SimStateNativeNotify extends SerializableEvent<SimStateNative> {
 	
 	private static final long serialVersionUID = 1L;
 

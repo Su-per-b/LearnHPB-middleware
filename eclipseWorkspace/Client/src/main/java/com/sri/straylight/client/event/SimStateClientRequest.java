@@ -2,7 +2,7 @@ package com.sri.straylight.client.event;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
-import com.sri.straylight.fmuWrapper.event.BaseEvent;
+import com.sri.straylight.fmuWrapper.event.SerializableEvent;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 
 public class SimStateClientRequest extends BaseEventForClient<SimStateNative> {
@@ -30,7 +30,7 @@ public class SimStateClientRequest extends BaseEventForClient<SimStateNative> {
             return false;
         
         SimStateClientRequest event;
-        if (obj instanceof BaseEvent) {
+        if (obj instanceof SerializableEvent) {
         	 event = (SimStateClientRequest) obj;
         	 
              return new EqualsBuilder().

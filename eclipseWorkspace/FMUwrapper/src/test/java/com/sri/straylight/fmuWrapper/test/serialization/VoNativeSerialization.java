@@ -23,6 +23,20 @@ public class VoNativeSerialization {
 	private  JsonController gsonController_ = JsonController.getInstance();
     
 	
+	public final static String STR_defaultExperimentStruct_0 = "{\"t\":\"DefaultExperimentStruct\",\"startTime\":123.03,\"stopTime\":145.03,\"tolerance\":10}";
+	
+	public final static String STR_defaultExperimentStruct_1 = "{\"t\":\"DefaultExperimentStruct\",\"startTime\":0,\"stopTime\":100,\"tolerance\":1.1}";
+	
+	public final static String STR_configStruct_0 = "{\"t\":\"ConfigStruct\",\"stepDelta\":1,\"defaultExperimentStruct\":{\"t\":\"DefaultExperimentStruct\",\"startTime\":123.03,\"stopTime\":145.03,\"tolerance\":10}}";
+	
+	public final static String STR_messageStruct_0 = "{\"t\":\"MessageStruct\",\"msgText\":\"This is the message text\",\"messageType\":0}";
+	
+	public final static String STR_simStateNative_0 = "{\"t\":\"SimStateNative\",\"intValue\":0}";
+	
+	public final static String STR_typeSpecReal_0 = "{\"t\":\"TypeSpecReal\",\"start\":20.25,\"nominal\":21.25,\"min\":22.25,\"max\":23.25,\"unit\":\"K\"}";
+
+
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
@@ -44,18 +58,34 @@ public class VoNativeSerialization {
 	public void defaultExperimentStruct_serialize() {
 
 		
-		DefaultExperimentStruct.ByReference theStruct 
+		DefaultExperimentStruct.ByReference defaultExperimentStruct_0
 			= new DefaultExperimentStruct.ByReference();
 		
-		theStruct.startTime = 123.03;
-		theStruct.stopTime = 145.03;
-		theStruct.tolerance = 10.0;
+		defaultExperimentStruct_0.startTime = 123.03;
+		defaultExperimentStruct_0.stopTime = 145.03;
+		defaultExperimentStruct_0.tolerance = 10.0;
 		
-		String json = theStruct.toJsonString();
+		String jsonString_0 = defaultExperimentStruct_0.toJsonString();
 		
 		assertEquals(
-				"{\"t\":\"DefaultExperimentStruct\",\"startTime\":123.03,\"stopTime\":145.03,\"tolerance\":10.0}", 
-				json);
+				STR_defaultExperimentStruct_0, 
+				jsonString_0);
+		
+		
+		DefaultExperimentStruct.ByReference defaultExperimentStruct_1
+		= new DefaultExperimentStruct.ByReference();
+	
+		defaultExperimentStruct_1.startTime = 0.0;
+		defaultExperimentStruct_1.stopTime = 100.0;
+		defaultExperimentStruct_1.tolerance = 1.1;
+	
+		String jsonString_1 = defaultExperimentStruct_1.toJsonString();
+		
+		assertEquals(
+				STR_defaultExperimentStruct_1, 
+				jsonString_1
+		);
+		
 		
 
 	}
@@ -65,17 +95,31 @@ public class VoNativeSerialization {
 	@Test
 	public void defaultExperimentStruct_deserialize() {
 		
-		String jsonString = "{\"t\":\"DefaultExperimentStruct\",\"startTime\":123.03,\"stopTime\":145.03,\"tolerance\":10.0}";
-		Object deserializedObject = gsonController_.fromJson(jsonString);
+
+		Object deserializedObject_0 = gsonController_.fromJson(STR_defaultExperimentStruct_0);
 		
 		//assert
-		assertEquals(DefaultExperimentStruct.ByReference.class, deserializedObject.getClass());
+		assertEquals(DefaultExperimentStruct.ByReference.class, deserializedObject_0.getClass());
 
-		DefaultExperimentStruct.ByReference defaultExperimentStruct = (DefaultExperimentStruct.ByReference) deserializedObject;
+		DefaultExperimentStruct.ByReference defaultExperimentStruct_0 = (DefaultExperimentStruct.ByReference) deserializedObject_0;
 		
-		assertEquals(123.03, defaultExperimentStruct.startTime, 0.0);
-		assertEquals(145.03, defaultExperimentStruct.stopTime, 0.0);
-		assertEquals(10.0, defaultExperimentStruct.tolerance, 0.0);
+		assertEquals(123.03, defaultExperimentStruct_0.startTime, 0.0);
+		assertEquals(145.03, defaultExperimentStruct_0.stopTime, 0.0);
+		assertEquals(10.0, defaultExperimentStruct_0.tolerance, 0.0);
+		
+		
+		
+		Object deserializedObject_1 = gsonController_.fromJson(STR_defaultExperimentStruct_1);
+		
+		//assert
+		assertEquals(DefaultExperimentStruct.ByReference.class, deserializedObject_1.getClass());
+
+		DefaultExperimentStruct.ByReference defaultExperimentStruct_1 = (DefaultExperimentStruct.ByReference) deserializedObject_1;
+		
+		assertEquals(0.0, defaultExperimentStruct_1.startTime, 0.0);
+		assertEquals(100.0, defaultExperimentStruct_1.stopTime, 0.0);
+		assertEquals(1.1, defaultExperimentStruct_1.tolerance, 0.0);
+		
 
 	}
 	
@@ -97,11 +141,12 @@ public class VoNativeSerialization {
 		configStruct.defaultExperimentStruct = defaultExperimentStruct;
 		
 		
-		String json = configStruct.toJsonString();
+		String jsonString_0 = configStruct.toJsonString();
 		
 		assertEquals(
-				"{\"t\":\"ConfigStruct\",\"stepDelta\":1.0,\"defaultExperimentStruct\":{\"t\":\"DefaultExperimentStruct\",\"startTime\":123.03,\"stopTime\":145.03,\"tolerance\":10.0}}", 
-				json);
+				STR_configStruct_0,
+				jsonString_0
+		);
 		
 	}
 	
@@ -109,19 +154,18 @@ public class VoNativeSerialization {
 	public void configStruct_deserialize() {
 
 		
-		String jsonString = "{\"t\":\"ConfigStruct\",\"stepDelta\":1.0,\"defaultExperimentStruct\":{\"t\":\"DefaultExperimentStruct\",\"startTime\":123.03,\"stopTime\":145.03,\"tolerance\":10.0}}";
-		Object deserializedObject = gsonController_.fromJson(jsonString);
+		Object deserializedObject_0 = gsonController_.fromJson(STR_configStruct_0);
 		
-		assertEquals(ConfigStruct.class, deserializedObject.getClass());
+		assertEquals(ConfigStruct.class, deserializedObject_0.getClass());
 		
-		ConfigStruct configStruct = (ConfigStruct) deserializedObject;
+		ConfigStruct configStruct_0 = (ConfigStruct) deserializedObject_0;
 		
 		
-		assertEquals(1.0, configStruct.stepDelta, 0.0);
+		assertEquals(1.0, configStruct_0.stepDelta, 0.0);
 		
-		assertEquals(123.03, configStruct.defaultExperimentStruct.startTime, 0.0);
-		assertEquals(145.03, configStruct.defaultExperimentStruct.stopTime, 0.0);
-		assertEquals(10.0, configStruct.defaultExperimentStruct.tolerance, 0.0);
+		assertEquals(123.03, configStruct_0.defaultExperimentStruct.startTime, 0.0);
+		assertEquals(145.03, configStruct_0.defaultExperimentStruct.stopTime, 0.0);
+		assertEquals(10.0, configStruct_0.defaultExperimentStruct.tolerance, 0.0);
 		
 	}
 	
@@ -130,14 +174,17 @@ public class VoNativeSerialization {
 	public void messageStruct_serialize() {
 
     	MessageStruct messageStruct = new MessageStruct();
-    	messageStruct.msgText = "testMessageStruct";
+    	messageStruct.msgText = "This is the message text";
     	
     	messageStruct.setMessageTypeEnum(MessageType.messageType_debug);
-    	String json = messageStruct.toJsonString();
+    	String jsonString_0 = messageStruct.toJsonString();
+    	
     	
 		assertEquals(
-				"{\"t\":\"MessageStruct\",\"msgText\":\"testMessageStruct\",\"messageType\":0}", 
-				json);
+				STR_messageStruct_0,
+				jsonString_0
+		);
+		
     	
 
 		return;
@@ -148,15 +195,14 @@ public class VoNativeSerialization {
 	@Test
 	public void messageStruct_deserialize() {
 		
-		String jsonString = "{\"t\":\"MessageStruct\",\"msgText\":\"testMessageStruct\",\"messageType\":0}";
-		Object deserializedObject = gsonController_.fromJson(jsonString);
+		Object deserializedObject = gsonController_.fromJson(STR_messageStruct_0);
 		
 		assertEquals(MessageStruct.class, deserializedObject.getClass());
 		
-		MessageStruct messageStruct = (MessageStruct) deserializedObject;
+		MessageStruct messageStruct_0 = (MessageStruct) deserializedObject;
 		
-		assertEquals(0, messageStruct.messageType, 0.0);
-		assertEquals("testMessageStruct", messageStruct.msgText);
+		assertEquals(0, messageStruct_0.messageType);
+		assertEquals("This is the message text", messageStruct_0.msgText);
 		
 		
 	}
@@ -166,14 +212,15 @@ public class VoNativeSerialization {
 	public void simStateNative_serialize() {
 
 		//make SimStateNative 1
-		SimStateNative simStateNative1 = SimStateNative.simStateNative_0_uninitialized;
+		SimStateNative simStateNative_0 = SimStateNative.simStateNative_0_uninitialized;
 		
 		//serialize / deserialize 
-		String json = simStateNative1.toJsonString();
+		String jsonString_0 = simStateNative_0.toJsonString();
 		
 		assertEquals(
-				"{\"t\":\"SimStateNative\",\"intValue\":0}", 
-				json);
+				STR_simStateNative_0, 
+				jsonString_0
+		);
 
 	}
 	
@@ -181,14 +228,13 @@ public class VoNativeSerialization {
 	@Test
 	public void simStateNative_deserialize() {
 
-		String jsonString = "{\"t\":\"SimStateNative\",\"intValue\":0}";
-		Object deserializedObject = gsonController_.fromJson(jsonString);
+		Object deserializedObject = gsonController_.fromJson(STR_simStateNative_0);
 		
 		assertEquals(SimStateNative.class, deserializedObject.getClass());
-		SimStateNative simStateNative = (SimStateNative) deserializedObject;
+		SimStateNative simStateNative_0 = (SimStateNative) deserializedObject;
 			
-		assertEquals(0, simStateNative.getIntValue());
-		assertEquals("simStateNative_0_uninitialized", simStateNative.name());
+		assertEquals(0, simStateNative_0.getIntValue());
+		assertEquals("simStateNative_0_uninitialized", simStateNative_0.name());
 		
 
 	}
@@ -198,26 +244,26 @@ public class VoNativeSerialization {
 	public void typeSpecReal_serialize() {
 
 		//make
-		TypeSpecReal typeSpecReal = new TypeSpecReal();
-		typeSpecReal.start = 20.25;
-		typeSpecReal.nominal = 21.25;
-		typeSpecReal.min = 22.25;
-		typeSpecReal.max = 23.25;
-		typeSpecReal.unit = "K";
+		TypeSpecReal typeSpecReal_0 = new TypeSpecReal();
+		typeSpecReal_0.start = 20.25;
+		typeSpecReal_0.nominal = 21.25;
+		typeSpecReal_0.min = 22.25;
+		typeSpecReal_0.max = 23.25;
+		typeSpecReal_0.unit = "K";
 		
-		typeSpecReal.startValueStatus = 1;
-		typeSpecReal.nominalValueStatus = 1;
-		typeSpecReal.minValueStatus = 1;
-		typeSpecReal.maxValueStatus = 1;
-		typeSpecReal.unitValueStatus = 1;
+		typeSpecReal_0.startValueStatus = 1;
+		typeSpecReal_0.nominalValueStatus = 1;
+		typeSpecReal_0.minValueStatus = 1;
+		typeSpecReal_0.maxValueStatus = 1;
+		typeSpecReal_0.unitValueStatus = 1;
 		
 
 		//serialize / deserialize 
-		String json = typeSpecReal.toJsonString();
+		String jsonString_0 = typeSpecReal_0.toJsonString();
 		
 		assertEquals(
-				"{\"t\":\"TypeSpecReal\",\"start\":20.25,\"nominal\":21.25,\"min\":22.25,\"max\":23.25,\"unit\":\"K\"}",
-				json);
+				STR_typeSpecReal_0,
+				jsonString_0);
 
 	}
 	
@@ -225,19 +271,16 @@ public class VoNativeSerialization {
 	@Test
 	public void typeSpecReal_deserialize() {
 		
-		String jsonString = "{\"t\":\"TypeSpecReal\",\"start\":20.25,\"nominal\":21.25,\"min\":22.25,\"max\":23.25,\"unit\":\"K\",\"startValueStatus\":1,\"nominalValueStatus\":1,\"minValueStatus\":1,\"maxValueStatus\":1,\"unitValueStatus\":1}";
-		Object deserializedObject = gsonController_.fromJson(jsonString);
+		Object deserializedObject = gsonController_.fromJson(STR_typeSpecReal_0);
 		
 		assertEquals(TypeSpecReal.class, deserializedObject.getClass());
-		TypeSpecReal typeSpecReal = (TypeSpecReal) deserializedObject;
+		TypeSpecReal typeSpecReal_0 = (TypeSpecReal) deserializedObject;
 		
-		assertEquals(20.25, typeSpecReal.start, 0.0);
-		assertEquals(21.25, typeSpecReal.nominal, 0.0);
-		assertEquals(22.25, typeSpecReal.min, 0.0);
-		assertEquals(23.25, typeSpecReal.max, 0.0);
-		assertEquals("K", typeSpecReal.unit);
-		
-
+		assertEquals(20.25, typeSpecReal_0.start, 0.0);
+		assertEquals(21.25, typeSpecReal_0.nominal, 0.0);
+		assertEquals(22.25, typeSpecReal_0.min, 0.0);
+		assertEquals(23.25, typeSpecReal_0.max, 0.0);
+		assertEquals("K", typeSpecReal_0.unit);
 		
 	}
 	

@@ -3,11 +3,10 @@ package com.sri.straylight.fmuWrapper.voManaged;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueResultsStruct;
 
-public class ScalarValueResults implements JsonSerializable {
+public class ScalarValueResults extends JsonSerializable {
 	
 
 	private ScalarValueCollection input_;
@@ -53,10 +52,7 @@ public class ScalarValueResults implements JsonSerializable {
 
 
 
-	@Override
-	public String toJsonString() {
-		return JsonController.getInstance().toJsonString(this);
-	}
+
 	
 	@Override
     public int hashCode() {

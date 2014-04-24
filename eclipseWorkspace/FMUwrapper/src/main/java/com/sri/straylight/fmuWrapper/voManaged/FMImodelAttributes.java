@@ -2,12 +2,11 @@ package com.sri.straylight.fmuWrapper.voManaged;
 
 import java.util.Vector;
 
-import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.voNative.AttributeStruct;
 import com.sri.straylight.fmuWrapper.voNative.FMImodelAttributesStruct;
 
-public class FMImodelAttributes implements JsonSerializable {
+public class FMImodelAttributes extends JsonSerializable {
 
 	private Vector<AttributeStruct> attributeStructs_;
 	
@@ -41,10 +40,6 @@ public class FMImodelAttributes implements JsonSerializable {
 	}
 	
 	
-	@Override
-	public String toJsonString() {
-		return JsonController.getInstance().toJsonString(this);
-	}
-	
+
 	
 }

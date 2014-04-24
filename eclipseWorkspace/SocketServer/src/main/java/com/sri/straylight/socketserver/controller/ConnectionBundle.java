@@ -12,8 +12,8 @@ import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.event.StraylightEventListener;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
+import com.sri.straylight.fmuWrapper.serialization.Iserializable;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
-import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.util.WorkerThreadAbstract;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
@@ -172,10 +172,12 @@ public class ConnectionBundle extends AbstractController {
 		.registerEventListener(
 				ConfigChangeNotify.class,
 				new StraylightEventListener<ConfigChangeNotify, ConfigStruct>() {
+					
 					@Override
 					public void handleEvent(ConfigChangeNotify event) {
 						webSocketConnectionController_.send(event);
 					}
+					
 				});
 	}
 
@@ -204,7 +206,7 @@ public class ConnectionBundle extends AbstractController {
 						
 						//System.out.println("StraylightEventListener.handleEvent sessionID_: "+ sessionID_ + ' ' + messageText);
 						
-				    	JsonSerializable deserializedEvent = JsonController.getInstance().fromJson(messageText);
+						Iserializable deserializedEvent = JsonController.getInstance().fromJson(messageText);
 				    	
 				    	//if it is an event then just publish it
 				    	if (deserializedEvent instanceof SimStateNativeRequest) {

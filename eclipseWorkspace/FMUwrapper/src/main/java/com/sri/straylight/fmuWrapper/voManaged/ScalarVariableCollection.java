@@ -1,13 +1,9 @@
 package com.sri.straylight.fmuWrapper.voManaged;
 
-import java.util.Vector;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
-import com.sri.straylight.fmuWrapper.voNative.ScalarVariableBooleanStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableCollectionStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 
@@ -15,10 +11,10 @@ import com.sri.straylight.fmuWrapper.voNative.ScalarVariableRealStruct;
 /**
  * The Class ScalarVariableCollection.
  */
-public class ScalarVariableCollection implements JsonSerializable{
+public class ScalarVariableCollection extends JsonSerializable{
 
-	private Vector<ScalarVariableReal> realVarList_;
-	private Vector<ScalarVariableBoolean> booleanVarList_;
+	private SerializableVector<ScalarVariableReal> realVarList_;
+//	private Vector<ScalarVariableBoolean> booleanVarList_;
 	
 	/** The max array size. */
 	public int maxArraySize = 0;
@@ -31,14 +27,14 @@ public class ScalarVariableCollection implements JsonSerializable{
 	/**
 	 * @return the realValue
 	 */
-	public Vector<ScalarVariableReal> getRealVarList() {
+	public SerializableVector<ScalarVariableReal> getRealVarList() {
 		return realVarList_;
 	}
 
 	/**
 	 * @param realValue the realValue to set
 	*/
-	public void setRealVarList(Vector<ScalarVariableReal> realVarList) {
+	public void setRealVarList(SerializableVector<ScalarVariableReal> realVarList) {
 		realVarList_ = realVarList;
 	}
 		 
@@ -76,24 +72,20 @@ public class ScalarVariableCollection implements JsonSerializable{
 		realVarList_ = ScalarVariableReal.makeList(realAry);
 		
 		
-		ScalarVariableBooleanStruct[] booleanAry = struct.getBooleanAsArray(maxArraySize);
-		if (booleanVarList_ != null) {
-			totalSize += booleanAry.length;
-		}
-		
-		booleanVarList_ = ScalarVariableBoolean.makeList(booleanAry);
+//		ScalarVariableBooleanStruct[] booleanAry = struct.getBooleanAsArray(maxArraySize);
+//		if (booleanVarList_ != null) {
+//			totalSize += booleanAry.length;
+//		}
+//		
+//		booleanVarList_ = ScalarVariableBoolean.makeList(booleanAry);
 	}
 	
-	@Override
-	public String toJsonString() {
-		return JsonController.getInstance().toJsonString(this);
-	}
 	
 	 @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
             append(realVarList_).
-            append(booleanVarList_).
+//            append(booleanVarList_).
             toHashCode();
     }
 	 

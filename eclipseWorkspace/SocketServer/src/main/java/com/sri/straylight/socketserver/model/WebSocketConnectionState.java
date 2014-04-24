@@ -1,10 +1,11 @@
 package com.sri.straylight.socketserver.model;
 
+import com.sri.straylight.fmuWrapper.serialization.Iserializable;
 import com.sri.straylight.fmuWrapper.voNative.JnaEnum;
 
 
 
-public enum WebSocketConnectionState implements JnaEnum<WebSocketConnectionState> {
+public enum WebSocketConnectionState implements JnaEnum<WebSocketConnectionState>,  Iserializable {
 	
 	uninitialized,
 	opened_new,
@@ -29,6 +30,13 @@ public enum WebSocketConnectionState implements JnaEnum<WebSocketConnectionState
 	        }
 	    }
 	    return null;
+	}
+
+
+	@Override
+	public String toJsonString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

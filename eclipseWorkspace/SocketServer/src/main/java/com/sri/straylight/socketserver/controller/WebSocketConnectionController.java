@@ -1,7 +1,7 @@
 package com.sri.straylight.socketserver.controller;
 
-import com.sri.straylight.fmuWrapper.event.BaseEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
+import com.sri.straylight.fmuWrapper.serialization.Iserializable;
 import com.sri.straylight.socketserver.event.MessageReceived;
 
 public class WebSocketConnectionController 
@@ -60,7 +60,7 @@ public class WebSocketConnectionController
 //	}
 	
 
-	public void send(BaseEvent<?> event) {
+	public void send(Iserializable event) {
 		socketHandler_.serializeAndSend(event);
 	}
 

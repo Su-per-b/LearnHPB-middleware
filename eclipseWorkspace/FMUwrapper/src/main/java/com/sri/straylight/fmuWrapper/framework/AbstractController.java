@@ -229,6 +229,16 @@ public abstract class AbstractController implements ActionListener, WindowListen
 
     }
     
+    public void unregisterAllEventListener() 
+    {
+    	
+    	eventListeners.clear();
+
+    }
+    
+    
+    
+    
     /**
      * Fire an event and pass it into the hierarchy of controllers.
      * <p>

@@ -9,14 +9,15 @@ import org.bushe.swing.event.EventBus;
 import org.eclipse.jetty.websocket.WebSocket;
 
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
-import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
+import com.sri.straylight.fmuWrapper.serialization.Iserializable;
+import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.socketserver.event.WebSocketConnectionStateEvent;
 import com.sri.straylight.socketserver.model.WebSocketConnectionState;
 
 
 public class StrayLightWebSocketHandler
-	implements WebSocket.OnTextMessage, WebSocket.OnControl  {
+	implements WebSocket.OnTextMessage, WebSocket.OnControl, Iserializable  {
 
 	private static int socketCount_ = 0;
 	
@@ -125,7 +126,7 @@ public class StrayLightWebSocketHandler
 	
 	
 	
-	public void serializeAndSend(JsonSerializable obj) {
+	public void serializeAndSend(Iserializable obj) {
 		
 		
 		if (obj instanceof XMLparsedEvent) {
@@ -173,7 +174,9 @@ public class StrayLightWebSocketHandler
 	}
 
 
-
+    public String toJsonString() {
+    	return JsonController.getInstance().toJsonString(this);
+    }
 
 
 	

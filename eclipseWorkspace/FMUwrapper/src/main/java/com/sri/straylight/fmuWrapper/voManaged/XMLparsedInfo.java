@@ -8,7 +8,6 @@ import java.util.Vector;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.voNative.Enu;
 
@@ -16,7 +15,7 @@ import com.sri.straylight.fmuWrapper.voNative.Enu;
 /**
  * The Class XMLparsed.
  */
-public class XMLparsedInfo implements JsonSerializable  {
+public class XMLparsedInfo extends JsonSerializable  {
 
 	/** The scalar variables all_. */
 	private ScalarVariablesAll scalarVariablesAll_;
@@ -70,10 +69,6 @@ public class XMLparsedInfo implements JsonSerializable  {
 
 	
 
-	@Override
-	public String toJsonString() {
-		return JsonController.getInstance().toJsonString(this);
-	}
 	
 	
 	 @Override

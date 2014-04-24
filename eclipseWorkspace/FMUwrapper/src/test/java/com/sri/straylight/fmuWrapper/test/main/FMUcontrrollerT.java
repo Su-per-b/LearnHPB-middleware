@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.sri.straylight.fmuWrapper.Controller.FMUcontroller;
@@ -19,24 +20,30 @@ public class FMUcontrrollerT {
 
 	
 	/** This is the rug that really ties the room together. */
-	private FMUcontroller fmuController_;
+	private static FMUcontroller fmuController_;
 	
-	private FMUwrapperConfig fmuWrapperConfig_;
+	private static FMUwrapperConfig fmuWrapperConfig_;
 	
+	@BeforeClass
+	public static void beforeClass() {
+		
+		
+		fmuWrapperConfig_ = FMUwrapperConfig.load("fmuwrapper-config-for-unit-tests.xml");
+		assertEquals("LearnGB_0v4_02_VAVReheat_ClosedLoop_test", fmuWrapperConfig_.fmuFolderName);
+		fmuController_ = new FMUcontroller();
+		
+
+		fmuController_.setConcurrency(false);
+		
+		
+	}
+
 	
 	//runs before each test
 	@Before
 	public void beforeEachTest() {
 		
-		AnnotationProcessor.process(this);
-
-		fmuWrapperConfig_ = FMUwrapperConfig.load("fmuwrapper-config-for-unit-tests.xml");
-		assertEquals("LearnGB_0v4_02_VAVReheat_ClosedLoop_test", fmuWrapperConfig_.fmuFolderName);
-		
-		fmuController_ = new FMUcontroller();
-		
 		assertSimState_(SimStateNative.simStateNative_0_uninitialized);
-		fmuController_.setConcurrency(false);
 		
 	}
 	
@@ -48,7 +55,7 @@ public class FMUcontrrollerT {
 		
 		fmuController_.forceCleanup();
 
-		
+		 
 	}
 	
 	
@@ -103,18 +110,45 @@ public class FMUcontrrollerT {
 		thread.start();
 		thread.awaitOnMainBarrier();
 		
+		return;
+		
 	}
 
 	
 	@Test
 	public void fmuXmlParse() throws Exception {
 		
-		FMUxmlParse thread = new FMUxmlParse();
+		
+		FMUconnectThread thread = new FMUconnectThread();
+		
 		thread.init(fmuController_);
 		thread.start();
-
 		thread.awaitOnMainBarrier();
+		fmuController_.unregisterAllEventListener();
 		
+		thread.join();
+		fmuController_.forceCleanup();
+
+		
+		fmuController_ = new FMUcontroller();
+		fmuController_.setConcurrency(false);
+		
+		
+		//fmuWrapperConfig_ = FMUwrapperConfig.load("fmuwrapper-config-for-unit-tests.xml");
+		//assertEquals("LearnGB_0v4_02_VAVReheat_ClosedLoop_test", fmuWrapperConfig_.fmuFolderName);
+		//fmuController_ = new FMUcontroller();
+		
+		//assertSimState_(SimStateNative.simStateNative_0_uninitialized);
+		//fmuController_.setConcurrency(false);
+		
+		
+		FMUxmlParse thread2 = new FMUxmlParse();
+		thread2.init(fmuController_);
+		thread2.start();
+
+		thread2.awaitOnMainBarrier();
+		
+		return;
 	}
 	
 	
@@ -129,15 +163,17 @@ public class FMUcontrrollerT {
 		
 		{
 			Thread.currentThread().setName("FMUconnectThread");
+
 			
 			requestStateChangeTo_(
 					SimStateNative.simStateNative_1_connect_requested,
 					SimStateNative.simStateNative_1_connect_completed
-					);
+				);
 			
 			System.out.println ("FMUconnectThread done");
 			
 			awaitOnMainBarrier();
+			return;
 		}
 
 	}
@@ -156,17 +192,20 @@ public class FMUcontrrollerT {
 		{
 			Thread.currentThread().setName("FMUxmlParse");
 			
-			requestStateChangeTo_(
-					SimStateNative.simStateNative_1_connect_requested,
-					SimStateNative.simStateNative_1_connect_completed
-					);
+			stateChangeBarrier_.reset();
+			
+			
+//			requestStateChangeTo_(
+//					SimStateNative.simStateNative_1_connect_requested,
+//					SimStateNative.simStateNative_1_connect_completed
+//					);
 			
 
 
-			requestStateChangeTo_(
-					SimStateNative.simStateNative_2_xmlParse_requested,
-					SimStateNative.simStateNative_2_xmlParse_completed
-					);
+//			requestStateChangeTo_(
+//					SimStateNative.simStateNative_2_xmlParse_requested,
+//					SimStateNative.simStateNative_2_xmlParse_completed
+//					);
 			
 			awaitOnMainBarrier();
 			

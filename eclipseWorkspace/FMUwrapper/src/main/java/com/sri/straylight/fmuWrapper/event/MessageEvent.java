@@ -11,7 +11,7 @@ import com.sri.straylight.fmuWrapper.voNative.MessageType;
 /**
  * The Class MessageEvent.
  */
-public class MessageEvent extends BaseEvent<MessageStruct> 
+public class MessageEvent extends SerializableEvent<MessageStruct> 
 {
 
 

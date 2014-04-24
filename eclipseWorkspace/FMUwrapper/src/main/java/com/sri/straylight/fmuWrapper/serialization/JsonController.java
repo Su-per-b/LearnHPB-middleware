@@ -21,6 +21,7 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
+import com.sri.straylight.fmuWrapper.voManaged.SerializableVector;
 import com.sri.straylight.fmuWrapper.voManaged.SessionControlAction;
 import com.sri.straylight.fmuWrapper.voManaged.SessionControlModel;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
@@ -35,7 +36,9 @@ import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
  * used for serialization
  */
 public class JsonController {
+	
 
+	  
 	private static final JsonController _theInstance = new JsonController();
 
 	/* this class really does all the work */
@@ -73,8 +76,15 @@ public class JsonController {
 			return toJsonString(JsonNull.INSTANCE);
 		}
 
-		return gson_.toJson(src, src.getClass());
+	  
+	  	String jsonString = gson_.toJson(src, src.getClass());
+		
+		
+		return jsonString;
 	}
+	
+
+	
 	
 	public Object fromJsonGeneric(String jsonString) {
 
@@ -98,7 +108,7 @@ public class JsonController {
 	}
 	
 	
-	public JsonSerializable fromJson(String jsonString) {
+	public Iserializable fromJson(String jsonString) {
 		
 		//extract the class name as a string
 		SerializeableObject obj = gson_.fromJson(jsonString,
@@ -106,14 +116,21 @@ public class JsonController {
 		
 		String classString = obj.t;
 
-        Class<?> cl = registeredClasses_.get(classString);
+        Class<?> cl = getClassForString(classString);
 		
-		JsonSerializable jsonSerializable = (JsonSerializable) gson_.fromJson(jsonString, cl);
+        Iserializable jsonSerializable = (Iserializable) gson_.fromJson(jsonString, cl);
 		return jsonSerializable;
 
 
 	}
 	
+	
+	public Class<?> getClassForString(String classString) {
+		
+        Class<?> cl = registeredClasses_.get(classString);
+        
+        return cl;
+	}
 	
 
 	/**
@@ -167,6 +184,9 @@ public class JsonController {
 		
 		register_(SessionControlAction.class, new SessionControlActionAdapter());
 		register_(SessionControlModel.class, new SessionControlModelAdapter());
+		
+		register_(SerializableVector.class, new SerializableVectorAdapter<JsonSerializable>());
+		
 		
 		
 		

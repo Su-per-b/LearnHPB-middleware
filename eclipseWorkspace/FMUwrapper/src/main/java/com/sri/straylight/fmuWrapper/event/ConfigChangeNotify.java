@@ -8,7 +8,7 @@ import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 /**
  * The Class ConfigChangeNotify.
  */
-public class ConfigChangeNotify extends BaseEvent<ConfigStruct> {
+public class ConfigChangeNotify extends SerializableEvent<ConfigStruct> {
 	
 
 	private static final long serialVersionUID = 1L;

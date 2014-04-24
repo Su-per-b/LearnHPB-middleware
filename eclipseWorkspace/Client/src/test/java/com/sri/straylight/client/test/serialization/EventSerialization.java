@@ -26,6 +26,7 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
+import com.sri.straylight.fmuWrapper.voManaged.SerializableVector;
 import com.sri.straylight.fmuWrapper.voManaged.SessionControlAction;
 import com.sri.straylight.fmuWrapper.voManaged.SessionControlModel;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
@@ -124,7 +125,7 @@ public class EventSerialization {
 		ScalarValueReal scalarValueReal2 = new ScalarValueReal(struct2);
 		
 		//make real list
-		Vector<ScalarValueReal> realList = new Vector<ScalarValueReal>();
+		SerializableVector<ScalarValueReal> realList = new SerializableVector<ScalarValueReal>("ScalarValueReal");
 		realList.add(scalarValueReal1);
 		realList.add(scalarValueReal2);
 		
@@ -148,7 +149,7 @@ public class EventSerialization {
 		//make ScalarValueCollection
 		ScalarValueCollection scalarValueCollection1 = new ScalarValueCollection();
 		scalarValueCollection1.setRealList(realList);
-		scalarValueCollection1.setBooleanList(boolList);
+//		scalarValueCollection1.setBooleanList(boolList);
 		
 		//make ScalarValueResults
 		ScalarValueResults scalarValueResults = new ScalarValueResults();
@@ -318,7 +319,7 @@ public class EventSerialization {
 		scalarVariableReal_1.setDescription("The Description");
 		scalarVariableReal_1.setValueReference(125420);
 		
-		Vector<ScalarVariableReal> realVarList = new Vector<ScalarVariableReal>();
+		SerializableVector<ScalarVariableReal> realVarList = new SerializableVector<ScalarVariableReal>("ScalarVariableReal");
 		realVarList.add(scalarVariableReal_0);
 		realVarList.add(scalarVariableReal_1);
 		
@@ -450,7 +451,7 @@ public class EventSerialization {
 		ScalarValueReal scalarValueReal_0 = new ScalarValueReal(struct_0);
 
 	
-		Vector<ScalarValueReal> realList_0 = new Vector<ScalarValueReal>();
+		SerializableVector<ScalarValueReal> realList_0 = new SerializableVector<ScalarValueReal>("ScalarValueReal");
 		realList_0.add(scalarValueReal_0);
 
 		

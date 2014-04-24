@@ -9,7 +9,7 @@ import ch.ethz.polyql.jql.domain.shared.Assert;
 
 import com.sri.straylight.client.controller.BaseController;
 import com.sri.straylight.client.model.BaseModel;
-import com.sri.straylight.fmuWrapper.event.BaseEvent;
+import com.sri.straylight.fmuWrapper.event.SerializableEvent;
 
 public class BaseView extends JPanel {
 
@@ -45,7 +45,7 @@ public class BaseView extends JPanel {
 		}
 
 
-	    public void fireEvent(BaseEvent<?> event) {
+	    public void fireEvent(SerializableEvent<?> event) {
 	    	parentController_.fireEvent(event);
 	    }
 

@@ -1,7 +1,7 @@
 package com.sri.straylight.fmuWrapper.voNative;
 
+import com.sri.straylight.fmuWrapper.serialization.Iserializable;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
-import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 
 
 
@@ -10,7 +10,7 @@ import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 /**
  * The Enum SimStateNative.
  */
-public enum SimStateNative implements JnaEnum<SimStateNative>, JsonSerializable  {
+public enum SimStateNative implements JnaEnum<SimStateNative>, Iserializable  {
 	
 
 	/** uninitialized. */

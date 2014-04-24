@@ -7,7 +7,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Vector;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -28,6 +27,7 @@ import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
+import com.sri.straylight.fmuWrapper.voManaged.SerializableVector;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
 
@@ -353,7 +353,7 @@ public class ScalarVariableRealPanel extends BaseView {
 		scalarValue.value = newDoubleValue;
 		
 		ScalarValueCollection collection = new ScalarValueCollection();
-		Vector<ScalarValueReal> realList = new Vector<ScalarValueReal>();
+		SerializableVector<ScalarValueReal> realList = new SerializableVector<ScalarValueReal>("ScalarValueReal");
 		ScalarValueReal real = new ScalarValueReal(sv.getIdx(), newDoubleValue);
 		realList.add(real);
 		

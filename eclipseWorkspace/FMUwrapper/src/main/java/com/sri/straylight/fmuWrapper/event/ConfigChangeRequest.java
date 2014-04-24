@@ -6,7 +6,7 @@ import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 /**
  * The Class ConfigChangeRequest.
  */
-public class ConfigChangeRequest extends BaseEvent<ConfigStruct> {
+public class ConfigChangeRequest extends SerializableEvent<ConfigStruct> {
 	
 	/**
 	 * 

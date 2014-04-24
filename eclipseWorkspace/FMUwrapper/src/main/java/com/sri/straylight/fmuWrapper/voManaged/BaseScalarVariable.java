@@ -2,10 +2,11 @@ package com.sri.straylight.fmuWrapper.voManaged;
 
 import java.text.DecimalFormat;
 
+import com.sri.straylight.fmuWrapper.serialization.JsonSerializable;
 import com.sri.straylight.fmuWrapper.voNative.Enu;
 import com.sri.straylight.fmuWrapper.voNative.ScalarVariableStructBase;
 
-public class BaseScalarVariable {
+public class BaseScalarVariable extends JsonSerializable {
 
 	protected String name_;
 	protected int idx_;
