@@ -55,10 +55,7 @@ public class BaseTest {
 	 */
 	protected void requestStateChange_(SimStateNative simStateNative)
 	{
-
 		new SimStateClientRequest(this, simStateNative).fire();
-
-		
 	}
 	
 	

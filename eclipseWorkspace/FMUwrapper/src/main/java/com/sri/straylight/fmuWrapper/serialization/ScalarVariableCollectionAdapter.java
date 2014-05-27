@@ -3,7 +3,6 @@ package com.sri.straylight.fmuWrapper.serialization;
 
 
 import java.lang.reflect.Type;
-import java.util.Vector;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;

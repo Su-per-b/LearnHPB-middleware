@@ -54,7 +54,7 @@ public class VoNativeSerialization {
 		String json = theStruct.toJsonString();
 		
 		assertEquals(
-				"{\"t\":\"DefaultExperimentStruct\",\"startTime\":123.03,\"stopTime\":145.03,\"tolerance\":10.0}", 
+				"{\"t\":\"DefaultExperimentStruct\",\"startTime\":123.03,\"stopTime\":145.03,\"tolerance\":10}", 
 				json);
 		
 
@@ -100,7 +100,7 @@ public class VoNativeSerialization {
 		String json = configStruct.toJsonString();
 		
 		assertEquals(
-				"{\"t\":\"ConfigStruct\",\"stepDelta\":1.0,\"defaultExperimentStruct\":{\"t\":\"DefaultExperimentStruct\",\"startTime\":123.03,\"stopTime\":145.03,\"tolerance\":10.0}}", 
+				"{\"t\":\"ConfigStruct\",\"stepDelta\":1,\"defaultExperimentStruct\":{\"t\":\"DefaultExperimentStruct\",\"startTime\":123.03,\"stopTime\":145.03,\"tolerance\":10}}", 
 				json);
 		
 	}

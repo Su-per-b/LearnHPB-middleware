@@ -27,13 +27,10 @@ namespace StraylightTests
 	void Utils::stateChangeCallbackFunc(SimStateNative simStateNative) {
 		//printf ("Main.exe messageCallback: %s \n", messageStruct->msgText);
 		//printf("Main.exe simStateNative: %s \n", _T("simStateNative"));
-
 		//static_simStateNative = simStateNative;
 
 		 Utils::simStateNative = simStateNative;
-
 		//Microsoft::VisualStudio::CppUnitTestFramework::Logger::WriteMessage("simStateNative: ");
-
 	}
 
 
@@ -41,6 +38,13 @@ namespace StraylightTests
 		//printf ("Main.exe messageCallback: %s \n", messageStruct->msgText);
 		 Utils::messageStruct = messageStruct;
 	}
+
+
+
+
+
+
+
 
 
 }

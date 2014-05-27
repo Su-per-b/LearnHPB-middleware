@@ -3,7 +3,6 @@ package com.sri.straylight.fmuWrapper.serialization;
 
 import java.lang.reflect.Type;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
@@ -11,8 +10,6 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.reflect.TypeToken;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
-import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableCollection;
-import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voManaged.SerializableVector;
 
 

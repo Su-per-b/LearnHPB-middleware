@@ -15,7 +15,7 @@
 		<slf4j.version>1.7.6</slf4j.version>
 		<junit.version>4.11</junit.version>
 		<jna.version>3.4.0</jna.version>
-		<jetty.version>8.1.14.v20131031</jetty.version>
+		<jetty.version>8.1.15.v20140411</jetty.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<eventbus.version>1.4</eventbus.version>
 		<straylight.version>0.7.0</straylight.version>

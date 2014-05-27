@@ -40,7 +40,7 @@ public abstract class BaseThread extends Thread {
 	
 	
 	
-	public BaseThread(){
+	public BaseThread() {
 		AnnotationProcessor.process(this);
 		mainBarrier_ = new CyclicBarrier(2);
 		stateChangeBarrier_ = new CyclicBarrier(2);

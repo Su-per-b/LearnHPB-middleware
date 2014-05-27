@@ -11,6 +11,8 @@ import com.sri.straylight.client.model.ClientConfigXML;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
+import com.sri.straylight.client.test.OrderedRunner;
+
 
 @RunWith(OrderedRunner.class)
 public class WebsocketTs extends BaseTest {
@@ -48,8 +50,6 @@ public class WebsocketTs extends BaseTest {
 		requestStateChange_(SimStateNative.simStateNative_2_xmlParse_requested);
 		awaitOnState(SimStateNative.simStateNative_2_xmlParse_completed);
 		
-		
-		//System.out.println ("testB done");
 		
 	}
 	

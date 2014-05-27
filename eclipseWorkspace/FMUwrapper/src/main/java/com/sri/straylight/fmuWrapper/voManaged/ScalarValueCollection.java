@@ -14,7 +14,7 @@ public class ScalarValueCollection extends JsonSerializable {
 	private SerializableVector<ScalarValueReal> realList_;
 	//private SerializableVector<ScalarValueBoolean> booleanList_;
 	
-	private Vector<BaseScalarValue> valueList_;
+	//private Vector<BaseScalarValue> valueList_;
 	
 	
 
@@ -44,10 +44,8 @@ public class ScalarValueCollection extends JsonSerializable {
 	}
 	
 	private void init2_() {
-	//	valueList_ = new Vector<BaseScalarValue>();
 		realList_ = new SerializableVector<ScalarValueReal>("ScalarValueReal");
 		
-		//booleanList_ = new Vector<ScalarValueBoolean>();
 	}
 	
 	
@@ -56,7 +54,6 @@ public class ScalarValueCollection extends JsonSerializable {
 	
 	private void init_(ScalarValueCollectionStruct struct) {
 		initReal_(struct);
-		//initBoolean_(struct);
 	}
 	
 
@@ -65,44 +62,10 @@ public class ScalarValueCollection extends JsonSerializable {
 	
 	public int size() {
 		
-		int size = valueList_.size();
+		int size = realList_.size();
 		return size;
 	}
 
-//	private void initBoolean_(ScalarValueCollectionStruct struct) {
-//		
-//		booleanList_ = new Vector<ScalarValueBoolean>();
-//		
-//		
-//		if (struct.booleanSize > 0) {
-//			
-//			ScalarValueBooleanStruct[] aryBoolean = struct.getBooleanAsArray(0);	
-//			int len = aryBoolean.length;
-//			
-//			if (struct.booleanSize != len) {
-//				try {
-//					throw new Exception("Error converting Array");
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			
-//			
-//			
-//			for (int i = 0; i < len; i++) {
-//				ScalarValueBooleanStruct boolStruct = aryBoolean[i];
-//				
-//				ScalarValueBoolean sv = new ScalarValueBoolean(boolStruct);
-//				
-//				
-//				booleanList_.add(sv);
-//				valueList_.add(sv);
-//				
-//			}
-//			
-//		}
-//
-//	}
 	
 	public void setRealList(SerializableVector<ScalarValueReal> realList) {
 		realList_ = realList;
@@ -132,24 +95,7 @@ public class ScalarValueCollection extends JsonSerializable {
 		return ary;
 	}
 	
-//	public void setBooleanList(Vector<ScalarValueBoolean> booleanList) {
-//		booleanList_ = booleanList;
-//		
-//		int len = booleanList_.size();
-//		
-//		for (int i = 0; i < len; i++) {
-//			ScalarValueBoolean sv = booleanList_.get(i);
-//			valueList_.add(sv);
-//		}
-//	}
-	
-//	public Vector<ScalarValueBoolean> getBooleanList() {
-//		return booleanList_;
-//		
-//		
-//
-//	}
-	
+
 	
 	private void initReal_(ScalarValueCollectionStruct struct) {
 		
@@ -165,17 +111,12 @@ public class ScalarValueCollection extends JsonSerializable {
 			ScalarValueReal sv = new ScalarValueReal(realStruct);
 			
 			realList_.add(sv);
-			valueList_.add(sv);
 		}
 	}
 	
 	
 
 
-	public BaseScalarValue get(int idx) {
-		
-		return valueList_.get(idx);
-	}
 	
 	public String toString() {
 		
@@ -186,10 +127,7 @@ public class ScalarValueCollection extends JsonSerializable {
 	}
 
 
-	
-	public Vector<BaseScalarValue> getValueList() {
-		return valueList_;
-	}
+
 	
 	
 	public Vector<String> getStringList() {
@@ -246,37 +184,7 @@ public class ScalarValueCollection extends JsonSerializable {
         	}
 		}
         
-//        Vector<ScalarValueBoolean> booleanList2 = typedObj.getBooleanList();
-//        
-//        int len2 = booleanList_.size();
-//        for (int j = 0; j < len2; j++) {
-//        	
-//        	ScalarValueBoolean scalarValueBoolean1 = booleanList_.get(j);
-//        	ScalarValueBoolean scalarValueBoolean2 = booleanList2.get(j);
-//        	
-//        	isEqual = scalarValueBoolean1.equals(scalarValueBoolean2);
-//        	if (!isEqual) {
-//        		return false;
-//        	}
-//		}
-        
-        
-        Vector<BaseScalarValue> valueList2 = typedObj.getValueList();
 
-        
-        int len3 = valueList_.size();
-        for (int j = 0; j < len3; j++) {
-        	
-        	BaseScalarValue scalarValue1 = valueList_.get(j);
-        	BaseScalarValue scalarValue2 = valueList2.get(j);
-        	
-        	isEqual = scalarValue1.equals(scalarValue2);
-        	if (!isEqual) {
-        		return false;
-        	}
-		}
-        
-        
         
         return true;
 

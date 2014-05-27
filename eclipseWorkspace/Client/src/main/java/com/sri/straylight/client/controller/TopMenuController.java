@@ -10,6 +10,7 @@ import javax.swing.JMenuItem;
 import org.bushe.swing.event.EventBus;
 
 import com.sri.straylight.client.event.menu.About_Help;
+import com.sri.straylight.client.event.menu.Options_SelectSimulationEngine;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 
 // TODO: Auto-generated Javadoc
@@ -32,7 +33,7 @@ public class TopMenuController  extends BaseController  {
 		
 		menuBar_ = new JMenuBar();
 		
-		//initMenuOptions_();
+		initMenuOptions_();
 		initMenuHelp_();
 		
 		setView_(menuBar_);
@@ -54,27 +55,27 @@ public class TopMenuController  extends BaseController  {
 	/**
 	 * Inits the menu options_.
 	 */
-//	private void initMenuOptions_() {
-//		// Create a menu
-//		JMenu menu = new JMenu("Options");
-//
-//
-//		// Create a menu item
-//		JMenuItem item1 = new JMenuItem("Simulation Engine...");
-//		
-//		item1.addActionListener(
-//	    		new ActionListener() {
-//	    		      public void actionPerformed(ActionEvent actionEvent) {
-//	    		    	  EventBus.publish(new Options_SelectSimulationEngine());
-//	    		      }
-//	    		    }
-//				);
-//		
-//		
-//		menu.add(item1);
-//		menuBar_.add(menu);
-//		
-//	}
+	private void initMenuOptions_() {
+		// Create a menu
+		JMenu menu = new JMenu("Options");
+
+
+		// Create a menu item
+		JMenuItem item1 = new JMenuItem("Simulation Engine...");
+		
+		item1.addActionListener(
+	    		new ActionListener() {
+	    		      public void actionPerformed(ActionEvent actionEvent) {
+	    		    	  EventBus.publish(new Options_SelectSimulationEngine());
+	    		      }
+	    		    }
+				);
+		
+		
+		menu.add(item1);
+		menuBar_.add(menu);
+		
+	}
 	
 	
 	/**
