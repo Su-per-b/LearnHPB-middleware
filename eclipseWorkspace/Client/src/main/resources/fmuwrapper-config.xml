@@ -8,7 +8,7 @@
 	<id>Client-Debug</id>
 	<nativeLibFolderRelativePath>\..\..\visualStudioWorkspace\bin\Debug</nativeLibFolderRelativePath>
 	<unzipFolderRelativePath>\..\..\assets\FMUs\</unzipFolderRelativePath>
-	<fmuFolderName>LearnGB_0v4_02_VAVReheat_ClosedLoop_edit2</fmuFolderName>
+	<fmuFolderName>LearnGB_0v4_02_VAVReheat_ClosedLoop_VerySimpleScenario</fmuFolderName>
 	
 	<parseInternalVariablesFlagStr>false</parseInternalVariablesFlagStr>
 	<parseInternalVariableLimitStr>500</parseInternalVariableLimitStr>

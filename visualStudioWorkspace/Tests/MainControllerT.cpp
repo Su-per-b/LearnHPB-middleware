@@ -105,7 +105,7 @@ namespace StraylightTests
 			ConfigStruct * config = mainController_->getConfig();
 			Assert::IsNotNull(config);
 
-			Assert::AreEqual(config->stepDelta, 1.0);
+			Assert::AreEqual(300.0, config->stepDelta);
 
 			DefaultExperimentStruct * defaultExperimentStruct = config->defaultExperimentStruct;
 			Assert::IsNotNull(defaultExperimentStruct);
@@ -390,7 +390,7 @@ namespace StraylightTests
 			ConfigStruct * configStruct = mainController_->getConfig();
 			Assert::IsNotNull(configStruct);
 
-			Assert::AreEqual(configStruct->stepDelta, 1.0);
+			Assert::AreEqual(configStruct->stepDelta, 300.0);
 
 			DefaultExperimentStruct * defaultExperimentStruct = configStruct->defaultExperimentStruct;
 			Assert::IsNotNull(defaultExperimentStruct);

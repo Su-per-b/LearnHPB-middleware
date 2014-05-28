@@ -13,7 +13,7 @@ namespace Straylight
 	Config::Config( void )
 	{
 		autoCorrect_ =false;
-		stepDelta_ = 1.0;
+		stepDelta_ = 300.0;
 	}
 
 	Config::~Config( void )
