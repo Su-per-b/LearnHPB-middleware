@@ -190,8 +190,8 @@ public class FMUcontroller extends AbstractController {
 		stateChangeCallbackFunc_ = new StateChangeCallback();
 		simStateNative_ = SimStateNative.simStateNative_0_uninitialized;
 
-		//fireEventsForStates_.put(SimStateNative.simStateNative_0_uninitialized,
-			//	true);
+		fireEventsForStates_.put(SimStateNative.simStateNative_0_uninitialized,
+				true);
 
 		fireEventsForStates_.put(
 				SimStateNative.simStateNative_1_connect_completed, true);
@@ -221,7 +221,12 @@ public class FMUcontroller extends AbstractController {
 		fireEventsForStates_.put(
 				SimStateNative.simStateNative_7_terminate_completed, true);
 		
+		fireEventsForStates_.put(
+				SimStateNative.simStateNative_8_tearDown_completed, true);
+		
 		fireEventsForStates_.put(SimStateNative.simStateNative_e_error, true);
+		
+		
 
 	}
 
@@ -407,6 +412,17 @@ public class FMUcontroller extends AbstractController {
 			forceCleanup();
 			
 			break;
+		case simStateNative_0_uninitialized:
+			
+			if (null == jnaFMUWrapper_) {
+				
+
+
+			} else {
+				jnaFMUWrapper_.requestStateChange(newState);
+			}
+
+			break;
 		default:
 			System.out.println("FMUcontroller.requestStateChange() sessionID:" + sessionID_);
 			jnaFMUWrapper_.requestStateChange(newState);
@@ -464,18 +480,19 @@ public class FMUcontroller extends AbstractController {
 			jnaFMUWrapper_.forceCleanup();
 		}
 		
-		SimStateNative simStateNative = SimStateNative.simStateNative_8_tearDown_completed;
 		
-		SimStateNativeNotify e = new SimStateNativeNotify(this, simStateNative);
-		fireEvent(e);
-		
-		
-		SimStateNative simStateNative2 = SimStateNative.simStateNative_0_uninitialized;
-		
-		SimStateNativeNotify e2 = new SimStateNativeNotify(this, simStateNative2);
-		fireEvent(e2);
-		
+		if ( simStateNative_ != SimStateNative.simStateNative_0_uninitialized ) {
+			
+			simStateNative_ = SimStateNative.simStateNative_0_uninitialized;
+			
+			if (fireEventsForStates_.containsKey(simStateNative_)) {
+				SimStateNativeNotify e = new SimStateNativeNotify(this, simStateNative_);
+				fireEvent(e);
+			}
+		}
+
 	}
+	
 
 	public void setConcurrency(boolean b) {
 		concurrency_ = b;

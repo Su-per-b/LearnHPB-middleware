@@ -144,7 +144,7 @@ public class JNAfunctionsT {
 		Assert.assertEquals(86400.0, defaultExperimentStruct.stopTime, 0.0);
 		Assert.assertEquals(9.9999999999999995e-007, defaultExperimentStruct.tolerance, 0.0);
 		
-		Assert.assertEquals(1.0, configStruct.stepDelta, 0.0);
+		Assert.assertEquals(300.0, configStruct.stepDelta, 0.0);
 		
 		
 		return;

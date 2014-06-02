@@ -221,12 +221,11 @@ public abstract class AbstractController implements ActionListener, WindowListen
 
 
     public void unregisterEventListener(
-    		Class<? extends BaseEvent<?>> eventClass, 
-    		StraylightEventListener<? extends BaseEvent<?>,?> eventListener) 
+    		Class<? extends BaseEvent<?>> eventClass) 
     {
     	
+    	eventListeners.remove(eventClass);
     	
-
     }
     
     public void unregisterAllEventListener() 

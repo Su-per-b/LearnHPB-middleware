@@ -77,7 +77,7 @@ namespace StraylightTests
 			Assert::AreEqual(9.9999999999999995e-007, defaultExperimentStruct->tolerance);
 
 			double stepDelta = configStruct->stepDelta;
-			Assert::AreEqual(1.0, stepDelta);
+			Assert::AreEqual(300.0, stepDelta);
 
 			forceCleanup();
 
@@ -301,7 +301,7 @@ namespace StraylightTests
 			double value_0 = realValueStruct_0.value;
 
 			Assert::AreEqual(61807, idx_0, L"unexpected idx for ScalarValueRealStruct");
-			Assert::AreEqual(293.14999999999867, value_0, L"unexpected value for ScalarValueRealStruct");
+			Assert::AreEqual(293.13879255515184, value_0, L"unexpected value for ScalarValueRealStruct");
 
 			ScalarValueRealStruct realValueStruct_1 = realValueStruct[1];
 
@@ -309,7 +309,8 @@ namespace StraylightTests
 			double value_1 = realValueStruct_1.value;
 
 			Assert::AreEqual(61808, idx_1, L"unexpected idx for ScalarValueRealStruct");
-			Assert::AreEqual(293.14999995506417, value_1, L"unexpected value for ScalarValueRealStruct");
+			Assert::AreEqual(293.11857948034844, value_1, L"unexpected value for ScalarValueRealStruct");
+
 
 			assertSimState_(simStateNative_3_ready);
 

@@ -242,9 +242,6 @@ namespace Straylight
 			setState_(simStateNative_8_tearDown_completed);
 			return 0;
 		}
-
-
-
 	}
 
 

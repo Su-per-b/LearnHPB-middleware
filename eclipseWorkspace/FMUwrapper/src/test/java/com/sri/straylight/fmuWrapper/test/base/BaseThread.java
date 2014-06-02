@@ -56,8 +56,12 @@ public abstract class BaseThread extends Thread {
 	protected void requestStateChangeTo_ 
 		(SimStateNative stateChangeRequest, SimStateNative nextStateExpected) 
 	{
+		stateChangeBarrier_ = new CyclicBarrier(2);
+		
 		nextStateExpected_ = nextStateExpected;
 		fmuController_.requestStateChange(stateChangeRequest);
+		
+
 		awaitOnStateChangeBarrier();
 	}
 	
@@ -93,25 +97,27 @@ public abstract class BaseThread extends Thread {
 
 
 		super.start();
+		
 
+		
+		awaitOnMainBarrier();
 	}
 	
 	public void awaitOnMainBarrier() {
 		awaitOnBarrier(mainBarrier_);
 	}
 	
-	private void awaitOnStateChangeBarrier() {
+	protected void awaitOnStateChangeBarrier() {
 		awaitOnBarrier(stateChangeBarrier_);
 	}
 	
 	
 	public void cleanup() {
 
+		unregisterSimulationListeners_();
 
-		mainBarrier_.reset();
-		stateChangeBarrier_.reset();
 
-		
+		fmuController_.forceCleanup();
 	}
 	
 	
@@ -140,6 +146,19 @@ public abstract class BaseThread extends Thread {
 	}
 	
 	
+	
+	private void unregisterSimulationListeners_() {
+		
+		fmuController_.unregisterEventListener(SimStateNativeNotify.class);
+		fmuController_.unregisterEventListener(MessageEvent.class);
+		fmuController_.unregisterEventListener(ResultEvent.class);
+		fmuController_.unregisterEventListener(XMLparsedEvent.class);
+		fmuController_.unregisterEventListener(ConfigChangeNotify.class);
+		
+	}
+	
+	
+	
 	private void registerSimulationListeners_() {
 		
 
@@ -147,6 +166,7 @@ public abstract class BaseThread extends Thread {
 		//SimStateNativeNotify
 		fmuController_.registerEventListener(
 				SimStateNativeNotify.class,
+				
 				new StraylightEventListener<SimStateNativeNotify, SimStateNative>() {
 					@Override
 					public void handleEvent(SimStateNativeNotify event) {
@@ -159,7 +179,8 @@ public abstract class BaseThread extends Thread {
 						EventBus.publish(newEvent);
 						
 					}
-				});
+				}
+			);
 		
 
 		//MessageEvent
