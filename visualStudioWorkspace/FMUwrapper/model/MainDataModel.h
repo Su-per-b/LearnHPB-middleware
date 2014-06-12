@@ -49,7 +49,7 @@ namespace Straylight
 
 		fmiComponent fmiComponent_;
 
-		fmiStatus setScalarValueRealMin(int idx, double value);
+		fmiStatus setScalarValueRealByIdx(int idx, double value);
 
 		TypeDefinitions * typeDefinitions_;
 		FmiModelAttributes * fmiModelAttributes_;

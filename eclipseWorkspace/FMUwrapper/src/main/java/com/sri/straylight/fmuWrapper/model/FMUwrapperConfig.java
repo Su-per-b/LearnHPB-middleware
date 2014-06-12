@@ -36,6 +36,8 @@ public class FMUwrapperConfig {
 	public Boolean parseInternalVariablesFlag;
 	public Integer parseInternalVariableLimit;
 
+	//override
+	public static File fmuFolderAbsolutePathOverride = null;
 	
 	
 	public static FMUwrapperConfig load(String configFile) {
@@ -75,7 +77,17 @@ public class FMUwrapperConfig {
 			
 			
 			config.unzipFolderAbsolutePath = convertRelativeToAbsolute(config.unzipFolderRelativePath);
-			config.fmuFolderAbsolutePath = config.unzipFolderAbsolutePath + "\\" + config.fmuFolderName;
+			
+			
+			if (null == fmuFolderAbsolutePathOverride) {
+				config.fmuFolderAbsolutePath = config.unzipFolderAbsolutePath + "\\" + config.fmuFolderName;
+			} else {
+				config.fmuFolderAbsolutePath = fmuFolderAbsolutePathOverride.toString();
+			}
+
+			
+			
+			
 			config.nativeLibFolderAbsolutePath = convertRelativeToAbsolute(config.nativeLibFolderRelativePath);
 			
 			config.parseInternalVariablesFlag = Boolean.parseBoolean(config.parseInternalVariablesFlagStr);

@@ -103,7 +103,7 @@ public class MainController extends BaseController {
 		
 	}
 	
-
+	
 
 
 
@@ -115,7 +115,7 @@ public class MainController extends BaseController {
 	@EventSubscriber(eventClass=Options_SelectSimulationEngine.class)
 	public void onSelectSimulationEngine(Options_SelectSimulationEngine event) {
 		@SuppressWarnings("unused")
-		SimulationEngineDialog dialog =  new SimulationEngineDialog( view_ , configModel_);
+		SimulationEngineDialog dialog =  new SimulationEngineDialog( view_ , configModel_, simulationController_);
 	}
 
 	

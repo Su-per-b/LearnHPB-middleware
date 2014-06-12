@@ -1,5 +1,6 @@
 package com.sri.straylight.client.util;
 
+import java.io.File;
 import java.util.Vector;
 
 import org.bushe.swing.event.EventBus;
@@ -42,6 +43,21 @@ public class FmuConnectionLocal extends FmuConnectionAbstract {
 		
 	}
 	
+	
+	public FmuConnectionLocal(File fmuFile_) {
+		
+		FMUcontroller fmuController = new FMUcontroller();
+		fmuController.setConcurrency(false);
+		fmuController.setFmuFile(fmuFile_);
+		
+		
+		threadedFMUcontroller_ = new ThreadedFMUcontroller(fmuController);
+		registerSimulationListeners_();
+		
+	}
+
+
+
 private void registerSimulationListeners_() {
 		
 		

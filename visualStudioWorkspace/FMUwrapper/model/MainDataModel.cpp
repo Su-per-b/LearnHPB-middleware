@@ -127,6 +127,7 @@ namespace Straylight
 	 * Sets start values.
 	 *******************************************************/
 	void MainDataModel::setStartValues() {
+
 		int len =  scalarVariableDataModel_->svInput_->real.size();
 
 		for (int i = 0; i < len; i++)
@@ -135,11 +136,31 @@ namespace Straylight
 			ValueStatus status = (ValueStatus) svStruct->typeSpecReal->startValueStatus;
 
 			if(status == valueDefined) {
-				setScalarValueRealMin(svStruct->idx, svStruct->typeSpecReal->start);
+				setScalarValueRealByIdx(svStruct->idx, svStruct->typeSpecReal->start);
 			} else {
 				Logger::getInstance()->printError("No start value defined for input varable");
 			}
 		}
+
+
+		int len2 = scalarVariableDataModel_->svInternal_->real.size();
+
+		for (int j = 0; j < len2; j++)
+		{
+			ScalarVariableRealStruct * svStruct = scalarVariableDataModel_->svInternal_->real[j];
+			ValueStatus status = (ValueStatus)svStruct->typeSpecReal->startValueStatus;
+
+			if (status == valueDefined) {
+				setScalarValueRealByIdx(svStruct->idx, svStruct->typeSpecReal->start);
+			}
+			else {
+				//Logger::getInstance()->printError("No start value defined for internal varable");
+			}
+		}
+
+
+
+
 	}
 
 
@@ -197,7 +218,7 @@ namespace Straylight
 		return scalarValueResults;
 	}
 
-	fmiStatus MainDataModel::setScalarValueRealMin( int idx, double value )
+	fmiStatus MainDataModel::setScalarValueRealByIdx(int idx, double value)
 	{
 		ScalarValue * scalarValue = new ScalarValue(idx);
 		//fmiReal realNumber;
@@ -209,7 +230,7 @@ namespace Straylight
 			if (status == fmiOK) {
 				//Logger::getInstance()->printDebug("setScalarValueReal fmiOK");
 			} else {
-				Logger::getInstance()->printError("setScalarValueRealMin ERROR");
+				Logger::getInstance()->printError("setScalarValueRealByIdx ERROR");
 			}
 
 		return status;

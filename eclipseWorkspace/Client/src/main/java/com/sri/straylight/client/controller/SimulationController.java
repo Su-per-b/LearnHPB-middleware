@@ -1,5 +1,7 @@
 package com.sri.straylight.client.controller;
 
+import java.io.File;
+
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
@@ -13,6 +15,7 @@ import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
 import com.sri.straylight.fmuWrapper.event.SimStateClientNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
+import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
@@ -26,6 +29,7 @@ public class SimulationController extends BaseController  {
 	private FmuConnectionAbstract fmuConnect_;
     private ClientConfig configModel_;
     private SimStateNative simStateNative_ = SimStateNative.simStateNative_0_uninitialized;
+    private File fmuFile_;
     
     
 	/**
@@ -72,13 +76,10 @@ public class SimulationController extends BaseController  {
 				fmuConnect_ = new FmuConnectionRemote("192.168.0.12");
 				break;
 			case connectTo_file :
-
-				fmuConnect_ = new FmuConnectionLocal();
+				fmuConnect_ = new FmuConnectionLocal(fmuFile_);
 				fmuConnect_.requestStateChange(SimStateNative.simStateNative_1_connect_requested  );
 				break;
     	}
-    	
-
     }
 	
 	
@@ -135,12 +136,7 @@ public class SimulationController extends BaseController  {
 	@EventSubscriber(eventClass=ScalarValueChangeRequest.class)
     public void onInputChangeRequest(ScalarValueChangeRequest event) {
 		
-		
-		
 		ScalarValueCollection collection = event.getPayload();
-		
-
-		
 		fmuConnect_.setScalarValueCollection(collection);
 	}
 	
@@ -160,11 +156,16 @@ public class SimulationController extends BaseController  {
 	//this event comes from the GUI
 	@EventSubscriber(eventClass=SimStateClientRequest.class)
     public void onSimStateClientRequest(SimStateClientRequest event) {
-		
 		SimStateNative requestedState = event.getPayload();
 		requestStateChange(requestedState);
-
     }
+
+
+	public void setFMUfile(File fmuFile) {
+		fmuFile_ = fmuFile;
+		
+		FMUwrapperConfig.fmuFolderAbsolutePathOverride = fmuFile;
+	}
 	
 
 

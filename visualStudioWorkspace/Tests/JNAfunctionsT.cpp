@@ -301,7 +301,7 @@ namespace StraylightTests
 			double value_0 = realValueStruct_0.value;
 
 			Assert::AreEqual(61807, idx_0, L"unexpected idx for ScalarValueRealStruct");
-			Assert::AreEqual(293.13879255515184, value_0, L"unexpected value for ScalarValueRealStruct");
+			Assert::AreEqual(292.44444329455683, value_0, L"unexpected value for ScalarValueRealStruct");
 
 			ScalarValueRealStruct realValueStruct_1 = realValueStruct[1];
 
@@ -309,11 +309,10 @@ namespace StraylightTests
 			double value_1 = realValueStruct_1.value;
 
 			Assert::AreEqual(61808, idx_1, L"unexpected idx for ScalarValueRealStruct");
-			Assert::AreEqual(293.11857948034844, value_1, L"unexpected value for ScalarValueRealStruct");
+			Assert::AreEqual(291.01500644163440, value_1, L"unexpected value for ScalarValueRealStruct");
 
 
 			assertSimState_(simStateNative_3_ready);
-
 
 		}
 

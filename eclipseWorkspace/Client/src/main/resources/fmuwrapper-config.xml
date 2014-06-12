@@ -3,18 +3,29 @@
 
 
 
-
-	<!--For Debug -->
+	<!--For Debug 
 	<id>Client-Debug</id>
 	<nativeLibFolderRelativePath>\..\..\visualStudioWorkspace\bin\Debug</nativeLibFolderRelativePath>
 	<unzipFolderRelativePath>\..\..\assets\FMUs\</unzipFolderRelativePath>
-	<fmuFolderName>LearnGB_0v4_02_VAVReheat_ClosedLoop_VerySimpleScenario</fmuFolderName>
+	<fmuFolderName>LearnGB_0v4_02_VAVReheat_ClosedLoop_edit2</fmuFolderName>
 	
 	<parseInternalVariablesFlagStr>false</parseInternalVariablesFlagStr>
 	<parseInternalVariableLimitStr>500</parseInternalVariableLimitStr>
+ -->
+ 
+	<!--For Debug Very Simple
+	<id>Client-VerySimpleScenario</id>
+	<nativeLibFolderRelativePath>\..\..\visualStudioWorkspace\bin\Debug</nativeLibFolderRelativePath>
+	<unzipFolderRelativePath>\..\..\assets\FMUs\</unzipFolderRelativePath>
+	<fmuFolderName>LearnGB_0v4_02_VAVReheat_ClosedLoop_edit2</fmuFolderName>
+	
+	<parseInternalVariablesFlagStr>false</parseInternalVariablesFlagStr>
+	<parseInternalVariableLimitStr>500</parseInternalVariableLimitStr>
+ --> 
 
 
-	<!--For Production		
+
+	<!--For Production		 -->	
 
 	<id>Client-Production</id>
 	<nativeLibFolderRelativePath>\native_code</nativeLibFolderRelativePath>
@@ -23,6 +34,6 @@
 	
 	<parseInternalVariablesFlagStr>true</parseInternalVariablesFlagStr>
 	<parseInternalVariableLimitStr>500</parseInternalVariableLimitStr>
-	 -->
+
 	 
 </config>

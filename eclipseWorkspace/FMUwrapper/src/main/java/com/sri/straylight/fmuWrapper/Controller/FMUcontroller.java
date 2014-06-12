@@ -1,6 +1,10 @@
 package com.sri.straylight.fmuWrapper.Controller;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,8 +12,11 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 
 import com.sri.straylight.fmuWrapper.JNAfmuWrapper;
@@ -37,6 +44,9 @@ import com.sri.straylight.fmuWrapper.voNative.ScalarVariablesAllStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
+import java.io.*;
+import java.util.*;
+import java.util.zip.*;
 
 
 
@@ -59,6 +69,7 @@ public class FMUcontroller extends AbstractController {
 	private Path pathToTempFolder_;
 	private Path pathToWorkingFMU_;
 	private boolean concurrency_ = true;
+	private File fmuFile_;
 	
 	public FMUcontroller() {
 		super(null);
@@ -300,16 +311,25 @@ public class FMUcontroller extends AbstractController {
 	private void connect_() throws IOException {
 
 		System.out.println("FMUcontroller.connect_() sessionID:" + sessionID_);
-		
 		checkConfig();
 
-
-		
 		if (null == jnaFMUWrapper_) {
-			
 			
 		    Path pathToOriginalFMU = Paths.get(fmuWrapperConfig_.fmuFolderAbsolutePath);
 			Path pathToNativeLibs = Paths.get(fmuWrapperConfig_.nativeLibFolderAbsolutePath);
+			File theFile = pathToOriginalFMU.toFile();
+					
+			
+			if (theFile.isFile()) {
+				
+				String ext = FilenameUtils.getExtension(theFile.toString());
+				String ext2 = ext.toLowerCase();
+				
+				if (ext2.equals("fmu")  || ext2.equals("zip")) {
+					pathToOriginalFMU = this.unzip2(theFile);
+				}
+			}
+
 			
 			if (concurrency_) {
 				
@@ -366,6 +386,145 @@ public class FMUcontroller extends AbstractController {
 
 
 		// notifyStateChange_(SimStateNative.simStateNative_1_connect_completed);
+	}
+
+	private Path unzip2(File theFile) {
+		
+		//make temp folder for this session
+
+		
+		String filePathStr = theFile.toString();
+		
+	    Enumeration entries;
+	    ZipFile zipFile;
+	    String fmuFolder = "";
+	    
+	    
+	    try {
+	      String tempFilderPrefix = "Stl_";
+	    		  
+	      Path pathToTempFolder = Files.createTempDirectory(tempFilderPrefix);
+	      zipFile = new ZipFile(filePathStr);
+
+	      entries = zipFile.entries();
+	      
+	      Boolean firstRun = true;
+	      
+	      
+	      while(entries.hasMoreElements()) {
+	    	  
+		      ZipEntry entry = (ZipEntry)entries.nextElement();
+	          String name = entry.getName();
+	          String pathStr = pathToTempFolder.toString() + "\\" +  name;
+	          
+		      if (firstRun) {
+		    	  fmuFolder = pathStr;
+	    		  firstRun = false;
+	    	  }
+
+
+	        if(entry.isDirectory()) {
+	          // Assume directories are stored parents first then children.
+	          // This is not robust, just for demonstration purposes.
+	          
+	          System.out.println("Extracting directory: " + pathStr);
+	         
+	          File fl = new File(pathStr);
+	          
+	          fl.mkdir();
+	          continue;
+	        }
+
+	        System.out.println("Extracting file: " + pathStr);
+	        
+	        copyInputStream(zipFile.getInputStream(entry),
+	           new BufferedOutputStream(new FileOutputStream(pathStr)));
+	      }
+	      
+
+	      zipFile.close();
+	    } catch (IOException ioe) {
+	      System.err.println("Unhandled exception:");
+	      ioe.printStackTrace();
+	      
+
+
+	      Path fmuFolderPath2 = Paths.get(fmuFolder);
+
+
+	      return fmuFolderPath2;
+	    }
+	    
+	    Path fmuFolderPath2 = Paths.get(fmuFolder);
+	    return fmuFolderPath2;
+	  }
+	
+	
+	
+	  private void copyInputStream(InputStream in, OutputStream out)  throws IOException
+	  {
+		  
+	    byte[] buffer = new byte[1024];
+	    int len;
+
+	    while((len = in.read(buffer)) >= 0)
+	      out.write(buffer, 0, len);
+
+	    in.close();
+	    out.close();
+	    
+	  }
+	
+		
+	
+
+
+
+	
+	
+	private Path unzip(File theFile) {
+
+			String filePath = theFile.toString();
+		
+	        FileInputStream fis = null;
+	        ZipInputStream zipIs = null;
+	        ZipEntry zEntry = null;
+	        
+	        try {
+	            fis = new FileInputStream(filePath);
+	            zipIs = new ZipInputStream(new BufferedInputStream(fis));
+	            while((zEntry = zipIs.getNextEntry()) != null){
+	                try{
+	                    byte[] tmp = new byte[4*1024];
+	                    FileOutputStream fos = null;
+	                    
+	                    String opFilePath = "C:/"+zEntry.getName();
+	                    
+	                    System.out.println("Extracting file to "+opFilePath);
+	                    fos = new FileOutputStream(opFilePath);
+	                    int size = 0;
+	                    while((size = zipIs.read(tmp)) != -1){
+	                        fos.write(tmp, 0 , size);
+	                    }
+	                    fos.flush();
+	                    fos.close();
+	                } catch(Exception ex){
+	                     
+	                }
+	            }
+	            zipIs.close();
+	        } catch (FileNotFoundException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        } catch (IOException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+	        
+	        
+		
+		return null;
+		
 	}
 
 	/**
@@ -496,8 +655,18 @@ public class FMUcontroller extends AbstractController {
 
 	public void setConcurrency(boolean b) {
 		concurrency_ = b;
+	}
+
+	
+	public void setFmuFile(File fmuFile) {
+		
+		fmuFile_ = fmuFile;
+		
+		FMUwrapperConfig.fmuFolderAbsolutePathOverride = fmuFile;
 		
 	}
+	
+	
 
 
 
