@@ -35,8 +35,8 @@ public class TypeSpecReal
 	public int unitValueStatus = 0;
 
 
-	public String toJsonString() {
-		return JsonController.getInstance().toJsonString(this);
+	public String serialize() {
+		return JsonController.getInstance().serialize(this);
 	}
 	
 	

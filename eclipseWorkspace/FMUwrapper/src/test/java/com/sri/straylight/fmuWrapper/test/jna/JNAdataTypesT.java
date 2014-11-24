@@ -237,7 +237,7 @@ public class JNAdataTypesT {
 	
 	
 	@Test
-	public void T03B_ScalarVariableCollection() {
+	public void T04_ScalarVariableCollection() {
 		
 		
 		ScalarVariableCollectionStruct.ByReference svCollectionStruct_0 = jnaDataTypes_.test_GetScalarVariableCollectionStruct();
@@ -329,17 +329,10 @@ public class JNAdataTypesT {
 	
 	
 	
-	
-	
-	
-	
-	
 	private class ResultCallback implements ResultCallbackInterface {
 
 		public boolean resultCallback(
 				ScalarValueResultsStruct scalarValueResultsStruct) {
-
-
 
 			return true;
 		}

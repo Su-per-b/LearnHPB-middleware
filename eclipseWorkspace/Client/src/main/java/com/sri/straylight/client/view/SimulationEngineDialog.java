@@ -4,8 +4,13 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DragGestureEvent;
+import java.awt.dnd.DragGestureListener;
+import java.awt.dnd.DragSource;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -20,18 +25,6 @@ import javax.swing.border.Border;
 import com.sri.straylight.client.ConnectTo;
 import com.sri.straylight.client.controller.SimulationController;
 import com.sri.straylight.client.model.ClientConfig;
-
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DragGestureEvent;
-import java.awt.dnd.DragGestureListener;
-import java.awt.dnd.DragSource;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetAdapter;
-import java.awt.dnd.DropTargetDropEvent;
-import java.io.File;
 
 // TODO: Auto-generated Javadoc
 /**

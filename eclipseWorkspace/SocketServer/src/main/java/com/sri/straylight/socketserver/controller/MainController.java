@@ -20,7 +20,6 @@ public class MainController extends AbstractController  {
 	
 	public static Logger logger = Log.getLogger("SocketServer");
 	public static MainController instance;
-//	private ArrayList<ConnectionBundle> connectionBundleList_;
 	private WorkerMakeBundle workerMakeBundle_;
 	private WorkerTearDownBundle workerTearDownBundle_;
 	
@@ -40,8 +39,6 @@ public class MainController extends AbstractController  {
 	}
 	 
 	public void init() {
-		
-		//connectionBundleList_ = new ArrayList<ConnectionBundle>();
 		
 		jettyServerController_ = new JettyServerController(this);
 		jettyServerController_.init();

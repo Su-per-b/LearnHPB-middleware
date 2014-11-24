@@ -75,7 +75,10 @@ namespace Straylight
 
 		bool autoCorrect_;
 
-		
+		int scalarVariablePrecision_;
+
+		int msPerTimeStep_;
+
 	public:
 
 		~Config(void);

@@ -14,6 +14,9 @@ import org.junit.runner.RunWith;
 import com.sri.straylight.fmuWrapper.serialization.Iserializable;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.test.base.OrderedRunner;
+import com.sri.straylight.fmuWrapper.test.main.CONSTANTS;
+import com.sri.straylight.fmuWrapper.test.main.TestDataGenerator;
+import com.sri.straylight.fmuWrapper.test.main.Util;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
@@ -36,35 +39,7 @@ public class VoManaged {
 	
 	/** The for serialization. */
 	private  JsonController gsonController_ = JsonController.getInstance();
-    
-	public final static String STR_scalarValueReal_0 = "{\"t\":\"ScalarValueReal\",\"i\":1,\"v\":2}";
-	
-	public final static String STR_scalarValueReal_1 = "{\"t\":\"ScalarValueReal\",\"i\":2,\"v\":14.2}";
-	
-	public final static String STR_serializableVector_0 = "{\"t\":\"SerializableVector\",\"itemType\":\"ScalarValueReal\",\"itemArray\":[{\"i\":1,\"v\":2},{\"i\":2,\"v\":3.53}]}";
-	
-	public final static String STR_scalarValueCollection_0 = "{\"t\":\"ScalarValueCollection\",\"realList\":{\"t\":\"SerializableVector\",\"itemType\":\"ScalarValueReal\",\"itemArray\":[{\"i\":1,\"v\":2},{\"i\":2,\"v\":3.53}]}}";
-	
-	public final static String STR_scalarValueResults_0 = "{\"t\":\"ScalarValueResults\",\"time_\":2800.1,\"input\":{\"t\":\"ScalarValueCollection\",\"realList\":{\"t\":\"SerializableVector\",\"itemType\":\"ScalarValueReal\",\"itemArray\":[{\"i\":1,\"v\":2},{\"i\":2,\"v\":3.53}]}},\"output\":{\"t\":\"ScalarValueCollection\",\"realList\":{\"t\":\"SerializableVector\",\"itemType\":\"ScalarValueReal\",\"itemArray\":[{\"i\":3,\"v\":258.2},{\"i\":4,\"v\":78}]}}}";
-	
-	public final static String STR_scalarVariableReal_0 = "{\"t\":\"ScalarVariableReal\",\"n\":\"scalarVar name\",\"i\":1,\"c\":6,\"vb\":5,\"d\":\"The Description\",\"vr\":125420,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":20.25,\"nominal\":21.25,\"min\":22.25,\"max\":23.25,\"unit\":\"C\"}}";
 
-	public final static String STR_scalarVariableCollection_0 = "{\"t\":\"ScalarVariableCollection\",\"realVarList_\":{\"t\":\"SerializableVector\",\"itemType\":\"ScalarVariableReal\",\"itemArray\":[{\"n\":\"scalarVar name\",\"i\":1,\"c\":6,\"vb\":5,\"d\":\"The Description\",\"vr\":125420,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":20.25,\"nominal\":21.25,\"min\":22.25,\"max\":23.25,\"unit\":\"C1\"}},{\"n\":\"scalarVar name\",\"i\":1,\"c\":6,\"vb\":4,\"d\":\"The Description\",\"vr\":125420,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":2.25,\"nominal\":2.26,\"min\":2.27,\"max\":2.28,\"unit\":\"C2\"}}]}}";
-	
-	public final static String STR_scalarVariableCollection_1 = "{\"t\":\"ScalarVariableCollection\",\"realVarList_\":{\"t\":\"SerializableVector\",\"itemType\":\"ScalarVariableReal\",\"itemArray\":[{\"n\":\"ES-23\",\"i\":0,\"c\":7,\"vb\":5,\"d\":\"This is the pressure in the duct measured in Pa\",\"vr\":7547,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":1,\"nominal\":1000,\"min\":0,\"max\":5400.01,\"unit\":\"Pa\"}},{\"n\":\"PA57-FA\",\"i\":1,\"c\":6,\"vb\":3,\"d\":\"Pressure in Duct per meter\",\"vr\":55,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":12,\"nominal\":50,\"min\":2,\"max\":500000,\"unit\":\"Pa per meter\"}}]}}";
-	
-	public final static String STR_scalarVariablesAll_1 = "{\"t\":\"ScalarVariablesAll\",\"input\":{\"t\":\"ScalarVariableCollection\",\"realVarList_\":{\"t\":\"SerializableVector\",\"itemType\":\"ScalarVariableReal\",\"itemArray\":[{\"n\":\"scalarVar name\",\"i\":1,\"c\":6,\"vb\":5,\"d\":\"The Description\",\"vr\":125420,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":20.25,\"nominal\":21.25,\"min\":22.25,\"max\":23.25,\"unit\":\"C1\"}},{\"n\":\"scalarVar name\",\"i\":1,\"c\":6,\"vb\":4,\"d\":\"The Description\",\"vr\":125420,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":2.25,\"nominal\":2.26,\"min\":2.27,\"max\":2.28,\"unit\":\"C2\"}}]}},\"output\":{\"t\":\"ScalarVariableCollection\",\"realVarList_\":{\"t\":\"SerializableVector\",\"itemType\":\"ScalarVariableReal\",\"itemArray\":[{\"n\":\"ES-23\",\"i\":0,\"c\":7,\"vb\":5,\"d\":\"This is the pressure in the duct measured in Pa\",\"vr\":7547,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":1,\"nominal\":1000,\"min\":0,\"max\":5400.01,\"unit\":\"Pa\"}},{\"n\":\"PA57-FA\",\"i\":1,\"c\":6,\"vb\":3,\"d\":\"Pressure in Duct per meter\",\"vr\":55,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":12,\"nominal\":50,\"min\":2,\"max\":500000,\"unit\":\"Pa per meter\"}}]}}}";
-	
-	public final static String STR_XMLparsedInfo_1 = "{\"t\":\"XMLparsedInfo\",\"scalarVariablesAll_\":{\"t\":\"ScalarVariablesAll\",\"input\":{\"t\":\"ScalarVariableCollection\",\"realVarList_\":{\"t\":\"SerializableVector\",\"itemType\":\"ScalarVariableReal\",\"itemArray\":[{\"n\":\"scalarVar name\",\"i\":1,\"c\":6,\"vb\":5,\"d\":\"The Description 1\",\"vr\":125420,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":20.25,\"nominal\":21.25,\"min\":22.25,\"max\":23.25,\"unit\":\"C\"}},{\"n\":\"scalarVar name\",\"i\":1,\"c\":6,\"vb\":4,\"d\":\"The Description\",\"vr\":125420,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":2.25,\"nominal\":2.25,\"min\":2.25,\"max\":2.25,\"unit\":\"Pa\"}}]}},\"output\":{\"t\":\"ScalarVariableCollection\",\"realVarList_\":{\"t\":\"SerializableVector\",\"itemType\":\"ScalarVariableReal\",\"itemArray\":[{\"n\":\"scalarVar name\",\"i\":1,\"c\":6,\"vb\":5,\"d\":\"The Description 1\",\"vr\":125420,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":20.25,\"nominal\":21.25,\"min\":22.25,\"max\":23.25,\"unit\":\"C\"}},{\"n\":\"scalarVar name\",\"i\":1,\"c\":6,\"vb\":4,\"d\":\"The Description\",\"vr\":125420,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":2.25,\"nominal\":2.25,\"min\":2.25,\"max\":2.25,\"unit\":\"Pa\"}}]}},\"internal\":{\"t\":\"ScalarVariableCollection\",\"realVarList_\":{\"t\":\"SerializableVector\",\"itemType\":\"ScalarVariableReal\",\"itemArray\":[{\"n\":\"scalarVar name\",\"i\":1,\"c\":6,\"vb\":5,\"d\":\"The Description 1\",\"vr\":125420,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":20.25,\"nominal\":21.25,\"min\":22.25,\"max\":23.25,\"unit\":\"C\"}},{\"n\":\"scalarVar name\",\"i\":1,\"c\":6,\"vb\":4,\"d\":\"The Description\",\"vr\":125420,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":2.25,\"nominal\":2.25,\"min\":2.25,\"max\":2.25,\"unit\":\"Pa\"}}]}}},\"sessionID_\":\"xxo\"}";
-	
-	public final static String STR_sessionControlAction_0 = "{\"t\":\"SessionControlAction\",\"intValue\":0}";
-	
-	public final static String STR_sessionControlAction_1 = "{\"t\":\"SessionControlAction\",\"intValue\":1}";
-	
-	public final static String STR_sessionControlModel_0 = "{\"t\":\"SessionControlModel\",\"v\":\"SESS1342\",\"action\":{\"t\":\"SessionControlAction\",\"intValue\":0}}";
-	
-	public final static String STR_sessionControlModel_1 = "{\"t\":\"SessionControlModel\",\"v\":\"\",\"action\":{\"t\":\"SessionControlAction\",\"intValue\":1}}";
-	
 	
 	
 	
@@ -89,7 +64,6 @@ public class VoManaged {
 	@Test
 	public void T01_scalarValueReal_serialize() {
 
-		
 		//make struct
 		ScalarValueRealStruct scalarValueRealStruct_0 = new ScalarValueRealStruct();
 		scalarValueRealStruct_0.idx = 1;
@@ -98,20 +72,21 @@ public class VoManaged {
 		//make Object
 		ScalarValueReal scalarValueReal_0 = new ScalarValueReal(scalarValueRealStruct_0);
 
-		//serialize / deserialize
-		String jsonString_0 = scalarValueReal_0.toJsonString();
 		
-		
-		assertEquals(
-				STR_scalarValueReal_0, 
-				jsonString_0);
+		Util.serializeOk(
+    		scalarValueReal_0,
+    	    CONSTANTS.STR_scalarValueReal_0
+		);
+	    	    
+	    
 		
 		ScalarValueReal scalarValueReal_1 = new ScalarValueReal(2, 14.2);
-		String jsonString_1 = scalarValueReal_1.toJsonString();
 		
-		assertEquals(
-				STR_scalarValueReal_1, 
-				jsonString_1);
+		Util.serializeOk(
+			scalarValueReal_1,
+    	    CONSTANTS.STR_scalarValueReal_1
+		);
+
 	}
 	
 
@@ -120,22 +95,28 @@ public class VoManaged {
 	public void T02_scalarValueReal_deserialize() {
 		
 		
-		Object deserializedObject_0 = gsonController_.fromJson(STR_scalarValueReal_0);
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+			CONSTANTS.STR_scalarValueReal_0,
+			ScalarValueReal.class
+		);
 		
-		assertEquals(ScalarValueReal.class, deserializedObject_0.getClass());
 		ScalarValueReal scalarValueReal_0 = (ScalarValueReal) deserializedObject_0;
+		
 		
 		assertEquals(1, scalarValueReal_0.getIdx());
 		assertEquals(2.0, scalarValueReal_0.getValue(), 0.0);
 	
 		
-		Object deserializedObject_1 = gsonController_.fromJson(STR_scalarValueReal_1);
+		Iserializable deserializedObject_1 = Util.deserializeOk(
+			CONSTANTS.STR_scalarValueReal_1,
+			ScalarValueReal.class
+		);
 		
-		assertEquals(ScalarValueReal.class, deserializedObject_1.getClass());
 		ScalarValueReal scalarValueReal_1 = (ScalarValueReal) deserializedObject_1;
 		
 		assertEquals(2, scalarValueReal_1.getIdx());
 		assertEquals(14.2, scalarValueReal_1.getValue(), 0.0);
+
 		
 	}
 	
@@ -167,12 +148,11 @@ public class VoManaged {
 		scalarVariableReal_0.setDescription("The Description");
 		scalarVariableReal_0.setValueReference(125420);
 		
-		//serialize
-		String jsonString_0 = scalarVariableReal_0.toJsonString();
 		
-		assertEquals(
-				STR_scalarVariableReal_0,
-				jsonString_0);
+		Util.serializeOk(
+			scalarVariableReal_0,
+    	    CONSTANTS.STR_scalarVariableReal_0
+		);
 		
 	}
 	
@@ -181,9 +161,11 @@ public class VoManaged {
     public void T04_scalarVariableReal_deserialize() {
 		
 
-		Object deserializedObject_0 = gsonController_.fromJson(STR_scalarVariableReal_0);
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+			CONSTANTS.STR_scalarVariableReal_0,
+			ScalarVariableReal.class
+		);
 		
-		assertEquals(ScalarVariableReal.class, deserializedObject_0.getClass());
 		ScalarVariableReal scalarVariableReal_0 = (ScalarVariableReal) deserializedObject_0;
 		
 		
@@ -231,20 +213,20 @@ public class VoManaged {
 		realList_0.add(scalarValueReal_1);
 		
 		
-		String jsonString_0 = gsonController_.toJsonString(realList_0);
+		Util.serializeOk(
+				realList_0,
+	    	    CONSTANTS.STR_serializableVector_0
+			);
 		
-		assertEquals(
-			STR_serializableVector_0, 
-			jsonString_0
-		);
 		
 		ScalarValueCollection scalarValueCollection_0 = new ScalarValueCollection(realList_0);
-		String jsonString_1 = scalarValueCollection_0.toJsonString();
+
 		
-		assertEquals(
-			STR_scalarValueCollection_0, 
-			jsonString_1
-		);
+		Util.serializeOk(
+				scalarValueCollection_0,
+	    	    CONSTANTS.STR_scalarValueCollection_0
+			);
+		
 		
 	}
 	
@@ -254,18 +236,20 @@ public class VoManaged {
 	public void T06_scalarValueCollection_deserialize() {
 
 
-		Object deserializedObject_1 = gsonController_.fromJson(STR_scalarValueCollection_0);
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+			CONSTANTS.STR_scalarValueCollection_0,
+			ScalarValueCollection.class
+		);
 		
-		assertEquals(ScalarValueCollection.class, deserializedObject_1.getClass());
-		ScalarValueCollection scalarValueCollection_1 = (ScalarValueCollection) deserializedObject_1;
+		ScalarValueCollection scalarValueCollection_0 = (ScalarValueCollection) deserializedObject_0;
 		
-		Vector<ScalarValueReal> realList_1 = scalarValueCollection_1.getRealList();
+		Vector<ScalarValueReal> realList_0 = scalarValueCollection_0.getRealList();
 		
-		ScalarValueReal scalarValueReal_0 = realList_1.get(0);
+		ScalarValueReal scalarValueReal_0 = realList_0.get(0);
 		assertEquals(1, scalarValueReal_0.getIdx());
 		assertEquals(2.0, scalarValueReal_0.getValue(), 0.0);
 		
-		ScalarValueReal scalarValueReal_1 = realList_1.get(1);
+		ScalarValueReal scalarValueReal_1 = realList_0.get(1);
 		assertEquals(2, scalarValueReal_1.getIdx());
 		assertEquals(3.53, scalarValueReal_1.getValue(), 0.0);
 		
@@ -291,18 +275,16 @@ public class VoManaged {
 		ScalarValueReal scalarValueReal_1 = new ScalarValueReal(scalarValueRealStruct_1);
 		
 		//make real list
-		SerializableVector<ScalarValueReal> realList_0 = new SerializableVector<ScalarValueReal>("ScalarValueReal");
-		realList_0.add(scalarValueReal_0);
-		realList_0.add(scalarValueReal_1);
+		SerializableVector<ScalarValueReal> serializableVector_0 = new SerializableVector<ScalarValueReal>("ScalarValueReal");
+		serializableVector_0.add(scalarValueReal_0);
+		serializableVector_0.add(scalarValueReal_1);
 		
 		
-		String jsonString_0 = gsonController_.toJsonString(realList_0);
-		
-		assertEquals(
-				STR_serializableVector_0, 
-				jsonString_0
+		Util.serializeOk(
+				serializableVector_0,
+	    	    CONSTANTS.STR_serializableVector_0
 			);
-			
+		
 		
 	}
 	
@@ -310,10 +292,28 @@ public class VoManaged {
 	
 	@Test
 	public void T08_serializableVector_deserialize() {
-		
-		Iserializable deserializedObject_0 = gsonController_.fromJson(STR_serializableVector_0);
-		SerializableVector<ScalarValueReal> realList_0  = (SerializableVector<ScalarValueReal>) deserializedObject_0;
 
+		
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+			CONSTANTS.STR_serializableVector_0,
+			SerializableVector.class
+		);
+			
+		SerializableVector<ScalarValueReal> serializableVector_0  = (SerializableVector<ScalarValueReal>) deserializedObject_0;
+		
+
+		String itemTypeString  = serializableVector_0.getItemTypeString();
+		assertEquals("ScalarValueReal", itemTypeString);
+		
+		ScalarValueReal scalarValueReal_0 = serializableVector_0.get(0);
+		assertEquals(1, scalarValueReal_0.getIdx());
+		assertEquals(2.0, scalarValueReal_0.getValue(), 0.0);
+		
+		
+		ScalarValueReal scalarValueReal_1 = serializableVector_0.get(1);
+		assertEquals(2, scalarValueReal_1.getIdx());
+		assertEquals(3.53, scalarValueReal_1.getValue(), 0.0);
+		
 		return;
 	}
 	
@@ -371,11 +371,11 @@ public class VoManaged {
 		scalarValueResults.setOutput(scalarValueCollection_1);
 		scalarValueResults.setTime(2800.1);
 		
-		String jsonString_0 = scalarValueResults.toJsonString();
-
-		assertEquals(
-				STR_scalarValueResults_0,
-				jsonString_0);
+		
+		Util.serializeOk(
+				scalarValueResults,
+	    	    CONSTANTS.STR_scalarValueResults_0
+			);
 		
 		
 	}
@@ -384,11 +384,13 @@ public class VoManaged {
 	@Test
     public void T10_scalarValueResults_deserialize() {
 		
+
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+			CONSTANTS.STR_scalarValueResults_0,
+			ScalarValueResults.class
+		);
 		
-		Object deserializedObject_0 = gsonController_.fromJson(STR_scalarValueResults_0);
-		
-		assertEquals(ScalarValueResults.class, deserializedObject_0.getClass());
-		
+
 		ScalarValueResults scalarValueResults_0 = (ScalarValueResults) deserializedObject_0;
 		
 		assertEquals(2800.1, scalarValueResults_0.getTime(), 0.0);
@@ -414,33 +416,25 @@ public class VoManaged {
 
 	
 
-
-
-
-
-	
-	
 	
 	@Test
     public void T11_scalarVariableCollection_serialize() {
       
-		ScalarVariableCollection scalarVariableCollection_0 = getScalarVariableCollection_A_();
+		ScalarVariableCollection scalarVariableCollection_0 = TestDataGenerator.getScalarVariableCollection_A_();
 
-		//serialize
-		String jsonString_0 = scalarVariableCollection_0.toJsonString();
-		assertEquals(
-				STR_scalarVariableCollection_0,
-				jsonString_0);
-	
+		Util.serializeOk(
+			scalarVariableCollection_0,
+    	    CONSTANTS.STR_scalarVariableCollection_0
+		);
 		
-		ScalarVariableCollection getScalarVariableCollection_1 = getScalarVariableCollection_B_();
+		
+		ScalarVariableCollection getScalarVariableCollection_1 = TestDataGenerator.getScalarVariableCollection_B_();
 
-		//serialize
-		String jsonString_1 = getScalarVariableCollection_1.toJsonString();
-		assertEquals(
-				STR_scalarVariableCollection_1,
-				jsonString_1);
 		
+		Util.serializeOk(
+				getScalarVariableCollection_1,
+    	    CONSTANTS.STR_scalarVariableCollection_1
+		);
 		
 	}
 	
@@ -449,11 +443,13 @@ public class VoManaged {
 	@Test
 	public void T12_scalarVariableCollection_deserialize() {
 		
-		Object deserializedObject_0 = gsonController_.fromJson(STR_scalarVariableCollection_0);
+
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+			CONSTANTS.STR_scalarVariableCollection_0,
+			ScalarVariableCollection.class
+		);
 		
-		assertEquals(ScalarVariableCollection.class, deserializedObject_0.getClass());
 		ScalarVariableCollection scalarVariableCollection_0 = (ScalarVariableCollection) deserializedObject_0;
-		
 		
 		ScalarVariableReal scalarVariableReal_0 = scalarVariableCollection_0.getRealVarList().get(0);
 		
@@ -502,7 +498,7 @@ public class VoManaged {
 		
 		
 		
-		Object deserializedObject_1 = gsonController_.fromJson(STR_scalarVariableCollection_1);
+		Object deserializedObject_1 = gsonController_.fromJson(CONSTANTS.STR_scalarVariableCollection_1);
 		
 		assertEquals(ScalarVariableCollection.class, deserializedObject_1.getClass());
 		ScalarVariableCollection scalarVariableCollection_1 = (ScalarVariableCollection) deserializedObject_1;
@@ -561,24 +557,18 @@ public class VoManaged {
 	@Test
     public void T13_scalarVariablesAll_serialize() {
 		
+		ScalarVariableCollection scalarVariableCollection_0 = TestDataGenerator.getScalarVariableCollection_A_();
+		ScalarVariableCollection scalarVariableCollection_1 = TestDataGenerator.getScalarVariableCollection_B_();
 
-		ScalarVariableCollection scalarVariableCollection_0 = getScalarVariableCollection_A_();
-		ScalarVariableCollection scalarVariableCollection_1 = getScalarVariableCollection_B_();
-
-		
 		//make scalarVariablesAll 1
 		ScalarVariablesAll scalarVariablesAll_0 = new ScalarVariablesAll();
 		scalarVariablesAll_0.setInput(scalarVariableCollection_0);
 		scalarVariablesAll_0.setOutput(scalarVariableCollection_1);
-
 		
-		//serialize
-		String jsonString_0 = scalarVariablesAll_0.toJsonString();
-		
-		assertEquals(
-				STR_scalarVariablesAll_1,
-				jsonString_0);
-					
+		Util.serializeOk(
+			scalarVariablesAll_0,
+    	    CONSTANTS.STR_scalarVariablesAll_0
+		);
 		
 	}
 	
@@ -587,23 +577,18 @@ public class VoManaged {
     public void T14_scalarVariablesAll_deserialize() {
 		
 		
-		Object deserializedObject_0 = gsonController_.fromJson(STR_scalarVariablesAll_1);
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+			CONSTANTS.STR_scalarVariablesAll_0,
+			ScalarVariablesAll.class
+		);
 		
-
-		assertEquals(ScalarVariablesAll.class, deserializedObject_0.getClass());
 		ScalarVariablesAll scalarVariablesAll_0 = (ScalarVariablesAll) deserializedObject_0;
-		
-		
 		ScalarVariableCollection scalarVariableCollection_0 = scalarVariablesAll_0.getInput();
 		
 		Vector<ScalarVariableReal> realList_0 = scalarVariableCollection_0.getRealVarList();
-		
 		ScalarVariableReal scalarVariableReal_0 = realList_0.get(0);
 		
-
 		assertEquals( "scalarVar name", scalarVariableReal_0.getName());
-		
-		
 		TypeSpecReal typeSpecReal_0 = scalarVariableReal_0.getTypeSpecReal();
 		
 		assertEquals( 20.25, typeSpecReal_0.start, 0.0);
@@ -612,10 +597,8 @@ public class VoManaged {
 		assertEquals( 23.25, typeSpecReal_0.max, 0.0);
 		assertEquals( "C1", typeSpecReal_0.unit);
 		
-		
 		Vector<ScalarVariableReal> realList_1 = scalarVariableCollection_0.getRealVarList();
 		ScalarVariableReal scalarVariableReal_1 = realList_1.get(1);
-		
 		
 		assertEquals( "scalarVar name", scalarVariableReal_1.getName());
 		TypeSpecReal typeSpecReal_1 = scalarVariableReal_1.getTypeSpecReal();
@@ -639,20 +622,21 @@ public class VoManaged {
 	
 		
 		SessionControlAction sessionControlAction_0 = SessionControlAction.attachToSession;
-		String jsonString_0 = sessionControlAction_0.toJsonString();
-		
-		assertEquals(
-				STR_sessionControlAction_0,
-				jsonString_0);
-		
+
+		Util.serializeOk(
+			sessionControlAction_0,
+    	    CONSTANTS.STR_sessionControlAction_0
+		);
+
 		
 		SessionControlAction sessionControlAction_1 = SessionControlAction.getInfo;
-		String jsonString_1 = sessionControlAction_1.toJsonString();
-		
-		assertEquals(
-				STR_sessionControlAction_1, 
-				jsonString_1);
 
+
+		Util.serializeOk(
+			sessionControlAction_1,
+    	    CONSTANTS.STR_sessionControlAction_1
+		);
+		
 	}
 	
 	
@@ -660,15 +644,17 @@ public class VoManaged {
 	public void T16_sessionControlAction_deserialize() {
 		
 
-		Object deserializedObject_0 = gsonController_.fromJson(STR_sessionControlAction_0);
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+			CONSTANTS.STR_sessionControlAction_0,
+			SessionControlAction.class
+		);
 		
-		assertEquals(SessionControlAction.class, deserializedObject_0.getClass());
+		
 		SessionControlAction sessionControlAction_0 = (SessionControlAction) deserializedObject_0;
-		
 		assertEquals(SessionControlAction.attachToSession , sessionControlAction_0);
 		
 		
-		Object deserializedObject_1 = gsonController_.fromJson(STR_sessionControlAction_1);
+		Object deserializedObject_1 = gsonController_.fromJson(CONSTANTS.STR_sessionControlAction_1);
 		
 		assertEquals(SessionControlAction.class, deserializedObject_1.getClass());
 		SessionControlAction sessionControlAction_1 = (SessionControlAction) deserializedObject_1;
@@ -688,23 +674,23 @@ public class VoManaged {
 		SessionControlAction sessionControlAction_0 = SessionControlAction.attachToSession;
 		SessionControlModel sessionControlModel_0 = new SessionControlModel(sessionControlAction_0, "SESS1342");
 		
-		String jsonString_0 = sessionControlModel_0.toJsonString();
 		
-		assertEquals(
-				STR_sessionControlModel_0,
-				jsonString_0);
-		
+		Util.serializeOk(
+			sessionControlModel_0,
+    	    CONSTANTS.STR_sessionControlModel_0
+		);
+	
 		
 
 		SessionControlAction sessionControlAction_1 = SessionControlAction.getInfo;
 		SessionControlModel sessionControlModel_1 = new SessionControlModel(sessionControlAction_1);
 		
-		String jsonString_1 = sessionControlModel_1.toJsonString();
-		
-		assertEquals(
-				STR_sessionControlModel_1, 
-				jsonString_1);
 
+		Util.serializeOk(
+			sessionControlModel_1,
+    	    CONSTANTS.STR_sessionControlModel_1
+		);
+		
 	}
 	
 	
@@ -712,9 +698,13 @@ public class VoManaged {
 	@Test
     public void T18_sessionControlModel_deserialize() {
 		
-		Object deserializedObject_0 = gsonController_.fromJson(STR_sessionControlModel_0);
+
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+			CONSTANTS.STR_sessionControlModel_0,
+			SessionControlModel.class
+		);
 		
-		assertEquals(SessionControlModel.class, deserializedObject_0.getClass());
+		
 		SessionControlModel sessionControlModel_0 = (SessionControlModel) deserializedObject_0;
 		
 		
@@ -723,92 +713,43 @@ public class VoManaged {
 
 	}
 	
-	
-
-	
 	@Test
     public void T19_xmlParsedInfo_serialize() {
 		
-		//make TypeSpecReal
-		TypeSpecReal typeSpecReal_0 = new TypeSpecReal();
-		typeSpecReal_0.start = 20.25;
-		typeSpecReal_0.nominal = 21.25;
-		typeSpecReal_0.min = 22.25;
-		typeSpecReal_0.max = 23.25;
-		typeSpecReal_0.unit = "C";
+		ScalarVariableCollection scalarVariableCollection_0 = TestDataGenerator.getScalarVariableCollection_A_();
+		assertEquals(ScalarVariableCollection.class, scalarVariableCollection_0.getClass());
 		
-		typeSpecReal_0.startValueStatus = 1;
-		typeSpecReal_0.nominalValueStatus = 1;
-		typeSpecReal_0.minValueStatus = 1;
-		typeSpecReal_0.maxValueStatus = 1;
-		typeSpecReal_0.unitValueStatus = 1;
+		ScalarVariableCollection scalarVariableCollection_1 = TestDataGenerator.getScalarVariableCollection_B_();
+		assertEquals(ScalarVariableCollection.class, scalarVariableCollection_1.getClass());
 		
-		//make ScalarVariableReal
-		ScalarVariableReal scalarVariableReal_0 = new ScalarVariableReal(typeSpecReal_0);
-		scalarVariableReal_0.setName("scalarVar name");
-		scalarVariableReal_0.setIdx(1);
-		scalarVariableReal_0.setCausality(Enu.enu_input);
-		scalarVariableReal_0.setVariability(Enu.enu_continuous);
-		scalarVariableReal_0.setDescription("The Description 1");
-		scalarVariableReal_0.setValueReference(125420);
-		
-		//make TypeSpecReal 2
-		TypeSpecReal typeSpecReal_1 = new TypeSpecReal();
-		typeSpecReal_1.start = 2.25;
-		typeSpecReal_1.nominal = 2.25;
-		typeSpecReal_1.min = 2.25;
-		typeSpecReal_1.max = 2.25;
-		typeSpecReal_1.unit = "Pa";
-		
-		typeSpecReal_1.startValueStatus = 1;
-		typeSpecReal_1.nominalValueStatus = 1;
-		typeSpecReal_1.minValueStatus = 1;
-		typeSpecReal_1.maxValueStatus = 1;
-		typeSpecReal_1.unitValueStatus = 1;
-		
-		
-		//make ScalarVariableReal 2
-		ScalarVariableReal scalarVariableReal_1 = new ScalarVariableReal(typeSpecReal_1);
-		scalarVariableReal_1.setName("scalarVar name");
-		scalarVariableReal_1.setIdx(1);
-		scalarVariableReal_1.setCausality(Enu.enu_input);
-		scalarVariableReal_1.setVariability(Enu.enu_discrete);
-		scalarVariableReal_1.setDescription("The Description");
-		scalarVariableReal_1.setValueReference(125420);
-		
-		SerializableVector<ScalarVariableReal> realVarList = new SerializableVector<ScalarVariableReal>("ScalarVariableReal");
-		realVarList.add(scalarVariableReal_0);
-		realVarList.add(scalarVariableReal_1);
-		
-		ScalarVariableCollection scalarVariableCollection_0 = new ScalarVariableCollection();
-		scalarVariableCollection_0.setRealVarList(realVarList);
-		
-		//make scalarVariablesAll 1
-		ScalarVariablesAll scalarVariablesAll = new ScalarVariablesAll();
-		scalarVariablesAll.setInput(scalarVariableCollection_0);
-		scalarVariablesAll.setOutput(scalarVariableCollection_0);
-		scalarVariablesAll.setInternal(scalarVariableCollection_0);
-		
-		//make SimStateWrapper 1
-		XMLparsedInfo xmlParsedInfo_0 = new XMLparsedInfo(scalarVariablesAll);
+		ScalarVariablesAll scalarVariablesAll_0 = new ScalarVariablesAll();
+		scalarVariablesAll_0.setInput(scalarVariableCollection_0);
+		scalarVariablesAll_0.setOutput(scalarVariableCollection_1);
 
-		//serialize
-		String jsonString_0 = xmlParsedInfo_0.toJsonString();
-		
-		assertEquals(
-			STR_XMLparsedInfo_1,
-			jsonString_0	
+		//make SimStateWrapper 1
+		XMLparsedInfo xmlParsedInfo_0 = new XMLparsedInfo(scalarVariablesAll_0);
+
+		Util.serializeOk(
+			xmlParsedInfo_0,
+    	    CONSTANTS.STR_XMLparsedInfo_0
 		);
+	
 	}
 	
+	
+ 
 	
 	
 	@Test
     public void T20_xmlParsedInfo_deserialize() {
 		
-		Object deserializedObject_0 = gsonController_.fromJson(STR_XMLparsedInfo_1);
+
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+			CONSTANTS.STR_XMLparsedInfo_0,
+			XMLparsedInfo.class
+		);
 		
-		assertEquals(XMLparsedInfo.class, deserializedObject_0.getClass());
+		
 		XMLparsedInfo xmlParsedInfo_0 = (XMLparsedInfo) deserializedObject_0;
 		
 		Vector<ScalarVariableReal> scalarVariableRealList_input = xmlParsedInfo_0.getInputVariables(); 
@@ -829,8 +770,8 @@ public class VoManaged {
 		assertEquals( 5, scalarVariableReal_0.getVariabilityAsInt());
 		assertEquals( "continuous", scalarVariableReal_0.getVariabilityAsString());
 		
-		assertEquals( "The Description 1", scalarVariableReal_0.getDescription());
-		assertEquals( "C", scalarVariableReal_0.getUnit());
+		assertEquals( "The Description", scalarVariableReal_0.getDescription());
+		assertEquals( "C1", scalarVariableReal_0.getUnit());
 		
 		TypeSpecReal typeSpecReal_0 = scalarVariableReal_0.getTypeSpecReal();
 		
@@ -838,128 +779,14 @@ public class VoManaged {
 		assertEquals(21.25 , typeSpecReal_0.nominal, 0.0);
 		assertEquals(22.25 , typeSpecReal_0.min, 0.0);
 		assertEquals(23.25 , typeSpecReal_0.max, 0.0);
-		assertEquals("C" , typeSpecReal_0.unit);
+		assertEquals("C1" , typeSpecReal_0.unit);
 		
 		return;
 		
 	}
 
-	private ScalarVariableCollection getScalarVariableCollection_A_() {
-		
-	    //make TypeSpecReal 0
-		TypeSpecReal typeSpecReal_0 = new TypeSpecReal();
-	    typeSpecReal_0.start = 20.25;
-	    typeSpecReal_0.nominal = 21.25;
-	    typeSpecReal_0.min = 22.25;
-	    typeSpecReal_0.max = 23.25;
-	    typeSpecReal_0.unit = "C1";
-	    
-	    typeSpecReal_0.startValueStatus = 1;
-	    typeSpecReal_0.nominalValueStatus = 1;
-	    typeSpecReal_0.minValueStatus = 1;
-	    typeSpecReal_0.maxValueStatus = 1;
-	    typeSpecReal_0.unitValueStatus = 1;
-	    
-	    //make ScalarVariableReal 0
-	    ScalarVariableReal scalarVariableReal_0 = new ScalarVariableReal(typeSpecReal_0);
-	    scalarVariableReal_0.setName("scalarVar name");
-	    scalarVariableReal_0.setIdx(1);
-	    scalarVariableReal_0.setCausality(Enu.enu_input);
-	    scalarVariableReal_0.setVariability(Enu.enu_continuous);
-	    scalarVariableReal_0.setDescription("The Description");
-	    scalarVariableReal_0.setValueReference(125420);
-	    
-	    
-	    //make TypeSpecReal 1
-	    TypeSpecReal typeSpecReal_1 = new TypeSpecReal();
-	    typeSpecReal_1.start = 2.25;
-	    typeSpecReal_1.nominal = 2.26;
-	    typeSpecReal_1.min = 2.27;
-	    typeSpecReal_1.max = 2.28;
-	    typeSpecReal_1.unit = "C2";
-	    typeSpecReal_1.startValueStatus = 1;
-	    typeSpecReal_1.nominalValueStatus = 1;
-	    typeSpecReal_1.minValueStatus = 1;
-	    typeSpecReal_1.maxValueStatus = 1;
-	    typeSpecReal_1.unitValueStatus = 1;
-	    
-	    //make ScalarVariableReal 1
-	    ScalarVariableReal scalarVariableReal_1 = new ScalarVariableReal(typeSpecReal_1);
-	    scalarVariableReal_1.setName("scalarVar name");
-	    scalarVariableReal_1.setIdx(1);
-	    scalarVariableReal_1.setCausality(Enu.enu_input);
-	    scalarVariableReal_1.setVariability(Enu.enu_discrete);
-	    scalarVariableReal_1.setDescription("The Description");
-	    scalarVariableReal_1.setValueReference(125420);
-	    
-	    SerializableVector<ScalarVariableReal> realList_0 = new SerializableVector<ScalarVariableReal>("ScalarVariableReal");
-		realList_0.add(scalarVariableReal_0);
-		realList_0.add(scalarVariableReal_1);
-		
-		ScalarVariableCollection scalarVariableCollection_0 = new ScalarVariableCollection();
-	    scalarVariableCollection_0.setRealVarList(realList_0);
-	    
-	    return scalarVariableCollection_0;
-	    
-	}
 	
 	
-	private ScalarVariableCollection getScalarVariableCollection_B_() {
-		
-	    //make TypeSpecReal 1
-		TypeSpecReal typeSpecReal_0 = new TypeSpecReal();
-	    typeSpecReal_0.start = 1.0;
-	    typeSpecReal_0.nominal = 1000.0;
-	    typeSpecReal_0.min = 0.0;
-	    typeSpecReal_0.max = 5400.01;
-	    typeSpecReal_0.unit = "Pa";
-	    
-	    typeSpecReal_0.startValueStatus = 1;
-	    typeSpecReal_0.nominalValueStatus = 1;
-	    typeSpecReal_0.minValueStatus = 1;
-	    typeSpecReal_0.maxValueStatus = 1;
-	    typeSpecReal_0.unitValueStatus = 1;
-	    
-	    //make ScalarVariableReal 1
-	    ScalarVariableReal scalarVariableReal_0 = new ScalarVariableReal(typeSpecReal_0);
-	    scalarVariableReal_0.setName("ES-23");
-	    scalarVariableReal_0.setIdx(0);
-	    scalarVariableReal_0.setCausality(Enu.enu_output);
-	    scalarVariableReal_0.setVariability(Enu.enu_continuous);
-	    scalarVariableReal_0.setDescription("This is the pressure in the duct measured in Pa");
-	    scalarVariableReal_0.setValueReference(7547);
-	    
-	    //make TypeSpecReal 2
-	    TypeSpecReal typeSpecReal_1 = new TypeSpecReal();
-	    typeSpecReal_1.start = 12.0;
-	    typeSpecReal_1.nominal = 50.0;
-	    typeSpecReal_1.min = 2.0;
-	    typeSpecReal_1.max = 500000.0;
-	    typeSpecReal_1.unit = "Pa per meter";
-	    typeSpecReal_1.startValueStatus = 1;
-	    typeSpecReal_1.nominalValueStatus = 1;
-	    typeSpecReal_1.minValueStatus = 1;
-	    typeSpecReal_1.maxValueStatus = 1;
-	    typeSpecReal_1.unitValueStatus = 1;
-	    
-	    //make ScalarVariableReal 2
-	    ScalarVariableReal scalarVariableReal_1 = new ScalarVariableReal(typeSpecReal_1);
-	    scalarVariableReal_1.setName("PA57-FA");
-	    scalarVariableReal_1.setIdx(1);
-	    scalarVariableReal_1.setCausality(Enu.enu_input);
-	    scalarVariableReal_1.setVariability(Enu.enu_parameter);
-	    scalarVariableReal_1.setDescription("Pressure in Duct per meter");
-	    scalarVariableReal_1.setValueReference(55);
-	    
-	    SerializableVector<ScalarVariableReal> realList_0 = new SerializableVector<ScalarVariableReal>("ScalarVariableReal");
-		realList_0.add(scalarVariableReal_0);
-		realList_0.add(scalarVariableReal_1);
-		
-		ScalarVariableCollection scalarVariableCollection_0 = new ScalarVariableCollection();
-	    scalarVariableCollection_0.setRealVarList(realList_0);
-	    
-	    return scalarVariableCollection_0;
-	    
-	}
+
 	
 }

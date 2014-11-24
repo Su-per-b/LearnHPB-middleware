@@ -28,11 +28,12 @@ public class XMLparsedInfoAdapter extends AdapterBase<XMLparsedInfo> {
 			JsonSerializationContext context) {
 
 		super.serialize(src, typeOfSrc, context);
-		jsonObjectAdd_("scalarVariablesAll_", src.getScalarVariablesAll());
-		
 		
 		JsonPrimitive primitive1 = new JsonPrimitive(src.getSessionID());
 		jsonObject_.add("sessionID_", primitive1);
+		
+		jsonObjectAdd_("scalarVariablesAll_", src.getScalarVariablesAll());
+		
 		
 		return jsonObject_;
 	}

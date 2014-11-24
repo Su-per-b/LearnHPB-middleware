@@ -8,8 +8,8 @@ public class JsonSerializable implements Iserializable{
 	public boolean serializeType = true;
 
 	
-	public String toJsonString() {
-		return JsonController.getInstance().toJsonString(this);
+	public String serialize() {
+		return JsonController.getInstance().serialize(this);
 	}
 	
 }

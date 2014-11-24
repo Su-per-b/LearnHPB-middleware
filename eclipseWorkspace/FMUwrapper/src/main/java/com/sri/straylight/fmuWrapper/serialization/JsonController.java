@@ -61,21 +61,25 @@ public class JsonController {
 	}
 
 	
-	public String toJsonString(Object src, Type typeOfSrc) {
+	public String serialize(Object src, Type typeOfSrc) {
 
 		if (src == null) {
-			return toJsonString(JsonNull.INSTANCE);
+			return serialize(JsonNull.INSTANCE);
 		}
 
 		return gson_.toJson(src, typeOfSrc);
 	}
 	
-	public String toJsonString(Object src) {
+	
+	
+	
+	public String serialize(Object src) {
 
 		if (src == null) {
-			return toJsonString(JsonNull.INSTANCE);
+			return serialize(JsonNull.INSTANCE);
 		}
 
+		
 	  
 	  	String jsonString = gson_.toJson(src, src.getClass());
 		

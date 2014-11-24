@@ -19,7 +19,7 @@ public class XMLparsedInfo extends JsonSerializable  {
 
 	/** The scalar variables all_. */
 	private ScalarVariablesAll scalarVariablesAll_;
-	private String sessionID_= "xxo";
+	private String sessionID_= "{not set}";
 	
 	//constructor 1
 	public XMLparsedInfo() {

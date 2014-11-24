@@ -73,7 +73,7 @@ public class VoManagedSerialization {
 		ScalarValueReal scalarValueReal_0 = new ScalarValueReal(struct);
 
 		//serialize / deserialize
-		String json = scalarValueReal_0.toJsonString();
+		String json = scalarValueReal_0.serialize();
 		
 		
 		assertEquals(
@@ -83,7 +83,7 @@ public class VoManagedSerialization {
 		
 		
 		ScalarValueReal scalarValueReal_1 = new ScalarValueReal(2, 14.2);
-		String json2 = scalarValueReal_1.toJsonString();
+		String json2 = scalarValueReal_1.serialize();
 		
 		assertEquals(
 				"{\"t\":\"ScalarValueReal\",\"i\":2,\"v\":14.2}", 
@@ -127,7 +127,7 @@ public class VoManagedSerialization {
 
 		
 		//serialize
-		String json = scalarValueBoolean_0.toJsonString();
+		String json = scalarValueBoolean_0.serialize();
 		
 		
 		assertEquals(
@@ -137,7 +137,7 @@ public class VoManagedSerialization {
 		
 		
 		ScalarValueBoolean scalarValueBoolean_1 = new ScalarValueBoolean(2, false);
-		String json2 = scalarValueBoolean_1.toJsonString();
+		String json2 = scalarValueBoolean_1.serialize();
 		
 		assertEquals(
 				"{\"t\":\"ScalarValueBoolean\",\"i\":2,\"v\":false}", 
@@ -225,7 +225,7 @@ public class VoManagedSerialization {
 		realList.add(scalarValueReal2);
 		
 		
-		String json_0 = gsonController_.toJsonString(realList, Vector.class);
+		String json_0 = gsonController_.serialize(realList, Vector.class);
 		
 		assertEquals(
 		"[{\"t\":\"ScalarValueReal\",\"i\":1,\"v\":2.0},{\"t\":\"ScalarValueReal\",\"i\":2,\"v\":3.53}]", 
@@ -249,7 +249,7 @@ public class VoManagedSerialization {
 		boolList.add(scalarValueBool1);
 		boolList.add(scalarValueBool2);
 		
-		String json_1 = gsonController_.toJsonString(boolList, Vector.class);
+		String json_1 = gsonController_.serialize(boolList, Vector.class);
 		
 		assertEquals(
 		"[{\"t\":\"ScalarValueBoolean\",\"i\":1,\"v\":true},{\"t\":\"ScalarValueBoolean\",\"i\":2,\"v\":false}]", 
@@ -257,7 +257,7 @@ public class VoManagedSerialization {
 		
 		ScalarValueCollection scalarValueCollection_0 = new ScalarValueCollection(realList);
 		
-		String json_2 = scalarValueCollection_0.toJsonString();
+		String json_2 = scalarValueCollection_0.serialize();
 		
 		assertEquals(
 				"{\"t\":\"ScalarValueCollection\",\"realList\":[{\"t\":\"ScalarValueReal\",\"i\":1,\"v\":2.0},{\"t\":\"ScalarValueReal\",\"i\":2,\"v\":3.53}],\"booleanList\":[{\"t\":\"ScalarValueBoolean\",\"i\":1,\"v\":true},{\"t\":\"ScalarValueBoolean\",\"i\":2,\"v\":false}]}", 
@@ -353,7 +353,7 @@ public class VoManagedSerialization {
 		scalarValueResults.setTime(2.0);
 		
 		//serialize / deserialize 
-		String json_0 = scalarValueResults.toJsonString();
+		String json_0 = scalarValueResults.serialize();
 
 		assertEquals(
 		"{\"t\":\"ScalarValueResults\",\"time_\":2.0,\"input\":{\"t\":\"ScalarValueCollection\",\"realList\":[{\"t\":\"ScalarValueReal\",\"i\":1,\"v\":2.0},{\"t\":\"ScalarValueReal\",\"i\":2,\"v\":3.53}],\"booleanList\":[{\"t\":\"ScalarValueBoolean\",\"i\":1,\"v\":true},{\"t\":\"ScalarValueBoolean\",\"i\":0,\"v\":false}]},\"output\":{\"t\":\"ScalarValueCollection\",\"realList\":[{\"t\":\"ScalarValueReal\",\"i\":1,\"v\":2.0},{\"t\":\"ScalarValueReal\",\"i\":2,\"v\":3.53}],\"booleanList\":[{\"t\":\"ScalarValueBoolean\",\"i\":1,\"v\":true},{\"t\":\"ScalarValueBoolean\",\"i\":0,\"v\":false}]}}", 
@@ -390,7 +390,7 @@ public class VoManagedSerialization {
 		scalarVariableReal.setValueReference(125420);
 		
 		//serialize / deserialize 
-		String json = scalarVariableReal.toJsonString();
+		String json = scalarVariableReal.serialize();
 		
 		assertEquals(
 				"{\"t\":\"ScalarVariableReal\",\"n\":\"scalarVar name\",\"i\":1,\"c\":6,\"vb\":4,\"d\":\"The Description\",\"vr\":125420,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":20.25,\"nominal\":21.25,\"min\":22.25,\"max\":23.25,\"unit\":\"C\"}}",
@@ -494,7 +494,7 @@ public class VoManagedSerialization {
 		scalarVariablesAll.setInternal(sVarColl);
 		
 		//serialize / deserialize 
-		String json = scalarVariablesAll.toJsonString();
+		String json = scalarVariablesAll.serialize();
 		
 		
 		assertEquals(
@@ -619,7 +619,7 @@ public class VoManagedSerialization {
 		XMLparsedInfo xmlParsedInfo = new XMLparsedInfo(scalarVariablesAll);
 
 		//serialize
-		String json = xmlParsedInfo.toJsonString();
+		String json = xmlParsedInfo.serialize();
 		
 		
 		assertEquals(
@@ -682,7 +682,7 @@ public class VoManagedSerialization {
 		
 		SessionControlAction sessionControlAction_0 = SessionControlAction.attachToSession;
 		
-		String jsonString_0 = sessionControlAction_0.toJsonString();
+		String jsonString_0 = sessionControlAction_0.serialize();
 		
 		assertEquals(
 				"{\"t\":\"SessionControlAction\",\"intValue\":0}", 
@@ -691,7 +691,7 @@ public class VoManagedSerialization {
 		
 		SessionControlAction sessionControlAction_1 = SessionControlAction.getInfo;
 		
-		String jsonString_1 = sessionControlAction_1.toJsonString();
+		String jsonString_1 = sessionControlAction_1.serialize();
 		
 		assertEquals(
 				"{\"t\":\"SessionControlAction\",\"intValue\":1}", 
@@ -734,7 +734,7 @@ public class VoManagedSerialization {
 		SessionControlAction sessionControlAction_0 = SessionControlAction.attachToSession;
 		SessionControlModel sessionControlModel_0 = new SessionControlModel(sessionControlAction_0, "SESS1342");
 		
-		String jsonString_0 = sessionControlModel_0.toJsonString();
+		String jsonString_0 = sessionControlModel_0.serialize();
 		
 		assertEquals(
 				"{\"t\":\"SessionControlModel\",\"v\":\"SESS1342\",\"action\":{\"t\":\"SessionControlAction\",\"intValue\":0}}", 
@@ -745,7 +745,7 @@ public class VoManagedSerialization {
 		SessionControlAction sessionControlAction_1 = SessionControlAction.getInfo;
 		SessionControlModel sessionControlModel_1 = new SessionControlModel(sessionControlAction_1);
 		
-		String jsonString_1 = sessionControlModel_1.toJsonString();
+		String jsonString_1 = sessionControlModel_1.serialize();
 		
 		assertEquals(
 				"{\"t\":\"SessionControlModel\",\"v\":\"\",\"action\":{\"t\":\"SessionControlAction\",\"intValue\":1}}", 

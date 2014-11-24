@@ -80,16 +80,24 @@ public class FMUcontrrollerT {
 		assertEquals("Client-Debug", fmuWrapperConfig_.id);
 		assertEquals("E:\\LHPB\\LearnHPB-middleware\\visualStudioWorkspace\\bin\\Debug", fmuWrapperConfig_.nativeLibFolderAbsolutePath);
 		assertEquals("\\..\\..\\visualStudioWorkspace\\bin\\Debug", fmuWrapperConfig_.nativeLibFolderRelativePath);
-		assertEquals(500, (int)fmuWrapperConfig_.parseInternalVariableLimit);
+		
 		assertEquals("500", fmuWrapperConfig_.parseInternalVariableLimitStr);
+		assertEquals(500, (int)fmuWrapperConfig_.parseInternalVariableLimit);
 
+		assertEquals("500", fmuWrapperConfig_.msPerTimeStepStr);
+		assertEquals(500, (int)fmuWrapperConfig_.msPerTimeStep);
+		
+		assertEquals("5", fmuWrapperConfig_.scalarVariablePrecisionStr);
+		assertEquals(5, (int)fmuWrapperConfig_.scalarVariablePrecision);
+		
 		assertEquals(false, fmuWrapperConfig_.parseInternalVariablesFlag);
 		assertEquals("false", fmuWrapperConfig_.parseInternalVariablesFlagStr);
 
 		assertEquals("E:\\LHPB\\LearnHPB-middleware\\assets\\FMUs", fmuWrapperConfig_.unzipFolderAbsolutePath);
 		assertEquals("\\..\\..\\assets\\FMUs\\", fmuWrapperConfig_.unzipFolderRelativePath);
 		
-		return;		
+		
+		return;
 	}
 	
 	
@@ -116,28 +124,28 @@ public class FMUcontrrollerT {
 		assertEquals(SimStateNative.simStateNative_1_connect_completed, fmuController_.getSimStateNative());
 		thread.cleanup();
 		assertEquals(SimStateNative.simStateNative_0_uninitialized, fmuController_.getSimStateNative());
-		
+		//Thread.sleep(1000);
 	}
 
-	
-	@Test
-	public void T04_fmuXmlParse() throws Exception {
-		
-	
-		//Thread.sleep(500);
-		
-		XMLParseThread thread = new XMLParseThread();
-		thread.init(fmuController_);
-		thread.start();
-		
-
-		
-		assertEquals(SimStateNative.simStateNative_2_xmlParse_completed, fmuController_.getSimStateNative());
-		thread.cleanup();
-		assertEquals(SimStateNative.simStateNative_0_uninitialized, fmuController_.getSimStateNative());
-		
-		
-	}
+//	
+//	@Test
+//	public void T04_fmuXmlParse() throws Exception {
+//		
+//	
+//		//Thread.sleep(1000);
+//		
+//		XMLParseThread thread = new XMLParseThread();
+//		thread.init(fmuController_);
+//		thread.start();
+//		
+//
+//		
+//		//assertEquals(SimStateNative.simStateNative_2_xmlParse_completed, fmuController_.getSimStateNative());
+//		thread.cleanup();
+//		assertEquals(SimStateNative.simStateNative_0_uninitialized, fmuController_.getSimStateNative());
+//		
+//		
+//	}
 	
 	
 	
@@ -170,42 +178,42 @@ public class FMUcontrrollerT {
 
 
 	
-	
-	private class XMLParseThread extends BaseThread
-	{
-
-		public void run()
-		
-		{
-			
-			
-			Thread.currentThread().setName("XMLParseThread");
-			
-			requestStateChangeTo_(
-					SimStateNative.simStateNative_1_connect_requested,
-					SimStateNative.simStateNative_1_connect_completed
-				);
-			
-
-			System.out.println ("XMLParseThread connect_completed");
-			
-
-			requestStateChangeTo_(
-				SimStateNative.simStateNative_2_xmlParse_requested,
-				SimStateNative.simStateNative_2_xmlParse_completed
-			);
-			
-			
-			
-			awaitOnMainBarrier();
-			
-			
-			System.out.println ("XMLParseThread done");
-		}
-
-
-	}
-	
+//	
+//	private class XMLParseThread extends BaseThread
+//	{
+//
+//		public void run()
+//		
+//		{
+//			
+//			
+//			Thread.currentThread().setName("XMLParseThread");
+//			
+//			requestStateChangeTo_(
+//					SimStateNative.simStateNative_1_connect_requested,
+//					SimStateNative.simStateNative_1_connect_completed
+//				);
+//			
+//
+//			System.out.println ("XMLParseThread connect_completed");
+//			
+//
+//			//requestStateChangeTo_(
+//			//	SimStateNative.simStateNative_2_xmlParse_requested,
+//			//	SimStateNative.simStateNative_2_xmlParse_completed
+//			//);
+//			
+//			
+//			
+//			awaitOnMainBarrier();
+//			
+//			
+//			System.out.println ("XMLParseThread done");
+//		}
+//
+//
+//	}
+//	
 	
 	
 

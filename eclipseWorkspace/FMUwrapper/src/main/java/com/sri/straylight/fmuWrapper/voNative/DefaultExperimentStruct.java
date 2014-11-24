@@ -26,8 +26,8 @@ public class DefaultExperimentStruct
 	public double tolerance;
 	
 	
-	public String toJsonString() {
-		return JsonController.getInstance().toJsonString(this);
+	public String serialize() {
+		return JsonController.getInstance().serialize(this);
 	}
 	
 	

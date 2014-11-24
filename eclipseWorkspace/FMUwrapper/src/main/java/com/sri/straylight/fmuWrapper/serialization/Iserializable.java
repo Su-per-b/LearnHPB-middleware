@@ -4,7 +4,7 @@ public interface Iserializable {
 	
 	public boolean serializeType = true;
 
-	public String toJsonString();
+	public String serialize();
 	
 	
 }

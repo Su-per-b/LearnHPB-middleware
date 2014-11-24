@@ -33,8 +33,8 @@ public class SerializableVector<ITEM extends Iserializable> extends Vector<ITEM>
 
 
 	@Override
-	public String toJsonString() {
-		return JsonController.getInstance().toJsonString(this);
+	public String serialize() {
+		return JsonController.getInstance().serialize(this);
 	}
 	
 }

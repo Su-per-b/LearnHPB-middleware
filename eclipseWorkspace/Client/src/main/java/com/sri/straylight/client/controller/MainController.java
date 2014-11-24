@@ -32,7 +32,6 @@ public class MainController extends BaseController {
 	private TopPanelController topPanelController_;
 	
 	/** The simulation controller_. */
-	@SuppressWarnings("unused")
 	private SimulationController simulationController_;
 	
 	/** The debug console controller_. */

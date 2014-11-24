@@ -73,8 +73,8 @@ public class SerializableEvent<PAYLOAD extends Iserializable> extends BaseEvent<
     }
 
     
-    public String toJsonString() {
-    	return JsonController.getInstance().toJsonString(this);
+    public String serialize() {
+    	return JsonController.getInstance().serialize(this);
     }
 
     @Override

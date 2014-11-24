@@ -56,8 +56,8 @@ public class SessionControlModel
 	
 
 	@Override
-	public String toJsonString() {
-		return JsonController.getInstance().toJsonString(this);
+	public String serialize() {
+		return JsonController.getInstance().serialize(this);
 	}
 	
 	

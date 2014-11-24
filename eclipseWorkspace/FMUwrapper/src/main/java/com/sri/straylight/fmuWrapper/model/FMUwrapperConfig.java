@@ -27,7 +27,8 @@ public class FMUwrapperConfig {
 	public String fmuFolderName;
 	public String parseInternalVariablesFlagStr;
 	public String parseInternalVariableLimitStr;
-	
+	public String scalarVariablePrecisionStr;
+	public String msPerTimeStepStr;
 	
 	//derived
 	public String unzipFolderAbsolutePath;
@@ -35,7 +36,9 @@ public class FMUwrapperConfig {
 	public String nativeLibFolderAbsolutePath;
 	public Boolean parseInternalVariablesFlag;
 	public Integer parseInternalVariableLimit;
-
+	public Integer scalarVariablePrecision;
+	public Integer msPerTimeStep;
+	
 	//override
 	public static File fmuFolderAbsolutePathOverride = null;
 	
@@ -92,6 +95,8 @@ public class FMUwrapperConfig {
 			
 			config.parseInternalVariablesFlag = Boolean.parseBoolean(config.parseInternalVariablesFlagStr);
 			config.parseInternalVariableLimit = Integer.parseInt(config.parseInternalVariableLimitStr);
+			config.scalarVariablePrecision = Integer.parseInt(config.scalarVariablePrecisionStr);
+			config.msPerTimeStep = Integer.parseInt(config.msPerTimeStepStr);
 			
 		}
 

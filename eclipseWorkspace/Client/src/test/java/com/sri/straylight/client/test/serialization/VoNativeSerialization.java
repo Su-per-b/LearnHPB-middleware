@@ -51,7 +51,7 @@ public class VoNativeSerialization {
 		theStruct.stopTime = 145.03;
 		theStruct.tolerance = 10.0;
 		
-		String json = theStruct.toJsonString();
+		String json = theStruct.serialize();
 		
 		assertEquals(
 				"{\"t\":\"DefaultExperimentStruct\",\"startTime\":123.03,\"stopTime\":145.03,\"tolerance\":10}", 
@@ -97,7 +97,7 @@ public class VoNativeSerialization {
 		configStruct.defaultExperimentStruct = defaultExperimentStruct;
 		
 		
-		String json = configStruct.toJsonString();
+		String json = configStruct.serialize();
 		
 		assertEquals(
 				"{\"t\":\"ConfigStruct\",\"stepDelta\":1,\"defaultExperimentStruct\":{\"t\":\"DefaultExperimentStruct\",\"startTime\":123.03,\"stopTime\":145.03,\"tolerance\":10}}", 
@@ -133,7 +133,7 @@ public class VoNativeSerialization {
     	messageStruct.msgText = "testMessageStruct";
     	
     	messageStruct.setMessageTypeEnum(MessageType.messageType_debug);
-    	String json = messageStruct.toJsonString();
+    	String json = messageStruct.serialize();
     	
 		assertEquals(
 				"{\"t\":\"MessageStruct\",\"msgText\":\"testMessageStruct\",\"messageType\":0}", 
@@ -169,7 +169,7 @@ public class VoNativeSerialization {
 		SimStateNative simStateNative1 = SimStateNative.simStateNative_0_uninitialized;
 		
 		//serialize / deserialize 
-		String json = simStateNative1.toJsonString();
+		String json = simStateNative1.serialize();
 		
 		assertEquals(
 				"{\"t\":\"SimStateNative\",\"intValue\":0}", 
@@ -213,7 +213,7 @@ public class VoNativeSerialization {
 		
 
 		//serialize / deserialize 
-		String json = typeSpecReal.toJsonString();
+		String json = typeSpecReal.serialize();
 		
 		assertEquals(
 				"{\"t\":\"TypeSpecReal\",\"start\":20.25,\"nominal\":21.25,\"min\":22.25,\"max\":23.25,\"unit\":\"K\"}",

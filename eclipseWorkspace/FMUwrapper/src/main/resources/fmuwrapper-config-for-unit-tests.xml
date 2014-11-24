@@ -12,7 +12,9 @@
 	
 	<parseInternalVariablesFlagStr>false</parseInternalVariablesFlagStr>
 	<parseInternalVariableLimitStr>500</parseInternalVariableLimitStr>
-
+	<scalarVariablePrecisionStr>5</scalarVariablePrecisionStr>
+	<msPerTimeStepStr>500</msPerTimeStepStr>
+	
 	<!--For Production		
 
 	<id>Client-Production</id>
@@ -22,6 +24,7 @@
 	
 	<parseInternalVariablesFlagStr>true</parseInternalVariablesFlagStr>
 	<parseInternalVariableLimitStr>500</parseInternalVariableLimitStr>
+	<scalarVariablePrecisionStr>5</scalarVariablePrecisionStr>
 	 -->
 	 
 </config>

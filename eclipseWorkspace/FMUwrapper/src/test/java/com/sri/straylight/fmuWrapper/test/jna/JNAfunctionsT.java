@@ -36,6 +36,12 @@ public class JNAfunctionsT {
 	
 	final private String pathToNativeLibs_ = "E:\\LHPB\\LearnHPB-middleware\\visualStudioWorkspace\\bin\\Debug";
 	final private String pathToFMUfolder_ = "E:\\LHPB\\LearnHPB-middleware\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_test";
+
+
+	//final private String pathToFMUfolder_ = "E:\\LHPB\\LearnHPB-middleware\\assets\\FMUs\\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit3_summer";
+	
+	
+	
 	
 	private JNAfmuWrapper jnaFMUWrapper_;
 	
@@ -89,7 +95,7 @@ public class JNAfunctionsT {
 	
 	
 	@Test
-	public void T00_ForceCleanup() {
+	public void T01_ForceCleanup() {
 		
 		assertSimState_(SimStateNative.simStateNative_0_uninitialized);			
 		
@@ -98,7 +104,7 @@ public class JNAfunctionsT {
 
 	
 	@Test
-	public void T01_Connect() {
+	public void T02_Connect() {
 		
 		
 		MessageCallback messageCallbackHandler = new MessageCallback();
@@ -119,9 +125,9 @@ public class JNAfunctionsT {
 
 	
 	@Test
-	public void T02_XmlParse() {
+	public void T03_XmlParse() {
 		
-		T01_Connect();
+		T02_Connect();
 
 		jnaFMUWrapper_.xmlParse(pathToFMUfolder_);
 		
@@ -133,9 +139,9 @@ public class JNAfunctionsT {
 	
 	
 	@Test
-	public void T03_Config() {
+	public void T04_Config() {
 		
-		T02_XmlParse();
+		T03_XmlParse();
 		
 		ConfigStruct configStruct = jnaFMUWrapper_.getConfig();
 		DefaultExperimentStruct  defaultExperimentStruct = configStruct.defaultExperimentStruct;
@@ -155,9 +161,9 @@ public class JNAfunctionsT {
 
 
 	@Test
-	public void T04_Attributes() {
+	public void T05_Attributes() {
 		
-		T02_XmlParse();
+		T03_XmlParse();
 		
 		FMImodelAttributesStruct fmiModelAttributesStruct = jnaFMUWrapper_.getFMImodelAttributesStruct();
 		assertNotNull(fmiModelAttributesStruct);
@@ -218,7 +224,7 @@ public class JNAfunctionsT {
 	
 	
 	@Test
-	public void T05_UnitDefinitions() {
+	public void T06_UnitDefinitions() {
 		
 	
 
@@ -228,7 +234,7 @@ public class JNAfunctionsT {
 	
 
 	@Test
-	public void T06_ScalarVariables() {
+	public void T07_ScalarVariables() {
 		
 	
 

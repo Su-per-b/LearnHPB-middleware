@@ -246,7 +246,7 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 			
 			//if (event.getPayload() != SimStateNative.simStateNative_1_connect_requested) {
 				try {
-					String json = event.toJsonString();
+					String json = event.serialize();
 					webSocketConnection_.send(json);
 				} catch (WebSocketException e) {
 					e.printStackTrace();
@@ -278,7 +278,7 @@ public class FmuConnectionRemote extends FmuConnectionAbstract {
 			
 			try {
 				
-				String json = event.toJsonString();
+				String json = event.serialize();
 				
 				webSocketConnection_.send(json);
 			} catch (WebSocketException e) {

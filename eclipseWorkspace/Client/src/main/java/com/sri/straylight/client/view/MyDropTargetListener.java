@@ -1,6 +1,5 @@
 package com.sri.straylight.client.view;
 
-import java.awt.Color;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
@@ -8,7 +7,6 @@ import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetAdapter;
 import java.awt.dnd.DropTargetDropEvent;
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 

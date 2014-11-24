@@ -137,7 +137,7 @@ public class StrayLightWebSocketHandler
 			xmlParsedInfo.setSessionID(sessionID_);
 		}
 		  
-		String json = obj.toJsonString();
+		String json = obj.serialize();
 		sendString_ (json);
 	}
 	
@@ -147,7 +147,7 @@ public class StrayLightWebSocketHandler
 		LogFactory.getLog(this.getClass()).debug("sendString_ " + str);
 		
 		
-		//System.out.println("StrayLightWebSocketHandler.sendString_() sessionID_: " + sessionID_);
+		System.out.println("StrayLightWebSocketHandler.sendString_() sessionID_: " + sessionID_);
 		
 		
 		try {
@@ -174,8 +174,8 @@ public class StrayLightWebSocketHandler
 	}
 
 
-    public String toJsonString() {
-    	return JsonController.getInstance().toJsonString(this);
+    public String serialize() {
+    	return JsonController.getInstance().serialize(this);
     }
 
 

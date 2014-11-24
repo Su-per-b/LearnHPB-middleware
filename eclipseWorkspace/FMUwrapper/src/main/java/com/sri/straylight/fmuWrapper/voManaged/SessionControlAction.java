@@ -44,8 +44,8 @@ public enum SessionControlAction implements JnaEnum<SessionControlAction>,  Iser
 
 
 
-	public String toJsonString() {
-		return JsonController.getInstance().toJsonString(this);
+	public String serialize() {
+		return JsonController.getInstance().serialize(this);
 	}
 	
 }

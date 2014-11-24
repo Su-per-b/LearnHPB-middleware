@@ -397,6 +397,7 @@ namespace Straylight
 			config->parseFmu(fmu_);
 			configStruct_ =  config->toStruct();
 
+
 			mainDataModel_->extract();
 
 			Logger::getInstance()->printDebug(_T("MainController::xmlParse xmlFilePath_ complete \n"));
@@ -667,6 +668,7 @@ namespace Straylight
 			}
 
 			runHelperDoStep_();
+			Sleep(500);
 		}
 
 

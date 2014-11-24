@@ -3,6 +3,10 @@ package com.sri.straylight.fmuWrapper.test.serialization;
 import static org.junit.Assert.assertEquals;
 
 
+
+
+
+
 import java.util.Vector;
 
 import org.junit.After;
@@ -13,6 +17,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
+
+
+
+
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
@@ -21,6 +29,7 @@ import com.sri.straylight.fmuWrapper.event.SessionControlClientRequest;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
+import com.sri.straylight.fmuWrapper.serialization.Iserializable;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
@@ -41,6 +50,9 @@ import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
 import com.sri.straylight.fmuWrapper.test.base.OrderedRunner;
+import com.sri.straylight.fmuWrapper.test.main.CONSTANTS;
+import com.sri.straylight.fmuWrapper.test.main.TestDataGenerator;
+import com.sri.straylight.fmuWrapper.test.main.Util;
 
 
 @RunWith(OrderedRunner.class)
@@ -68,22 +80,7 @@ public class Event {
 	}
 
 
-	public final static String STR_messageEvent_0 = "{\"t\":\"MessageEvent\",\"payload\":{\"t\":\"MessageStruct\",\"msgText\":\"This is the test Message Text\",\"messageType\":0}}";
-	
-	public final static String STR_configChangeNotify_0 = "{\"t\":\"ConfigChangeNotify\",\"payload\":{\"t\":\"ConfigStruct\",\"stepDelta\":1,\"defaultExperimentStruct\":{\"t\":\"DefaultExperimentStruct\",\"startTime\":123.03,\"stopTime\":145.03,\"tolerance\":10}}}";
-			
-	public final static String STR_resultEvent_0 = "{\"t\":\"ResultEvent\",\"payload\":{\"t\":\"ScalarValueResults\",\"time_\":2800.1,\"input\":{\"t\":\"ScalarValueCollection\",\"realList\":{\"t\":\"SerializableVector\",\"itemType\":\"ScalarValueReal\",\"itemArray\":[{\"i\":1,\"v\":2},{\"i\":2,\"v\":3.53}]}},\"output\":{\"t\":\"ScalarValueCollection\",\"realList\":{\"t\":\"SerializableVector\",\"itemType\":\"ScalarValueReal\",\"itemArray\":[{\"i\":3,\"v\":258.2},{\"i\":4,\"v\":78}]}}}}";
 
-	public final static String STR_simStateNativeRequest_0 = "{\"t\":\"SimStateNativeRequest\",\"payload\":{\"t\":\"SimStateNative\",\"intValue\":17}}";
-	
-	public final static String STR_simStateNativeNotify_0 = "{\"t\":\"SimStateNativeNotify\",\"payload\":{\"t\":\"SimStateNative\",\"intValue\":10}}";
-    
-	public final static String STR_xmlParsedEvent_0 = "{\"t\":\"XMLparsedEvent\",\"payload\":{\"t\":\"XMLparsedInfo\",\"scalarVariablesAll_\":{\"t\":\"ScalarVariablesAll\",\"input\":{\"t\":\"ScalarVariableCollection\",\"realVarList_\":{\"t\":\"SerializableVector\",\"itemType\":\"ScalarVariableReal\",\"itemArray\":[{\"n\":\"scalarVar name\",\"i\":1,\"c\":6,\"vb\":5,\"d\":\"The Description 1\",\"vr\":125420,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":20.25,\"nominal\":21.25,\"min\":22.25,\"max\":23.25,\"unit\":\"C\"}},{\"n\":\"scalarVar name\",\"i\":1,\"c\":6,\"vb\":4,\"d\":\"The Description\",\"vr\":125420,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":2.25,\"nominal\":2.25,\"min\":2.25,\"max\":2.25,\"unit\":\"Pa\"}}]}},\"output\":{\"t\":\"ScalarVariableCollection\",\"realVarList_\":{\"t\":\"SerializableVector\",\"itemType\":\"ScalarVariableReal\",\"itemArray\":[{\"n\":\"scalarVar name\",\"i\":1,\"c\":6,\"vb\":5,\"d\":\"The Description 1\",\"vr\":125420,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":20.25,\"nominal\":21.25,\"min\":22.25,\"max\":23.25,\"unit\":\"C\"}},{\"n\":\"scalarVar name\",\"i\":1,\"c\":6,\"vb\":4,\"d\":\"The Description\",\"vr\":125420,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":2.25,\"nominal\":2.25,\"min\":2.25,\"max\":2.25,\"unit\":\"Pa\"}}]}},\"internal\":{\"t\":\"ScalarVariableCollection\",\"realVarList_\":{\"t\":\"SerializableVector\",\"itemType\":\"ScalarVariableReal\",\"itemArray\":[{\"n\":\"scalarVar name\",\"i\":1,\"c\":6,\"vb\":5,\"d\":\"The Description 1\",\"vr\":125420,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":20.25,\"nominal\":21.25,\"min\":22.25,\"max\":23.25,\"unit\":\"C\"}},{\"n\":\"scalarVar name\",\"i\":1,\"c\":6,\"vb\":4,\"d\":\"The Description\",\"vr\":125420,\"typeSpecReal\":{\"t\":\"TypeSpecReal\",\"start\":2.25,\"nominal\":2.25,\"min\":2.25,\"max\":2.25,\"unit\":\"Pa\"}}]}}},\"sessionID_\":\"xxo\"}}";
-	
-	public final static String STR_scalarValueChangeRequest_0 = "{\"t\":\"ScalarValueChangeRequest\",\"payload\":{\"t\":\"ScalarValueCollection\",\"realList\":{\"t\":\"SerializableVector\",\"itemType\":\"ScalarValueReal\",\"itemArray\":[{\"i\":1,\"v\":2}]}}}";
-	
-	public final static String STR_sessionControlClientRequest_0 = "{\"t\":\"SessionControlClientRequest\",\"payload\":{\"t\":\"SessionControlModel\",\"v\":\"SESS1342\",\"action\":{\"t\":\"SessionControlAction\",\"intValue\":0}}}";
-	
 	
 	
 	@Test
@@ -94,13 +91,12 @@ public class Event {
     	messageStruct_0.setMessageTypeEnum(MessageType.messageType_debug);
     	
     	MessageEvent event_0 = new MessageEvent(this, messageStruct_0);
-    	String jsonString_0 = event_0.toJsonString();
-    	
-    	
-		assertEquals(
-				STR_messageEvent_0, 
-				jsonString_0);
 
+		Util.serializeOk(
+			event_0,
+    	    CONSTANTS.STR_messageEvent_0
+		);
+		
     }
 	
 	
@@ -108,12 +104,11 @@ public class Event {
 	@Test
     public void T02_messageEvent_deserialize() {
     	
-
-		Object deserializedObject_0 = gsonController_.fromJson(STR_messageEvent_0);
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+	      CONSTANTS.STR_messageEvent_0,
+	      MessageEvent.class
+	    );
 		
-		//assert
-		assertEquals(MessageEvent.class, deserializedObject_0.getClass());
-
 		MessageEvent event_0 = (MessageEvent) deserializedObject_0;
     	MessageStruct messageStruct_0 = event_0.getPayload();
 		
@@ -140,12 +135,13 @@ public class Event {
 		
 		
 		ConfigChangeNotify event_0 = new ConfigChangeNotify(this,configStruct_0);
-		String jsonString_0 = event_0.toJsonString();
+
 		
-		assertEquals(
-			STR_configChangeNotify_0,
-			jsonString_0
+		Util.serializeOk(
+			event_0,
+    	    CONSTANTS.STR_configChangeNotify_0
 		);
+		
 		
 	}
 	
@@ -153,9 +149,10 @@ public class Event {
 	@Test
 	public void T04_configChangeNotify_deserialize() {
 
-
-		Object deserializedObject_0 = gsonController_.fromJson(STR_configChangeNotify_0);
-		assertEquals(ConfigChangeNotify.class, deserializedObject_0.getClass());
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+	      CONSTANTS.STR_configChangeNotify_0,
+	      ConfigChangeNotify.class
+	    );
 		
 		ConfigChangeNotify event_0 = (ConfigChangeNotify) deserializedObject_0;
 		
@@ -222,13 +219,11 @@ public class Event {
 		//make ResultEvent
 		ResultEvent event_0 = new ResultEvent(this, scalarValueResults_0);
 		
+		Util.serializeOk(
+			event_0,
+    	    CONSTANTS.STR_resultEvent_0
+		);	
 		
-		String jsonString_0 = event_0.toJsonString();
-		
-		assertEquals(
-				STR_resultEvent_0,
-				jsonString_0
-		);
 		
 		return;
 		
@@ -240,11 +235,10 @@ public class Event {
     public void T06_resultEvent_deserialize() {
     	
 
-
-		Object deserializedObject_0 = gsonController_.fromJson(STR_resultEvent_0);
-		
-		//assert
-		assertEquals(ResultEvent.class, deserializedObject_0.getClass());
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+	      CONSTANTS.STR_resultEvent_0,
+	      ResultEvent.class
+	    );
 
 		ResultEvent event_0 = (ResultEvent) deserializedObject_0;
 		ScalarValueResults scalarValueResults_0 = event_0.getPayload();
@@ -280,22 +274,23 @@ public class Event {
 		SimStateNative simStateNative_0 = SimStateNative.simStateNative_5_step_requested;
 		SimStateNativeRequest event_0 = new SimStateNativeRequest(this, simStateNative_0);
 
-		//serialize / deserialize 
-		String jsonString_0 = event_0.toJsonString();
+		Util.serializeOk(
+			event_0,
+    	    CONSTANTS.STR_simStateNativeRequest_0
+		);
+
 		
-
-		assertEquals(
-			STR_simStateNativeRequest_0,	
-			jsonString_0);
-
 	}
 	
 	
 	@Test
 	public void T08_simStateNativeRequest_deserialize() {
 		
-		Object deserializedObject_0 = gsonController_.fromJson(STR_simStateNativeRequest_0);
-		assertEquals(SimStateNativeRequest.class, deserializedObject_0.getClass());
+
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+	      CONSTANTS.STR_simStateNativeRequest_0,
+	      SimStateNativeRequest.class
+	    );
 		
 		SimStateNativeRequest event_0 = (SimStateNativeRequest) deserializedObject_0;
 		
@@ -315,21 +310,22 @@ public class Event {
 		SimStateNative simStateNative_0 = SimStateNative.simStateNative_3_ready;
 		SimStateNativeNotify event_0 = new SimStateNativeNotify(this, simStateNative_0);
 
-		//serialize / deserialize 
-		String jsonString_0 = event_0.toJsonString();
+		Util.serializeOk(
+			event_0,
+    	    CONSTANTS.STR_simStateNativeNotify_0
+		);
 		
-		assertEquals(
-				STR_simStateNativeNotify_0,
-				jsonString_0);
 
 	}
 	
 	@Test
 	public void T10_simStateNativeNotify_deserialize() {
 		
-		Object deserializedObject_0 = gsonController_.fromJson(STR_simStateNativeNotify_0);
-		assertEquals(SimStateNativeNotify.class, deserializedObject_0.getClass());
-		
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+	      CONSTANTS.STR_simStateNativeNotify_0,
+	      SimStateNativeNotify.class
+	    );
+
 		SimStateNativeNotify event_0 = (SimStateNativeNotify) deserializedObject_0;
 		
 		SimStateNative simStateNative_0 = event_0.getPayload();
@@ -344,91 +340,51 @@ public class Event {
 	@Test
 	public void T11_xmlParsedEvent_serialize() {
 		
-		//make TypeSpecReal
-		TypeSpecReal typeSpecReal_0 = new TypeSpecReal();
-		typeSpecReal_0.start = 20.25;
-		typeSpecReal_0.nominal = 21.25;
-		typeSpecReal_0.min = 22.25;
-		typeSpecReal_0.max = 23.25;
-		typeSpecReal_0.unit = "C";
 		
-		typeSpecReal_0.startValueStatus = 1;
-		typeSpecReal_0.nominalValueStatus = 1;
-		typeSpecReal_0.minValueStatus = 1;
-		typeSpecReal_0.maxValueStatus = 1;
-		typeSpecReal_0.unitValueStatus = 1;
-		
-		//make ScalarVariableReal
-		ScalarVariableReal scalarVariableReal_0 = new ScalarVariableReal(typeSpecReal_0);
-		scalarVariableReal_0.setName("scalarVar name");
-		scalarVariableReal_0.setIdx(1);
-		scalarVariableReal_0.setCausality(Enu.enu_input);
-		scalarVariableReal_0.setVariability(Enu.enu_continuous);
-		scalarVariableReal_0.setDescription("The Description 1");
-		scalarVariableReal_0.setValueReference(125420);
-		
-		//make TypeSpecReal 2
-		TypeSpecReal typeSpecReal_1 = new TypeSpecReal();
-		typeSpecReal_1.start = 2.25;
-		typeSpecReal_1.nominal = 2.25;
-		typeSpecReal_1.min = 2.25;
-		typeSpecReal_1.max = 2.25;
-		typeSpecReal_1.unit = "Pa";
-		
-		typeSpecReal_1.startValueStatus = 1;
-		typeSpecReal_1.nominalValueStatus = 1;
-		typeSpecReal_1.minValueStatus = 1;
-		typeSpecReal_1.maxValueStatus = 1;
-		typeSpecReal_1.unitValueStatus = 1;
-		
-		
-		//make ScalarVariableReal 2
-		ScalarVariableReal scalarVariableReal_1 = new ScalarVariableReal(typeSpecReal_1);
-		scalarVariableReal_1.setName("scalarVar name");
-		scalarVariableReal_1.setIdx(1);
-		scalarVariableReal_1.setCausality(Enu.enu_input);
-		scalarVariableReal_1.setVariability(Enu.enu_discrete);
-		scalarVariableReal_1.setDescription("The Description");
-		scalarVariableReal_1.setValueReference(125420);
-		
-		SerializableVector<ScalarVariableReal> realVarList = new SerializableVector<ScalarVariableReal>("ScalarVariableReal");
-		realVarList.add(scalarVariableReal_0);
-		realVarList.add(scalarVariableReal_1);
-		
-		ScalarVariableCollection sVarColl = new ScalarVariableCollection();
-		sVarColl.setRealVarList(realVarList);
-		
+		ScalarVariableCollection scalarVariableCollection_0 = TestDataGenerator.getScalarVariableCollection_A_();
+		ScalarVariableCollection scalarVariableCollection_1 = TestDataGenerator.getScalarVariableCollection_B_();
+
 		//make scalarVariablesAll 1
-		ScalarVariablesAll scalarVariablesAll = new ScalarVariablesAll();
-		scalarVariablesAll.setInput(sVarColl);
-		scalarVariablesAll.setOutput(sVarColl);
-		scalarVariablesAll.setInternal(sVarColl);
+		ScalarVariablesAll scalarVariablesAll_0 = new ScalarVariablesAll();
+		scalarVariablesAll_0.setInput(scalarVariableCollection_0);
+		scalarVariablesAll_0.setOutput(scalarVariableCollection_1);
+
 		
-		//make SimStateWrapper 1
-		XMLparsedInfo xmlParsedInfo = new XMLparsedInfo(scalarVariablesAll);
+		Util.serializeOk(
+				scalarVariablesAll_0,
+    	    CONSTANTS.STR_scalarVariablesAll_0
+		);
+	
 		
 
-		XMLparsedEvent event_0 = new XMLparsedEvent(this, xmlParsedInfo);
+		XMLparsedInfo xmlParsedInfo_0 = new XMLparsedInfo(scalarVariablesAll_0);
 		
-    	String jsonString_0 = event_0.toJsonString();
-    	
-		assertEquals(
-				STR_xmlParsedEvent_0,
-				jsonString_0
+
+		Util.serializeOk(
+			xmlParsedInfo_0,
+    	    CONSTANTS.STR_XMLparsedInfo_0
 		);
-    	
-    	
+		
+		
+		XMLparsedEvent event_0 = new XMLparsedEvent(this, xmlParsedInfo_0);
+		
+		Util.serializeOk(
+			event_0,
+    	    CONSTANTS.STR_xmlParsedEvent_0
+		);
+		
 	}
 	
 	
 	@Test
 	public void T12_xmlParsedEvent_deserialize() {
 		
-			
-		Object deserializedObject = gsonController_.fromJson(STR_xmlParsedEvent_0);
-		assertEquals(XMLparsedEvent.class, deserializedObject.getClass());
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+	      CONSTANTS.STR_xmlParsedEvent_0,
+	      XMLparsedEvent.class
+	    );
 		
-		XMLparsedEvent event_0 = (XMLparsedEvent) deserializedObject;
+		XMLparsedEvent event_0 = (XMLparsedEvent) deserializedObject_0;
 		
 		XMLparsedInfo xmlParsedInfo_0 = event_0.getPayload();
 		
@@ -450,8 +406,8 @@ public class Event {
 		assertEquals( 5, scalarVariableReal_0.getVariabilityAsInt());
 		assertEquals( "continuous", scalarVariableReal_0.getVariabilityAsString());
 		
-		assertEquals( "The Description 1", scalarVariableReal_0.getDescription());
-		assertEquals( "C", scalarVariableReal_0.getUnit());
+		assertEquals( "The Description", scalarVariableReal_0.getDescription());
+		assertEquals( "C1", scalarVariableReal_0.getUnit());
 		
 		TypeSpecReal typeSpecReal_0 = scalarVariableReal_0.getTypeSpecReal();
 		
@@ -459,7 +415,7 @@ public class Event {
 		assertEquals(21.25 , typeSpecReal_0.nominal, 0.0);
 		assertEquals(22.25 , typeSpecReal_0.min, 0.0);
 		assertEquals(23.25 , typeSpecReal_0.max, 0.0);
-		assertEquals("C" , typeSpecReal_0.unit);
+		assertEquals("C1" , typeSpecReal_0.unit);
 		
 	}
 	
@@ -490,11 +446,9 @@ public class Event {
 
     	ScalarValueChangeRequest event_0 = new ScalarValueChangeRequest(this, scalarValueCollection_0);
 
-		String jsonString_0 = event_0.toJsonString();
-		
-		assertEquals(
-				STR_scalarValueChangeRequest_0,
-				jsonString_0
+		Util.serializeOk(
+			event_0,
+    	    CONSTANTS.STR_scalarValueChangeRequest_0
 		);
 		
 	}
@@ -502,11 +456,12 @@ public class Event {
 	@Test
 	public void T14_scalarValueChangeRequest_deserialize() {
 		
-	
-		Object deserializedObject = gsonController_.fromJson(STR_scalarValueChangeRequest_0);
-		assertEquals(ScalarValueChangeRequest.class, deserializedObject.getClass());
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+	      CONSTANTS.STR_scalarValueChangeRequest_0,
+	      ScalarValueChangeRequest.class
+	    );
 		
-		ScalarValueChangeRequest event_0 = (ScalarValueChangeRequest) deserializedObject;
+		ScalarValueChangeRequest event_0 = (ScalarValueChangeRequest) deserializedObject_0;
 		
 		ScalarValueCollection payload_0 = event_0.getPayload();
 		
@@ -528,11 +483,10 @@ public class Event {
 		
 		SessionControlClientRequest event_0 = new SessionControlClientRequest(this, sessionControlModel_0);
 
-		String jsonString_0 = event_0.toJsonString();
-		
-		assertEquals(
-				STR_sessionControlClientRequest_0,
-				jsonString_0);
+		Util.serializeOk(
+			event_0,
+    	    CONSTANTS.STR_sessionControlClientRequest_0
+		);
 		
 		
 	}
@@ -543,12 +497,12 @@ public class Event {
 	@Test
 	public void T16_sessionControlClientRequest_deserialize() {
 		
-		String jsonString = "{\"t\":\"SessionControlClientRequest\",\"payload\":{\"t\":\"SessionControlModel\",\"v\":\"SESS1342\",\"action\":{\"t\":\"SessionControlAction\",\"intValue\":0}}}";
-				
-		Object deserializedObject = gsonController_.fromJson(jsonString);
-		assertEquals(SessionControlClientRequest.class, deserializedObject.getClass());
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+	      CONSTANTS.STR_sessionControlClientRequest_0,
+	      SessionControlClientRequest.class
+	    );
 		
-		SessionControlClientRequest event_0 = (SessionControlClientRequest) deserializedObject;
+		SessionControlClientRequest event_0 = (SessionControlClientRequest) deserializedObject_0;
 		SessionControlModel sessionControlModel_0 = event_0.getPayload();
 		
 		assertEquals(SessionControlAction.attachToSession , sessionControlModel_0.getAction());

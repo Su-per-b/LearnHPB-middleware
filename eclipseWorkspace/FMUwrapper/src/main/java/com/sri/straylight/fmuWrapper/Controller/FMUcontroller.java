@@ -1,19 +1,20 @@
 package com.sri.straylight.fmuWrapper.Controller;
 
-import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import java.util.zip.ZipFile;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -44,9 +45,6 @@ import com.sri.straylight.fmuWrapper.voNative.ScalarVariablesAllStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
-import java.io.*;
-import java.util.*;
-import java.util.zip.*;
 
 
 
@@ -326,7 +324,7 @@ public class FMUcontroller extends AbstractController {
 				String ext2 = ext.toLowerCase();
 				
 				if (ext2.equals("fmu")  || ext2.equals("zip")) {
-					pathToOriginalFMU = this.unzip2(theFile);
+					pathToOriginalFMU = this.unzip(theFile);
 				}
 			}
 
@@ -388,14 +386,14 @@ public class FMUcontroller extends AbstractController {
 		// notifyStateChange_(SimStateNative.simStateNative_1_connect_completed);
 	}
 
-	private Path unzip2(File theFile) {
+	private Path unzip(File theFile) {
 		
 		//make temp folder for this session
 
 		
 		String filePathStr = theFile.toString();
 		
-	    Enumeration entries;
+	    Enumeration<? extends ZipEntry> entries;
 	    ZipFile zipFile;
 	    String fmuFolder = "";
 	    
@@ -481,51 +479,51 @@ public class FMUcontroller extends AbstractController {
 
 
 	
-	
-	private Path unzip(File theFile) {
-
-			String filePath = theFile.toString();
-		
-	        FileInputStream fis = null;
-	        ZipInputStream zipIs = null;
-	        ZipEntry zEntry = null;
-	        
-	        try {
-	            fis = new FileInputStream(filePath);
-	            zipIs = new ZipInputStream(new BufferedInputStream(fis));
-	            while((zEntry = zipIs.getNextEntry()) != null){
-	                try{
-	                    byte[] tmp = new byte[4*1024];
-	                    FileOutputStream fos = null;
-	                    
-	                    String opFilePath = "C:/"+zEntry.getName();
-	                    
-	                    System.out.println("Extracting file to "+opFilePath);
-	                    fos = new FileOutputStream(opFilePath);
-	                    int size = 0;
-	                    while((size = zipIs.read(tmp)) != -1){
-	                        fos.write(tmp, 0 , size);
-	                    }
-	                    fos.flush();
-	                    fos.close();
-	                } catch(Exception ex){
-	                     
-	                }
-	            }
-	            zipIs.close();
-	        } catch (FileNotFoundException e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
-	        } catch (IOException e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
-	        }
-	        
-	        
-		
-		return null;
-		
-	}
+//	
+//	private Path unzip(File theFile) {
+//
+//			String filePath = theFile.toString();
+//		
+//	        FileInputStream fis = null;
+//	        ZipInputStream zipIs = null;
+//	        ZipEntry zEntry = null;
+//	        
+//	        try {
+//	            fis = new FileInputStream(filePath);
+//	            zipIs = new ZipInputStream(new BufferedInputStream(fis));
+//	            while((zEntry = zipIs.getNextEntry()) != null){
+//	                try{
+//	                    byte[] tmp = new byte[4*1024];
+//	                    FileOutputStream fos = null;
+//	                    
+//	                    String opFilePath = "C:/"+zEntry.getName();
+//	                    
+//	                    System.out.println("Extracting file to "+opFilePath);
+//	                    fos = new FileOutputStream(opFilePath);
+//	                    int size = 0;
+//	                    while((size = zipIs.read(tmp)) != -1){
+//	                        fos.write(tmp, 0 , size);
+//	                    }
+//	                    fos.flush();
+//	                    fos.close();
+//	                } catch(Exception ex){
+//	                     
+//	                }
+//	            }
+//	            zipIs.close();
+//	        } catch (FileNotFoundException e) {
+//	            // TODO Auto-generated catch block
+//	            e.printStackTrace();
+//	        } catch (IOException e) {
+//	            // TODO Auto-generated catch block
+//	            e.printStackTrace();
+//	        }
+//	        
+//	        
+//		
+//		return null;
+//		
+//	}
 
 	/**
 	 * Sets the config.

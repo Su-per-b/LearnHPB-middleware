@@ -61,14 +61,21 @@ public class ConnectionBundle extends AbstractController {
 	}
 	
 	public void init() {
-		
 
-		
 		webSocketConnectionController_.init();
 		
 		
 		fmuController_ = new FMUcontroller(this);
 		fmuController_.setSessionID(sessionID_);
+		
+		
+		ConfigStruct configStruct = new ConfigStruct();
+		
+				
+		fmuController_.setConfig(configStruct);
+		
+		
+		
 		webSocketConnectionController_.setSessionID(sessionID_);
 		
 		threadedFMUcontroller_ = new ThreadedFMUcontroller(fmuController_);
@@ -306,7 +313,7 @@ protected class WorkerHandleResultEvent extends WorkerThreadAbstract {
 		public void doIt_() {
 			
 			setName_("WorkerHandleResultEvent ");
-			String json = jsonController_.toJsonString(event_);
+			String json = jsonController_.serialize(event_);
 			
 			
 			webSocketConnectionController_.send(json);

@@ -9,8 +9,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.sri.straylight.fmuWrapper.serialization.JsonController;
+import com.sri.straylight.fmuWrapper.serialization.Iserializable;
 import com.sri.straylight.fmuWrapper.test.base.OrderedRunner;
+import com.sri.straylight.fmuWrapper.test.main.CONSTANTS;
+import com.sri.straylight.fmuWrapper.test.main.Util;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
@@ -22,23 +24,6 @@ import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
 public class VoNative {
 	
 	
-	/** The for serialization. */
-	private  JsonController gsonController_ = JsonController.getInstance();
-    
-	
-	public final static String STR_defaultExperimentStruct_0 = "{\"t\":\"DefaultExperimentStruct\",\"startTime\":123.03,\"stopTime\":145.03,\"tolerance\":10}";
-	
-	public final static String STR_defaultExperimentStruct_1 = "{\"t\":\"DefaultExperimentStruct\",\"startTime\":0,\"stopTime\":100,\"tolerance\":1.1}";
-	
-	public final static String STR_configStruct_0 = "{\"t\":\"ConfigStruct\",\"stepDelta\":1,\"defaultExperimentStruct\":{\"t\":\"DefaultExperimentStruct\",\"startTime\":123.03,\"stopTime\":145.03,\"tolerance\":10}}";
-	
-	public final static String STR_messageStruct_0 = "{\"t\":\"MessageStruct\",\"msgText\":\"This is the message text\",\"messageType\":0}";
-	
-	public final static String STR_simStateNative_0 = "{\"t\":\"SimStateNative\",\"intValue\":0}";
-	
-	public final static String STR_typeSpecReal_0 = "{\"t\":\"TypeSpecReal\",\"start\":20.25,\"nominal\":21.25,\"min\":22.25,\"max\":23.25,\"unit\":\"K\"}";
-
-
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -60,7 +45,6 @@ public class VoNative {
 	@Test
 	public void T01_defaultExperimentStruct_serialize() {
 
-		
 		DefaultExperimentStruct.ByReference defaultExperimentStruct_0
 			= new DefaultExperimentStruct.ByReference();
 		
@@ -68,12 +52,11 @@ public class VoNative {
 		defaultExperimentStruct_0.stopTime = 145.03;
 		defaultExperimentStruct_0.tolerance = 10.0;
 		
-		String jsonString_0 = defaultExperimentStruct_0.toJsonString();
-		
-		assertEquals(
-				STR_defaultExperimentStruct_0, 
-				jsonString_0);
-		
+	    Util.serializeOk(
+	      defaultExperimentStruct_0,
+	      CONSTANTS.STR_defaultExperimentStruct_0
+	    );
+	    	
 		
 		DefaultExperimentStruct.ByReference defaultExperimentStruct_1
 		= new DefaultExperimentStruct.ByReference();
@@ -82,15 +65,12 @@ public class VoNative {
 		defaultExperimentStruct_1.stopTime = 100.0;
 		defaultExperimentStruct_1.tolerance = 1.1;
 	
-		String jsonString_1 = defaultExperimentStruct_1.toJsonString();
 		
-		assertEquals(
-				STR_defaultExperimentStruct_1, 
-				jsonString_1
+		Util.serializeOk(
+			defaultExperimentStruct_1,
+			CONSTANTS.STR_defaultExperimentStruct_1
 		);
-		
-		
-
+	    
 	}
 	
 	
@@ -99,11 +79,11 @@ public class VoNative {
 	public void T02_defaultExperimentStruct_deserialize() {
 		
 
-		Object deserializedObject_0 = gsonController_.fromJson(STR_defaultExperimentStruct_0);
-		
-		//assert
-		assertEquals(DefaultExperimentStruct.ByReference.class, deserializedObject_0.getClass());
-
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+	      CONSTANTS.STR_defaultExperimentStruct_0,
+	      DefaultExperimentStruct.ByReference.class
+	    );
+	    
 		DefaultExperimentStruct.ByReference defaultExperimentStruct_0 = (DefaultExperimentStruct.ByReference) deserializedObject_0;
 		
 		assertEquals(123.03, defaultExperimentStruct_0.startTime, 0.0);
@@ -111,12 +91,11 @@ public class VoNative {
 		assertEquals(10.0, defaultExperimentStruct_0.tolerance, 0.0);
 		
 		
+		Iserializable deserializedObject_1 = Util.deserializeOk(
+	      CONSTANTS.STR_defaultExperimentStruct_1,
+	      DefaultExperimentStruct.ByReference.class
+	    );
 		
-		Object deserializedObject_1 = gsonController_.fromJson(STR_defaultExperimentStruct_1);
-		
-		//assert
-		assertEquals(DefaultExperimentStruct.ByReference.class, deserializedObject_1.getClass());
-
 		DefaultExperimentStruct.ByReference defaultExperimentStruct_1 = (DefaultExperimentStruct.ByReference) deserializedObject_1;
 		
 		assertEquals(0.0, defaultExperimentStruct_1.startTime, 0.0);
@@ -143,26 +122,25 @@ public class VoNative {
 		configStruct.stepDelta = 1.0;
 		configStruct.defaultExperimentStruct = defaultExperimentStruct;
 		
-		
-		String jsonString_0 = configStruct.toJsonString();
-		
-		assertEquals(
-				STR_configStruct_0,
-				jsonString_0
-		);
-		
+	    Util.serializeOk(
+	    	configStruct,
+	    	CONSTANTS.STR_configStruct_0
+  	    );
+
+	    
+	    
 	}
 	
 	@Test
 	public void T04_configStruct_deserialize() {
 
 		
-		Object deserializedObject_0 = gsonController_.fromJson(STR_configStruct_0);
-		
-		assertEquals(ConfigStruct.class, deserializedObject_0.getClass());
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+	      CONSTANTS.STR_configStruct_0,
+	      ConfigStruct.class
+	    );
 		
 		ConfigStruct configStruct_0 = (ConfigStruct) deserializedObject_0;
-		
 		
 		assertEquals(1.0, configStruct_0.stepDelta, 0.0);
 		
@@ -180,17 +158,13 @@ public class VoNative {
     	messageStruct.msgText = "This is the message text";
     	
     	messageStruct.setMessageTypeEnum(MessageType.messageType_debug);
-    	String jsonString_0 = messageStruct.toJsonString();
-    	
-    	
-		assertEquals(
-				STR_messageStruct_0,
-				jsonString_0
-		);
-		
-    	
 
-		return;
+		
+    	Util.serializeOk(
+    			messageStruct,
+    			CONSTANTS.STR_messageStruct_0
+    		);
+    	
 		
 	}
 	
@@ -198,11 +172,13 @@ public class VoNative {
 	@Test
 	public void T06_messageStruct_deserialize() {
 		
-		Object deserializedObject = gsonController_.fromJson(STR_messageStruct_0);
+
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+	      CONSTANTS.STR_messageStruct_0,
+	      MessageStruct.class
+	    );
 		
-		assertEquals(MessageStruct.class, deserializedObject.getClass());
-		
-		MessageStruct messageStruct_0 = (MessageStruct) deserializedObject;
+		MessageStruct messageStruct_0 = (MessageStruct) deserializedObject_0;
 		
 		assertEquals(0, messageStruct_0.messageType);
 		assertEquals("This is the message text", messageStruct_0.msgText);
@@ -217,13 +193,11 @@ public class VoNative {
 		//make SimStateNative 1
 		SimStateNative simStateNative_0 = SimStateNative.simStateNative_0_uninitialized;
 		
-		//serialize / deserialize 
-		String jsonString_0 = simStateNative_0.toJsonString();
 		
-		assertEquals(
-				STR_simStateNative_0, 
-				jsonString_0
-		);
+    	Util.serializeOk(
+    			simStateNative_0,
+    			CONSTANTS.STR_simStateNative_0
+    		);
 
 	}
 	
@@ -231,10 +205,13 @@ public class VoNative {
 	@Test
 	public void T08_simStateNative_deserialize() {
 
-		Object deserializedObject = gsonController_.fromJson(STR_simStateNative_0);
 		
-		assertEquals(SimStateNative.class, deserializedObject.getClass());
-		SimStateNative simStateNative_0 = (SimStateNative) deserializedObject;
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+	      CONSTANTS.STR_simStateNative_0,
+	      SimStateNative.class
+	    );
+		
+		SimStateNative simStateNative_0 = (SimStateNative) deserializedObject_0;
 			
 		assertEquals(0, simStateNative_0.getIntValue());
 		assertEquals("simStateNative_0_uninitialized", simStateNative_0.name());
@@ -261,23 +238,23 @@ public class VoNative {
 		typeSpecReal_0.unitValueStatus = 1;
 		
 
-		//serialize / deserialize 
-		String jsonString_0 = typeSpecReal_0.toJsonString();
-		
-		assertEquals(
-				STR_typeSpecReal_0,
-				jsonString_0);
+    	Util.serializeOk(
+    			typeSpecReal_0,
+    			CONSTANTS.STR_typeSpecReal_0
+    		);
 
 	}
 	
 	
 	@Test
 	public void T10_typeSpecReal_deserialize() {
+
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+			CONSTANTS.STR_typeSpecReal_0,
+			TypeSpecReal.class
+		);
 		
-		Object deserializedObject = gsonController_.fromJson(STR_typeSpecReal_0);
-		
-		assertEquals(TypeSpecReal.class, deserializedObject.getClass());
-		TypeSpecReal typeSpecReal_0 = (TypeSpecReal) deserializedObject;
+		TypeSpecReal typeSpecReal_0 = (TypeSpecReal) deserializedObject_0;
 		
 		assertEquals(20.25, typeSpecReal_0.start, 0.0);
 		assertEquals(21.25, typeSpecReal_0.nominal, 0.0);

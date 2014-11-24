@@ -34,7 +34,7 @@ public enum WebSocketConnectionState implements JnaEnum<WebSocketConnectionState
 
 
 	@Override
-	public String toJsonString() {
+	public String serialize() {
 		// TODO Auto-generated method stub
 		return null;
 	}

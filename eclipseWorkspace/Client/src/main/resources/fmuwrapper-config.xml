@@ -34,6 +34,7 @@
 	
 	<parseInternalVariablesFlagStr>true</parseInternalVariablesFlagStr>
 	<parseInternalVariableLimitStr>500</parseInternalVariableLimitStr>
-
+	<scalarVariablePrecisionStr>5</scalarVariablePrecisionStr>
+	<msPerTimeStepStr>500</msPerTimeStepStr>
 	 
 </config>
