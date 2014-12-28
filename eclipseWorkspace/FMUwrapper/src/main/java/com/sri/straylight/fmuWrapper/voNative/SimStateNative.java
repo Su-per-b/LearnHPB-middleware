@@ -13,6 +13,7 @@ import com.sri.straylight.fmuWrapper.serialization.JsonController;
 public enum SimStateNative implements JnaEnum<SimStateNative>, Iserializable  {
 	
 
+	
 	/** uninitialized. */
 	simStateNative_0_uninitialized,
 	
@@ -76,7 +77,8 @@ public enum SimStateNative implements JnaEnum<SimStateNative>, Iserializable  {
 	/** The start. */
 	private static int start = 0;
 	
-
+	private boolean serializeType_ = true;
+	
 	/* (non-Javadoc)
 	 * @see com.sri.straylight.fmuWrapper.voNative.JnaEnum#getIntValue()
 	 */
@@ -104,8 +106,13 @@ public enum SimStateNative implements JnaEnum<SimStateNative>, Iserializable  {
 	}
 	
 
-
-
+	public boolean getSerializeType() {
+		return serializeType_;
+	}
+	
+	public void setSerializeType(boolean serializeType) {
+		serializeType_ = serializeType;
+	}
     
     
 }

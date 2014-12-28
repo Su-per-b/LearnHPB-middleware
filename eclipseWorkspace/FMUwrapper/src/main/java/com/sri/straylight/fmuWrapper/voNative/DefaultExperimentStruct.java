@@ -11,6 +11,8 @@ public class DefaultExperimentStruct
 	extends Structure
 	implements Iserializable {
 	
+	private boolean serializeType_ = true;
+	
 	/**
 	 * The Class ByReference.
 	 */
@@ -30,6 +32,13 @@ public class DefaultExperimentStruct
 		return JsonController.getInstance().serialize(this);
 	}
 	
+
+	public boolean getSerializeType() {
+		return serializeType_;
+	}
 	
+	public void setSerializeType(boolean serializeType) {
+		serializeType_ = serializeType;
+	}
 	
 }

@@ -19,6 +19,8 @@ public class MessageStruct extends Structure implements Iserializable {
 	/** The message type. */
 	public int messageType;
 
+	private boolean serializeType_ = true;
+	
 	/**
 	 * Gets the message type enum.
 	 * 
@@ -74,4 +76,14 @@ public class MessageStruct extends Structure implements Iserializable {
             append(this.messageType, struct.messageType).
             isEquals();
     }
+    
+    
+	public boolean getSerializeType() {
+		return serializeType_;
+	}
+	
+	public void setSerializeType(boolean serializeType) {
+		serializeType_ = serializeType;
+	}
+    
 }

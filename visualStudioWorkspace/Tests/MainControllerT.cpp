@@ -107,6 +107,8 @@ namespace StraylightTests
 
 			Assert::AreEqual(300.0, config->stepDelta);
 
+			Assert::AreEqual(300.0, config->stepDelta);
+
 			DefaultExperimentStruct * defaultExperimentStruct = config->defaultExperimentStruct;
 			Assert::IsNotNull(defaultExperimentStruct);
 

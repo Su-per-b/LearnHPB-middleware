@@ -13,6 +13,7 @@ public enum SessionControlAction implements JnaEnum<SessionControlAction>,  Iser
 	
 	private static int start = 0;
 	
+	private boolean serializeType_ = true;
 	
 	private static String toStringMap_[] = new String[] {
 		"attachToSession",
@@ -46,6 +47,15 @@ public enum SessionControlAction implements JnaEnum<SessionControlAction>,  Iser
 
 	public String serialize() {
 		return JsonController.getInstance().serialize(this);
+	}
+	
+	
+	public boolean getSerializeType() {
+		return serializeType_;
+	}
+	
+	public void setSerializeType(boolean serializeType) {
+		serializeType_ = serializeType;
 	}
 	
 }

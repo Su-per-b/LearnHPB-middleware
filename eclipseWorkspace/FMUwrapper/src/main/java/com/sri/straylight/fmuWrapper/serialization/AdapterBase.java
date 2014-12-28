@@ -17,7 +17,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-public class AdapterBase<T>
+public class AdapterBase<T extends Iserializable>
 	implements JsonSerializer<T>, JsonDeserializer<T>
 
 {
@@ -25,7 +25,7 @@ public class AdapterBase<T>
 	protected JsonObject jsonObject_;
 	protected JsonElement jsonElement_;
 
-	protected T sourceObject_;
+	protected Iserializable sourceObject_;
 	protected T destObject_;
 	
 	protected Type typeOfT_;
@@ -102,7 +102,7 @@ public class AdapterBase<T>
 	}
 	
 	
-	protected JsonElement init(T src, Type typeOfSrc,
+	protected JsonElement init(Iserializable src, Type typeOfSrc,
 			JsonSerializationContext context) {
 
 		sourceObject_ = src;
@@ -112,11 +112,16 @@ public class AdapterBase<T>
 		jsonObject_ = new JsonObject();
 		
 
-		if ("" == typeString_) {
-			jsonObject_.add("t", new JsonPrimitive(src.getClass()
-					.getCanonicalName()));
-		} else {
-			jsonObject_.add("t", new JsonPrimitive(typeString_));
+			
+		if (sourceObject_.getSerializeType()) {
+
+			if ("" == typeString_) {
+				jsonObject_.add("t", new JsonPrimitive(src.getClass()
+						.getCanonicalName()));
+			} else {
+				jsonObject_.add("t", new JsonPrimitive(typeString_));
+			}
+			
 		}
 		
 
@@ -255,9 +260,9 @@ public class AdapterBase<T>
 	}
 	
 	
-	public T deserializeHelper_(JsonElement jsonElement, Type typeOfT,
+	
+	public Iserializable deserializeHelper_(JsonElement jsonElement, Type typeOfT,
 			JsonDeserializationContext context) {
-		
 		
 		Assert.assertNotNull(destObject_);
 

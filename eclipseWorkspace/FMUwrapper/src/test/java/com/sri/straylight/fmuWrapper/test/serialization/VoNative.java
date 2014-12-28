@@ -17,6 +17,7 @@ import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageType;
+import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
 
@@ -186,9 +187,39 @@ public class VoNative {
 		
 	}
 	
+	@Test
+	public void T07_scalarValueRealStruct_serialize() {
+		
+		ScalarValueRealStruct scalarValueRealStruct_0 = new ScalarValueRealStruct();
+		scalarValueRealStruct_0.idx = 1;
+		scalarValueRealStruct_0.value = 2.1;
+    	
+    	Util.serializeOk(
+    			scalarValueRealStruct_0,
+    			CONSTANTS.STR_scalarValueRealStruct_0
+    		);
+
+	}
+	
 	
 	@Test
-	public void T07_simStateNative_serialize() {
+	public void T08_scalarValueRealStruct_deserialize() {
+		
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+	      CONSTANTS.STR_scalarValueRealStruct_0,
+	      ScalarValueRealStruct.class
+	    );
+
+		ScalarValueRealStruct scalarValueRealStruct_0 = (ScalarValueRealStruct) deserializedObject_0;
+		
+		assertEquals(1, scalarValueRealStruct_0.idx);
+		assertEquals(2.1, scalarValueRealStruct_0.value, 0.0);
+
+	}
+	
+	
+	@Test
+	public void T09_simStateNative_serialize() {
 
 		//make SimStateNative 1
 		SimStateNative simStateNative_0 = SimStateNative.simStateNative_0_uninitialized;
@@ -203,7 +234,7 @@ public class VoNative {
 	
 	
 	@Test
-	public void T08_simStateNative_deserialize() {
+	public void T10_simStateNative_deserialize() {
 
 		
 		Iserializable deserializedObject_0 = Util.deserializeOk(
@@ -221,7 +252,7 @@ public class VoNative {
 	
 	
 	@Test
-	public void T09_typeSpecReal_serialize() {
+	public void T11_typeSpecReal_serialize() {
 
 		//make
 		TypeSpecReal typeSpecReal_0 = new TypeSpecReal();
@@ -247,7 +278,7 @@ public class VoNative {
 	
 	
 	@Test
-	public void T10_typeSpecReal_deserialize() {
+	public void T12_typeSpecReal_deserialize() {
 
 		Iserializable deserializedObject_0 = Util.deserializeOk(
 			CONSTANTS.STR_typeSpecReal_0,

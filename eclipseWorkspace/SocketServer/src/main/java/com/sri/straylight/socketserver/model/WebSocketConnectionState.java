@@ -17,6 +17,8 @@ public enum WebSocketConnectionState implements JnaEnum<WebSocketConnectionState
 	
 	private static int start = 0;
 	
+	private boolean serializeType_ = true;
+	
 	
 	public int getIntValue() {
 	    return this.ordinal() + start;
@@ -39,5 +41,13 @@ public enum WebSocketConnectionState implements JnaEnum<WebSocketConnectionState
 		return null;
 	}
 
+	public boolean getSerializeType() {
+		return serializeType_;
+	}
+	
+	public void setSerializeType(boolean serializeType) {
+		serializeType_ = serializeType;
+	}
+	
 	
 }

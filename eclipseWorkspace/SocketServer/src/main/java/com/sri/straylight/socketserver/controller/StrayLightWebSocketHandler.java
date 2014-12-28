@@ -33,6 +33,8 @@ public class StrayLightWebSocketHandler
 	private String messageQueItem_;
 	private HttpSession httpSession_;
 	
+	private boolean serializeType_ = true;
+	
 	
 	public StrayLightWebSocketHandler(HttpSession httpSession) {
 
@@ -179,5 +181,13 @@ public class StrayLightWebSocketHandler
     }
 
 
+	public boolean getSerializeType() {
+		return serializeType_;
+	}
+	
+	public void setSerializeType(boolean serializeType) {
+		serializeType_ = serializeType;
+	}
+	
 	
 }

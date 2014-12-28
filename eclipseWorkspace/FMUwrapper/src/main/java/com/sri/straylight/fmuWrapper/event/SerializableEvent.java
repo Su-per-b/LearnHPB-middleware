@@ -28,7 +28,9 @@ public class SerializableEvent<PAYLOAD extends Iserializable> extends BaseEvent<
     
     private Class<?> clazz_;
     
-    
+	private boolean serializeType_ = true;
+	
+	
     /** The fired in controllers. */
     Set<AbstractController> firedInControllers = new HashSet<AbstractController>();
     
@@ -111,6 +113,13 @@ public class SerializableEvent<PAYLOAD extends Iserializable> extends BaseEvent<
     }
 
 
+	public boolean getSerializeType() {
+		return serializeType_;
+	}
+	
+	public void setSerializeType(boolean serializeType) {
+		serializeType_ = serializeType;
+	}
 
 	
 }

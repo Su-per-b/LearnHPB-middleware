@@ -14,6 +14,8 @@ namespace Straylight
 	{
 		autoCorrect_ =false;
 		stepDelta_ = 300.0;
+		scalarVariablePrecision_ = 5;
+		msPerTimeStep_ = 500;
 	}
 
 	Config::~Config( void )
@@ -43,6 +45,11 @@ namespace Straylight
 		ConfigStruct * configStruct = new ConfigStruct(); 
 		configStruct->defaultExperimentStruct = defaultExperimentStruct_;
 		configStruct->stepDelta = stepDelta_;
+
+		configStruct->scalarVariablePrecision = scalarVariablePrecision_;
+		configStruct->msPerTimeStep = msPerTimeStep_;
+
+
 
 		return configStruct;
 	}

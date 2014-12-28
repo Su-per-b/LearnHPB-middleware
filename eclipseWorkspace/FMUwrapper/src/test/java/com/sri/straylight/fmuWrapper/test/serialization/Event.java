@@ -7,6 +7,7 @@ import static org.junit.Assert.assertEquals;
 
 
 
+
 import java.util.Vector;
 
 import org.junit.After;
@@ -21,7 +22,9 @@ import org.junit.runner.RunWith;
 
 
 
+
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
+import com.sri.straylight.fmuWrapper.event.InitialStateRequest;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
@@ -512,9 +515,61 @@ public class Event {
 	
 	
 	
+	@Test
+	public void T17_initialStateRequest_serialize() {
+		
+		//make real 1
+		ScalarValueRealStruct scalarValueRealStruct_0 = new ScalarValueRealStruct();
+		scalarValueRealStruct_0.idx = 1;
+		scalarValueRealStruct_0.value = 2.0;
+		ScalarValueReal scalarValueReal_0 = new ScalarValueReal(scalarValueRealStruct_0);
+		
+		//make real 2
+		ScalarValueRealStruct scalarValueRealStruct_1 = new ScalarValueRealStruct();
+		scalarValueRealStruct_1.idx = 2;
+		scalarValueRealStruct_1.value = 3.53;
+		ScalarValueReal scalarValueReal_1 = new ScalarValueReal(scalarValueRealStruct_1);
+		
+		//make real list
+		SerializableVector<ScalarValueReal> realList_0 = new SerializableVector<ScalarValueReal>("ScalarValueReal");
+		realList_0.add(scalarValueReal_0);
+		realList_0.add(scalarValueReal_1);
+		
+		ScalarValueCollection scalarValueCollection_0 = new ScalarValueCollection();
+		scalarValueCollection_0.setRealList(realList_0);
+		
+		
+		InitialStateRequest event_0 = new InitialStateRequest(this, scalarValueCollection_0);
+		
+		Util.serializeOk(
+				event_0,
+	    	    CONSTANTS.STR_initialStateRequest_0
+			);
+
+	}
 	
-	
-	
-	
+	@Test
+	public void T18_initialStateRequest_deserialize() {
+		
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+	      CONSTANTS.STR_initialStateRequest_0,
+	      InitialStateRequest.class
+	    );
+				
+		InitialStateRequest event_0 = (InitialStateRequest) deserializedObject_0;
+		ScalarValueCollection payload_0 = event_0.getPayload();
+		
+		Vector<ScalarValueReal> realList_0 = payload_0.getRealList();
+		
+		ScalarValueReal scalarValueReal_0 = realList_0.get(0);
+		assertEquals(1, scalarValueReal_0.getIdx());
+		assertEquals(2.0, scalarValueReal_0.getValue(), 0.0);
+		
+		ScalarValueReal scalarValueReal_1 = realList_0.get(1);
+		assertEquals(2, scalarValueReal_1.getIdx());
+		assertEquals(3.53, scalarValueReal_1.getValue(), 0.0);
+		
+
+	}
 	
 }

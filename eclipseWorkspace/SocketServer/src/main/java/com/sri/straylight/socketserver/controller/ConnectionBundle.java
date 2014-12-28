@@ -3,6 +3,7 @@ package com.sri.straylight.socketserver.controller;
 import com.sri.straylight.fmuWrapper.Controller.FMUcontroller;
 import com.sri.straylight.fmuWrapper.Controller.ThreadedFMUcontroller;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
+import com.sri.straylight.fmuWrapper.event.InitialStateRequest;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
@@ -69,10 +70,10 @@ public class ConnectionBundle extends AbstractController {
 		fmuController_.setSessionID(sessionID_);
 		
 		
-		ConfigStruct configStruct = new ConfigStruct();
+		//ConfigStruct configStruct = new ConfigStruct();
 		
 				
-		fmuController_.setConfig(configStruct);
+		//fmuController_.setConfig(configStruct);
 		
 		
 		
@@ -245,7 +246,15 @@ public class ConnectionBundle extends AbstractController {
 //				    		SessionControlClientRequest newEventGlobal = new SessionControlClientRequest(source, newSessionControl);
 //				    		EventBus.publish(newEventGlobal);
 
-				    	}  else {
+				    	}  else if (deserializedEvent instanceof InitialStateRequest) {
+				    		
+				    		InitialStateRequest newEvent = (InitialStateRequest) deserializedEvent;
+				    		ScalarValueCollection collection = newEvent.getPayload();
+				    		
+
+				    		threadedFMUcontroller_.setInitialState(collection);
+
+				    	} else {
 				    		
 				    		System.out.println("ConnectionBundle.MessageReceived -> Unknown Event");
 				    		MessageEvent newEvent = new MessageEvent(this, "Could not deserialize object ", MessageType.messageType_error);

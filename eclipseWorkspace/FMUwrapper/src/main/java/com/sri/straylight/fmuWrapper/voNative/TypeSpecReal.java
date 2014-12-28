@@ -34,7 +34,8 @@ public class TypeSpecReal
 	public int maxValueStatus = 0;
 	public int unitValueStatus = 0;
 
-
+	private boolean serializeType_ = true;
+	
 	public String serialize() {
 		return JsonController.getInstance().serialize(this);
 	}
@@ -85,4 +86,13 @@ public class TypeSpecReal
 
     }
     
+    
+	public boolean getSerializeType() {
+		return serializeType_;
+	}
+	
+	public void setSerializeType(boolean serializeType) {
+		serializeType_ = serializeType;
+	}
+	
 }

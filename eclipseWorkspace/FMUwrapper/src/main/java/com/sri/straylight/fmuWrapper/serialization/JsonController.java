@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonNull;
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
+import com.sri.straylight.fmuWrapper.event.InitialStateRequest;
 import com.sri.straylight.fmuWrapper.event.MessageEvent;
 import com.sri.straylight.fmuWrapper.event.ResultEvent;
 import com.sri.straylight.fmuWrapper.event.ScalarValueChangeRequest;
@@ -24,10 +25,12 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
 import com.sri.straylight.fmuWrapper.voManaged.SerializableVector;
 import com.sri.straylight.fmuWrapper.voManaged.SessionControlAction;
 import com.sri.straylight.fmuWrapper.voManaged.SessionControlModel;
+import com.sri.straylight.fmuWrapper.voManaged.StringPrimitive;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
+import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
 
@@ -78,12 +81,9 @@ public class JsonController {
 		if (src == null) {
 			return serialize(JsonNull.INSTANCE);
 		}
-
 		
-	  
 	  	String jsonString = gson_.toJson(src, src.getClass());
-		
-		
+
 		return jsonString;
 	}
 	
@@ -191,8 +191,10 @@ public class JsonController {
 		
 		register_(SerializableVector.class, new SerializableVectorAdapter<JsonSerializable>());
 		
+		register_(ScalarValueRealStruct.class, new ScalarValueRealStructAdapter());
+		register_(InitialStateRequest.class, new InitialStateRequestAdapter());
 		
-		
+		register_(StringPrimitive.class, new StringPrimitiveAdapter());
 		
 		gson_ = gsonBuilder_.create();
 	}
@@ -202,12 +204,8 @@ public class JsonController {
 	private void register_(Class<?> cl, AdapterBase<?> typeAdapter) {
 
 		gsonBuilder_.registerTypeAdapter(cl, typeAdapter);
-		
 		String typeString = typeAdapter.getTypeString();
-		
-//		String typeString = typeAdapter.getTypeString(cl);
-//		typeAdapter.setTypeString(typeString);
-		
+
 		registeredClasses_.put(typeString, cl);
 
 	}

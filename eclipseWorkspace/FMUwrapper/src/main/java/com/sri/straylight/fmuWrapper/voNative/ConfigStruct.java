@@ -22,6 +22,7 @@ public class ConfigStruct
 	/** The step delta. */
 	public double stepDelta;
 
+	private boolean serializeType_ = true;
 	
 	public String serialize() {
 		return JsonController.getInstance().serialize(this);
@@ -31,8 +32,6 @@ public class ConfigStruct
     @Override
     public boolean equals(Object obj) {
     	
-    	
-
         if (obj == null)
             return false;
         
@@ -52,5 +51,12 @@ public class ConfigStruct
 
     }
     
-    
+	public boolean getSerializeType() {
+		return serializeType_;
+	}
+	
+	public void setSerializeType(boolean serializeType) {
+		serializeType_ = serializeType;
+	}
+
 }

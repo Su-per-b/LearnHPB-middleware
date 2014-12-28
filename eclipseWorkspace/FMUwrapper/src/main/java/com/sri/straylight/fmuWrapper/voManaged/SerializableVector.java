@@ -11,9 +11,13 @@ public class SerializableVector<ITEM extends Iserializable> extends Vector<ITEM>
 	/**
 	 * 
 	 */
+	private boolean serializeType_ = true;
+	
 	private static final long serialVersionUID = 1L;
 
 	private String itemTypeString_;
+	
+
 	
 	public SerializableVector(String itemTypeString) {
 		super();
@@ -36,5 +40,15 @@ public class SerializableVector<ITEM extends Iserializable> extends Vector<ITEM>
 	public String serialize() {
 		return JsonController.getInstance().serialize(this);
 	}
+	
+	
+	public boolean getSerializeType() {
+		return serializeType_;
+	}
+	
+	public void setSerializeType(boolean serializeType) {
+		serializeType_ = serializeType;
+	}
+	
 	
 }

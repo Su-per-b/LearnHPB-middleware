@@ -46,6 +46,9 @@ typedef struct {
 	 *******************************************************/
 	double stepDelta;
 
+	int scalarVariablePrecision;
+
+	int msPerTimeStep;
 
 } ConfigStruct;
 

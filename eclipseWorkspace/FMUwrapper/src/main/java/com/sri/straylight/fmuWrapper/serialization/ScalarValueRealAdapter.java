@@ -28,23 +28,23 @@ public class ScalarValueRealAdapter extends AdapterBase<ScalarValueReal> {
 
 	}
 
-	@Override
-	protected JsonElement init(ScalarValueReal src, Type typeOfSrc,
-			JsonSerializationContext context) {
-
-		sourceObject_ = src;
-		typeOfT_ = typeOfSrc;
-		serializationContext_ = context;
-		
-		jsonObject_ = new JsonObject();
-		
-		if (src.serializeType) {
-			jsonObject_.add("t", new JsonPrimitive(typeString_));
-		}
-
-
-		return jsonObject_;
-	}
+//	@Override
+//	protected JsonElement init(ScalarValueReal src, Type typeOfSrc,
+//			JsonSerializationContext context) {
+//
+//		sourceObject_ = src;
+//		typeOfT_ = typeOfSrc;
+//		serializationContext_ = context;
+//		
+//		jsonObject_ = new JsonObject();
+//		
+//		if (src.getSerializeType()) {
+//			jsonObject_.add("t", new JsonPrimitive(typeString_));
+//		}
+//
+//
+//		return jsonObject_;
+//	}
 	
 	
 	

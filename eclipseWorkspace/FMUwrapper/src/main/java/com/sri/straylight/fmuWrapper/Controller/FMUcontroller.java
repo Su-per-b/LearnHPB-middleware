@@ -36,6 +36,7 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
+import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct;
 import com.sri.straylight.fmuWrapper.voNative.EnumTypeMapper;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageType;
@@ -630,6 +631,28 @@ public class FMUcontroller extends AbstractController {
 	}
 	
 	
+	public void setInitialState(ScalarValueCollection collection_) {
+		
+		ScalarValueRealStruct[]  ary = collection_.getRealStructAry();
+		//int len = ary.length;
+		
+		ScalarValueRealStruct sv = ary[0];
+		
+		DefaultExperimentStruct.ByReference defaultExperimentStruct = new  DefaultExperimentStruct.ByReference();
+		 
+		defaultExperimentStruct.startTime = sv.value;
+		defaultExperimentStruct.stopTime = sv.value + 172800;
+		defaultExperimentStruct.tolerance = 0;
+		
+		
+		ConfigStruct configStruct = new ConfigStruct();
+		configStruct.stepDelta = 300;
+		configStruct.defaultExperimentStruct = defaultExperimentStruct;
+		
+
+		jnaFMUWrapper_.setConfig(configStruct);
+	}
+
 
 	public void forceCleanup() {
 

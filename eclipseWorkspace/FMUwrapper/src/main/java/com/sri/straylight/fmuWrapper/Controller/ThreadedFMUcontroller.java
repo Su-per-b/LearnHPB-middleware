@@ -24,6 +24,7 @@ public class ThreadedFMUcontroller extends AbstractController {
 	private WorkerRequestStateChange workerRequestStateChange_;
 	private WorkerSetScalarValues workerSetScalarValues_;
 	private WorkerSetScalarValueCollection workerSetScalarValueCollection_;
+	private WorkerSetInitialState workerSetInitialState_;
 
 	
 	//private AbstractController parent_;
@@ -72,7 +73,10 @@ public class ThreadedFMUcontroller extends AbstractController {
 		workerSetScalarValueCollection_.execute();
 	}
 	
-	
+	public void setInitialState(ScalarValueCollection collection) {
+		workerSetInitialState_ = new WorkerSetInitialState(collection);
+		workerSetInitialState_.execute();
+	}
 
 	
 	
@@ -167,6 +171,30 @@ public class ThreadedFMUcontroller extends AbstractController {
 			workerSetScalarValueCollection_ = null;
 		}
 	}
+	
+	
+	protected class WorkerSetInitialState extends WorkerThreadAbstract {
+		
+		private ScalarValueCollection collection_;
+		
+		WorkerSetInitialState(ScalarValueCollection collection) {
+			collection_ = collection;
+			setSyncObject(FMUcontrollerSync_);
+		}
+		
+		@Override
+		public void doIt_() {
+			setName_("WorkerSetScalarValueCollection");
+			
+			fmuController_.setInitialState(collection_);
+		}
+		
+		@Override
+		public void doneIt_() {
+			workerSetScalarValueCollection_ = null;
+		}
+	}
+	
 	
 	
 	public SimStateNative getSimStateNative() {

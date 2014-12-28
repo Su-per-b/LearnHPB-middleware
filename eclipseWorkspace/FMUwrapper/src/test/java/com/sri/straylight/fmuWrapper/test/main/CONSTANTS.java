@@ -11,6 +11,8 @@ public class CONSTANTS {
 	
 	public final static String STR_messageStruct_0 = "{\"t\":\"MessageStruct\",\"msgText\":\"This is the message text\",\"messageType\":0}";
 	
+	public final static String STR_scalarValueRealStruct_0 = "{\"t\":\"ScalarValueRealStruct\",\"i\":1,\"v\":2.1}";
+	
 	public final static String STR_simStateNative_0 = "{\"t\":\"SimStateNative\",\"intValue\":0}";
 	
 	public final static String STR_typeSpecReal_0 = "{\"t\":\"TypeSpecReal\",\"start\":20.25,\"nominal\":21.25,\"min\":22.25,\"max\":23.25,\"unit\":\"K\"}";
@@ -63,7 +65,8 @@ public class CONSTANTS {
 	
 	public final static String STR_sessionControlClientRequest_0 = "{\"t\":\"SessionControlClientRequest\",\"payload\":{\"t\":\"SessionControlModel\",\"v\":\"SESS1342\",\"action\":{\"t\":\"SessionControlAction\",\"intValue\":0}}}";
 	
+	public final static String STR_initialStateRequest_0 = "{\"t\":\"InitialStateRequest\",\"payload\":{\"t\":\"ScalarValueCollection\",\"realList\":{\"t\":\"SerializableVector\",\"itemType\":\"ScalarValueReal\",\"itemArray\":[{\"i\":1,\"v\":2},{\"i\":2,\"v\":3.53}]}}}";
 	
-	
-	
+	public final static String STR_serializableVector_1 = "{\"t\":\"SerializableVector\",\"itemType\":\"StringPrimitive\",\"itemArray\":[{\"v\":\"y_ZN[1]\"},{\"v\":\"y_ZN[5]\"}]}";
+
 }

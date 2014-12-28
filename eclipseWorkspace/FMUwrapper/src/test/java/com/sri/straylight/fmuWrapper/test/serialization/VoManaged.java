@@ -26,6 +26,7 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
 import com.sri.straylight.fmuWrapper.voManaged.SerializableVector;
 import com.sri.straylight.fmuWrapper.voManaged.SessionControlAction;
 import com.sri.straylight.fmuWrapper.voManaged.SessionControlModel;
+import com.sri.straylight.fmuWrapper.voManaged.StringPrimitive;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.Enu;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
@@ -260,7 +261,7 @@ public class VoManaged {
 	
 	
 	@Test
-	public void T07_serializableVector_serialize() {
+	public void T07_serializableVectorA_serialize() {
 		
 		//make real 1
 		ScalarValueRealStruct scalarValueRealStruct_0 = new ScalarValueRealStruct();
@@ -291,7 +292,7 @@ public class VoManaged {
 	
 	
 	@Test
-	public void T08_serializableVector_deserialize() {
+	public void T08_serializableVectorA_deserialize() {
 
 		
 		Iserializable deserializedObject_0 = Util.deserializeOk(
@@ -786,6 +787,22 @@ public class VoManaged {
 	}
 
 	
+	@Test
+    public void T21_serializableVectorB_serialize() {
+		
+		SerializableVector<StringPrimitive> sv_0 = new SerializableVector<StringPrimitive>("StringPrimitive");
+		
+		sv_0.add(new StringPrimitive("y_ZN[1]"));
+		sv_0.add(new StringPrimitive("y_ZN[5]"));
+		
+		Util.serializeOk(
+				sv_0,
+	    	    CONSTANTS.STR_serializableVector_1
+			);
+		
+		return;
+		
+	}
 	
 
 	

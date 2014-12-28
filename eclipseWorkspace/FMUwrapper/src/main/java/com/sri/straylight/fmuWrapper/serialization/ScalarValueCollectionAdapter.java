@@ -71,16 +71,7 @@ public class ScalarValueCollectionAdapter
 		SerializableVector<ScalarValueReal> realList = context.deserialize(jsonElementReal, realListType_);
 		
 		destObject_.setRealList(realList);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	
 		
 //		
 //		int len = jsonArray.size();
@@ -92,12 +83,6 @@ public class ScalarValueCollectionAdapter
 //			realList.add(scalarValueReal);
 //			
 //		}
-		
-
-		
-		
-		
-		
 //		Vector<ScalarValueBoolean> booleanList = new Vector<ScalarValueBoolean>();
 //		
 //		JsonArray jsonArray2 = jsonObject_.getAsJsonArray("booleanList");

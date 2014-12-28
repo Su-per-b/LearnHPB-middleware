@@ -32,21 +32,12 @@ public class SerializableVectorAdapter<ITEM extends JsonSerializable>
 	@Override
 	public JsonElement serialize(SerializableVector<ITEM> src, Type typeOfSrc,
 			JsonSerializationContext context) {
-
-		//super.serialize(src, typeOfSrc, context);
-		
-
-		
-		//Vector<ScalarValueReal> realList =  src.getRealList();
 		
 		int len = src.size();
 		for (int i = 0; i < len; i++) {
-			
 			JsonSerializable itemObject = src.get(i);
-			itemObject.serializeType = false;
-			
+			itemObject.setSerializeType(false);
 		}
-		
 		
 		init(src, typeOfSrc, context);
 		
@@ -54,8 +45,6 @@ public class SerializableVectorAdapter<ITEM extends JsonSerializable>
 		JsonElement element1  = serializationContext_.serialize(src, Vector.class);
 		jsonObject_.add("itemArray", element1);
 		
-		
-
 		return jsonObject_;
 	}
 	
