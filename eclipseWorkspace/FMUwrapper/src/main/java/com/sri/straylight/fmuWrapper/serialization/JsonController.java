@@ -15,6 +15,7 @@ import com.sri.straylight.fmuWrapper.event.SessionControlClientRequest;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
+import com.sri.straylight.fmuWrapper.voManaged.InitialState;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueBoolean;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
@@ -195,6 +196,7 @@ public class JsonController {
 		register_(InitialStateRequest.class, new InitialStateRequestAdapter());
 		
 		register_(StringPrimitive.class, new StringPrimitiveAdapter());
+		register_(InitialState.class, new InitialStateAdapter());
 		
 		gson_ = gsonBuilder_.create();
 	}

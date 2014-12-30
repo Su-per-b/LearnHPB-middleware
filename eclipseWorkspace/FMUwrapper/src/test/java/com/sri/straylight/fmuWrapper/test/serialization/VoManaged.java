@@ -17,6 +17,7 @@ import com.sri.straylight.fmuWrapper.test.base.OrderedRunner;
 import com.sri.straylight.fmuWrapper.test.main.CONSTANTS;
 import com.sri.straylight.fmuWrapper.test.main.TestDataGenerator;
 import com.sri.straylight.fmuWrapper.test.main.Util;
+import com.sri.straylight.fmuWrapper.voManaged.InitialState;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
@@ -28,6 +29,8 @@ import com.sri.straylight.fmuWrapper.voManaged.SessionControlAction;
 import com.sri.straylight.fmuWrapper.voManaged.SessionControlModel;
 import com.sri.straylight.fmuWrapper.voManaged.StringPrimitive;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
+import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
+import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct;
 import com.sri.straylight.fmuWrapper.voNative.Enu;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
@@ -790,13 +793,14 @@ public class VoManaged {
 	@Test
     public void T21_serializableVectorB_serialize() {
 		
-		SerializableVector<StringPrimitive> sv_0 = new SerializableVector<StringPrimitive>("StringPrimitive");
+		SerializableVector<StringPrimitive> serializableVector_0 = 
+				new SerializableVector<StringPrimitive>("StringPrimitive");
 		
-		sv_0.add(new StringPrimitive("y_ZN[1]"));
-		sv_0.add(new StringPrimitive("y_ZN[5]"));
+		serializableVector_0.add(new StringPrimitive("y_ZN[1]"));
+		serializableVector_0.add(new StringPrimitive("y_ZN[5]"));
 		
 		Util.serializeOk(
-				sv_0,
+				serializableVector_0,
 	    	    CONSTANTS.STR_serializableVector_1
 			);
 		
@@ -804,6 +808,153 @@ public class VoManaged {
 		
 	}
 	
-
 	
+	@Test
+    public void T22_serializableVectorB_deserialize() {
+		
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+			CONSTANTS.STR_serializableVector_1,
+			SerializableVector.class
+		);
+		
+		
+		SerializableVector<StringPrimitive> serializableVector_0 = (SerializableVector<StringPrimitive>) deserializedObject_0;
+		
+		StringPrimitive stringPrimitive_0 =  serializableVector_0.get(0);
+		String str_0 = stringPrimitive_0.getValue();
+		assertEquals("y_ZN[1]" , str_0);
+		  
+		StringPrimitive stringPrimitive_1 =  serializableVector_0.get(1);
+		String str_1 = stringPrimitive_1.getValue();
+		assertEquals("y_ZN[5]" , str_1);
+		
+	}
+    
+	
+	@Test
+	public void T23_initialState_serialize() {
+		
+		
+		//make real 1
+		ScalarValueRealStruct scalarValueRealStruct_0 = new ScalarValueRealStruct();
+		scalarValueRealStruct_0.idx = 1;
+		scalarValueRealStruct_0.value = 2.0;
+		ScalarValueReal scalarValueReal_0 = new ScalarValueReal(scalarValueRealStruct_0);
+		
+		//make real 2
+		ScalarValueRealStruct scalarValueRealStruct_1 = new ScalarValueRealStruct();
+		scalarValueRealStruct_1.idx = 2;
+		scalarValueRealStruct_1.value = 3.53;
+		ScalarValueReal scalarValueReal_1 = new ScalarValueReal(scalarValueRealStruct_1);
+		
+		//make real list
+		SerializableVector<ScalarValueReal> realList_0 = new SerializableVector<ScalarValueReal>("ScalarValueReal");
+		realList_0.add(scalarValueReal_0);
+		realList_0.add(scalarValueReal_1);
+		
+		
+		Util.serializeOk(
+				realList_0,
+	    	    CONSTANTS.STR_serializableVector_0
+			);
+		
+		
+		ScalarValueCollection scalarValueCollection_0 = new ScalarValueCollection(realList_0);
+
+		
+		Util.serializeOk(
+				scalarValueCollection_0,
+	    	    CONSTANTS.STR_scalarValueCollection_0
+			);
+
+		
+		DefaultExperimentStruct.ByReference defaultExperimentStruct 
+			= new DefaultExperimentStruct.ByReference();
+
+		defaultExperimentStruct.startTime = 123.03;
+		defaultExperimentStruct.stopTime = 145.03;
+		defaultExperimentStruct.tolerance = 10.0;
+		
+		ConfigStruct configStruct_0 = new ConfigStruct();
+		configStruct_0.stepDelta = 1.0;
+		configStruct_0.defaultExperimentStruct = defaultExperimentStruct;
+		
+	    Util.serializeOk(
+	    	configStruct_0,
+	    	CONSTANTS.STR_configStruct_0
+  	    );
+
+	    
+		SerializableVector<StringPrimitive> serializableVector_0 = 
+				new SerializableVector<StringPrimitive>("StringPrimitive");
+		
+		serializableVector_0.add(new StringPrimitive("y_ZN[1]"));
+		serializableVector_0.add(new StringPrimitive("y_ZN[5]"));
+		
+		Util.serializeOk(
+			serializableVector_0,
+    	    CONSTANTS.STR_serializableVector_1
+		);
+		
+		
+		
+		InitialState initialState_0 = new InitialState
+			  ( scalarValueCollection_0,
+			    configStruct_0,
+			    serializableVector_0
+			  );
+	    
+		Util.serializeOk(
+				initialState_0,
+	    	    CONSTANTS.STR_InitialState_0
+			);
+		
+		
+	}
+	
+	@Test
+	public void T24_initialState_deserialize() {
+		
+		Iserializable deserializedObject_0 = Util.deserializeOk(
+			CONSTANTS.STR_InitialState_0,
+			InitialState.class
+		);
+		
+		
+		InitialState initialState_0 = (InitialState) deserializedObject_0;
+		
+		ScalarValueCollection parameters_0 = initialState_0.getParameters();
+		SerializableVector<StringPrimitive> outputVarList_0 = initialState_0.getOutputVarList();
+		ConfigStruct configStruct_0 = initialState_0.getConfigStruct();
+		
+		assertEquals(1.0, configStruct_0.stepDelta, 0.0);
+		assertEquals(123.03, configStruct_0.defaultExperimentStruct.startTime, 0.0);
+		assertEquals(145.03, configStruct_0.defaultExperimentStruct.stopTime, 0.0);
+		assertEquals(10.0, configStruct_0.defaultExperimentStruct.tolerance, 0.0);
+		
+		StringPrimitive stringPrimitive_0 =  outputVarList_0.get(0);
+		String str_0 = stringPrimitive_0.getValue();
+		assertEquals("y_ZN[1]" , str_0);
+		  
+		StringPrimitive stringPrimitive_1 =  outputVarList_0.get(1);
+		String str_1 = stringPrimitive_1.getValue();
+		assertEquals("y_ZN[5]" , str_1);
+		
+		Vector<ScalarValueReal> realList_0 = parameters_0.getRealList();
+		
+		ScalarValueReal scalarValueReal_0 = realList_0.get(0);
+		assertEquals(1, scalarValueReal_0.getIdx());
+		assertEquals(2.0, scalarValueReal_0.getValue(), 0.0);
+		
+		ScalarValueReal scalarValueReal_1 = realList_0.get(1);
+		assertEquals(2, scalarValueReal_1.getIdx());
+		assertEquals(3.53, scalarValueReal_1.getValue(), 0.0);
+		
+		
+		
+		
+	}
+	
+	
+    
 }

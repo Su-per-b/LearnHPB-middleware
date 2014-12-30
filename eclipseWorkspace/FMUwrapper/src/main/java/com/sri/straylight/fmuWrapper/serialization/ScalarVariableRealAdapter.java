@@ -7,9 +7,7 @@ import java.lang.reflect.Type;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariableReal;
 import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
@@ -32,26 +30,11 @@ public class ScalarVariableRealAdapter extends AdapterBase<ScalarVariableReal> {
 	
 	public ScalarVariableRealAdapter() {
 		super(ScalarVariableReal.class);
-		
 		super.init(fieldNamesEx_);
 	}
 	
-//	protected JsonElement init(ScalarVariableReal src, Type typeOfSrc,
-//			JsonSerializationContext context) {
-//
-//		sourceObject_ = src;
-//		typeOfT_ = typeOfSrc;
-//		serializationContext_ = context;
-//		
-//		jsonObject_ = new JsonObject();
-//		
-//		if (src.serializeType) {
-//			jsonObject_.add("t", new JsonPrimitive(typeString_));
-//		}
-//
-//
-//		return jsonObject_;
-//	}
+
+	
 	
 	@Override
 	public JsonElement serialize(ScalarVariableReal src, Type typeOfSrc,

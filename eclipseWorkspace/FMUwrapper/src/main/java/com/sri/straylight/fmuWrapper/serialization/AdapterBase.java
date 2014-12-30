@@ -208,11 +208,6 @@ public class AdapterBase<T extends Iserializable>
 		Type type = field.getGenericType();
 		
 		SerializeBase serializeObject = serializeMap_.get(type);
-		
-		
-
-			
-			
 		serializeObject.setFieldEx(field, jsonFieldName);
 
 		try {

@@ -23,7 +23,6 @@ public class ResultEventAdapter extends
     	ScalarValueResults payload = deserializePayload_(jsonElement, typeOfT, context);	
     	ResultEvent event = new ResultEvent(this, payload);
     
-    	
 		return event;
 
 	}

@@ -9,6 +9,10 @@ public class StringPrimitive extends JsonSerializable {
 	private String value_;
 	
 	
+	public StringPrimitive() {
+
+	}
+	
 	public StringPrimitive(String  value) {
 		this.value_ = value;	
 	}
