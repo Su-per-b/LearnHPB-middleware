@@ -117,4 +117,51 @@ namespace Straylight
 		comma = strchr(buffer, '.');
 		if (comma) *comma = ',';
 	}
+
+
+	RealValue Utils::makeRealValueFromAttribute(Element* element, Att attribute) {
+
+		RealValue realValue;
+		realValue.value = getElementAttributeReal(element, &realValue.status, attribute);
+
+		return realValue;
+
+	}
+
+	IntegerValue Utils::makeIntegerValueFromAttribute(Element* element, Att attribute) {
+
+		IntegerValue integerValue;
+		integerValue.value = getElementAttributeInteger(element, &integerValue.status, attribute);
+
+		return integerValue;
+
+	}
+
+	StringValue Utils::makeStringValueFromAttribute(Element* element, Att attribute) {
+
+		StringValue stringValue;
+		stringValue.value = getElementAttributeString(element, &stringValue.status, attribute);
+
+		return stringValue;
+
+	}
+
+	BooleanValue Utils::makeBooleanValueFromAttribute(Element* element, Att attribute) {
+
+		BooleanValue booleanValue;
+		booleanValue.value = getElementAttributeBoolean(element, &booleanValue.status, attribute);
+
+		return booleanValue;
+
+	}
+
+	StringValue Utils::getNameAsStringValue(void* element) {
+
+		StringValue stringValue;
+		stringValue.value = getNameWithStatus(element, &stringValue.status);
+
+		return stringValue;
+	}
+
+
 }

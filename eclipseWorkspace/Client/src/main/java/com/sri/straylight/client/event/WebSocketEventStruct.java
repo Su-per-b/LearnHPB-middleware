@@ -1,5 +1,8 @@
 package com.sri.straylight.client.event;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
@@ -46,7 +49,12 @@ public class WebSocketEventStruct extends Structure   {
 	public void setMessageTypeEnum(WebSocketEventType webSocketEventType) {
 		eventType = webSocketEventType;
 	}
+
+
 	
-	
+	@Override
+	protected List<String> getFieldOrder() {
+	    return Arrays.asList(new String[] { "eventTitle", "eventDetail", "eventType" });
+	}
 	
 }

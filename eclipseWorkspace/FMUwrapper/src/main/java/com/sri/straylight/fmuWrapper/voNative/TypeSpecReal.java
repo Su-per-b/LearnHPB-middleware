@@ -1,5 +1,8 @@
 package com.sri.straylight.fmuWrapper.voNative;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -95,4 +98,9 @@ public class TypeSpecReal
 		serializeType_ = serializeType;
 	}
 	
+	
+	@Override
+	protected List<String> getFieldOrder() {
+	    return Arrays.asList(new String[] { "start", "nominal", "min", "max", "unit", "startValueStatus", "nominalValueStatus", "minValueStatus", "maxValueStatus", "unitValueStatus"});
+	}
 }

@@ -1,5 +1,8 @@
 package com.sri.straylight.fmuWrapper.voNative;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Structure;
 
 public class FMImodelAttributesStruct extends Structure {
@@ -24,4 +27,14 @@ public class FMImodelAttributesStruct extends Structure {
 	}
 	
 	
+	
+
+	@Override
+	protected List<String> getFieldOrder() {
+	    return Arrays.asList(new String[] { "attributeStructAry", "attributeStructSize"});
+	}
+	
+	
+	
+
 }

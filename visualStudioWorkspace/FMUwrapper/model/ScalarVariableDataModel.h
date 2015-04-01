@@ -30,12 +30,19 @@ namespace Straylight
 		ScalarVariableCollection * svInternal_;
 		 
 		ScalarVariableRealStruct * getOneScalarVariableStruct(int idx);
+		void setOutputVariableNames(StringMap * outputNamesStringMap);
+		void setInputVariableNames(StringMap * inputNamesStringMap);
+		
 
 	private:
 		vector<int> idxMap_;
-
-		hash_map<int, ScalarVariableRealStruct* > idx2Real_;
 		map<int, ScalarVariableRealStruct* > idx2Real2_;
+
+		StringMap * outputNamesStringMap_;
+		StringMap * inputNamesStringMap_;
+
+		bool isInputFiltered_;
+		bool isOutputFiltered_;
 
 	};
 

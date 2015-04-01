@@ -1,5 +1,8 @@
 package com.sri.straylight.fmuWrapper.voNative;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sri.straylight.fmuWrapper.serialization.Iserializable;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sun.jna.Structure;
@@ -41,4 +44,12 @@ public class DefaultExperimentStruct
 		serializeType_ = serializeType;
 	}
 	
+	
+	@Override
+	protected List<String> getFieldOrder() {
+	    return Arrays.asList(new String[] { "startTime", "stopTime", "tolerance" });
+	}
+	
+	
+
 }

@@ -15,14 +15,19 @@ namespace Straylight
 
 		~DisplayUnitDefinition();
 	
-		vector<AttributeStruct*> getAttributeStructVector();
-
 		DisplayUnitDefinitionStruct * toStruct();
 
 
-
 	private:
-		vector<AttributeStruct*>  attributeStructVector_;
+
+		const char * displayUnit_;
+		ValueStatus displayUnitValueStatus_;
+
+		double offset_;
+		ValueStatus offsetValueStatus_;
+		
+		double gain_;
+		ValueStatus gainValueStatus_;
 
 	};
 

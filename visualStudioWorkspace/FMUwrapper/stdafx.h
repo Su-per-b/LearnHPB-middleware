@@ -28,6 +28,9 @@
 #include <tchar.h>
 #include <vector>
 #include <assert.h>
+#include <map>
+
+typedef std::map<std::string, bool> StringMap;
 
 extern "C"
 {

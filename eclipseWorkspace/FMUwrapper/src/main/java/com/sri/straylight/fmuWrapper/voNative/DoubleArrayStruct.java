@@ -3,6 +3,9 @@ package com.sri.straylight.fmuWrapper.voNative;
 
 
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import com.sun.jna.ptr.DoubleByReference;
@@ -37,8 +40,9 @@ public class DoubleArrayStruct extends Structure {
 	} 
 
 
-
-    
-    
+	@Override
+	protected List<String> getFieldOrder() {
+	    return Arrays.asList(new String[] { "length", "doubleArray"});
+	}
 	
 }

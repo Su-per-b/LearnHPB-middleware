@@ -9,7 +9,7 @@
 	<parent>
 		<artifactId>StraylightParent</artifactId>
 		<groupId>com.sri</groupId>
-		<version>0.7.0</version>
+		<version>0.8.0</version>
 		<relativePath>../StraylightParent/pom.xml</relativePath>
 	</parent>
 
@@ -20,7 +20,6 @@
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jetty.version>8.0.4.v20111024</jetty.version>
 	</properties>
 	
 	<dependencies>
@@ -35,49 +34,51 @@
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
-			<version>1.2.2</version>
+		  	<version>${commons-fileupload.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>20030203.000550</version>
+		  	<version>${commons-io.version}</version>
 		</dependency>
             
 		<dependency>
 			<groupId>javax.el</groupId>
 			<artifactId>el-api</artifactId>
-			<version>2.2</version>
+			<version>${el-api.version}</version> 
 		</dependency>
 
 		<dependency>
 			<groupId>com.sun.el</groupId>
 			<artifactId>el-ri</artifactId>
-			<version>1.0</version>
+			<version>${el-ri.version}</version> 
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>javax.servlet.jsp</artifactId>
-			<version>3.1.1</version>
+			<version>${javax.servlet.jsp.version}</version> 
 		</dependency>
 
 		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>javax.servlet</artifactId>
-			<version>3.1.1</version>
+			<version>${javax.servlet.version}</version> 
 		</dependency>
 		
 		<dependency>
 			<groupId>org.glassfish.web</groupId>
 			<artifactId>jsp-impl</artifactId>
-			<version>2.2.2-b06</version>
+			<version>${jsp-impl.version}</version> 
 		</dependency>
+		
 
 		<dependency>
 		  <groupId>jstl</groupId>
 		  <artifactId>jstl</artifactId>
-		  <version>1.2</version>
+		  <version>${jstl.version}</version>
 		</dependency>
 
 	</dependencies>

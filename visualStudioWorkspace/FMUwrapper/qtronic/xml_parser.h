@@ -155,7 +155,10 @@ void freeElement     (void* element);
 const char* getModelIdentifier(ModelDescription* md);
 int getNumberOfStates(ModelDescription* md);
 int getNumberOfEventIndicators(ModelDescription* md);
+
 const char* getName(void* element);
+const char* getNameWithStatus(void* element, ValueStatus * valueStatus);
+
 Enu getCausality(void* scalarVariable);
 Enu getVariability(void* scalarVariable);
 Enu getAlias(void* scalarVariable);
@@ -176,6 +179,7 @@ const char *  getObjectAttributeString(void* scalarVariable, ValueStatus * value
 double getElementAttributeReal(Element* e, ValueStatus * valueStatus, Att attribute);
 const char * getElementAttributeString(Element* e, ValueStatus * valueStatus, Att attribute);
 int getElementAttributeInteger(Element* e, ValueStatus * valueStatus, Att attribute);
+
 char getElementAttributeBoolean(Element* e, ValueStatus * valueStatus, Att attribute);
 
 const char *  getEnumerationDeclaredType(ScalarVariable* scalarVariable);

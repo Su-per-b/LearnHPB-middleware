@@ -10,7 +10,7 @@
 	<parent>
 		<artifactId>StraylightParent</artifactId>
 		<groupId>com.sri</groupId>
-		<version>0.7.0</version>
+		<version>0.8.0</version>
 		<relativePath>../StraylightParent/pom.xml</relativePath>
 	</parent>
 
@@ -38,42 +38,41 @@
 		</dependency>
 
 
-
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.4</version>
+			<version>${commons-io.version}</version>
 		</dependency>
             
 	
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
-			<version>3.2.1</version>
+			<version>${commons-collections.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>commons-validator</groupId>
 			<artifactId>commons-validator</artifactId>
-			<version>1.4.0</version>
+			<version>${commons-validator.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>11.0.2</version>
+			<version>${guava.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.jgoodies</groupId>
 			<artifactId>forms</artifactId>
-			<version>1.2.1</version>
+			<version>${forms.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.miglayout</groupId>
 			<artifactId>miglayout</artifactId>
-			<version>3.7.4</version>
+			<version>${miglayout.version}</version>
 		</dependency>
 
 
@@ -81,7 +80,7 @@
 		<dependency>
 			<groupId>xpp3</groupId>
 			<artifactId>xpp3</artifactId>
-			<version>1.1.3.4-RC8</version>
+			<version>${xpp3.version}</version>
 		</dependency>
             
             

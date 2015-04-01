@@ -1,5 +1,8 @@
 package com.sri.straylight.fmuWrapper.voNative;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Structure;
 
 // TODO: Auto-generated Javadoc
@@ -21,6 +24,12 @@ public class TypeSpecEnumeration extends Structure {
 	/** The enumeration item ary. */
 	public EnumerationItem.ByReference  enumerationItemAry;
 
+
+	
+	@Override
+	protected List<String> getFieldOrder() {
+	    return Arrays.asList(new String[] { "min", "max", "minValueStatus", "maxValueStatus", "enumerationItemAry"});
+	}
 	
 	
 }

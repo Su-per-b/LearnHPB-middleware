@@ -1,5 +1,8 @@
 package com.sri.straylight.fmuWrapper.voNative;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Structure;
 
 public class ScalarValueCollectionStruct extends Structure {
@@ -59,6 +62,14 @@ public class ScalarValueCollectionStruct extends Structure {
 		}
 		
 	}
+
+	@Override
+	protected List<String> getFieldOrder() {
+	    return Arrays.asList(new String[] { "realValue", "realSize", "booleanValue", "booleanSize", "time"});
+	}
 	
+	
+	
+
 	
 }

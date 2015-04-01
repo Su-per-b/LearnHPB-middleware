@@ -24,6 +24,7 @@ public class EnumTypeMapper extends DefaultTypeMapper {
     	addTypeConverter(MessageType.class, converter);
     	addTypeConverter(SimStateNative.class, converter);
     	addTypeConverter(fmiStatus.class, converter);
+    	addTypeConverter(ValueStatus.class, converter);
     	
     }
 }

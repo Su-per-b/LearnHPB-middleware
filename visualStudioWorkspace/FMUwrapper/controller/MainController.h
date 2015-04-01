@@ -422,15 +422,19 @@ namespace Straylight
 
 		fmiStatus setOneScalarValue(ScalarValueRealStruct * scalarValue);
 
+		void setOutputVariableNames(StringMap * outputNamesStringMap);
+		
+		void setInputVariableNames(StringMap * inputNamesStringMap);
 
 		ScalarValue * getOneScalarValue(int idx);
-
 
 		ScalarValueRealStruct *  getOneScalarValueStruct(int idx);
 
 		ScalarValueResults * getScalarValueResults();
 
 		ScalarVariableRealStruct * getOneScalarVariableStruct(int idx);
+
+		TypeDefinitions * getTypeDefinitions();
 
 
 		/*******************************************************//**

@@ -17,8 +17,8 @@ namespace Straylight
 		svOutput_= new ScalarVariableCollection();
 		svInternal_= new ScalarVariableCollection();
 
-
-
+		isOutputFiltered_ = false;
+		isInputFiltered_ = false;
 	}
 
 	/*******************************************************//**
@@ -43,13 +43,32 @@ namespace Straylight
 
 	ScalarVariableRealStruct * ScalarVariableDataModel::getOneScalarVariableStruct(int idx) {
 
-
-		
 		ScalarVariableRealStruct* scalarVariableRealStruct = idx2Real2_[idx];
-
 		return scalarVariableRealStruct;
 
 	}
+
+
+
+	void ScalarVariableDataModel::setOutputVariableNames(StringMap * outputNamesStringMap) {
+
+		isOutputFiltered_ = true;
+		outputNamesStringMap_ = outputNamesStringMap;
+
+		return;
+	}
+
+
+	void ScalarVariableDataModel::setInputVariableNames(StringMap * inputNamesStringMap) {
+
+		isInputFiltered_ = true;
+		inputNamesStringMap_ = inputNamesStringMap;
+
+		return;
+	}
+
+
+	
 
 
 
@@ -60,13 +79,19 @@ namespace Straylight
 	 *******************************************************/
 	void ScalarVariableDataModel::extract(ScalarVariable** scalarVariableArray) {
 		int internalSVcount = 0;
-
 		int i;
+
 		ScalarVariable* scalarVariable;
+
+
+
+
 		for (i=0; scalarVariable = scalarVariableArray[i]; i++) {
 			//Enu causality = getCausality(scalarVariable);
 			Elm theType = scalarVariable->typeSpec->type;
 
+			map<const char *, bool>::iterator it;
+			StringMap::iterator it2;
 
 
 
@@ -77,10 +102,43 @@ namespace Straylight
 
 					switch (svs->causality) {
 						case enu_input :
-							svInput_->real.push_back(svs);
+
+							if (isInputFiltered_) {
+								it2 = inputNamesStringMap_->find(svs->name);
+								if (it2 == inputNamesStringMap_->end()) {
+									//var name is not present
+									svs->causality = enu_internal;
+									svInternal_->real.push_back(svs);
+								}
+								else {
+									//var name is present
+									svInput_->real.push_back(svs);
+								}
+							}
+							else {
+								svInput_->real.push_back(svs);
+							}
+
 							break;
 						case enu_output :
-							svOutput_->real.push_back(svs);
+
+							if (isOutputFiltered_) {
+								it2 = outputNamesStringMap_->find(svs->name);
+								if (it2 == outputNamesStringMap_->end()) {
+									//var name is not present
+									svs->causality = enu_internal;
+									svInternal_->real.push_back(svs);
+								}
+								else {
+									//var name is present
+									svOutput_->real.push_back(svs);
+								}
+							}
+							else {
+								svOutput_->real.push_back(svs);
+							}
+
+
 							break;
 						case enu_internal :
 							svInternal_->real.push_back(svs);
@@ -88,12 +146,7 @@ namespace Straylight
 					}
 
 
-
-
 					idx2Real2_[svs->idx] = svs;
-
-
-					//idx2Real_.insert(svs->idx, svs);
 
 					break;
 				}

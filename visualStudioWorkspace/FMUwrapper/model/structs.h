@@ -111,6 +111,8 @@ typedef struct {
 	const char * declaredType;
 } TypeSpecInteger;
 
+
+
 /*******************************************************//**
  * Defines an alias representing the structure.
  *******************************************************/
@@ -133,20 +135,13 @@ typedef struct {
 	const char * declaredType;
 } TypeSpecBoolean;
 
-/*******************************************************//**
- * Defines an alias representing the structure.
- *******************************************************/
-typedef struct {
-	/*******************************************************//**
-	 * The name.
-	 *******************************************************/
-	const char * name;
 
-	/*******************************************************//**
-	 * The description.
-	 *******************************************************/
+
+typedef struct {
+	const char * name;
 	const char * description;
 } EnumerationItem;
+
 
 /*******************************************************//**
  * Defines an alias representing the structure.
@@ -343,150 +338,21 @@ typedef struct {
  *******************************************************/
 } ScalarVariableStringStruct;
 
-typedef struct {
-	/*******************************************************//**
-	 * The name.
-	 *******************************************************/
-	const char * name;
-	const char * unit;
-	const char * quantity; //Pressure, Density ... etc
-	
-	/*******************************************************//**
-	 * The index.
-	 *******************************************************/
-	int idx;
 
-	//values
-	double start;
-	double nominal;
-	double min;
-	double max;
 
-	//statuses
-	int startValueStatus;
-	int nominalValueStatus;
-	int minValueStatus;
-	int maxValueStatus;
-	int unitValueStatus;
-	int quantityValueStatus;
 
-} TypeDefinitionReal;
 
-/*******************************************************//**
- * Defines an alias representing the structure.
- *******************************************************/
-typedef struct {
-	const char * name;
 
-	/*******************************************************//**
-	 * The unit.
-	 *******************************************************/
-	const char * unit;
-	int idx;
 
-	/*******************************************************//**
-	 * The start.
-	 *******************************************************/
-	char start;
-	char fixed;
 
-	/*******************************************************//**
-	 * The start value status.
-	 *******************************************************/
-	int startValueStatus;
-	int fixedValueStatus;
-} TypeDefinitionBoolean;
 
-/*******************************************************//**
- * Defines an alias representing the structure.
- *******************************************************/
-typedef struct {
-	/*******************************************************//**
-	 * The name.
-	 *******************************************************/
-	const char * name;
-	const char * unit;
 
-	/*******************************************************//**
-	 * The index.
-	 *******************************************************/
-	int idx;
 
-	int start;
 
-	/*******************************************************//**
-	 * The nominal.
-	 *******************************************************/
-	int nominal;
-	int min;
 
-	/*******************************************************//**
-	 * The maximum.
-	 *******************************************************/
-	int max;
-	int startValueStatus;
 
-	/*******************************************************//**
-	 * The nominal value status.
-	 *******************************************************/
-	int nominalValueStatus;
-	int minValueStatus;
 
-	/*******************************************************//**
-	 * The maximum value status.
-	 *******************************************************/
-	int maxValueStatus;
 
-/*******************************************************//**
- * The type definition integer.
- *******************************************************/
-} TypeDefinitionInteger;
-
-typedef struct {
-	/*******************************************************//**
-	 * The name.
-	 *******************************************************/
-	const char * name;
-	int idx;
-
-	/*******************************************************//**
-	 * The minimum.
-	 *******************************************************/
-	int min;
-	int max;
-
-	/*******************************************************//**
-	 * The minimum value status.
-	 *******************************************************/
-	int minValueStatus;
-	int maxValueStatus;
-
-	/*******************************************************//**
-	 * Array of items.
-	 *******************************************************/
-	EnumerationItem * itemArray;
-	int itemArrayLength;
-} TypeDefinitionEnumeration;
-
-/*******************************************************//**
- * Defines an alias representing the structure.
- *******************************************************/
-typedef struct {
-	/*******************************************************//**
-	 * The name.
-	 *******************************************************/
-	const char * name;
-	const char * unit;
-
-	/*******************************************************//**
-	 * The index.
-	 *******************************************************/
-	int idx;
-
-/*******************************************************//**
- * The type definition string.
- *******************************************************/
-} TypeDefinitionString;
 
 typedef struct {
 	/*******************************************************//**
@@ -539,22 +405,18 @@ typedef struct {
 } ScalarVariablesAllStruct;
 
 
-typedef struct {
-
-
-	TypeDefinitionReal * input;
-	ScalarVariableCollectionStruct * output;
-
-
-} TypeDefinitionCollectionStruct;
-
 
 
 typedef struct {
 
 	const char * displayUnit;
-	const char * offset;
-	const char * gain;
+	int displayUnitValueStatus;
+
+	double offset;
+	int offsetValueStatus;
+
+	double gain;
+	int gainValueStatus;
 
 } DisplayUnitDefinitionStruct;
 
@@ -567,3 +429,170 @@ typedef struct {
 } BaseUnitStruct;
 
 
+typedef struct {
+
+	int			value;
+	ValueStatus status;
+
+} IntegerValue;
+
+
+typedef struct {
+
+	double		value;
+	ValueStatus status;
+
+} RealValue;
+
+
+typedef struct {
+
+	bool		value;
+	ValueStatus status;
+
+} BooleanValue;
+
+
+typedef struct {
+
+	const char * value;
+	ValueStatus status;
+
+} StringValue;
+
+
+typedef struct {
+
+	int idx;
+
+	//strings
+	StringValue name;  //name is required
+	StringValue unit;
+	StringValue quantity; //Pressure, Density ... etc
+	StringValue displayUnit; //bar ... etc
+
+	//values
+	RealValue start;
+	RealValue nominal;
+	RealValue min;
+	RealValue max;
+
+}  TypeDefinitionReal;
+
+
+
+typedef struct {
+
+	int idx;
+
+	//strings
+	StringValue name;  //name is required
+	StringValue unit;
+	StringValue quantity; //Pressure, Density ... etc
+	StringValue displayUnit; //bar ... etc
+
+	//values
+	IntegerValue start;
+	IntegerValue nominal;
+	IntegerValue min;
+	IntegerValue max;
+
+} TypeDefinitionInteger;
+
+
+typedef struct {
+
+	int idx;
+
+	//strings
+	StringValue name;  //name is required
+	StringValue unit;
+	StringValue quantity; //Pressure, Density ... etc
+	StringValue displayUnit; //bar ... etc
+
+} TypeDefinitionString;
+
+
+
+typedef struct {
+
+	int idx;
+
+	//strings
+	StringValue name;  //name is required
+	StringValue unit;
+	StringValue quantity; //Pressure, Density ... etc
+	StringValue displayUnit; //bar ... etc
+
+	BooleanValue start;
+	BooleanValue fixed;
+
+} TypeDefinitionBoolean;
+
+
+
+typedef struct {
+
+	int idx;
+
+	//strings
+	StringValue name;  //name is required
+	StringValue unit;
+	StringValue quantity; //Pressure, Density ... etc
+	StringValue displayUnit; //bar ... etc
+
+	IntegerValue start;
+	IntegerValue min;
+	IntegerValue max;
+
+	//EnumerationItem * itemArray;
+	int itemArrayLength;
+
+} TypeDefinitionEnumeration;
+
+
+typedef struct {
+
+	int idx;
+
+	//strings
+	StringValue name;  //name is required
+	StringValue unit;
+	StringValue quantity; //Pressure, Density ... etc
+	StringValue displayUnit; //bar ... etc
+
+	IntegerValue start;
+	IntegerValue min;
+	IntegerValue max;
+
+	EnumerationItem * itemArray;
+
+	int itemArrayLength;
+
+} TypeDefinitionEnum;
+
+
+
+typedef struct {
+
+	TypeDefinitionReal * typeDefinitionRealArray;
+
+	TypeDefinitionInteger * typeDefinitionIntegerArray;
+
+	TypeDefinitionString * typeDefinitionStringArray;
+
+	TypeDefinitionBoolean * typeDefinitionBooleanArray;
+
+	TypeDefinitionEnumeration * typeDefinitionEnumerationArray;
+
+
+} TypeDefinitionsStruct;
+
+
+
+typedef struct {
+
+	TypeDefinitionReal * input;
+	ScalarVariableCollectionStruct * output;
+
+} TypeDefinitionCollectionStruct;

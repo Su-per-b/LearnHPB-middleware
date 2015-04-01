@@ -1,6 +1,7 @@
 package com.sri.straylight.fmuWrapper.test.base;
 
 import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -36,15 +37,22 @@ public abstract class BaseThread extends Thread {
 	/** The main barrier. */
 	private CyclicBarrier mainBarrier_;
 	
-	protected CyclicBarrier stateChangeBarrier_;
+	final protected CyclicBarrier stateChangeBarrier_;
+	
+	protected CyclicBarrier xmlParseBarrier_;
 	
 	
+	protected XMLparsedInfo xmlParsedInfo_;
+
+	protected String threadName_;
+	
+	protected CountDownLatch stateCountDownLatch_;
 	
 	public BaseThread() {
 		AnnotationProcessor.process(this);
-		mainBarrier_ = new CyclicBarrier(2);
+		//mainBarrier_ = new CyclicBarrier(2);
 		stateChangeBarrier_ = new CyclicBarrier(2);
-		
+
 	}
 	
 	
@@ -53,17 +61,30 @@ public abstract class BaseThread extends Thread {
 		registerSimulationListeners_();
 	}
 	
+	public void init(FMUcontroller fmuController, String threadName) {
+		init(fmuController);
+		threadName_ = threadName;
+	}
+	
 	protected void requestStateChangeTo_ 
 		(SimStateNative stateChangeRequest, SimStateNative nextStateExpected) 
 	{
-		stateChangeBarrier_ = new CyclicBarrier(2);
+//		if (null == stateChangeBarrier_) {
+//			stateChangeBarrier_ = new CyclicBarrier(2);
+//		}
+		stateCountDownLatch_ = new CountDownLatch(2);
 		
 		nextStateExpected_ = nextStateExpected;
 		fmuController_.requestStateChange(stateChangeRequest);
 		
-
+    	debugStateBarrier_("requestStateChangeTo_:" + stateChangeRequest.toString());
+    	
 		awaitOnStateChangeBarrier();
+		return;
 	}
+	
+	
+
 	
 	
 	/**
@@ -76,13 +97,23 @@ public abstract class BaseThread extends Thread {
 		
 		
 		String threadName = Thread.currentThread().getName();
-		
 	    Assert.assertEquals("AWT-EventQueue-0", threadName);
 	    
 	    SimStateNative simStateNative = event.getPayload();
 	    Assert.assertEquals(nextStateExpected_, simStateNative);
 	    
 	    if (nextStateExpected_ == simStateNative) {
+//	    	int numberWaiting = this.stateChangeBarrier_.getNumberWaiting();
+//	    	
+//	    	if (numberWaiting == 0) {
+//				//throw new RuntimeException(e);
+//				//e.printStackTrace();
+//	    		//debug;
+//				System.out.println ("numberWaiting == 0 ");
+//	    	}
+	    	
+	    	debugStateBarrier_("onSimStateClientNotify:" + simStateNative.toString());
+	    	
 			awaitOnStateChangeBarrier();
 	    } else {
 	    	
@@ -97,26 +128,30 @@ public abstract class BaseThread extends Thread {
 
 
 		super.start();
-		
 
-		
-		awaitOnMainBarrier();
+		//awaitOnMainBarrier();
 	}
 	
-	public void awaitOnMainBarrier() {
-		awaitOnBarrier(mainBarrier_);
-	}
+//	public void awaitOnMainBarrier() {
+//		awaitOnBarrierLong(mainBarrier_);
+//	}
 	
 	protected void awaitOnStateChangeBarrier() {
-		awaitOnBarrier(stateChangeBarrier_);
+		//awaitOnBarrier(stateChangeBarrier_);
+		//countDownLatch_
+		
+	      try {
+	    	  stateCountDownLatch_.countDown();
+	    	  stateCountDownLatch_.await();
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
 	}
 	
 	
 	public void cleanup() {
 
-		unregisterSimulationListeners_();
-
-
+		unregisterSimulationListeners();
 		fmuController_.forceCleanup();
 	}
 	
@@ -127,7 +162,48 @@ public abstract class BaseThread extends Thread {
 	 *
 	 * @param barrier the barrier
 	 */
-	private void awaitOnBarrier(CyclicBarrier barrier) {
+	protected void awaitOnBarrier(CyclicBarrier barrier) {
+		try {
+
+	    	debugStateBarrier_("awaitOnBarrier");
+			int awaitResult = barrier.await(300, TimeUnit.SECONDS);
+			String threadName = Thread.currentThread().getName();
+			
+			System.out.println ("### " + threadName + " - awaitResult:" + awaitResult);
+			
+			//barrier.reset();
+			
+	    	debugStateBarrier_("awaitOnBarrier_DONE");
+
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		catch (BrokenBarrierException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		catch (TimeoutException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		
+		return;
+	}
+	
+	private void debugStateBarrier_(String functionName) {
+		
+		String threadName = Thread.currentThread().getName();
+		long numberWaiting = stateCountDownLatch_.getCount();
+		System.out.println ("### " + threadName + ":" + functionName + "() - numberWaiting: " + numberWaiting);
+		
+		System.out.flush();
+		
+	}
+
+
+	protected void awaitOnBarrierLong(CyclicBarrier barrier) {
 		try {
 			barrier.await(500, TimeUnit.SECONDS);
 		}
@@ -143,11 +219,12 @@ public abstract class BaseThread extends Thread {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+		
+		return;
 	}
 	
 	
-	
-	private void unregisterSimulationListeners_() {
+	public void unregisterSimulationListeners() {
 		
 		fmuController_.unregisterEventListener(SimStateNativeNotify.class);
 		fmuController_.unregisterEventListener(MessageEvent.class);

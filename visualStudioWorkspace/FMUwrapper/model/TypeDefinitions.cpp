@@ -7,6 +7,10 @@
 
 namespace Straylight
 {
+
+
+
+
 	/*******************************************************//**
 	 * Default constructor.
 	 *******************************************************/
@@ -14,9 +18,8 @@ namespace Straylight
 	{
 	}
 
-	/*******************************************************//**
-	 * Destructor.
-	 *******************************************************/
+
+
 	TypeDefinitions::~TypeDefinitions(void)
 	{
 		
@@ -68,6 +71,9 @@ namespace Straylight
 
 	}
 
+
+
+
 	/*******************************************************//**
 	 * Extracts the given typeDefinitions.
 	 *
@@ -81,13 +87,13 @@ namespace Straylight
 			switch(theType) {
 			case elm_RealType :
 				{
-					TypeDefinitionReal * typeDefinitionReal = TypeDefFactory::makeReal(type);
-					typeDefinitionReal->idx = i;
+					TypeDefinitionReal * typeDefinitionReal = TypeDefFactory::makeReal(type, i);
 
-					if (typeDefinitionReal->maxValueStatus == valueDefined &&
-						typeDefinitionReal->start == valueDefined)
+
+					if (typeDefinitionReal->max.status == valueDefined &&
+						typeDefinitionReal->start.status == valueDefined)
 					{
-						if (typeDefinitionReal->start > typeDefinitionReal->max) {
+						if (typeDefinitionReal->start.value > typeDefinitionReal->max.value) {
 							Logger::getInstance()->printErrorInt
 								( "TypeDefinitions::extract() start value above maximum idx:%s\n", i);
 						}
@@ -96,37 +102,107 @@ namespace Straylight
 					typeDefVectorReal_.push_back(typeDefinitionReal);
 					break;
 				}
-			case elm_Boolean:
+			case elm_BooleanType:
 				{
-					TypeDefinitionBoolean * typeDefinitionBoolean = TypeDefFactory::makeBoolean(type);
-					typeDefinitionBoolean->idx = i;
+					TypeDefinitionBoolean * typeDefinitionBoolean = TypeDefFactory::makeBoolean(type, i);
 					typeDefVectorBoolean_.push_back(typeDefinitionBoolean);
 					break;
 				}
 
-			case elm_Integer:
+			case elm_IntegerType:
 				{
-					TypeDefinitionInteger * typeDefinitionInteger = TypeDefFactory::makeInteger(type);
-					typeDefinitionInteger->idx = i;
+					TypeDefinitionInteger * typeDefinitionInteger = TypeDefFactory::makeInteger(type, i);
 					typeDefVectorInteger_.push_back(typeDefinitionInteger);
 					break;
 				}
 			case elm_EnumerationType:
 				{
-					TypeDefinitionEnumeration * typeDefinitionEnumeration = TypeDefFactory::makeEnumeration(type);
-					typeDefinitionEnumeration->idx = i;
+					TypeDefinitionEnumeration * typeDefinitionEnumeration = TypeDefFactory::makeEnumeration(type, i);
 					typeDefVectorEnumeration_.push_back(typeDefinitionEnumeration);
 					break;
 				}
 
-			case elm_String:
+			case elm_StringType:
 				{
-					TypeDefinitionString * typeDefinitionString = TypeDefFactory::makeString(type);
-					typeDefinitionString->idx = i;
+					TypeDefinitionString * typeDefinitionString = TypeDefFactory::makeString(type, i);
 					typeDefVectorString_.push_back(typeDefinitionString);
 					break;
 				}
+
+			default: {
+
+				Logger::getInstance()->printErrorInt
+					("TypeDefinitions::extract() unknown Type idx:%s\n", i);
+				 break;
+			}
 			}
 		}
 	}
+
+
+	TypeDefinitionsStruct * TypeDefinitions::toStruct()
+	{
+
+		TypeDefinitionsStruct * typeDefinitionsStruct = new TypeDefinitionsStruct();
+
+
+		int len_0 = typeDefVectorReal_.size();
+
+		TypeDefinitionReal * typeDefinitionRealArray = new TypeDefinitionReal[len_0];
+
+		for (int i = 0; i < len_0; i++)
+		{
+			TypeDefinitionReal * typeDefinitionReal = typeDefVectorReal_.at(i);
+			typeDefinitionRealArray[i] = *typeDefinitionReal;
+		}
+		typeDefinitionsStruct->typeDefinitionRealArray = typeDefinitionRealArray;
+
+
+		int len_1 = typeDefVectorInteger_.size();
+		TypeDefinitionInteger * typeDefinitionIntegerArray = new TypeDefinitionInteger[len_1];
+
+		for (int j = 0; j < len_1; j++)
+		{
+			TypeDefinitionInteger * typeDefinitionInteger = typeDefVectorInteger_.at(j);
+			typeDefinitionIntegerArray[j] = *typeDefinitionInteger;
+		}
+		typeDefinitionsStruct->typeDefinitionIntegerArray = typeDefinitionIntegerArray;
+
+
+		int len_2 = typeDefVectorBoolean_.size();
+		TypeDefinitionBoolean * typeDefinitionBooleanArray = new TypeDefinitionBoolean[len_2];
+
+		for (int k = 0; k < len_2; k++)
+		{
+			TypeDefinitionBoolean * typeDefinitionBoolean = typeDefVectorBoolean_.at(k);
+			typeDefinitionBooleanArray[k] = *typeDefinitionBoolean;
+		}
+		typeDefinitionsStruct->typeDefinitionBooleanArray = typeDefinitionBooleanArray;
+
+		int len_3 = typeDefVectorString_.size();
+		TypeDefinitionString * typeDefinitionStringArray = new TypeDefinitionString[len_3];
+
+		for (int m = 0; m < len_3; m++)
+		{
+			TypeDefinitionString * typeDefinitionString = typeDefVectorString_.at(m);
+			typeDefinitionStringArray[m] = *typeDefinitionString;
+		}
+		typeDefinitionsStruct->typeDefinitionStringArray = typeDefinitionStringArray;
+
+
+		int len_4 = typeDefVectorEnumeration_.size();
+		TypeDefinitionEnumeration * typeDefinitionEnumerationArray = new TypeDefinitionEnumeration[len_4];
+
+		for (int n = 0; n < len_4; n++)
+		{
+			TypeDefinitionEnumeration * typeDefinitionEnumeration = typeDefVectorEnumeration_.at(n);
+			typeDefinitionEnumerationArray[n] = *typeDefinitionEnumeration;
+		}
+		typeDefinitionsStruct->typeDefinitionEnumerationArray = typeDefinitionEnumerationArray;
+
+		return typeDefinitionsStruct;
+	}
+
+
+
 }

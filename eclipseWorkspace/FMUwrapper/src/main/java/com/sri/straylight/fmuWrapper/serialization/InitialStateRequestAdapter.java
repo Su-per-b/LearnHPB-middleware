@@ -6,19 +6,19 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.sri.straylight.fmuWrapper.event.InitialStateRequest;
-import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
+import com.sri.straylight.fmuWrapper.voManaged.InitialState;
 
 
 /**
  * The Class MessageEventAdapter.
  */
 public class InitialStateRequestAdapter 
-	extends AdapterEventBase<InitialStateRequest, ScalarValueCollection>
+	extends AdapterEventBase<InitialStateRequest, InitialState>
 {
 
 	
 	public InitialStateRequestAdapter() {
-		super(InitialStateRequest.class, ScalarValueCollection.class);
+		super(InitialStateRequest.class, InitialState.class);
 	}
 	
 	
@@ -29,7 +29,7 @@ public class InitialStateRequestAdapter
     		JsonDeserializationContext context)
         throws JsonParseException {
     	
-    	ScalarValueCollection payload = deserializePayload_(jsonElement, typeOfT, context);	
+    	InitialState payload = deserializePayload_(jsonElement, typeOfT, context);	
     	InitialStateRequest event = new InitialStateRequest(this, payload);
     	
         return event;

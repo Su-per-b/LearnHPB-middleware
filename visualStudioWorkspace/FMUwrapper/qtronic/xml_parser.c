@@ -154,8 +154,24 @@ int getNumberOfEventIndicators(ModelDescription* md) {
 
 // name is a required attribute of ScalarVariable, Type, Item, Annotation, and Tool
 const char* getName(void* element) {
+	const char* name = getString(element, att_name);
+	assert(name); // this is a required attribute
+
+	return name;
+}
+
+
+// name is a required attribute of ScalarVariable, Type, Item, Annotation, and Tool
+const char* getNameWithStatus(void* element, ValueStatus * valueStatus) {
     const char* name = getString(element, att_name);
     assert(name); // this is a required attribute
+
+	if (name == NULL) {
+		*valueStatus = valueMissing;
+	}
+	else {
+		*valueStatus = valueDefined;
+	}
     return name;
 }
 
@@ -369,19 +385,25 @@ double getElementAttributeReal(Element* e, ValueStatus * valueStatus, Att attrib
 	return valueDouble;
 }
 
+
+
+
 char getElementAttributeBoolean(Element* e, ValueStatus * valueStatus, Att attribute) {
-	double valueDouble = 0;
+	const char* value = getString(e, attribute);
 
-	const char* valueChar = getString(e, attribute);
+	if (!value) { *valueStatus = valueMissing; return 0; };
+	*valueStatus = valueDefined;
 
-	if (!valueChar) {
-		*valueStatus = valueMissing;
-	} else {
-		*valueStatus = (1==sscanf_s(valueChar, "%lf", &valueDouble)) ? valueDefined : valueIllegal;
-	}
+	if (!strcmp(value, "true")) return 1;
+	if (!strcmp(value, "false")) return 0;
 
-	return (char) valueDouble;
+	*valueStatus = valueIllegal;
+	return 0;
 }
+
+
+
+
 
 /*
 double getRealAttribute(ScalarVariable* scalarVariable, ValueStatus * valueStatus, Att attribute){

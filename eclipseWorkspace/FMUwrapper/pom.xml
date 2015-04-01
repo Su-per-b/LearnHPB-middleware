@@ -7,24 +7,23 @@
 	<packaging>jar</packaging>
 	<modelVersion>4.0.0</modelVersion>
 
+
+	
 	<parent>
 		<artifactId>StraylightParent</artifactId>
 		<groupId>com.sri</groupId>
-		<version>0.7.0</version>
+		<version>0.8.0</version>
 		<relativePath>../StraylightParent/pom.xml</relativePath>
 	</parent>
-
 
 	<dependencies>
 	
 
-            
-            
 		<!-- needed for the Config.xml parsing -->
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
-			<version>1.4.5</version>
+			<version>${xstream.version}</version>
 		</dependency>
             
 
@@ -39,7 +38,7 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.1</version>
+			<version>${gson.version}</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -47,35 +46,29 @@
 		<dependency>
 			<groupId>org.apache.directory.studio</groupId>
 			<artifactId>org.apache.commons.logging</artifactId>
-			<version>1.1.1</version>
+			<version>${org.apache.commons.logging.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math</artifactId>
-			<version>2.2</version>
+			<version>${commons-math.version}</version>
 		</dependency>
             
-		
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.1.7.Final</version>
+			<version>${hibernate-entitymanager.version}</version>
 		</dependency>
 
 		<!-- needed to copy directories -->
-<dependency>
-	<groupId>commons-io</groupId>
-	<artifactId>commons-io</artifactId>
-	<version>2.4</version>
-</dependency>
-            
-            
-            
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io.version}</version>
+		</dependency>
             
 
-
-            
 	</dependencies>
 
 

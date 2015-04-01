@@ -41,7 +41,7 @@ namespace StraylightTests
 
 	public:
 
-		TEST_METHOD(T01_Connect)
+		TEST_METHOD(T02_Connect)
 		{
 			Config::getInstance()->setAutoCorrect(true);
 
@@ -69,7 +69,7 @@ namespace StraylightTests
 		}
 
 
-		TEST_METHOD(T02_XMLParse)
+		TEST_METHOD(T03_XmlParse)
 		{
 
 			mainController_->connect(
@@ -202,7 +202,7 @@ namespace StraylightTests
 
 			DisplayUnitDefinitionStruct  duStruct2 = duStructAry[1];
 			Assert::AreEqual("degC", duStruct2.displayUnit);
-			Assert::AreEqual("-273.15", duStruct2.offset);
+			Assert::AreEqual(-273.15, duStruct2.offset);
 
 			buStruct = baseUnitStructAry[1];
 			Assert::AreEqual("Pa", buStruct.unit);
@@ -214,8 +214,8 @@ namespace StraylightTests
 
 			duStruct2 = duStructAry[1];
 			Assert::AreEqual("bar", duStruct2.displayUnit);
-			Assert::AreEqual("{not set}", duStruct2.offset);
-			Assert::AreEqual("1E-005", duStruct2.gain);
+			Assert::AreEqual(0.0, duStruct2.offset);
+			Assert::AreEqual(1E-005, duStruct2.gain);
 
 		}
 
@@ -426,6 +426,176 @@ namespace StraylightTests
 
 			return;
 		}
+
+		TEST_METHOD(T12_DontSetOutputVariableNames)
+		{
+
+			mainController_->connect(
+				Utils::messageCallbackFunc,
+				Utils::resultCallbackFunc,
+				Utils::stateChangeCallbackFunc
+				);
+
+
+			int result = mainController_->xmlParse(FMU_FOLDER);
+
+			mainController_->requestStateChange(SimStateNative::simStateNative_3_init_requested);
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, Utils::simStateNative);
+
+			mainController_->requestStateChange(SimStateNative::simStateNative_5_step_requested);
+			ScalarValueResults * scalarValueResult_0 = mainController_->getScalarValueResults();
+
+			ScalarValueCollection * scalarValueCollection_0 = scalarValueResult_0->getScalarValueCollectionOutput();
+
+			vector<ScalarValueRealStruct*> vector_0 = scalarValueCollection_0->getReal();
+			int size = vector_0.size();
+			Assert::AreEqual(size, 138);
+
+			ScalarValueRealStruct * scalarValueRealStruct_0 = vector_0.at(0);
+			ScalarValueRealStruct * scalarValueRealStruct_1 = vector_0.at(1);
+			ScalarValueRealStruct * scalarValueRealStruct_2 = vector_0.at(2);
+
+			Assert::AreEqual(61807, scalarValueRealStruct_0->idx);
+			Assert::AreEqual(292.44444329455683, scalarValueRealStruct_0->value);
+
+			Assert::AreEqual(61808, scalarValueRealStruct_1->idx);
+			Assert::AreEqual(291.01500644163440, scalarValueRealStruct_1->value);
+
+			Assert::AreEqual(61809, scalarValueRealStruct_2->idx);
+			Assert::AreEqual(0.0, scalarValueRealStruct_2->value);
+			return;
+		}
+
+
+		TEST_METHOD(T13_SetOutputVariableNames)
+		{
+
+			mainController_->connect(
+				Utils::messageCallbackFunc,
+				Utils::resultCallbackFunc,
+				Utils::stateChangeCallbackFunc
+				);
+
+			StringMap * outputNamesStringMap = new StringMap();
+			outputNamesStringMap->insert(std::make_pair("y_BOI[1]", true));
+			outputNamesStringMap->insert(std::make_pair("y_ZN[1]", true));
+			outputNamesStringMap->insert(std::make_pair("y_ZN[2]", true));
+			mainController_->setOutputVariableNames(outputNamesStringMap);
+
+			int result = mainController_->xmlParse(FMU_FOLDER);
+
+			mainController_->requestStateChange(SimStateNative::simStateNative_3_init_requested);
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, Utils::simStateNative);
+
+			mainController_->requestStateChange(SimStateNative::simStateNative_5_step_requested);
+			ScalarValueResults * scalarValueResult_0 = mainController_->getScalarValueResults();
+
+			ScalarValueCollection * scalarValueCollection_0 = scalarValueResult_0->getScalarValueCollectionOutput();
+
+			vector<ScalarValueRealStruct*> vector_0 = scalarValueCollection_0->getReal();
+			int size = vector_0.size();
+			Assert::AreEqual(size, 3);
+
+			ScalarValueRealStruct * scalarValueRealStruct_0 = vector_0.at(0);
+			ScalarValueRealStruct * scalarValueRealStruct_1 = vector_0.at(1);
+			ScalarValueRealStruct * scalarValueRealStruct_2 = vector_0.at(2);
+
+			Assert::AreEqual(61807, scalarValueRealStruct_0->idx);
+			Assert::AreEqual(292.44444329455683, scalarValueRealStruct_0->value);
+
+			Assert::AreEqual(62271, scalarValueRealStruct_1->idx);
+			Assert::AreEqual(208.75871716558743, scalarValueRealStruct_1->value);
+
+			Assert::AreEqual(62272, scalarValueRealStruct_2->idx);
+			Assert::AreEqual(21034.146416731779, scalarValueRealStruct_2->value);
+
+			return;
+		}
+
+		TEST_METHOD(T14_DontSetInputVariableNames)
+		{
+
+			mainController_->connect(
+				Utils::messageCallbackFunc,
+				Utils::resultCallbackFunc,
+				Utils::stateChangeCallbackFunc
+				);
+
+			int result = mainController_->xmlParse(FMU_FOLDER);
+			mainController_->requestStateChange(SimStateNative::simStateNative_3_init_requested);
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, Utils::simStateNative);
+
+			mainController_->requestStateChange(SimStateNative::simStateNative_5_step_requested);
+			ScalarValueResults * scalarValueResult_0 = mainController_->getScalarValueResults();
+			ScalarValueCollection * scalarValueCollection_0 = scalarValueResult_0->getScalarValueCollectionInput();
+
+			vector<ScalarValueRealStruct*> vector_0 = scalarValueCollection_0->getReal();
+			int size = vector_0.size();
+			Assert::AreEqual(size, 107);
+
+			ScalarValueRealStruct * scalarValueRealStruct_0 = vector_0.at(0);
+			ScalarValueRealStruct * scalarValueRealStruct_1 = vector_0.at(1);
+			ScalarValueRealStruct * scalarValueRealStruct_2 = vector_0.at(2);
+
+			Assert::AreEqual(2711, scalarValueRealStruct_0->idx);
+			Assert::AreEqual(21600.0, scalarValueRealStruct_0->value);
+
+			Assert::AreEqual(2712, scalarValueRealStruct_1->idx);
+			Assert::AreEqual(68400.0, scalarValueRealStruct_1->value);
+
+			Assert::AreEqual(56960, scalarValueRealStruct_2->idx);
+			Assert::AreEqual(291.14999999999998, scalarValueRealStruct_2->value);
+
+
+			return;
+		}
+
+		TEST_METHOD(T15_SetInputVariableNames)
+		{
+
+			mainController_->connect(
+				Utils::messageCallbackFunc,
+				Utils::resultCallbackFunc,
+				Utils::stateChangeCallbackFunc
+				);
+
+			StringMap * inputNamesStringMap = new StringMap();
+			inputNamesStringMap->insert(std::make_pair("u_ZN[1]", true));
+			inputNamesStringMap->insert(std::make_pair("u_ZN[2]", true));
+			inputNamesStringMap->insert(std::make_pair("u_ZN[5]", true));
+			mainController_->setInputVariableNames(inputNamesStringMap);
+
+			int result = mainController_->xmlParse(FMU_FOLDER);
+			mainController_->requestStateChange(SimStateNative::simStateNative_3_init_requested);
+			Assert::AreEqual(SimStateNative::simStateNative_3_ready, Utils::simStateNative);
+
+			mainController_->requestStateChange(SimStateNative::simStateNative_5_step_requested);
+			ScalarValueResults * scalarValueResult_0 = mainController_->getScalarValueResults();
+			ScalarValueCollection * scalarValueCollection_0 = scalarValueResult_0->getScalarValueCollectionInput();
+
+			vector<ScalarValueRealStruct*> vector_0 = scalarValueCollection_0->getReal();
+			int size = vector_0.size();
+			Assert::AreEqual(size, 3);
+
+			ScalarValueRealStruct * scalarValueRealStruct_0 = vector_0.at(0);
+			ScalarValueRealStruct * scalarValueRealStruct_1 = vector_0.at(1);
+			ScalarValueRealStruct * scalarValueRealStruct_2 = vector_0.at(2);
+
+			Assert::AreEqual(56960, scalarValueRealStruct_0->idx);
+			Assert::AreEqual(291.14999999999998, scalarValueRealStruct_0->value);
+
+			Assert::AreEqual(56961, scalarValueRealStruct_1->idx);
+			Assert::AreEqual(295.14999999999998, scalarValueRealStruct_1->value);
+
+			Assert::AreEqual(56964, scalarValueRealStruct_2->idx);
+			Assert::AreEqual(291.14999999999998, scalarValueRealStruct_2->value);
+
+
+			return;
+		}
+
+
+
 
 
 

@@ -2,26 +2,10 @@ package com.sri.straylight.fmuWrapper.test.serialization;
 
 import static org.junit.Assert.assertEquals;
 
-
-
-
-
-
-
 import java.util.Vector;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-
-
-
-
-
 
 import com.sri.straylight.fmuWrapper.event.ConfigChangeNotify;
 import com.sri.straylight.fmuWrapper.event.InitialStateRequest;
@@ -33,7 +17,11 @@ import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.SimStateNativeRequest;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.serialization.Iserializable;
-import com.sri.straylight.fmuWrapper.serialization.JsonController;
+import com.sri.straylight.fmuWrapper.test.base.OrderedRunner;
+import com.sri.straylight.fmuWrapper.test.main.CONSTANTS;
+import com.sri.straylight.fmuWrapper.test.main.TestDataGenerator;
+import com.sri.straylight.fmuWrapper.test.main.Util;
+import com.sri.straylight.fmuWrapper.voManaged.InitialState;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueReal;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
@@ -43,6 +31,7 @@ import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
 import com.sri.straylight.fmuWrapper.voManaged.SerializableVector;
 import com.sri.straylight.fmuWrapper.voManaged.SessionControlAction;
 import com.sri.straylight.fmuWrapper.voManaged.SessionControlModel;
+import com.sri.straylight.fmuWrapper.voManaged.StringPrimitive;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct;
@@ -52,35 +41,28 @@ import com.sri.straylight.fmuWrapper.voNative.MessageType;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
 import com.sri.straylight.fmuWrapper.voNative.SimStateNative;
 import com.sri.straylight.fmuWrapper.voNative.TypeSpecReal;
-import com.sri.straylight.fmuWrapper.test.base.OrderedRunner;
-import com.sri.straylight.fmuWrapper.test.main.CONSTANTS;
-import com.sri.straylight.fmuWrapper.test.main.TestDataGenerator;
-import com.sri.straylight.fmuWrapper.test.main.Util;
 
 
 @RunWith(OrderedRunner.class)
 public class Event {
 	
 	
-	/** The for serialization. */
-	private  JsonController gsonController_ = JsonController.getInstance();
-    
 	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
+//	@BeforeClass
+//	public static void setUpBeforeClass() throws Exception {
+//	}
+//
+//	@AfterClass
+//	public static void tearDownAfterClass() throws Exception {
+//	}
+//
+//	@Before
+//	public void setUp() throws Exception {
+//	}
+//
+//	@After
+//	public void tearDown() throws Exception {
+//	}
 
 
 
@@ -538,8 +520,28 @@ public class Event {
 		ScalarValueCollection scalarValueCollection_0 = new ScalarValueCollection();
 		scalarValueCollection_0.setRealList(realList_0);
 		
+		DefaultExperimentStruct.ByReference defaultExperimentStruct_0 
+		= new DefaultExperimentStruct.ByReference();
 		
-		InitialStateRequest event_0 = new InitialStateRequest(this, scalarValueCollection_0);
+		defaultExperimentStruct_0.startTime = 123.03;
+		defaultExperimentStruct_0.stopTime = 145.03;
+		defaultExperimentStruct_0.tolerance = 10.0;
+		
+		ConfigStruct configStruct_0 = new ConfigStruct();
+		configStruct_0.stepDelta = 1.0;
+		configStruct_0.defaultExperimentStruct = defaultExperimentStruct_0;
+		
+		
+		StringPrimitive stringPrimitive_0 = new StringPrimitive("var0");
+		StringPrimitive stringPrimitive_1 = new StringPrimitive("var1");
+
+		
+		SerializableVector<StringPrimitive> serializableVector_0 = new SerializableVector<StringPrimitive>("StringPrimitive");
+		serializableVector_0.add(stringPrimitive_0);
+		serializableVector_0.add(stringPrimitive_1);
+		
+		InitialState initialState = new InitialState(scalarValueCollection_0, configStruct_0, serializableVector_0);
+		InitialStateRequest event_0 = new InitialStateRequest(this, initialState);
 		
 		Util.serializeOk(
 				event_0,
@@ -557,19 +559,31 @@ public class Event {
 	    );
 				
 		InitialStateRequest event_0 = (InitialStateRequest) deserializedObject_0;
-		ScalarValueCollection payload_0 = event_0.getPayload();
+		InitialState payload_0 = event_0.getPayload();
 		
-		Vector<ScalarValueReal> realList_0 = payload_0.getRealList();
+		ConfigStruct configStruct_0 = payload_0.getConfigStruct();
+		assertEquals(1.0, configStruct_0.stepDelta, 0.0);
 		
+		assertEquals(123.03, configStruct_0.defaultExperimentStruct.startTime, 0.0);
+		assertEquals(145.03, configStruct_0.defaultExperimentStruct.stopTime, 0.0);
+		assertEquals(10.0, configStruct_0.defaultExperimentStruct.tolerance, 0.0);	
+		
+		SerializableVector<StringPrimitive> serializableVector_0 = payload_0.getOutputVarList();
+		
+		StringPrimitive stringPrimitive_0 = serializableVector_0.get(0);
+		assertEquals("var0", stringPrimitive_0.getValue());
+		
+		StringPrimitive stringPrimitive_1 = serializableVector_0.get(1);
+		assertEquals("var1", stringPrimitive_1.getValue());
+		
+		ScalarValueCollection scalarValueCollection_0 = payload_0.getParameters();
+		
+		Vector<ScalarValueReal> realList_0 = scalarValueCollection_0.getRealList();
 		ScalarValueReal scalarValueReal_0 = realList_0.get(0);
+		
 		assertEquals(1, scalarValueReal_0.getIdx());
 		assertEquals(2.0, scalarValueReal_0.getValue(), 0.0);
 		
-		ScalarValueReal scalarValueReal_1 = realList_0.get(1);
-		assertEquals(2, scalarValueReal_1.getIdx());
-		assertEquals(3.53, scalarValueReal_1.getValue(), 0.0);
-		
-
 	}
 	
 }

@@ -202,15 +202,6 @@ fmiStatus setScalarValueReal (int idx, double value) {
 }
 
 
-/*
-TypeDefDataModel * getTypeDefDataModel() {
-
-	MainDataModel * mainDataModel = mainController->getMainDataModel();
-
-	return mainDataModel->getTypeDefDataModel();
-}
-*/
-
 
 
 /*******************************************************//**
@@ -232,6 +223,35 @@ void setScalarValues (ScalarValueRealStruct * scalarValueAry , int length) {
 
 		mainController->setScalarValues(scalarValueAry,length);
 }
+
+
+
+void setOutputVariableNames(const char ** outputVariableNamesAry, int length) {
+
+		StringMap * outputNamesStringMap = new StringMap();
+		for (int i = 0; i < length; i++)
+		{
+			outputNamesStringMap->insert(std::make_pair(outputVariableNamesAry[i], true));
+		}
+
+		mainController->setOutputVariableNames(outputNamesStringMap);
+
+}
+
+void setInputVariableNames(const char ** inputVariableNamesAry, int length) {
+
+	StringMap * inputNamesStringMap = new StringMap();
+	for (int i = 0; i < length; i++)
+	{
+		inputNamesStringMap->insert(std::make_pair(inputVariableNamesAry[i], true));
+	}
+
+	mainController->setInputVariableNames(inputNamesStringMap);
+
+}
+
+
+
 
 
 ScalarValueResults * getScalarValueResults()
@@ -269,3 +289,11 @@ SimStateNative getSimStateNative() {
 
 }
 
+
+TypeDefinitionsStruct * getTypeDefinitions() {
+
+	TypeDefinitions * typeDefinitions = mainController->getTypeDefinitions();
+	
+	return typeDefinitions->toStruct();
+
+}

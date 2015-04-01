@@ -187,7 +187,9 @@ public interface JNAfmuWrapper extends Library {
 	public FMImodelAttributesStruct getFMImodelAttributesStruct();
 	
 
-
+	public void setOutputVariableNames(String[] outputVariableNamesAry, int length);
+	
+	public void setInputVariableNames(String[] inputVariableNamesAry, int length);
 	
 	
 	

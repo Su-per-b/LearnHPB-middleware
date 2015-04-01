@@ -31,12 +31,14 @@ import com.sri.straylight.fmuWrapper.event.SimStateNativeNotify;
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.model.FMUwrapperConfig;
+import com.sri.straylight.fmuWrapper.voManaged.InitialState;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarVariablesAll;
+import com.sri.straylight.fmuWrapper.voManaged.SerializableVector;
+import com.sri.straylight.fmuWrapper.voManaged.StringPrimitive;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
-import com.sri.straylight.fmuWrapper.voNative.DefaultExperimentStruct;
 import com.sri.straylight.fmuWrapper.voNative.EnumTypeMapper;
 import com.sri.straylight.fmuWrapper.voNative.MessageStruct;
 import com.sri.straylight.fmuWrapper.voNative.MessageType;
@@ -68,7 +70,7 @@ public class FMUcontroller extends AbstractController {
 	private Path pathToTempFolder_;
 	private Path pathToWorkingFMU_;
 	private boolean concurrency_ = true;
-	private File fmuFile_;
+//	private File fmuFile_;
 	
 	public FMUcontroller() {
 		super(null);
@@ -371,12 +373,17 @@ public class FMUcontroller extends AbstractController {
 			
 			options.put(Library.OPTION_TYPE_MAPPER, mp);
 			
+
+			
+			
 			jnaFMUWrapper_ = (JNAfmuWrapper) Native.loadLibrary("FMUwrapper",
 					JNAfmuWrapper.class, options);
 			
 			
 			jnaFMUWrapper_.connect(messageCallbackFunc_, resultCallbackFunc_,
 					stateChangeCallbackFunc_);
+			
+			return;
 			
 		};
 		
@@ -631,26 +638,53 @@ public class FMUcontroller extends AbstractController {
 	}
 	
 	
-	public void setInitialState(ScalarValueCollection collection_) {
+	public void setInitialState(InitialState initialState) {
 		
-		ScalarValueRealStruct[]  ary = collection_.getRealStructAry();
-		//int len = ary.length;
+		ConfigStruct configStruct = initialState.getConfigStruct();
 		
-		ScalarValueRealStruct sv = ary[0];
+		if (configStruct != null) {
+			jnaFMUWrapper_.setConfig(configStruct);
+		}
+
+		//
+
+		SerializableVector<StringPrimitive> outputVarList = initialState.getOutputVarList();
 		
-		DefaultExperimentStruct.ByReference defaultExperimentStruct = new  DefaultExperimentStruct.ByReference();
-		 
-		defaultExperimentStruct.startTime = sv.value;
-		defaultExperimentStruct.stopTime = sv.value + 172800;
-		defaultExperimentStruct.tolerance = 0;
 		
+		if (null != outputVarList) {
+			int len = outputVarList.size();
+			
+			String[] outputVariableNamesAry = new String[len];
+			
+			for (int i = 0; i < len; i++) {
+				StringPrimitive stringPrimitive = outputVarList.get(i);
+				outputVariableNamesAry[i] = stringPrimitive.getValue();
+			}
 		
-		ConfigStruct configStruct = new ConfigStruct();
-		configStruct.stepDelta = 300;
-		configStruct.defaultExperimentStruct = defaultExperimentStruct;
+			jnaFMUWrapper_.setOutputVariableNames(outputVariableNamesAry, len);
+		}
 		
 
-		jnaFMUWrapper_.setConfig(configStruct);
+		
+		SerializableVector<StringPrimitive> inputVarList = initialState.getInputVarList();
+		if (null != inputVarList) {
+			
+			int len1 = inputVarList.size();
+			
+			String[] inputVariableNamesAry = new String[len1];
+			for (int j = 0; j < len1; j++) {
+				StringPrimitive stringPrimitive = inputVarList.get(j);
+				inputVariableNamesAry[j] = stringPrimitive.getValue();
+			}
+			
+			jnaFMUWrapper_.setInputVariableNames(inputVariableNamesAry, len1);
+		}
+		
+
+
+		
+		return;
+		
 	}
 
 
@@ -681,7 +715,7 @@ public class FMUcontroller extends AbstractController {
 	
 	public void setFmuFile(File fmuFile) {
 		
-		fmuFile_ = fmuFile;
+//		fmuFile_ = fmuFile;
 		
 		FMUwrapperConfig.fmuFolderAbsolutePathOverride = fmuFile;
 		

@@ -1,5 +1,8 @@
 package com.sri.straylight.fmuWrapper.voNative;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Structure;
 
 // TODO: Auto-generated Javadoc
@@ -175,6 +178,13 @@ public class ScalarVariableCollectionStruct extends Structure {
 			return null;
 		}
 		
+	}
+	
+	
+	
+	@Override
+	protected List<String> getFieldOrder() {
+	    return Arrays.asList(new String[] { "realValue", "realSize", "booleanValue", "booleanSize", "integerValue", "integerSize", "enumerationValue", "enumerationSize", "stringValue", "stringSize"});
 	}
 	
 	

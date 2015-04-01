@@ -4,6 +4,8 @@ package com.sri.straylight.fmuWrapper.voNative;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
@@ -75,5 +77,13 @@ public class ScalarValueRealStruct extends Structure implements Iserializable {
 	public void setSerializeType(boolean serializeType) {
 		serializeType_ = serializeType;
 	}
+
+	
+	@Override
+	protected List<String> getFieldOrder() {
+	    return Arrays.asList(new String[] { "idx", "value"});
+	}
+	
+	
 	
 }

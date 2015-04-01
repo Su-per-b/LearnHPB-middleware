@@ -41,13 +41,13 @@
     <ClCompile Include="MainControllerT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="JNAfunctionsT.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="JNAdataTypesT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JNAfunctionsT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

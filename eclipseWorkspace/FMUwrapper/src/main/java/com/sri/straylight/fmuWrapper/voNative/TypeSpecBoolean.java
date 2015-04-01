@@ -1,6 +1,9 @@
 package com.sri.straylight.fmuWrapper.voNative;
 
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Structure;
 
 // TODO: Auto-generated Javadoc
@@ -21,5 +24,12 @@ public class TypeSpecBoolean extends Structure {
 	public int fixedValueStatus;
 
 	public String declaredType;
+	
+
+	@Override
+	protected List<String> getFieldOrder() {
+	    return Arrays.asList(new String[] { "start", "fixed", "startValueStatus", "fixedValueStatus", "declaredType"});
+	}
+	
 	
 }

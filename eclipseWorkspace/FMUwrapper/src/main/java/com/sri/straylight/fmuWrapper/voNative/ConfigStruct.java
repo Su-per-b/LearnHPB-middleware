@@ -1,5 +1,8 @@
 package com.sri.straylight.fmuWrapper.voNative;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.sri.straylight.fmuWrapper.serialization.Iserializable;
@@ -58,5 +61,11 @@ public class ConfigStruct
 	public void setSerializeType(boolean serializeType) {
 		serializeType_ = serializeType;
 	}
+	
+	@Override
+	protected List<String> getFieldOrder() {
+	    return Arrays.asList(new String[] { "defaultExperimentStruct", "stepDelta" });
+	}
 
+	
 }

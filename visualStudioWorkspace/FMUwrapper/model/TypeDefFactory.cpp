@@ -5,6 +5,7 @@
  *******************************************************/
 #include "TypeDefFactory.h"
 
+
 namespace Straylight
 {
 	/*******************************************************//**
@@ -21,154 +22,115 @@ namespace Straylight
 	{
 	}
 
-	/*******************************************************//**
-	 * Makes a real.
-	 *
-	 * @param [in,out]	type	If non-null, the type.
-	 *
-	 * @return	null if it fails, else.
-	 *******************************************************/
-	TypeDefinitionReal* TypeDefFactory::makeReal(Type* type) {
+
+	TypeDefinitionReal* TypeDefFactory::makeReal(Type* type, int idx) {
+
 		TypeDefinitionReal* typeDefinitionReal = new TypeDefinitionReal();
 
-		typeDefinitionReal->name = getName( type );
+		typeDefinitionReal->idx = idx;
+		typeDefinitionReal->name = Utils::getNameAsStringValue(type);
 
-		ValueStatus startValueStatus;
-		typeDefinitionReal->start = getElementAttributeReal(type->typeSpec, &startValueStatus, att_start);
-		typeDefinitionReal->startValueStatus = startValueStatus;
+		typeDefinitionReal->unit = Utils::makeStringValueFromAttribute(type->typeSpec, att_unit);
+		typeDefinitionReal->quantity = Utils::makeStringValueFromAttribute(type->typeSpec, att_quantity);
+		typeDefinitionReal->displayUnit = Utils::makeStringValueFromAttribute(type->typeSpec, att_displayUnit);
 
-		ValueStatus nominalValueStatus;
-		typeDefinitionReal->nominal = getElementAttributeReal(type->typeSpec,&nominalValueStatus, att_nominal);
-		typeDefinitionReal->nominalValueStatus = nominalValueStatus;
-
-		ValueStatus minValueStatus;
-		typeDefinitionReal->min = getElementAttributeReal(type->typeSpec,&minValueStatus, att_min);
-		typeDefinitionReal->minValueStatus = minValueStatus;
-
-		ValueStatus maxValueStatus;
-		typeDefinitionReal->max = getElementAttributeReal(type->typeSpec,&maxValueStatus, att_max);
-		typeDefinitionReal->maxValueStatus = maxValueStatus;
-
-		ValueStatus quantityValueStatus;
-		typeDefinitionReal->quantity = getElementAttributeString(type->typeSpec, &quantityValueStatus, att_quantity);
-		typeDefinitionReal->quantityValueStatus = quantityValueStatus;
-
-		ValueStatus unitValueStatus;
-		typeDefinitionReal->unit = getElementAttributeString(type->typeSpec, &unitValueStatus, att_unit);
-		typeDefinitionReal->unitValueStatus = unitValueStatus;
-
-
-		//ValueStatus declaredTypeValueStatus;
-		//typeDefinitionReal->declaredType = getElementAttributeReal(type->typeSpec, &declaredTypeValueStatus, att_declaredType);
-		//typeDefinitionReal->declaredTypeValueStatus = declaredTypeStatus;
-
-
-		
+		typeDefinitionReal->start = Utils::makeRealValueFromAttribute(type->typeSpec, att_start);
+		typeDefinitionReal->nominal = Utils::makeRealValueFromAttribute(type->typeSpec, att_nominal);
+		typeDefinitionReal->min = Utils::makeRealValueFromAttribute(type->typeSpec, att_min);
+		typeDefinitionReal->max = Utils::makeRealValueFromAttribute(type->typeSpec, att_max);
 
 		return typeDefinitionReal;
 	}
 
-	/*******************************************************//**
-	 * Makes a boolean.
-	 *
-	 * @param [in,out]	type	If non-null, the type.
-	 *
-	 * @return	null if it fails, else.
-	 *******************************************************/
-	TypeDefinitionBoolean* TypeDefFactory::makeBoolean(Type* type) {
-		TypeDefinitionBoolean * typeDefinitionBoolean = new TypeDefinitionBoolean();
 
-		ValueStatus unitValueStatus;
-		typeDefinitionBoolean->unit = getElementAttributeString(type->typeSpec, &unitValueStatus, att_unit);
-		typeDefinitionBoolean->name = getName( type );
 
-		ValueStatus startValueStatus;
-		typeDefinitionBoolean->start = getElementAttributeBoolean(type->typeSpec, &startValueStatus,att_start);
-		typeDefinitionBoolean->startValueStatus = startValueStatus;
+	TypeDefinitionInteger* TypeDefFactory::makeInteger(Type* type, int idx) {
 
-		ValueStatus fixedValueStatus;
-		typeDefinitionBoolean->fixed = getElementAttributeBoolean(type->typeSpec, &fixedValueStatus,att_fixed);
-		typeDefinitionBoolean->fixedValueStatus = fixedValueStatus;
-
-		return typeDefinitionBoolean;
-	}
-
-	/*******************************************************//**
-	 * Makes an integer.
-	 *
-	 * @param [in,out]	type	If non-null, the type.
-	 *
-	 * @return	null if it fails, else.
-	 *******************************************************/
-	TypeDefinitionInteger* TypeDefFactory::makeInteger(Type* type) {
 		TypeDefinitionInteger* typeDefinitionInteger = new TypeDefinitionInteger();
 
-		ValueStatus unitValueStatus;
-		typeDefinitionInteger->unit = getElementAttributeString(type->typeSpec, &unitValueStatus, att_unit);
-		typeDefinitionInteger->name = getName( type );
+		typeDefinitionInteger->idx = idx;
+		typeDefinitionInteger->name = Utils::getNameAsStringValue(type);
 
-		ValueStatus startValueStatus;
-		typeDefinitionInteger->start = getElementAttributeInteger(type->typeSpec, &startValueStatus, att_start);
-		typeDefinitionInteger->startValueStatus = startValueStatus;
+		typeDefinitionInteger->unit = Utils::makeStringValueFromAttribute(type->typeSpec, att_unit);
+		typeDefinitionInteger->quantity = Utils::makeStringValueFromAttribute(type->typeSpec, att_quantity);
+		typeDefinitionInteger->displayUnit = Utils::makeStringValueFromAttribute(type->typeSpec, att_displayUnit);
 
-		ValueStatus nominalValueStatus;
-		typeDefinitionInteger->nominal = getElementAttributeInteger(type->typeSpec,&nominalValueStatus, att_nominal);
-		typeDefinitionInteger->nominalValueStatus = nominalValueStatus;
+		typeDefinitionInteger->start = Utils::makeIntegerValueFromAttribute(type->typeSpec, att_start);
+		typeDefinitionInteger->nominal = Utils::makeIntegerValueFromAttribute(type->typeSpec, att_nominal);
+		typeDefinitionInteger->min = Utils::makeIntegerValueFromAttribute(type->typeSpec, att_min);
+		typeDefinitionInteger->max = Utils::makeIntegerValueFromAttribute(type->typeSpec, att_max);
 
-		ValueStatus minValueStatus;
-		typeDefinitionInteger->min = getElementAttributeInteger(type->typeSpec,&minValueStatus, att_min);
-		typeDefinitionInteger->minValueStatus = minValueStatus;
-
-		ValueStatus maxValueStatus;
-		typeDefinitionInteger->max = getElementAttributeInteger(type->typeSpec,&maxValueStatus, att_max);
-		typeDefinitionInteger->maxValueStatus = maxValueStatus;
 
 		return typeDefinitionInteger;
 	}
 
-	/*******************************************************//**
-	 * Makes an enumeration.
-	 *
-	 * @param [in,out]	type	If non-null, the type.
-	 *
-	 * @return	null if it fails, else.
-	 *******************************************************/
-	TypeDefinitionEnumeration* TypeDefFactory::makeEnumeration(Type* type) {
+	TypeDefinitionString* TypeDefFactory::makeString(Type* type, int idx) {
+
+		TypeDefinitionString* typeDefinitionString = new TypeDefinitionString();
+
+		typeDefinitionString->idx = idx;
+		typeDefinitionString->name = Utils::getNameAsStringValue(type);
+
+		typeDefinitionString->unit = Utils::makeStringValueFromAttribute(type->typeSpec, att_unit);
+		typeDefinitionString->quantity = Utils::makeStringValueFromAttribute(type->typeSpec, att_quantity);
+		typeDefinitionString->displayUnit = Utils::makeStringValueFromAttribute(type->typeSpec, att_displayUnit);
+
+		return typeDefinitionString;
+	}
+
+
+
+	TypeDefinitionBoolean* TypeDefFactory::makeBoolean(Type* type, int idx) {
+		TypeDefinitionBoolean * typeDefinitionBoolean = new TypeDefinitionBoolean();
+
+		typeDefinitionBoolean->idx = idx;
+		typeDefinitionBoolean->name = Utils::getNameAsStringValue(type);
+
+		typeDefinitionBoolean->unit = Utils::makeStringValueFromAttribute(type->typeSpec, att_unit);
+		typeDefinitionBoolean->quantity = Utils::makeStringValueFromAttribute(type->typeSpec, att_quantity);
+		typeDefinitionBoolean->displayUnit = Utils::makeStringValueFromAttribute(type->typeSpec, att_displayUnit);
+
+		typeDefinitionBoolean->start = Utils::makeBooleanValueFromAttribute(type->typeSpec, att_start);
+		typeDefinitionBoolean->fixed = Utils::makeBooleanValueFromAttribute(type->typeSpec, att_fixed);
+
+		return typeDefinitionBoolean;
+	}
+
+
+
+
+
+	TypeDefinitionEnumeration* TypeDefFactory::makeEnumeration(Type* type, int idx) {
+
 		TypeDefinitionEnumeration* typeDefinitionEnumeration = new TypeDefinitionEnumeration();
 
-		typeDefinitionEnumeration->name = getName( type );
+		typeDefinitionEnumeration->idx = idx;
+		typeDefinitionEnumeration->name = Utils::getNameAsStringValue(type);
 
-		ValueStatus minValueStatus;
-		typeDefinitionEnumeration->min = getElementAttributeInteger(type->typeSpec,&minValueStatus, att_min);
-		typeDefinitionEnumeration->minValueStatus = minValueStatus;
+		typeDefinitionEnumeration->unit = Utils::makeStringValueFromAttribute(type->typeSpec, att_unit);
+		typeDefinitionEnumeration->quantity = Utils::makeStringValueFromAttribute(type->typeSpec, att_quantity);
+		typeDefinitionEnumeration->displayUnit = Utils::makeStringValueFromAttribute(type->typeSpec, att_displayUnit);
 
-		ValueStatus maxValueStatus;
-		typeDefinitionEnumeration->max = getElementAttributeInteger(type->typeSpec,&maxValueStatus, att_max);
-		typeDefinitionEnumeration->maxValueStatus = maxValueStatus;
+		typeDefinitionEnumeration->start = Utils::makeIntegerValueFromAttribute(type->typeSpec, att_start);
+		typeDefinitionEnumeration->min = Utils::makeIntegerValueFromAttribute(type->typeSpec, att_min);
+		typeDefinitionEnumeration->max = Utils::makeIntegerValueFromAttribute(type->typeSpec, att_max);
 
 		ListElement* listElement = (ListElement*)type->typeSpec;
-		assert (typeDefinitionEnumeration->min == 1);
+		assert (typeDefinitionEnumeration->min.value == 1);
 
 		int length;
 
 		EnumerationItem * enumerationItemArray = extractItemArray(listElement,  &length);
 
-		typeDefinitionEnumeration->itemArray = enumerationItemArray;
+		//typeDefinitionEnumeration->itemArray = enumerationItemArray;
 		typeDefinitionEnumeration->itemArrayLength = length;
 
-		assert (typeDefinitionEnumeration->max == length);
+		assert(typeDefinitionEnumeration->max.value == length);
 
 		return typeDefinitionEnumeration;
 	}
 
-	/*******************************************************//**
-	 * Extracts the item array.
-	 *
-	 * @param [in,out]	listElement	If non-null, the list element.
-	 * @param [in,out]	length	   	If non-null, the length.
-	 *
-	 * @return	null if it fails, else the extracted item array.
-	 *******************************************************/
+
 	EnumerationItem * TypeDefFactory::extractItemArray(ListElement* listElement, int * length) {
 		Element** listArray = listElement->list;
 
@@ -203,20 +165,8 @@ namespace Straylight
 		return enumerationItemArray;
 	}
 
-	/*******************************************************//**
-	 * Makes a string.
-	 *
-	 * @param [in,out]	type	If non-null, the type.
-	 *
-	 * @return	null if it fails, else.
-	 *******************************************************/
-	TypeDefinitionString* TypeDefFactory::makeString(Type* type) {
-		TypeDefinitionString* typeDefinitionString = new TypeDefinitionString();
 
-		ValueStatus unitValueStatus;
-		typeDefinitionString->unit = getElementAttributeString(type->typeSpec, &unitValueStatus, att_unit);
-		typeDefinitionString->name = getName( type );
 
-		return typeDefinitionString;
-	}
+
+
 }

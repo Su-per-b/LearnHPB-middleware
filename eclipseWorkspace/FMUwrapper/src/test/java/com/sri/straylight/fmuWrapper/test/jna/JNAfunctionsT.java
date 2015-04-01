@@ -223,24 +223,25 @@ public class JNAfunctionsT {
 	
 	
 	
-	@Test
-	public void T06_UnitDefinitions() {
-		
-	
-
-		
-		
-	}
-	
-
-	@Test
-	public void T07_ScalarVariables() {
-		
-	
-
-		
-		
-	}
+//	@Test
+//	public void T06_UnitDefinitions() {
+//		T03_XmlParse();
+//		
+//		BaseUnitStruct   baseUnitStructAry = jnaFMUWrapper_.getUnitDefinitions();
+//		DisplayUnitDefinitionStruct
+//		
+//		
+//	}
+//	
+//
+//	@Test
+//	public void T07_ScalarVariables() {
+//		
+//	
+//
+//		
+//		
+//	}
 	
 	
 	

@@ -99,7 +99,7 @@ private void registerSimulationListeners_() {
 					public void handleEvent(SimStateNativeNotify event) {
 						
 						
-						SimStateNative simStateNative = event.getPayload();
+//						SimStateNative simStateNative = event.getPayload();
 						
 						return;
 						

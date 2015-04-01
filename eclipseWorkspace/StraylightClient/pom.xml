@@ -9,7 +9,7 @@
 	<parent>
 		<artifactId>StraylightParent</artifactId>
 		<groupId>com.sri</groupId>
-		<version>0.7.0</version>
+		<version>0.8.0</version>
 		<relativePath>../StraylightParent/pom.xml</relativePath>
 	</parent>
 
@@ -27,7 +27,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.4</version>
+				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
@@ -38,7 +38,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.12.4</version>
+				<version>${maven-surefire-plugin.version}</version>
 			</plugin>
 			
 

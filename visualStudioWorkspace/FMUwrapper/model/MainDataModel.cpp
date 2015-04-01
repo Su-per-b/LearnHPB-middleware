@@ -237,6 +237,20 @@ namespace Straylight
 	}
 
 
+	void MainDataModel::setOutputVariableNames(StringMap * outputNamesStringMap) {
+
+		scalarVariableDataModel_->setOutputVariableNames(outputNamesStringMap);
+
+	}
+
+
+	void MainDataModel::setInputVariableNames(StringMap * inputNamesStringMap) {
+
+		scalarVariableDataModel_->setInputVariableNames(inputNamesStringMap);
+
+	}
+
+	
 
 	FMImodelAttributesStruct * MainDataModel::getFMImodelAttributesStruct() {
 
@@ -269,8 +283,6 @@ namespace Straylight
 		return scalarVariableRealStruct;
 
 	}
-
-
 
 
 

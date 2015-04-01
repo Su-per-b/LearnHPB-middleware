@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>StraylightParent</artifactId>
 		<groupId>com.sri</groupId>
-		<version>0.7.0</version>
+		<version>0.8.0</version>
 		<relativePath>../StraylightParent/pom.xml</relativePath>
 	</parent>
 
@@ -38,71 +38,67 @@
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>jsr250-api</artifactId>
-			<version>1.0</version>
+			<version>${jsr250-api.version}</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>taglibs</groupId>
 			<artifactId>standard</artifactId>
-			<version>1.1.2</version>
+			<version>${standard.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.eclipse.jetty.orbit</groupId>
 			<artifactId>org.apache.taglibs.standard.glassfish</artifactId>
-			<version>1.2.0.v201112081803</version>
+			<version>${org.apache.taglibs.standard.glassfish.version}</version>
 		</dependency>
 
-<dependency>
-	<groupId>org.apache.commons</groupId>
-	<artifactId>commons-lang3</artifactId>
-	<version>3.1</version>
-</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+		            
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>${commons-fileupload.version}</version>
+		</dependency>
             
-
-<dependency>
-	<groupId>commons-fileupload</groupId>
-	<artifactId>commons-fileupload</artifactId>
-	<version>1.2.2</version>
-</dependency>
-            
-
-
 		<dependency>
 			<groupId>com.atomikos</groupId>
 			<artifactId>atomikos-util</artifactId>
-			<version>3.7.0</version>
+			<version>${com.atomikos.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.atomikos</groupId>
 			<artifactId>transactions-api</artifactId>
-			<version>3.7.0</version>
+			<version>${com.atomikos.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.atomikos</groupId>
 			<artifactId>transactions</artifactId>
-			<version>3.7.0</version>
+			<version>${com.atomikos.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.atomikos</groupId>
 			<artifactId>transactions-jdbc</artifactId>
-			<version>3.7.0</version>
+			<version>${com.atomikos.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.atomikos</groupId>
 			<artifactId>transactions-jta</artifactId>
-			<version>3.7.0</version>
+			<version>${com.atomikos.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>javax.el</groupId>
 			<artifactId>el-api</artifactId>
-			<version>2.2</version>
+			<version>${el-api.version}</version>
 		</dependency>
 
 
@@ -115,12 +111,10 @@
 	<build>
 
 		<plugins>
-
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.2.1</version>
-
+				<version>${exec-maven-plugin.version}</version>
 				<executions>
 					<execution>
 						<goals>
@@ -134,7 +128,6 @@
 					<mainClass>org.eclipse.jetty.start.Main</mainClass>
 				</configuration>
 			</plugin>
-
 		</plugins>
 		
 

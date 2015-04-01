@@ -16,6 +16,7 @@ import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.serialization.Iserializable;
 import com.sri.straylight.fmuWrapper.serialization.JsonController;
 import com.sri.straylight.fmuWrapper.util.WorkerThreadAbstract;
+import com.sri.straylight.fmuWrapper.voManaged.InitialState;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueResults;
 import com.sri.straylight.fmuWrapper.voManaged.XMLparsedInfo;
@@ -65,17 +66,8 @@ public class ConnectionBundle extends AbstractController {
 
 		webSocketConnectionController_.init();
 		
-		
 		fmuController_ = new FMUcontroller(this);
 		fmuController_.setSessionID(sessionID_);
-		
-		
-		//ConfigStruct configStruct = new ConfigStruct();
-		
-				
-		//fmuController_.setConfig(configStruct);
-		
-		
 		
 		webSocketConnectionController_.setSessionID(sessionID_);
 		
@@ -84,11 +76,7 @@ public class ConnectionBundle extends AbstractController {
 		registerSimulationListeners_();
 		registerSocketListeners_();
 
-		
 		webSocketConnectionController_.processQuedItem();
-		
-		//SimStateNativeNotify event = new SimStateNativeNotify(this, SimStateNative.simStateNative_1_connect_completed);
-	//	webSocketConnectionController_.send(event);
 
 	}
 
@@ -249,10 +237,9 @@ public class ConnectionBundle extends AbstractController {
 				    	}  else if (deserializedEvent instanceof InitialStateRequest) {
 				    		
 				    		InitialStateRequest newEvent = (InitialStateRequest) deserializedEvent;
-				    		ScalarValueCollection collection = newEvent.getPayload();
+				    		InitialState initialState = newEvent.getPayload();
 				    		
-
-				    		threadedFMUcontroller_.setInitialState(collection);
+				    		threadedFMUcontroller_.setInitialState(initialState);
 
 				    	} else {
 				    		
@@ -272,16 +259,7 @@ public class ConnectionBundle extends AbstractController {
 		
 	}
 
-	/*
-	public int getIdx_() {
-		return idx_;
-	}
 
-	public void setIdx_(int idx_) {
-		this.idx_ = idx_;
-	}
-*/
-	
 	public void notifyClient() {
 
 		SimStateNativeNotify event = 

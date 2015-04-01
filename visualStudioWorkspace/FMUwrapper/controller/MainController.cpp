@@ -827,6 +827,20 @@ namespace Straylight
 	}
 
 
+	void MainController::setOutputVariableNames(StringMap * outputNamesStringMap) {
+
+		mainDataModel_->setOutputVariableNames(outputNamesStringMap);
+
+	}
+	
+	void MainController::setInputVariableNames(StringMap * inputNamesStringMap) {
+
+		mainDataModel_->setInputVariableNames(inputNamesStringMap);
+
+	}
+
+
+
 	ScalarValue * MainController::getOneScalarValue(int idx) {
 
 		ScalarValue * scalarValue = mainDataModel_->getOneScalarValue(idx);
@@ -852,7 +866,11 @@ namespace Straylight
 	}
 
 
+	TypeDefinitions * MainController::getTypeDefinitions() {
 
+		return mainDataModel_->getTypeDefinitions();
+
+	}
 
 
 

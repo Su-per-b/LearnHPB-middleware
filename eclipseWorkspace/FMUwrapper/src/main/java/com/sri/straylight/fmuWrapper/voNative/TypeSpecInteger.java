@@ -1,5 +1,8 @@
 package com.sri.straylight.fmuWrapper.voNative;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Structure;
 
 // TODO: Auto-generated Javadoc
@@ -28,4 +31,12 @@ public class TypeSpecInteger extends Structure {
 
 	/** The declared type. */
 	public String declaredType;
+	
+	
+	@Override
+	protected List<String> getFieldOrder() {
+	    return Arrays.asList(new String[] { "start", "nominal", "min", "max", "fixed", "startValueStatus", "nominalValueStatus", "minValueStatus", "maxValueStatus", "fixedValueStatus", "declaredType"});
+	}
+	
+	
 }

@@ -2,6 +2,9 @@ package com.sri.straylight.fmuWrapper.voNative;
 
 
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Structure;
 import com.sun.jna.ptr.DoubleByReference;
 
@@ -27,5 +30,13 @@ public class ResultOfStepStruct extends Structure {
 	
 	/** The output length. */
 	public int outputLength;
+	
 
+	@Override
+	protected List<String> getFieldOrder() {
+	    return Arrays.asList(new String[] { "time", "input", "output", "outputLength"});
+	}
+	
+	
+	
 }

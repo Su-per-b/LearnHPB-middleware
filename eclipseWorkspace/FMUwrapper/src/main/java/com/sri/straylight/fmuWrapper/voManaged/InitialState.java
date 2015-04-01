@@ -8,7 +8,7 @@ public class InitialState extends JsonSerializable{
 	private ScalarValueCollection parameters_;
 	private ConfigStruct configStruct_;
 	private SerializableVector<StringPrimitive> outputVarList_;
-	
+	private SerializableVector<StringPrimitive> inputVarList_;
 	
 	
 	public InitialState() {
@@ -18,10 +18,12 @@ public class InitialState extends JsonSerializable{
 		
 	  this.parameters_ = parameters;
 	  this.configStruct_ = configStruct;
-	  this.outputVarList_ = outputVarList;
-		  
+	  
+	  this.setOutputVarList(outputVarList);
+  
 	}
 	
+
 	public ScalarValueCollection getParameters() {
 		return parameters_;
 	}
@@ -44,8 +46,16 @@ public class InitialState extends JsonSerializable{
 		return outputVarList_;
 	}
 	
+	public SerializableVector<StringPrimitive> getInputVarList() {
+		return inputVarList_;
+	}
+	
 	public void setOutputVarList(SerializableVector<StringPrimitive> outputVarList) {
 		this.outputVarList_ = outputVarList;
+	}
+	
+	public void setInputVarList(SerializableVector<StringPrimitive> inputVarList) {
+		this.inputVarList_ = inputVarList;
 	}
 	
 	

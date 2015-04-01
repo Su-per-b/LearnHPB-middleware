@@ -1,6 +1,8 @@
 package com.sri.straylight.fmuWrapper.voNative;
 
 import java.text.DecimalFormat;
+import java.util.Arrays;
+import java.util.List;
 
 import com.sun.jna.Structure;
 
@@ -49,6 +51,12 @@ public class ScalarVariableStructBase extends Structure {
 		DecimalFormat threeDec = new DecimalFormat("0.000");
 		String shortString = (threeDec.format(inValue));
 		return shortString;
+	}
+	
+	
+	@Override
+	protected List<String> getFieldOrder() {
+	    return Arrays.asList(new String[] { "name", "idx", "causality", "variability", "description", "valueReference"});
 	}
 	
 }

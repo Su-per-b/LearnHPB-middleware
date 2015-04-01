@@ -5,6 +5,7 @@
  *******************************************************/
 #pragma once
 #include "structs.h"
+#include "Utils.h"
 
 namespace Straylight
 {
@@ -25,7 +26,7 @@ namespace Straylight
 		 *******************************************************/
 		~TypeDefFactory(void);
 
-		static TypeDefinitionReal* makeReal(Type* type);
+		static TypeDefinitionReal* makeReal(Type* type, int idx);
 
 		/*******************************************************//**
 		 * Makes a boolean.
@@ -34,7 +35,7 @@ namespace Straylight
 		 *
 		 * @return	null if it fails, else.
 		 *******************************************************/
-		static TypeDefinitionBoolean* makeBoolean(Type* type);
+		static TypeDefinitionBoolean* makeBoolean(Type* type, int idx);
 
 		/*******************************************************//**
 		 * Makes an integer.
@@ -43,7 +44,7 @@ namespace Straylight
 		 *
 		 * @return	null if it fails, else.
 		 *******************************************************/
-		static TypeDefinitionInteger* makeInteger(Type* type);
+		static TypeDefinitionInteger* makeInteger(Type* type, int idx);
 
 		/*******************************************************//**
 		 * Makes an enumeration.
@@ -52,7 +53,7 @@ namespace Straylight
 		 *
 		 * @return	null if it fails, else.
 		 *******************************************************/
-		static TypeDefinitionEnumeration* makeEnumeration(Type* type);
+		static TypeDefinitionEnumeration* makeEnumeration(Type* type, int idx);
 
 		/*******************************************************//**
 		 * Makes a string.
@@ -61,7 +62,7 @@ namespace Straylight
 		 *
 		 * @return	null if it fails, else.
 		 *******************************************************/
-		static TypeDefinitionString* makeString(Type* type);
+		static TypeDefinitionString* makeString(Type* type, int idx);
 
 	private:
 
@@ -76,9 +77,5 @@ namespace Straylight
 		static EnumerationItem * extractItemArray(ListElement* listElement, int * length);
 	};
 
-/*******************************************************//**
- * Gets or sets the.
- *
- * @value	.
- *******************************************************/
+
 }

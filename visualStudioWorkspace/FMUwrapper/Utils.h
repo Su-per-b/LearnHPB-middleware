@@ -77,5 +77,19 @@ namespace Straylight
 		 * @param	i			  	Zero-based index of the.
 		 *******************************************************/
 		static void intToString(char* buffer, int i);
+
+
+		static RealValue makeRealValueFromAttribute(Element* element, Att attribute);
+
+		static IntegerValue makeIntegerValueFromAttribute(Element* element, Att attribute);
+
+		static StringValue makeStringValueFromAttribute(Element* element, Att attribute);
+
+		static BooleanValue makeBooleanValueFromAttribute(Element* element, Att attribute);
+
+		static StringValue getNameAsStringValue(void* element);
+
+		
+
 	};
 };

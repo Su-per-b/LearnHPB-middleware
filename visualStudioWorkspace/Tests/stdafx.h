@@ -13,5 +13,7 @@
 #include <JNAfunctions.h>
 #include <JNAdataTypes.h>
 #include <Logger.h>
+#include <TypeDefinitions.h>
+
 
 // TODO: reference additional headers your program requires here

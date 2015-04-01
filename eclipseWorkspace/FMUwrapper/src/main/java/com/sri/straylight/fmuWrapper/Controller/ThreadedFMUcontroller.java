@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import com.sri.straylight.fmuWrapper.framework.AbstractController;
 import com.sri.straylight.fmuWrapper.util.WorkerThreadAbstract;
+import com.sri.straylight.fmuWrapper.voManaged.InitialState;
 import com.sri.straylight.fmuWrapper.voManaged.ScalarValueCollection;
 import com.sri.straylight.fmuWrapper.voNative.ConfigStruct;
 import com.sri.straylight.fmuWrapper.voNative.ScalarValueRealStruct;
@@ -73,8 +74,8 @@ public class ThreadedFMUcontroller extends AbstractController {
 		workerSetScalarValueCollection_.execute();
 	}
 	
-	public void setInitialState(ScalarValueCollection collection) {
-		workerSetInitialState_ = new WorkerSetInitialState(collection);
+	public void setInitialState(InitialState initialState) {
+		workerSetInitialState_ = new WorkerSetInitialState(initialState);
 		workerSetInitialState_.execute();
 	}
 
@@ -175,10 +176,10 @@ public class ThreadedFMUcontroller extends AbstractController {
 	
 	protected class WorkerSetInitialState extends WorkerThreadAbstract {
 		
-		private ScalarValueCollection collection_;
+		private InitialState initialState_;
 		
-		WorkerSetInitialState(ScalarValueCollection collection) {
-			collection_ = collection;
+		WorkerSetInitialState(InitialState initialState) {
+			initialState_ = initialState;
 			setSyncObject(FMUcontrollerSync_);
 		}
 		
@@ -186,7 +187,7 @@ public class ThreadedFMUcontroller extends AbstractController {
 		public void doIt_() {
 			setName_("WorkerSetScalarValueCollection");
 			
-			fmuController_.setInitialState(collection_);
+			fmuController_.setInitialState(initialState_);
 		}
 		
 		@Override

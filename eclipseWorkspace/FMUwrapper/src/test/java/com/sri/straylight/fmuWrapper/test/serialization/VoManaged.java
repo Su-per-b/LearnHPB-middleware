@@ -4,10 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Vector;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -47,21 +43,21 @@ public class VoManaged {
 	
 	
 	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
+//	@BeforeClass
+//	public static void setUpBeforeClass() throws Exception {
+//	}
+//
+//	@AfterClass
+//	public static void tearDownAfterClass() throws Exception {
+//	}
+//
+//	@Before
+//	public void setUp() throws Exception {
+//	}
+//
+//	@After
+//	public void tearDown() throws Exception {
+//	}
 
 
 	
@@ -949,9 +945,6 @@ public class VoManaged {
 		ScalarValueReal scalarValueReal_1 = realList_0.get(1);
 		assertEquals(2, scalarValueReal_1.getIdx());
 		assertEquals(3.53, scalarValueReal_1.getValue(), 0.0);
-		
-		
-		
 		
 	}
 	

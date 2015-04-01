@@ -107,9 +107,9 @@ public class MainController extends AbstractController  {
     		Object source = event.getSource();
     		WebSocketConnectionController ws = (WebSocketConnectionController) source;
     		
-    		String sessionID = ws.getSessionID();
+//    		String sessionID = ws.getSessionID();
     		
-			ConnectionBundle hostConenctionBundle = sessionID2ConnectionMap_.get(sessionID);
+//			ConnectionBundle hostConenctionBundle = sessionID2ConnectionMap_.get(sessionID);
     		
 			
 		}
