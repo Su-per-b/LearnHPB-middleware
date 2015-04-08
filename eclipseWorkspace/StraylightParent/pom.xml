@@ -16,6 +16,7 @@
 		<junit.version>4.12</junit.version>
 		<jna.version>4.1.0</jna.version>
 		<jetty.version>8.1.16.v20140903</jetty.version>
+		<jetty9.version>9.2.10.v20150310</jetty9.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-lang3.version>3.3.2</commons-lang3.version>
 		<commons-math.version>2.2</commons-math.version>

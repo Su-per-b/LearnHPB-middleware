@@ -3,10 +3,12 @@
 
 <Configure class="org.eclipse.jetty.webapp.WebAppContext">
   <Set name="contextPath">/</Set>
-  <Set name="war">../PageApp/target/PageApp-0.7.0</Set>
+  <Set name="war">../PageApp/target/PageApp-0.8.0</Set>
   
   <Set name="defaultsDescriptor">
     <SystemProperty name="jetty.home" default="."/>/etc/webdefault.xml
   </Set>
   
 </Configure>
+
+
