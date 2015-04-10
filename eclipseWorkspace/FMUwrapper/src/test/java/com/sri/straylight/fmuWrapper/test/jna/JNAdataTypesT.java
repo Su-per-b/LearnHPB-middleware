@@ -674,6 +674,7 @@ public class JNAdataTypesT {
 	
 	
 	
+	@SuppressWarnings("unused")
 	private class ResultCallback implements ResultCallbackInterface {
 
 		public boolean resultCallback(
@@ -685,6 +686,7 @@ public class JNAdataTypesT {
 	
 	
 	
+	@SuppressWarnings("unused")
 	private class StateChangeCallback implements StateChangeCallbackInterface {
 
 		public boolean stateChangeCallback(SimStateNative simStateNative) {
@@ -697,6 +699,7 @@ public class JNAdataTypesT {
 	
 	
 	
+	@SuppressWarnings("unused")
 	private class MessageCallback implements MessageCallbackInterface {
 
 		public boolean messageCallback(MessageStruct messageStruct) {

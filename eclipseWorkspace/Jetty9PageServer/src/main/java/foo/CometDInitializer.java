@@ -12,7 +12,12 @@ import org.cometd.bayeux.server.BayeuxServer;
 
 public class CometDInitializer extends GenericServlet
 {
-    public void init() throws ServletException
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public void init() throws ServletException
     {
         BayeuxServer bayeux = (BayeuxServer)getServletContext().getAttribute(BayeuxServer.ATTRIBUTE);
         new HelloService(bayeux);

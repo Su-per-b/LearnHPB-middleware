@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.Vector;
 import java.util.concurrent.CyclicBarrier;
 
-import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 import org.junit.After;
 import org.junit.Assert;
@@ -182,7 +181,7 @@ public class FMUcontrollerTests {
 		thread.init(fmuController_);
 		thread.start();
 		
-		assertSimState_(SimStateNative.simStateNative_2_xmlParse_completed);
+		assertSimState_(SimStateNative.simStateNative_0_uninitialized);
 		thread.cleanup();
 		assertSimState_(SimStateNative.simStateNative_0_uninitialized);
 

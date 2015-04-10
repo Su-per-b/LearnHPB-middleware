@@ -35,7 +35,7 @@ public abstract class BaseThread extends Thread {
 	private FMUcontroller fmuController_;
 	
 	/** The main barrier. */
-	private CyclicBarrier mainBarrier_;
+//	private CyclicBarrier mainBarrier_;
 	
 	final protected CyclicBarrier stateChangeBarrier_;
 	

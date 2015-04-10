@@ -105,7 +105,7 @@ public class MainController extends AbstractController  {
 		} else if (1 == idx) {
 			
     		Object source = event.getSource();
-    		WebSocketConnectionController ws = (WebSocketConnectionController) source;
+//    		WebSocketConnectionController ws = (WebSocketConnectionController) source;
     		
 //    		String sessionID = ws.getSessionID();
     		
