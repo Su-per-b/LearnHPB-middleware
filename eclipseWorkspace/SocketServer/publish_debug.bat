@@ -4,10 +4,15 @@ REM change eclipseWorkspace\FMUwrapper\src\main\resources\fmuwrapper-config.xml 
 
 cmd /c mvn package
 
-copy testKeys target\testKeys
+copy straylight.keystore target\straylight.keystore
 cd target
 del SocketServer-*shaded.jar
-jarsigner -keystore testKeys SocketServer-*.jar jdc -storepass jollyroger
+
+
+jarsigner -keystore straylight.keystore SocketServer-*.jar straylightSelfSignedAlias -storepass time57
+jarsigner -verify SocketServer-*.jar
+pause
+
 copy SocketServer-*.jar ..\published\
 
 cd ..\
@@ -15,5 +20,5 @@ copy run.template.txt published\run.bat
 
 cd published
 
-"%JAVA_HOME%\bin\java" -Xss2048 -jar SocketServer-0.5.3.jar
+"%JAVA_HOME%\bin\java" -Xss2048 -jar SocketServer-0.8.0.jar
 pause

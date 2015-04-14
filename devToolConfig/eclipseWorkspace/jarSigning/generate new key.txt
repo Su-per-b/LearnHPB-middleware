@@ -1,0 +1,6 @@
+
+
+
+
+keytool -genkey -keystore straylight.keystore -alias straylightSelfSignedAlias -validity 360 -dname "cn=Raj Dye, ou=Superb, o=su-per-b.org, c=US"
+password	time57
