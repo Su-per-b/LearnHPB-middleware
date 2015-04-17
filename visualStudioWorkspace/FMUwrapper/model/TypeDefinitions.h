@@ -15,7 +15,7 @@ namespace Straylight
 	/*******************************************************//**
 	 * Type def data model.
 	 *******************************************************/
-	class DllApi TypeDefinitions
+	class TypeDefinitions
 	{
 	public:
 		TypeDefinitions();
@@ -30,10 +30,6 @@ namespace Straylight
 
 		TypeDefinitionsStruct * toStruct();
 
-
-	private:
-
-
 		vector<TypeDefinitionReal*> typeDefVectorReal_;
 
 		vector<TypeDefinitionInteger*> typeDefVectorInteger_;
@@ -43,6 +39,11 @@ namespace Straylight
 		vector<TypeDefinitionBoolean*> typeDefVectorBoolean_;
 
 		vector<TypeDefinitionEnumeration*> typeDefVectorEnumeration_;
+
+	private:
+
+
+
 
 
 	};

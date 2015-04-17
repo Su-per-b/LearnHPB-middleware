@@ -149,7 +149,11 @@ namespace Straylight
 	BooleanValue Utils::makeBooleanValueFromAttribute(Element* element, Att attribute) {
 
 		BooleanValue booleanValue;
-		booleanValue.value = getElementAttributeBoolean(element, &booleanValue.status, attribute);
+		char c = getElementAttributeBoolean(element, &booleanValue.status, attribute);
+
+		booleanValue.value = c != 0;
+
+		//booleanValue.value = getElementAttributeBoolean(element, &booleanValue.status, attribute);
 
 		return booleanValue;
 
