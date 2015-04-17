@@ -10,6 +10,9 @@ namespace Microsoft
 		namespace CppUnitTestFramework
 		{
 
+			template<> 
+			static std::wstring ToString<ValueStatus>(const ValueStatus& t)           { RETURN_WIDE_STRING(t); }
+
 			template<>
 			static std::wstring ToString<SimStateNative>(const SimStateNative& val)
 			{

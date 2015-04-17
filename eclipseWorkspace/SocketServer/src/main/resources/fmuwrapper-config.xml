@@ -8,24 +8,25 @@
 	
 	<fmuFolderName>LearnGB_0v4_02_VAVReheat_ClosedLoop_edit3_summer</fmuFolderName>
 
-	<!--<fmuFolderName>LearnGB_0v4_02_VAVReheat_ClosedLoop_VerySimpleScenario</fmuFolderName>-->
-	
-	
 	<parseInternalVariablesFlagStr>false</parseInternalVariablesFlagStr>
 	<parseInternalVariableLimitStr>500</parseInternalVariableLimitStr>
 	<scalarVariablePrecisionStr>5</scalarVariablePrecisionStr>
 	<msPerTimeStepStr>5</msPerTimeStepStr>
 
 
-	<!--For Publishing
+
+	<!--For Publishing	
 	<id>Client-Production</id>
-	<nativeLibFolderRelativePath>\..\FMUwrapper\native_code</nativeLibFolderRelativePath>
-	<unzipFolderRelativePath>\..\FMUwrapper\native_code</unzipFolderRelativePath>
+	<nativeLibFolderRelativePath>.\native_code</nativeLibFolderRelativePath>
+	<unzipFolderRelativePath>.\native_code</unzipFolderRelativePath>
 	<fmuFolderName>fmu</fmuFolderName>
 	
 	<parseInternalVariablesFlagStr>false</parseInternalVariablesFlagStr>
-	<parseInternalVariableLimitStr>0</parseInternalVariableLimitStr>
+	<parseInternalVariableLimitStr>500</parseInternalVariableLimitStr>
 	<scalarVariablePrecisionStr>5</scalarVariablePrecisionStr>
+	<msPerTimeStepStr>5</msPerTimeStepStr>
 	-->
+	
+	<!--	<fmuFolderName>LearnGB_0v4_02_VAVReheat_ClosedLoop_VerySimpleScenario</fmuFolderName>	-->
 	
 </config>
