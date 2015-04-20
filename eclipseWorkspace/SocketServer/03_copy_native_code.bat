@@ -10,6 +10,7 @@ copy /y ..\..\visualStudioWorkspace\bin\Debug\FMUwrapper.dll ..\FMUwrapper\nativ
 xcopy /y /e /v /i ..\..\assets\FMUs\LearnGB_0v4_02_VAVReheat_ClosedLoop_edit2 ..\FMUwrapper\native_code\fmu
 
 xcopy /y /e /v /i ..\FMUwrapper\native_code published\native_code
+xcopy /y /e /v /i ..\FMUwrapper\native_code .\native_code
 pause
 
 

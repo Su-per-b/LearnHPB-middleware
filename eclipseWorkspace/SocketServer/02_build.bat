@@ -1,17 +1,9 @@
 REM change eclipseWorkspace\Client\src\main\resources\fmuwrapper-config.xml to production settings
 REM change eclipseWorkspace\FMUwrapper\src\main\resources\fmuwrapper-config.xml to production settings
  
-rmdir ..\FMUwrapper\native_code /s /q
+cd ..\StraylightParent
+cmd /c mvn clean install
 
-del dependency-reduced-pom.xml
-
-rmdir target /s /q
-rmdir published /s /q
-rmdir ..\FMUwrapper\target /s /q
-
-
-del *.log
-del SocketServer-*.jar
-
+cd ..\SocketServer
 
 pause
