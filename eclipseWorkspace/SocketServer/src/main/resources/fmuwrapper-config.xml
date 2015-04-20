@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <config>
 
-	<!--For Debug		-->
+	<!--For Debug		
 	<id>Client-Debug</id>
 	<nativeLibFolderRelativePath>\..\..\visualStudioWorkspace\bin\Debug</nativeLibFolderRelativePath>
 	<unzipFolderRelativePath>\..\..\assets\FMUs\</unzipFolderRelativePath>
@@ -12,10 +12,10 @@
 	<parseInternalVariableLimitStr>500</parseInternalVariableLimitStr>
 	<scalarVariablePrecisionStr>5</scalarVariablePrecisionStr>
 	<msPerTimeStepStr>5</msPerTimeStepStr>
+-->
 
 
-
-	<!--For Publishing	
+	<!--For Publishing		-->
 	<id>Client-Production</id>
 	<nativeLibFolderRelativePath>.\native_code</nativeLibFolderRelativePath>
 	<unzipFolderRelativePath>.\native_code</unzipFolderRelativePath>
@@ -25,7 +25,7 @@
 	<parseInternalVariableLimitStr>500</parseInternalVariableLimitStr>
 	<scalarVariablePrecisionStr>5</scalarVariablePrecisionStr>
 	<msPerTimeStepStr>5</msPerTimeStepStr>
-	-->
+
 	
 	<!--	<fmuFolderName>LearnGB_0v4_02_VAVReheat_ClosedLoop_VerySimpleScenario</fmuFolderName>	-->
 	

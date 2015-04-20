@@ -48,7 +48,7 @@ public class Banner  {
         System.out.println( aciiArt );
         System.out.println( title + " v" + version );
         System.out.println( "by Raj Dye" );
-        System.out.println( "Copyright (c) 2011 SRI International" );
+        System.out.println( "Copyright (c) 2015 Institute for Sustainable Performance of Buildings (SuPerB)" );
         
 	}
 	
