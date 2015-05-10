@@ -6,7 +6,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.LogFactory;
 import org.bushe.swing.event.EventBus;
+import org.eclipse.jetty.util.TypeUtil;
 import org.eclipse.jetty.websocket.WebSocket;
+import org.eclipse.jetty.websocket.WebSocketConnectionRFC6455;
 
 import com.sri.straylight.fmuWrapper.event.XMLparsedEvent;
 import com.sri.straylight.fmuWrapper.serialization.Iserializable;
@@ -17,9 +19,13 @@ import com.sri.straylight.socketserver.model.WebSocketConnectionState;
 
 
 public class StrayLightWebSocketHandler
-	implements WebSocket.OnTextMessage, WebSocket.OnControl, Iserializable  {
+	implements 	WebSocket.OnTextMessage, 
+				WebSocket.OnControl,
+				Iserializable {
 
 	private static int socketCount_ = 0;
+	
+	boolean _verbose = true;
 	
 	@SuppressWarnings("unused")
 	private int socketID_ = 0;
@@ -35,7 +41,11 @@ public class StrayLightWebSocketHandler
 	
 	private boolean serializeType_ = true;
 	
-	
+    protected FrameConnection _connection;
+    
+    final static byte OP_CLOSE = 0x08;
+    
+    
 	public StrayLightWebSocketHandler(HttpSession httpSession) {
 
 		socketID_ = socketCount_;
@@ -64,7 +74,10 @@ public class StrayLightWebSocketHandler
 	
 
 	
-    //handle connection open
+    /**
+     * Called when a new websocket connection is accepted.
+     * @param connection The Connection object to use to send messages.
+     */
 	public void onOpen(Connection connection) {
 		
 		// A client has opened a connection with us
@@ -74,49 +87,100 @@ public class StrayLightWebSocketHandler
 		
     	System.out.println("StrayLightWebSocketHandler.onOpen() sessionID: " + sessionID_);
     	
+        if (_verbose)
+            System.err.printf("%s#onOpen %s %s\n",this.getClass().getSimpleName(),connection,connection.getProtocol());
+        
 		return;
 	}
 	
+//	@Override
+//	public void onHandshake(FrameConnection connection) {
+//		// TODO Auto-generated method stub
+//		
+//        if (_verbose)
+//            System.err.printf("%s#onHandshake %s %s\n",this.getClass().getSimpleName(),connection,connection.getClass().getSimpleName());
+//		
+//        _connection = connection;
+//	
+//	}
 	
-
+	
+    /**
+     * Called when any websocket frame is received.
+     * @param flags
+     * @param opcode
+     * @param data
+     * @param offset
+     * @param length
+     * @return true if this call has completely handled the frame and no further processing is needed (including aggregation and/or message delivery)
+     */
+//    public boolean onFrame(byte flags, byte opcode, byte[] data, int offset, int length)
+//    {            
+//        if (_verbose)
+//            System.err.printf("%s#onFrame %s|%s %s\n",this.getClass().getSimpleName(),TypeUtil.toHexString(flags),TypeUtil.toHexString(opcode),TypeUtil.toHexString(data,offset,length));
+//        return false;
+//    }
+    
 
 	//handle incoming message
-	public void onMessage(String str) {
+	public void onMessage(String data) {
 		
 		if (null == parentController_) {
-			messageQueItem_ = str;
+			messageQueItem_ = data;
 		} else {
-			parentController_.onMessageRecieved(str);
+			parentController_.onMessageRecieved(data);
 		}
 		
+        if (_verbose)
+            System.err.printf("%s#onMessage     %s\n",this.getClass().getSimpleName(),data);
+        
 	}
 	
+    public void onMessage(byte[] data, int offset, int length)
+    {
+        if (_verbose)
+            System.err.printf("%s#onMessage     %s\n",this.getClass().getSimpleName(),TypeUtil.toHexString(data,offset,length));
+    }
 	
 	
-	//handle control code
+	
+	
+    /** 
+     * Called when a control message has been received.
+     * @param controlCode
+     * @param data
+     * @param offset
+     * @param length
+     * @return true if this call has completely handled the control message and no further processing is needed.
+     */
 	public boolean onControl(byte controlCode,byte[] data, int offset, int length) {
 		
 		System.out.println("StrayLightWebSocketHandler.onControl() controlCode: " + controlCode);
 		
-		setState(WebSocketConnectionState.closeRequested);
 		
-		if (8 == controlCode) {
-			
-			
+		if ( OP_CLOSE == controlCode) {
+			setState(WebSocketConnectionState.closeRequested);	
+		} else {
+			System.err.println("StrayLightWebSocketHandler.onControl() controlCode: " + controlCode);
 		}
 		
-		
-		return true;
+        if (_verbose)
+            System.err.printf("%s#onControl  %s %s\n",this.getClass().getSimpleName(),TypeUtil.toHexString(controlCode),TypeUtil.toHexString(data,offset,length));
+        
+		return false;
 	}
 	
 	
 	//handle connection closc 
 	
-	public void onClose(int closeCode, String message) {
+	public void onClose(int code, String message) {
 		
 
 		setState(WebSocketConnectionState.closed);
     	System.out.println("StrayLightWebSocketHandler.onClose() sessionID: " + sessionID_);
+    	
+        if (_verbose)
+            System.err.printf("%s#onDisonnect %d %s\n",this.getClass().getSimpleName(),code,message);
 	}
 	
 	
@@ -188,6 +252,101 @@ public class StrayLightWebSocketHandler
 	public void setSerializeType(boolean serializeType) {
 		serializeType_ = serializeType;
 	}
+
+//
+//	@Override
+//	public String getProtocol() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//
+//	@Override
+//	public void sendMessage(String data) throws IOException {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void sendMessage(byte[] data, int offset, int length)
+//			throws IOException {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void disconnect() {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void close() {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void close(int closeCode, String message) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public boolean isOpen() {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//
+//
+//	@Override
+//	public void setMaxIdleTime(int ms) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void setMaxTextMessageSize(int size) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void setMaxBinaryMessageSize(int size) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public int getMaxIdleTime() {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
+//
+//
+//	@Override
+//	public int getMaxTextMessageSize() {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
+//
+//
+//	@Override
+//	public int getMaxBinaryMessageSize() {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
+//
+
+
 	
 	
 }

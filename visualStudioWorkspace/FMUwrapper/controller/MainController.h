@@ -15,6 +15,8 @@
 #include "Config.h"
 #include "MainDataModel.h"
 #include "TypeDefinitions.h"
+#include <chrono>
+#include <thread>
 
 using namespace std;
 
@@ -37,7 +39,7 @@ namespace Straylight
 		/*******************************************************//**
 		 * Full pathname of the XML file.
 		 *******************************************************/
-		const char* xmlFilePath_;
+		char* xmlFilePath_;
 
 		/*******************************************************//**
 		 * Full pathname of the DLL file.
@@ -94,6 +96,10 @@ namespace Straylight
 		void (*resultCallbackPtr_)(ScalarValueResultsStruct *);
 
         void (*resultClassCallbackPtr_)(ScalarValueResults *);
+
+
+		void releaseFMU_();
+
 
 
 		/*******************************************************//**

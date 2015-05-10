@@ -81,7 +81,6 @@ public class MainController extends AbstractController  {
 
     		if (hostSessionID.equals ("last")) {
     			
-//    			int size = sessionIdList_.size();
     			hostSessionID = this.getLastSessionID(attachSessionID);
 
     		}
@@ -146,7 +145,7 @@ public class MainController extends AbstractController  {
     
 	
 	@EventSubscriber(eventClass=WebSocketConnectionStateEvent.class)
-    public void onWebSocketConnectionNotify(WebSocketConnectionStateEvent event) {
+    public void onWebSocketConnectionStateEvent(WebSocketConnectionStateEvent event) {
 		
 		
 		WebSocketConnectionState state = event.getPayload();
@@ -155,7 +154,7 @@ public class MainController extends AbstractController  {
 		String sessionID = socketHandler.getSessionID();
 		//lastSessionID_ = sessionID;
 		
-		sessionIdList_.add(sessionID);
+
 		
 		//check for existing connection bundle
 		
@@ -170,9 +169,7 @@ public class MainController extends AbstractController  {
 				
 			}  else if (state == WebSocketConnectionState.closed) {
 				
-				
 
-				
 				workerTearDownBundle_ = new WorkerTearDownBundle(this, socketHandler);
 				workerTearDownBundle_.execute();
 				 
@@ -186,11 +183,10 @@ public class MainController extends AbstractController  {
 			
 		} else {
 			
-			
+			//no record exists with of this session ID, must be new.
 			if (state == WebSocketConnectionState.opened_new) {
 				
-				//int idxNew = connectionBundleList_.size();
-				//socketHandler.setIdx(idxNew);
+				sessionIdList_.add(sessionID);
 				
 				workerMakeBundle_ = new WorkerMakeBundle(this, socketHandler);
 				workerMakeBundle_.execute();
@@ -235,7 +231,6 @@ public class MainController extends AbstractController  {
 			ConnectionBundle connectionBundle = parent_.unregisterConnectionBundle(sessionID);
 			connectionBundle.forceCleanup();
 
-			sessionID2ConnectionMap_.remove(sessionID);
 		}
 
 

@@ -191,6 +191,8 @@ public interface JNAfmuWrapper extends Library {
 	
 	public void setInputVariableNames(String[] inputVariableNamesAry, int length);
 	
+	public String getVersion();
+	
 	
 	
 }

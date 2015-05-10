@@ -5,6 +5,8 @@
  *******************************************************/
 #include "JNAfunctions.h"
 
+#define DLL_VERSION  "0.8.11"
+
 
 /*******************************************************//**
  * Message callback pointer.
@@ -99,8 +101,8 @@ int forceCleanup()
 	}
 	else {
 		mainController->forceCleanup();
-		delete mainController;
-		mainController = NULL;
+		//delete mainController;
+		//mainController = NULL;
 		return 0;
 	}
 
@@ -297,3 +299,15 @@ TypeDefinitionsStruct * getTypeDefinitions() {
 	return typeDefinitions->toStruct();
 
 }
+
+
+
+char * getVersion() {
+
+	return DLL_VERSION;
+
+}
+
+
+
+

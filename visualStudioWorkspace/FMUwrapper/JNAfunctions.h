@@ -60,3 +60,4 @@ extern "C" DllApi  void setOutputVariableNames(const char ** outputVariableNames
 
 extern "C" DllApi  void setInputVariableNames(const char ** inputVariableNamesAry, int length);
 
+extern "C" DllApi  char * getVersion();

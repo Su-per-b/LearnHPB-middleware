@@ -69,30 +69,8 @@ namespace Straylight
 			resultOfStep_ = NULL;
 		}
 
-		
+		releaseFMU_();
 
-		// Release FMU
-		if(NULL != fmu_) {
-
-			if (NULL != fmiComponent_) {
-				fmu_->terminateSlave(fmiComponent_);
-				fmu_->freeSlaveInstance(fmiComponent_);
-			}
-
-
-			if (NULL !=  fmu_->modelDescription) {
-				free((void *) fmu_->modelDescription);
-			}
-
-
-			if (NULL !=  fmu_->dllHandle) {
-				FreeLibrary (fmu_->dllHandle);
-			}
-
-
-			delete fmu_;
-			fmu_ = NULL;
-		}
 
 
 		if(NULL != mainDataModel_) {
@@ -107,6 +85,37 @@ namespace Straylight
 
 		printf(_T("deconstructor done"));
 	}
+
+
+	void MainController::releaseFMU_() {
+
+		// Release FMU
+		if (NULL != fmu_) {
+
+			if (NULL != fmiComponent_) {
+				fmu_->terminateSlave(fmiComponent_);
+				fmu_->freeSlaveInstance(fmiComponent_);
+			}
+
+
+			if (NULL != fmu_->modelDescription) {
+				free((void *)fmu_->modelDescription);
+			}
+
+
+			if (NULL != fmu_->dllHandle) {
+				FreeLibrary(fmu_->dllHandle);
+			}
+
+
+			delete fmu_;
+			fmu_ = NULL;
+		}
+
+	}
+
+
+
 
 
 	void MainController::connect( void (*messageCallbackPtr)(MessageStruct *), void (*resultCallbackPtr)(ScalarValueResultsStruct *), void (*stateChangeCallbackPtr)(SimStateNative ) )
@@ -227,21 +236,53 @@ namespace Straylight
 
 	int MainController::forceCleanup() {
 
-		if (state_ == simStateNative_1_connect_requested ||
+		Logger::getInstance()->printError(_T("MainController::forceCleanup() \n"));
+		//Logger::getInstance()->printDebug2(_T("MainController::forceCleanup() state_ %s\n"), state_);
+
+		
+		while (state_ == simStateNative_1_connect_requested ||
+			state_ == simStateNative_2_xmlParse_requested ||
+			state_ == simStateNative_3_init_requested ||
+			state_ == simStateNative_4_run_requested ||
+			state_ == simStateNative_5_stop_requested ||
+			state_ == simStateNative_5_step_requested
+			) {
+
+			Logger::getInstance()->printError(_T("MainController::forceCleanup() - state_ BLOCKING\n"));
+
+			std::this_thread::sleep_for(std::chrono::milliseconds(200));
+		}
+
+
+
+		if (
 			simStateNative_1_connect_completed ||
-			simStateNative_2_xmlParse_requested ||
-			simStateNative_2_xmlParse_completed
+			simStateNative_2_xmlParse_completed ||
+			simStateNative_3_ready
 			) 
 		{
 
-			setState_(simStateNative_8_tearDown_completed);
-			return 0;
-		} else if (state_ == simStateNative_3_ready) {
+			releaseFMU_();
 
+			fmiStatus fmiFlag;
+			time_ = 0;
 
 			setState_(simStateNative_8_tearDown_completed);
+
 			return 0;
 		}
+		else
+		{
+		
+
+
+			return 1;
+
+
+		}
+
+
+
 	}
 
 
@@ -363,30 +404,47 @@ namespace Straylight
 	 * @return	.
 	 *******************************************************/
 	int MainController::xmlParse(char* unzipfolder) {
+		
+
+		setState_(simStateNative_2_xmlParse_requested);
+
 		//	Logger::instance->printDebug2("MainController::parseXML unzipfolder %s\n", unzipfolder);
 		int len1 = strlen(unzipfolder) + 1;
 
 		unzipFolderPath_ = (char *) calloc(sizeof(char), len1 );
 
 		lstrcpy(unzipFolderPath_, unzipfolder);
-		Logger::getInstance()->printDebug2(_T("MainController::xmlParse unzipFolderPath_ %s\n"), unzipFolderPath_);
+		Logger::getInstance()->printDebug2(_T("MainController::xmlParse() unzipFolderPath_ %s\n"), unzipFolderPath_);
 
 		//construct the path to the XML file and
 		// store as member variable
 		int len2 = len1 + strlen(XML_FILE_STR);
-		xmlFilePath_ = (char *) calloc(sizeof(char), len2);
+
 
 
 		std::stringstream xmlFilePathStringStream;
 		xmlFilePathStringStream << unzipfolder << XML_FILE_STR;
 		string theStr = xmlFilePathStringStream.str();
 
-		xmlFilePath_ = theStr.c_str();
+		const char *constStr = theStr.c_str();
+		int len3 = strlen(constStr);
 
-		Logger::getInstance()->printDebug2(_T("xmlFilePath_ = %s\n"), xmlFilePath_);
+		xmlFilePath_ = (char *)calloc(sizeof(char), len3);
 
 
-		fmu_->modelDescription = parse(xmlFilePath_);
+		std::strcpy(xmlFilePath_, constStr);
+
+		///xmlFilePath_ = constStr;
+
+
+
+		Logger::getInstance()->printDebug2(_T("MainController::xmlParse() xmlFilePath_ = %s\n"), xmlFilePath_);
+
+
+		fmu_->modelDescription = parse(constStr);
+
+		Logger::getInstance()->printDebug2(_T("MainController::xmlParse() parse complete = %s\n"), constStr);
+
 
 		if (fmu_->modelDescription == NULL) {
 			Logger::getInstance()->printfError(_T("Error - MainController::xmlParse xmlFilePath_ %s\n"), xmlFilePath_);

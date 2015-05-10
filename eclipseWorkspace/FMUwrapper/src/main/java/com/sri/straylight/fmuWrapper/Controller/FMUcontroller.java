@@ -70,6 +70,10 @@ public class FMUcontroller extends AbstractController {
 	private Path pathToTempFolder_;
 	private Path pathToWorkingFMU_;
 	private boolean concurrency_ = true;
+	private String dllVersion_;
+	private String requiredDllVersion_ = "0.8.11";
+	
+	
 //	private File fmuFile_;
 	
 	public FMUcontroller() {
@@ -383,6 +387,23 @@ public class FMUcontroller extends AbstractController {
 			jnaFMUWrapper_.connect(messageCallbackFunc_, resultCallbackFunc_,
 					stateChangeCallbackFunc_);
 			
+			
+		
+			System.out.println("pathToWorkingFMU_:" + pathToWorkingFMU_);
+			
+			dllVersion_ = jnaFMUWrapper_.getVersion();
+			System.out.println("FMUcontroller.connect_() DLL version:" + dllVersion_ + " found");
+			System.out.println("FMUcontroller.connect_() DLL version:" + requiredDllVersion_ + " required");
+			
+			
+		    if (!requiredDllVersion_.equals(dllVersion_)) {
+		    	
+				throw new IOException("Required DLL version is: " + requiredDllVersion_ + " Loaded DLL version is: " +
+						dllVersion_);
+				
+		    }
+				
+				
 			return;
 			
 		};
@@ -692,6 +713,8 @@ public class FMUcontroller extends AbstractController {
 
 		if (null != jnaFMUWrapper_) {
 			jnaFMUWrapper_.forceCleanup();
+			
+			jnaFMUWrapper_ = null;
 		}
 		
 		
