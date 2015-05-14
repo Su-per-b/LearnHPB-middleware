@@ -64,7 +64,7 @@ public class JNAfunctionsT {
 		jnaFMUWrapper_ = (JNAfmuWrapper) Native.loadLibrary(dllName, JNAfmuWrapper.class, options);
 		assertNotNull(jnaFMUWrapper_);
 		
-		assertSimState_(SimStateNative.simStateNative_0_uninitialized);
+		assertCleanedUp_();
 		
 	}
 	
@@ -76,10 +76,28 @@ public class JNAfunctionsT {
 		int result_0 = jnaFMUWrapper_.forceCleanup();
 		Assert.assertEquals(0, result_0);
 		
-		assertSimState_(SimStateNative.simStateNative_0_uninitialized);	
-		
+		assertCleanedUp_();
 	}
 	
+	
+	private void assertCleanedUp_() {
+		
+		
+		SimStateNative simStateNativeActual = jnaFMUWrapper_.getSimStateNative();
+		
+		Boolean isCleanedUp = false;
+		
+		if (simStateNativeActual == SimStateNative.simStateNative_8_tearDown_completed) {
+			isCleanedUp = true;
+		}
+		else if (simStateNativeActual == SimStateNative.simStateNative_0_uninitialized) {
+			isCleanedUp = true;
+		}
+		
+		
+		Assert.assertEquals(true, isCleanedUp);	
+		
+	}
 	
 	
 	private void assertSimState_(SimStateNative simStateNativeExpected) {
@@ -105,7 +123,6 @@ public class JNAfunctionsT {
 	
 	@Test
 	public void T02_Connect() {
-		
 		
 		MessageCallback messageCallbackHandler = new MessageCallback();
 		ResultCallback resultCallbackHandler = new ResultCallback();
