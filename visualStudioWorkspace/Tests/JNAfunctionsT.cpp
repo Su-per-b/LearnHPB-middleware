@@ -17,14 +17,34 @@ namespace StraylightTests
 		void JNAfunctionsT::assertSimState_(SimStateNative simStateNativeExpected) {
 
 			SimStateNative simStateNativeActual = getSimStateNative();
+
 			Assert::AreEqual(simStateNativeExpected, simStateNativeActual);
+
+		}
+
+
+
+		void JNAfunctionsT::assertCleanedUp_() {
+
+			SimStateNative simStateNativeActual = getSimStateNative();
+
+			bool isCleanedUp = false;
+
+			if (simStateNativeActual == simStateNative_8_tearDown_completed) {
+				isCleanedUp = true;
+			}
+			else if (simStateNativeActual == simStateNative_0_uninitialized) {
+				isCleanedUp = true;
+			}
+
+			Assert::AreEqual(true, isCleanedUp);
 
 		}
 
 
 		//runs before each test
 		TEST_METHOD_INITIALIZE(beforeEachTest) {
-			assertSimState_(simStateNative_0_uninitialized);
+			assertCleanedUp_();
 		}
 
 		//runs after each test
@@ -33,12 +53,12 @@ namespace StraylightTests
 			int result_0 = forceCleanup();
 			Assert::AreEqual(0, result_0);
 
-			assertSimState_(simStateNative_0_uninitialized);
+			assertCleanedUp_();
 		}
 
 		TEST_METHOD(T01_ForceCleanup)
 		{
-			assertSimState_(simStateNative_0_uninitialized);
+			assertCleanedUp_();
 		}
 
 
@@ -79,9 +99,6 @@ namespace StraylightTests
 			double stepDelta = configStruct->stepDelta;
 			Assert::AreEqual(300.0, stepDelta);
 
-			forceCleanup();
-
-			assertSimState_(simStateNative_0_uninitialized);
 
 		}
 
