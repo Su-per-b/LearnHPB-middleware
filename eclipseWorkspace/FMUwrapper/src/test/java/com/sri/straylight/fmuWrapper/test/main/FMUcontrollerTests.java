@@ -123,39 +123,39 @@ public class FMUcontrollerTests {
 	
 
 	
-	@Test
-	public void T00a_fmuXmlParse() throws Exception {
-		
-	
-		//Thread.sleep(5000);
-		
-		XMLParseThread thread = new XMLParseThread();
-		XMLParseThread thread2 = new XMLParseThread();
-		
-		thread.init(fmuController_, "XMLParseThread 1");
-		
-		thread.start();
-		//thread.cleanup();
-		thread.join();
-		//thread.cleanup();
-		//assertSimState_(SimStateNative.simStateNative_0_uninitialized);
-		//thread.
-		
-		Thread.sleep(2000);
-		
-		fmuController_ = new FMUcontroller();
-		fmuController_.setConcurrency(false);
-		
-		
-		thread2.init(fmuController_, "XMLParseThread 2");
-		thread2.start();
-		
-		//thread2.cleanup();
-		thread2.join();
-		assertSimState_(SimStateNative.simStateNative_0_uninitialized);
-		
-
-	}
+//	@Test
+//	public void T00a_fmuXmlParse() throws Exception {
+//		
+//	
+//		//Thread.sleep(5000);
+//		
+//		XMLParseThread thread = new XMLParseThread();
+//		XMLParseThread thread2 = new XMLParseThread();
+//		
+//		thread.init(fmuController_, "XMLParseThread 1");
+//		
+//		thread.start();
+//		//thread.cleanup();
+//		thread.join();
+//		//thread.cleanup();
+//		//assertSimState_(SimStateNative.simStateNative_0_uninitialized);
+//		//thread.
+//		
+//		Thread.sleep(2000);
+//		
+//		fmuController_ = new FMUcontroller();
+//		fmuController_.setConcurrency(false);
+//		
+//		
+//		thread2.init(fmuController_, "XMLParseThread 2");
+//		thread2.start();
+//		
+//		//thread2.cleanup();
+//		thread2.join();
+//		assertSimState_(SimStateNative.simStateNative_0_uninitialized);
+//		
+//
+//	}
 	
 	@Test
 	public void T00b_fmuXmlParse() throws Exception {
