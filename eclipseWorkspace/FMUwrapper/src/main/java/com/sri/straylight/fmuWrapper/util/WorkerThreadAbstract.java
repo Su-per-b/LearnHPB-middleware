@@ -42,7 +42,24 @@ public abstract class WorkerThreadAbstract extends SwingWorker<Void, Void> {
 		try {
 			super.get();
 		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			Throwable cause = e.getCause();
+		    throw new RuntimeException(cause);
+			
+//			  if (cause instanceof ProcessExecutionException)
+//				    throw (ProcessExecutionException) cause;
+//
+//				  else if (cause instanceof IOException)
+//				    throw (IOException) cause;
+//
+//				  else if (cause instanceof InterruptedException)
+//				    throw (InterruptedException) cause;
+//
+//				  else if (cause instanceof TimeoutException)
+//				    throw (TimeoutException) cause;
+//
+//				  else
+
 		}
 		
 		doneIt_();
